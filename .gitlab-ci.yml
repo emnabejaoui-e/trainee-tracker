@@ -1,0 +1,16 @@
+stages:
+  - trigger
+
+trigger_check:
+  stage: trigger
+  trigger:
+    project: lehre/sopro/2026-sose/sopro-2026-autokorrektur
+    branch: main
+    strategy: depend
+  variables:
+    STUDENT_REPO_PATH: $CI_PROJECT_PATH
+    STUDENT_PROJECT_ID: $CI_PROJECT_ID
+    MR_ID: $CI_MERGE_REQUEST_IID
+    STUDENT_SOURCE_BRANCH: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
