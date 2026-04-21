@@ -3,14 +3,18 @@ stages:
 
 trigger_check:
   stage: trigger
-  trigger:
-    project: lehre/sopro/2026-sose/sopro-2026-autokorrektur
-    branch: main
-    strategy: depend
-  variables:
-    STUDENT_REPO_PATH: $CI_PROJECT_PATH
-    STUDENT_PROJECT_ID: $CI_PROJECT_ID
-    MR_ID: $CI_MERGE_REQUEST_IID
-    STUDENT_SOURCE_BRANCH: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
+  image: curlimages/curl:latest
+
+  script:
+    - |
+      curl --fail --request POST \
+        --form token=$DOWNSTREAM_TRIGGER_TOKEN \
+        --form ref=main \
+        --form "variables[STUDENT_REPO_PATH]=$CI_PROJECT_PATH" \
+        --form "variables[STUDENT_PROJECT_ID]=$CI_PROJECT_ID" \
+        --form "variables[MR_ID]=$CI_MERGE_REQUEST_IID" \
+        --form "variables[STUDENT_SOURCE_BRANCH]=$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME" \
+        "$CI_API_V4_URL/projects/$(echo lehre/sopro/2026-sose/sopro-2026-autokorrektur | sed 's/\//%2F/g')/trigger/pipeline"
+
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
