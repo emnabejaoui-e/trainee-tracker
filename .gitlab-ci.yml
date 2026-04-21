@@ -4,6 +4,8 @@ stages:
 trigger_check:
   stage: trigger
   image: curlimages/curl:latest
+  tags:
+    - sopro
 
   script:
     - |
