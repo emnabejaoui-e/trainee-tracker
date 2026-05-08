@@ -1,0 +1,25 @@
+@model IEnumerable<TutorialProject.Models.Lesson>
+
+@{
+    ViewData["Title"] = "Lehrplan";
+}
+
+<link rel="stylesheet" href="~/css/lessons.css" />
+
+<h1>Lehrplan</h1>
+
+@foreach (var lesson in Model)
+{
+    <div class="lesson-card">
+        <h2>@lesson.Title</h2>
+
+        <p>
+            TimeEstimation:
+            @lesson.TimeEstimation Hours
+        </p>
+
+        <a href="@lesson.CardDeckLink">
+            Link zum CardDeck
+        </a>
+    </div>
+}

@@ -1,0 +1,15 @@
+.lesson-card {
+    border: 1px solid black;
+    padding: 15px;
+    margin-top: 20px;
+    width: 300px;
+    background-color: rgb(211,211,211);
+}
+
+.lesson-card:hover {
+    background-color: rgb(144,238,144);
+}
+
+.lesson-card a {
+    color: rgb(0,0,255);
+}
