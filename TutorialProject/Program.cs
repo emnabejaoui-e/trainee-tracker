@@ -1,9 +1,15 @@
+using TutorialProject.Data;
 using TutorialProject.Data.Lessons;
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<ILessonRepository, StaticLessonRepository>();
+var lessonContext = new LessonContext(false);
+lessonContext.Database.EnsureCreated();
+DbInitializer.InitializeDatabase(lessonContext);
+
+var lessonRepository = new DatabaseLessonRepository(lessonContext);
+
+builder.Services.AddSingleton<ILessonRepository>(lessonRepository);
 
 var app = builder.Build();
 
