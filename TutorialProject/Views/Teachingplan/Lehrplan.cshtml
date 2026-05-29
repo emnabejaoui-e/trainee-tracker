@@ -1,29 +1,25 @@
-<div class="card mb-4">
-    <div class="card-header">
-        JSON Import
-    </div>
+@model List<Lesson>
 
-    <div class="card-body">
-        <p class="card-text">
-            Import lessons from a JSON file.
+@{
+    ViewData["Title"] = "Lehrplan";
+}
+
+<link rel="stylesheet" href="~/css/lessons.css" />
+
+<h1>Lehrplan</h1>
+
+@foreach (var lesson in Model)
+{
+    <div class="lesson-card">
+        <h2>@lesson.Title</h2>
+
+        <p>
+            TimeEstimation:
+            @lesson.TimeEstimation Hours
         </p>
 
-        <form asp-controller="Teachingplan"
-      asp-action="Upload"
-      method="post"
-      enctype="multipart/form-data">
-
-    <div class="input-group">
-        <input type="file"
-               name="file"
-               accept=".json"
-               class="form-control" />
-
-        <button type="submit"
-                class="btn btn-primary">
-            Import JSON
-        </button>
+        <a href="@lesson.CardDeckLink">
+            Link zum CardDeck
+        </a>
     </div>
-</form>
-    </div>
-</div>
+}
