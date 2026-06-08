@@ -1,5 +1,70 @@
 stages:
   - trigger
+  - build
+  - unit-tests
+  - e2e-tests
+  - deploy
+
+build:
+  stage: build
+  image: mcr.microsoft.com/dotnet/sdk:10.0
+  tags:
+   - sopro
+  
+  script: 
+    - cd Trainee_Tracker
+    - dotnet build
+
+unit-tests:
+  stage: unit-tests
+  image: mcr.microsoft.com/dotnet/sdk:10.0
+  tags:
+   - sopro
+
+  need: 
+    - build
+  
+  script: 
+    - cd Trainee_Tracker
+    - dotnet test
+
+unit-tests:
+  stage: e2e-tests
+  image: mcr.microsoft.com/dotnet/sdk:10.0
+  tags:
+   - sopro
+
+  need: 
+    - build
+  
+  script: 
+    - cd Trainee_Tracker
+    - dotnet run --environment Development &
+
+    - apt-get update -qq
+    - apt-get install -y --no-install-recommends wget gnupg ca-certificates
+    - wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    - apt-get install -y --no-install-recommends ./google-chrome-stable_current_amd64.deb
+    - rm google-chrome-stable_current_amd64.deb
+    - google-chrome --version
+
+    - sleep 10
+
+    - cd ../Trainee_Tracker-E2ETests
+    - dotnet test
+
+deploy:
+  stage: deploy
+  image: mcr.microsoft.com/dotnet/sdk:10.0
+  tags:
+   - sopro
+
+  need: 
+    - 
+  
+  script: 
+    -   
+
 
 trigger_check:
   stage: trigger
