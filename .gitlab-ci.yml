@@ -56,15 +56,14 @@ e2e-tests:
 
 deploy:
   stage: deploy
-  image: docker:latest
+  image: docker:cli
+  services:
+    - docker:dind
   tags:
     - sopro
   needs:
     - unit-tests
     - e2e-tests
-
-  
-
   script:
     - docker build -t $CI_REGISTRY_IMAGE:latest ./Trainee_Tracker
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
