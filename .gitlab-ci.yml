@@ -28,7 +28,7 @@ unit-tests:
     - cd Trainee_Tracker
     - dotnet test
 
-unit-tests:
+e2e-tests:
   stage: e2e-tests
   image: mcr.microsoft.com/dotnet/sdk:10.0
   tags:
