@@ -4,6 +4,7 @@ stages:
   - unit-tests
   - e2e-tests
   - deploy
+  - portainer
 
 build:
   stage: build
@@ -21,20 +22,20 @@ unit-tests:
   tags:
    - sopro
 
-  need: 
+  needs: 
     - build
   
   script: 
     - cd Trainee_Tracker
     - dotnet test
 
-unit-tests:
+e2e-tests:
   stage: e2e-tests
   image: mcr.microsoft.com/dotnet/sdk:10.0
   tags:
    - sopro
 
-  need: 
+  needs: 
     - build
   
   script: 
@@ -55,15 +56,27 @@ unit-tests:
 
 deploy:
   stage: deploy
-  image: mcr.microsoft.com/dotnet/sdk:10.0
+  image: docker:latest
   tags:
-   - sopro
+    - sopro
+  needs:
+    - unit-tests
+    - e2e-tests
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE:latest ./Trainee_Tracker
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $CI_REGISTRY_IMAGE:latest
 
-  need: 
-    - 
-  
-  script: 
-    -   
+portainer:
+  stage: portainer
+  image: curlimages/curl:latest
+  tags:
+    - sopro
+  needs:
+    - deploy
+  script:
+    - sleep 10
+    - curl -X POST $CONTAINER_WEB_HOOK
 
 
 trigger_check:
