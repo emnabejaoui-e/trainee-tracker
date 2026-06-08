@@ -51,7 +51,7 @@ e2e-tests:
 
     - sleep 10
 
-    - cd ../Trainee_Tracker-E2ETests
+    - cd ../Trainee_Tracker.E2ETests
     - dotnet test
 
 deploy:
