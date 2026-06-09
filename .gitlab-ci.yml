@@ -1,11 +1,26 @@
 stages:
   - build
+  - unit-tests
 
 build:
   stage: build
   image: mcr.microsoft.com/dotnet/sdk:10.0
   tags:
     - sopro
+
   script:
     - cd Trainee_Tracker
     - dotnet build
+
+unit-tests:
+  stage: unit-tests
+  image: mcr.microsoft.com/dotnet/sdk:10.0
+  tags:
+    - sopro
+
+  needs:
+    - build
+
+  script:
+    - cd Trainee_Tracker.UnitTests
+    - dotnet test
