@@ -46,8 +46,7 @@ e2e-tests:
 
 deploy:
   stage: deploy
-  image: mcr.microsoft.com/dotnet/sdk:10.0
-
+  image: docker:latest
   tags:
     - sopro
 
@@ -56,6 +55,6 @@ deploy:
     - e2e-tests
 
   script:
-    - echo "Deploying Trainee Tracker"
-    - cd Trainee_Tracker
-    - ls
+    - docker build -t gitlab.isse.de:5050/lehre/sopro/2026-sose/gruppen/team14/main:latest ./Trainee_Tracker
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD gitlab.isse.de:5050
+    - docker push gitlab.isse.de:5050/lehre/sopro/2026-sose/gruppen/team14/main:latest
