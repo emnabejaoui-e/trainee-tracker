@@ -1,6 +1,7 @@
 stages:
   - build
   - unit-tests
+  - e2e-tests
 
 build:
   stage: build
@@ -23,4 +24,29 @@ unit-tests:
 
   script:
     - cd Trainee_Tracker.UnitTests
+    - dotnet test
+
+e2e-tests:
+  stage: e2e-tests
+  image: mcr.microsoft.com/dotnet/sdk:10.0
+  tags:
+    - sopro
+
+  needs:
+    - build
+
+  script:
+    - cd Trainee_Tracker
+    - dotnet run --environment Development &
+
+    - apt-get update -qq
+    - apt-get install -y --no-install-recommends wget gnupg ca-certificates
+    - wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    - apt-get install -y --no-install-recommends ./google-chrome-stable_current_amd64.deb
+    - rm google-chrome-stable_current_amd64.deb
+    - google-chrome --version
+
+    - sleep 10
+
+    - cd ../Trainee_Tracker.E2ETests
     - dotnet test
