@@ -3,6 +3,7 @@ stages:
   - unit-tests
   - e2e-tests
   - deploy
+  - portainer
 
 build:
   stage: build
@@ -43,6 +44,7 @@ e2e-tests:
     - sleep 10
     - cd ../Trainee_Tracker.E2ETests
     - dotnet test
+
 deploy:
   stage: deploy
   image: mcr.microsoft.com/dotnet/sdk:10.0
@@ -55,3 +57,14 @@ deploy:
     - echo "Deploying Trainee Tracker"
     - test -f Trainee_Tracker/Dockerfile
     - ls Trainee_Tracker
+
+portainer:
+  stage: portainer
+  image: curlimages/curl:latest
+  tags:
+    - sopro
+  needs:
+    - deploy
+  script:
+    - sleep 10
+    - curl -X POST "$CONTAINER_WEB_HOOK"
