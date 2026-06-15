@@ -29,3 +29,105 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+/* FARBEN */
+:root {
+    --licorice: #141210;
+    --pink: #FF0844;
+    --white: #FFFFFF;
+    --gray-100: #F5F4F2;
+    --gray-200: #E8E6E2;
+    --gray-400: #9A9690;
+    --gray-600: #5C5854;
+    --pink-light: #FFE6EC;
+    --success: #1D9E75;
+    --warning: #BA7517;
+    --danger: #E24B4A;
+}
+
+/* NAVBAR */
+.page-header {
+    background: var(--licorice);
+    padding: 13px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--pink);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.page-header .brand {
+    font-family: 'League Spartan', monospace;
+    color: var(--white);
+    font-size: 20px;
+    font-weight: 500;
+    padding-left: 40px;
+    letter-spacing: 0.04em;
+}
+
+.page-header .brand span { color: var(--pink); }
+
+.categories a, .categories span {
+    color: #ffffff;
+    font-family: 'League Spartan', monospace;
+    font-size: 16px;
+    letter-spacing: 0.8px;
+}
+
+.categories a:hover {
+    text-decoration: underline;
+    text-decoration-color: #FF0844;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 1.35em;
+}
+
+.nav-selected {
+    text-decoration: underline;
+    text-decoration-color: #FF0844;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 1.35em;
+}
+
+.user-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    text-decoration: none;
+    padding: 0;
+}
+
+.user-profile .role {
+    color: var(--pink);
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.08em;
+    margin-bottom: 2px;
+    margin-right: 50px;
+}
+
+.user-profile .email {
+    color: var(--gray-400);
+    font-size: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.06em;
+}
+
+.user-profile:hover .email { color: var(--white); }
+
+.user-dropdown {
+    display: none;
+    position: absolute;
+    top: 2.75rem;
+    right: 1rem;
+    background-color: var(--licorice);
+    border-bottom: 2px solid var(--pink);
+    min-width: 130px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 1rem 2rem;
+}
+
+.user-profile:hover .user-dropdown { display: block; }
+.user-dropdown:hover { display: block; }
