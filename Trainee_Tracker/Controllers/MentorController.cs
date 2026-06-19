@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Trainee_Tracker.Controllers;
@@ -21,7 +22,7 @@ public class MentorController : Controller
     /// <param name="traineeId">The numeric id of the Trainee to change the order for.</param>
     /// <param name="order">A list with the numeric ids of Lessons in the order they should appear for trainees.</param>
     /// <returns></returns>
-    public IActionResult UpdateLessonOrder(int traineeId, List<int> order)
+    public IActionResult UpdateLessonOrder(int traineeId, IList<int> order)
     {
         return StatusCode(501, "Not implemented!");
     }
