@@ -1,5 +1,8 @@
 namespace Trainee_Tracker.Models;
 
+/// <summary>
+/// Represents one Lesson for a curriculum. Corresponds to a <a href="https://makandracards.com">makandracard</a>.
+/// </summary>
 public class Lesson
 {
     /// <summary>
