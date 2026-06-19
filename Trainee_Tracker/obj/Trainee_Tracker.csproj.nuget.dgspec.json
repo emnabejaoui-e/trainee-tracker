@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\julia\\Documents\\SoSe26\\SoPro\\team14\\Trainee_Tracker\\Trainee_Tracker.csproj": {}
+    "C:\\Users\\andre\\Desktop\\SoPro\\team14\\Trainee_Tracker\\Trainee_Tracker.csproj": {}
   },
   "projects": {
-    "C:\\Users\\julia\\Documents\\SoSe26\\SoPro\\team14\\Trainee_Tracker\\Trainee_Tracker.csproj": {
+    "C:\\Users\\andre\\Desktop\\SoPro\\team14\\Trainee_Tracker\\Trainee_Tracker.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\julia\\Documents\\SoSe26\\SoPro\\team14\\Trainee_Tracker\\Trainee_Tracker.csproj",
+        "projectUniqueName": "C:\\Users\\andre\\Desktop\\SoPro\\team14\\Trainee_Tracker\\Trainee_Tracker.csproj",
         "projectName": "Trainee_Tracker",
-        "projectPath": "C:\\Users\\julia\\Documents\\SoSe26\\SoPro\\team14\\Trainee_Tracker\\Trainee_Tracker.csproj",
-        "packagesPath": "C:\\Users\\julia\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\julia\\Documents\\SoSe26\\SoPro\\team14\\Trainee_Tracker\\obj\\",
+        "projectPath": "C:\\Users\\andre\\Desktop\\SoPro\\team14\\Trainee_Tracker\\Trainee_Tracker.csproj",
+        "packagesPath": "C:\\Users\\andre\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\andre\\Desktop\\SoPro\\team14\\Trainee_Tracker\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\julia\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\andre\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -62,7 +62,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.204/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.203/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
