@@ -29,7 +29,6 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
-/* FARBEN */
 :root {
     --licorice: #141210;
     --pink: #FF0844;
@@ -44,7 +43,6 @@ body {
     --danger: #E24B4A;
 }
 
-/* NAVBAR */
 .page-header {
     background: var(--licorice);
     padding: 13px 40px;
@@ -73,20 +71,22 @@ body {
     font-family: 'League Spartan', monospace;
     font-size: 16px;
     letter-spacing: 0.8px;
+    text-decoration: none;
+    padding-right: 30px;
 }
 
 .categories a:hover {
     text-decoration: underline;
     text-decoration-color: #FF0844;
     text-decoration-thickness: 3px;
-    text-underline-offset: 1.35em;
+    text-underline-offset: 1.42em;
 }
 
 .nav-selected {
     text-decoration: underline;
     text-decoration-color: #FF0844;
     text-decoration-thickness: 3px;
-    text-underline-offset: 1.35em;
+    text-underline-offset: 1.42em;
 }
 
 .user-profile {
