@@ -4,12 +4,12 @@ namespace Trainee_Tracker.Services;
 
 public class LessonFeedbackService
 {
-    public LessonFeedback CreateFeedback()
+    public List<LessonFeedback> CreateFeedback()
     {
         throw new NotImplementedException();
     }
 
-    public LessonFeedback UpdateFeedback()
+    public List<LessonFeedback> UpdateFeedback()
     {
         throw new NotImplementedException();
     }
@@ -19,17 +19,17 @@ public class LessonFeedbackService
         throw new NotImplementedException();
     }
     // TODO: Replace traineeId with Trainee model
-    public LessonFeedback[] CollectFeedback(int mentorId, DateTime from, DateTime until)
+    public List<LessonFeedback> CollectFeedback(int mentorId, DateTime from, DateTime until)
     {
         throw new NotImplementedException();
     }
 
-    public LessonFeedback[] CollectFeedback(DateTime from, DateTime until)
+    public List<LessonFeedback> CollectFeedback(DateTime from, DateTime until)
     {
         throw new NotImplementedException();
     }
 
-    public LessonFeedback[] GetFeedback(int traineeId)
+    public List<LessonFeedback> GetFeedback(int traineeId)
     {
         throw new NotImplementedException();
     }

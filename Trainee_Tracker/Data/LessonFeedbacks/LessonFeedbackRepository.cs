@@ -5,17 +5,17 @@ namespace Trainee_Tracker.Data.LessonFeedbacks;
 public class LessonFeedbackRepository : ILessonFeedbackRepository
 {
     // TODO: Replace traineeId with Trainee model
-    public LessonFeedback[] FindByTrainee(int traineeId, DateTime from, DateTime until)
+    public List<LessonFeedback> FindByTrainee(int traineeId, DateTime from, DateTime until)
     {
         throw new NotImplementedException();
     }
 
-    public LessonFeedback[] FindByMentor(int mentorId, DateTime from, DateTime until)
+    public List<LessonFeedback> FindByMentor(int mentorId, DateTime from, DateTime until)
     {
         throw new NotImplementedException();
     }
 
-    public LessonFeedback[] FindByTimeSpan(DateTime from, DateTime until)
+    public List<LessonFeedback> FindByTimeSpan(DateTime from, DateTime until)
     {
         throw new NotImplementedException();
     }
