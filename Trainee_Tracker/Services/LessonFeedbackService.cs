@@ -18,8 +18,7 @@ public class LessonFeedbackService
     {
         throw new NotImplementedException();
     }
-    // TODO: Replace traineeId with Trainee model
-    public List<LessonFeedback> CollectFeedback(int mentorId, DateTime from, DateTime until)
+    public List<LessonFeedback> CollectFeedback(Mentor mentor, DateTime from, DateTime until)
     {
         throw new NotImplementedException();
     }
@@ -29,7 +28,7 @@ public class LessonFeedbackService
         throw new NotImplementedException();
     }
 
-    public List<LessonFeedback> GetFeedback(int traineeId)
+    public List<LessonFeedback> GetFeedback(Trainee trainee)
     {
         throw new NotImplementedException();
     }
