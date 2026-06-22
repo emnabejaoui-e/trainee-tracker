@@ -8,7 +8,7 @@ public class Lesson
     /// <summary>
     /// This Lesson's numeric, unique Id.
     /// </summary>
-    public int Id { get; set; }
+    public int Id { get; init; }
     
     /// <summary>
     /// The Lesson's title, as given by makandracards 
