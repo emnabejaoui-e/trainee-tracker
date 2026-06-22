@@ -57,6 +57,9 @@ deploy:
     - echo "Deploying Trainee Tracker"
     - test -f Trainee_Tracker/Dockerfile
     - ls Trainee_Tracker
+  only:
+    refs:
+      - master
 
 portainer:
   stage: portainer
@@ -68,3 +71,6 @@ portainer:
   script:
     - sleep 10
     - curl -X POST https://portainer.isse.de/api/webhooks/1774c4f4-c8c7-4161-a6a4-a2fe46b92e7b
+  only:
+    refs:
+      - master
