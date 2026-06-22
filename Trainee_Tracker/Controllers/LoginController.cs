@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Trainee_Tracker.Models;
 using Trainee_Tracker.Services;
@@ -22,6 +23,7 @@ public class LoginController : Controller
         {
             case LoginResult.Success:
                 var user = _userService.GetUserByEmail(email);
+
                 return RedirectToAction("Index", "Home");
 
             case LoginResult.AccountClosed:
@@ -29,7 +31,12 @@ public class LoginController : Controller
                 return View();
 
             case LoginResult.InvalidCredentials:
+                ViewBag.ErrorMessage = "E-Mail oder Passwort ungültig.";
+                return View();
+
             default:
+
+                Debug.Assert(false, $"Unhandled LoginResult value: {result}");
                 ViewBag.ErrorMessage = "E-Mail oder Passwort ungültig.";
                 return View();
         }
