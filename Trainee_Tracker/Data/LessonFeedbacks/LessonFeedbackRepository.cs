@@ -5,12 +5,12 @@ namespace Trainee_Tracker.Data.LessonFeedbacks;
 public class LessonFeedbackRepository : ILessonFeedbackRepository
 {
     // TODO: Replace traineeId with Trainee model
-    public List<LessonFeedback> FindByTrainee(int traineeId, DateTime from, DateTime until)
+    public List<LessonFeedback> FindByTrainee(Trainee trainee, DateTime from, DateTime until)
     {
         throw new NotImplementedException();
     }
 
-    public List<LessonFeedback> FindByMentor(int mentorId, DateTime from, DateTime until)
+    public List<LessonFeedback> FindByMentor(Mentor mentor, DateTime from, DateTime until)
     {
         throw new NotImplementedException();
     }
