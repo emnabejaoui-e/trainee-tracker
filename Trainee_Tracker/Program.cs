@@ -1,7 +1,15 @@
+using Trainee_Tracker.Repositories;
+using Trainee_Tracker.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Muss später gelöscht werden das sind nur fake daten
+
+builder.Services.AddScoped<IUserRepository, FakeUserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
