@@ -1,0 +1,70 @@
+@model IList<Trainee_Tracker.Models.User>
+@using Trainee_Tracker.Models
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2> </h2>
+
+<p>
+    Create new: 
+    <a asp-action="CreateTrainee" class="btn btn-success">Trainee</a>
+    <a asp-action="CreateTrainee" class="btn btn-success">Mentor</a>
+    <a asp-action="CreateTrainee" class="btn btn-success">Admin</a>
+    <a asp-action="AssignMentor" class="btn btn-danger">Mentor zuweisen</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>Name</th>
+                <th>E-Mail</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Start date</th>
+                <th>Mentor</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @if (item is Trainee) {
+                    <text> Trainee </text>
+                }
+                @if (item is Mentor) {
+                    <text> Mentor </text>
+                }
+                @if (item is Admin) {
+                    <text> Admin </text>
+                }
+            </td>
+            <td>
+                @(item.Closed ? "Closed" : "Active")
+            </td>
+            <td>
+                @if (item is Trainee t) {
+                @Html.DisplayFor(modelItem => t.StartingDate)
+                }
+            </td>
+            <td>
+                @if (item is Trainee m) {
+                @Html.DisplayFor(modelItem => m.Mentors)
+                }
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Close</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
