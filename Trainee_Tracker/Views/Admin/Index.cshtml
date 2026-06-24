@@ -1,0 +1,64 @@
+@{
+    ViewData["Title"] = "Dashboard";
+    var name  = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? "Admin";
+    var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "";
+}
+
+@section NavLinks {
+    <a class="nav-link active" href="/Admin">Home</a>
+    <a class="nav-link" href="/Admin/Users">Benutzerverwaltung</a>
+    <a class="nav-link" href="/Admin/Profile">Profil</a>
+}
+
+@section Styles {
+<style>
+    .welcome-banner {
+        background: var(--licorice); color: var(--white); border-radius: 10px;
+        padding: 24px 28px; margin-bottom: 28px;
+        display: flex; align-items: center; justify-content: space-between;
+    }
+    .welcome-banner h2 { font-size: 18px; letter-spacing: 0.06em; }
+    .welcome-banner p {
+        font-size: 13px; color: var(--gray-400); margin-top: 4px;
+        font-family: 'Open Sans', sans-serif; font-weight: 400;
+        text-transform: none; letter-spacing: 0;
+    }
+    .welcome-badge {
+        background: #1D9E75; color: var(--white);
+        font-family: 'League Spartan', sans-serif; font-weight: 700;
+        text-transform: uppercase; font-size: 11px;
+        letter-spacing: 0.1em; padding: 5px 12px; border-radius: 4px;
+    }
+    .section-card {
+        background: var(--white); border: 1px solid var(--gray-200);
+        border-radius: 10px; padding: 22px 24px; margin-bottom: 20px;
+    }
+    .section-card-title {
+        font-family: 'League Spartan', sans-serif; font-weight: 700;
+        text-transform: uppercase; font-size: 13px;
+        letter-spacing: 0.08em; color: var(--licorice); margin-bottom: 16px;
+    }
+    .page-title {
+        font-family: 'League Spartan', sans-serif; font-weight: 700;
+        text-transform: uppercase; font-size: 22px;
+        letter-spacing: 0.06em; color: var(--licorice); margin-bottom: 4px;
+    }
+    .page-subtitle { font-size: 13px; color: var(--gray-600); margin-bottom: 28px; }
+</style>
+}
+
+<div class="page-title">Dashboard</div>
+<div class="page-subtitle">Admin-Bereich.</div>
+
+<div class="welcome-banner">
+    <div>
+        <h2>Hallo, @name!</h2>
+        <p>@email</p>
+    </div>
+    <span class="welcome-badge">Admin</span>
+</div>
+
+<div class="section-card">
+    <div class="section-card-title">Benutzerverwaltung</div>
+    <p style="font-size:13px; color:var(--gray-600);">Hier verwaltest du bald alle Benutzer des Systems.</p>
+</div>
