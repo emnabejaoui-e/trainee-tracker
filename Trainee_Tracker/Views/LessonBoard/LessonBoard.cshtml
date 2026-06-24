@@ -1,0 +1,159 @@
+@using Trainee_Tracker.Models
+
+@model IEnumerable<Trainee_Tracker.Models.LessonAssignment>
+
+@{
+    ViewData ["Title"] = "Lesson Board";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/lessonBoard_syle.css" />    
+
+<main class="board">
+
+    @* Open-Spalte *@
+    <div class="column" id="open">
+        <h2>Open<span class="card-count">@Model.Count(l => l.Status == LessonAssignmentStatus.Open)</span></h2>
+        @foreach(var assignment in Model.Where(l => l.Status == LessonAssignmentStatus.Open))
+        {
+            <div class="card" data-id="@assignment.Id">
+                <div class="card-header">
+                    <h3 class="card-title">@assignment.Lesson.Title</h3>
+                    <span class="card-duartion-badge">@assignment.Lesson.Effort Day(s)</span>
+                </div>
+
+                <a href="@assignment.Lesson.URL" class="card-link">external card-link</a>
+                <div class="card-actions">
+                    <button class="btn btn-status" data-target="started" data-next-target="finished" data-label="finish" data-next-label="">start</button>
+                </div>
+            </div>
+        }
+    </div>
+
+    @* Started-Spalte *@
+    <div class="column" id="started">
+        <h2>Started<span class="card-count">@Model.Count(l => l.Status == LessonAssignmentStatus.Started)</span></h2>
+        @foreach(var assignment in Model.Where(l => l.Status == LessonAssignmentStatus.Started))
+        {
+            <div class="card" data-id="@assignment.Id">
+                <div class="card-header">
+                    <h3 class="card-title">@assignment.Lesson.Title</h3>
+                    <span class="card-duartion-badge">@assignment.Lesson.Effort Day(s)</span>
+                </div>
+
+                <a href="@assignment.Lesson.URL" class="card-link">external card-link</a>
+                <div class="card-actions">
+                    <button class="btn btn-status" data-target="finished" data-next-target="" data-label="" data-next-label="">finish</button>
+                </div>
+            </div>
+        }
+    </div>
+
+    @* Finished-Spalte *@
+    <div class="column" id="finished">
+        <h2>Finished<span class="card-count">@Model.Count(l => l.Status == LessonAssignmentStatus.Finished)</span></h2>
+        @foreach(var assignment in Model.Where(l => l.Status == LessonAssignmentStatus.Finished))
+        {
+            <div class="card" data-id="@assignment.Id">
+                <div class="card-header">
+                    <h3 class="card-title">@assignment.Lesson.Title</h3>
+                    <span class="card-duartion-badge">@assignment.Lesson.Effort Day(s)</span>
+                </div>
+
+                <a href="@assignment.Lesson.URL" class="card-link">external card-link</a>
+            </div>
+        }
+    </div>
+
+    @* Accepted-Spalte *@
+    <div class="column" id="accepted">
+        <h2>Accepted<span class="card-count">@Model.Count(l => l.Status == LessonAssignmentStatus.Accepted)</span></h2>
+        @foreach(var assignment in Model.Where(l => l.Status == LessonAssignmentStatus.Accepted))
+        {
+            <div class="card" data-id="@assignment.Id">
+                <div class="card-header">
+                    <h3 class="card-title">@assignment.Lesson.Title</h3>
+                    <span class="card-duartion-badge">@assignment.Lesson.Effort Day(s)</span>
+                </div>
+
+                <a href="@assignment.Lesson.URL" class="card-link">external card-link</a>
+                <div class="card-actions">
+                    <button class="btn btn-status" data-target="rated" data-next-target="" data-label="" data-next-label="">rate</button>
+                </div>
+            </div>
+        }
+    </div>
+
+    @* Rejected-Spalte *@
+    <div class="column" id="rejected">
+        <h2>Rejected<span class="card-count">@Model.Count(l => l.Status == LessonAssignmentStatus.Rejected)</span></h2>
+        @foreach(var assignment in Model.Where(l => l.Status == LessonAssignmentStatus.Rejected))
+        {
+            <div class="card" data-id="@assignment.Id">
+                <div class="card-header">
+                    <h3 class="card-title">@assignment.Lesson.Title</h3>
+                    <span class="card-duartion-badge">@assignment.Lesson.Effort Day(s)</span>
+                </div>
+
+                <a href="@assignment.Lesson.URL" class="card-link">external card-link</a>
+                <div class="card-actions">
+                    <button class="btn btn-status" data-target="started" data-next-target="finished" data-label="finish" data-next-label="">restart</button>
+                </div>
+            </div>
+        }
+    </div>
+
+    @* Rated-Spalte *@
+    <div class="column" id="rated">
+        <h2>Rated<span class="card-count">@Model.Count(l => l.Status == LessonAssignmentStatus.Rated)</span></h2>
+        @foreach(var assignment in Model.Where(l => l.Status == LessonAssignmentStatus.Rated))
+        {
+            <div class="card" data-id="@assignment.Id">
+                <div class="card-header">
+                    <h3 class="card-title">@assignment.Lesson.Title</h3>
+                    <span class="card-duartion-badge">@assignment.Lesson.Effort Day(s)</span>
+                </div>
+
+                <a href="@assignment.Lesson.URL" class="card-link">external card-link</a>
+            </div>
+        }
+    </div>
+</main>
+
+
+@* Java-Script-Logik weil noch mit Dummy-Daten gearbeitet wird*@
+@*hier müsste dann eigentlich das Repository eingebunden werden *@
+@section Scripts{
+    <script>
+    document.addEventListener('click', function(e){
+        if(e.target.classList.contains('btn-status')) {
+            const btn = e.target;
+            const card= btn.closest('.card');
+            const targetId = btn.getAttribute('data-target');
+            const targetColumn = document.getElementById(targetId);
+
+            if(card && targetColumn){
+                targetColumn.appendChild(card);
+                
+                const nextLabel = btn.getAttribute('data-label');
+                if(nextLabel == ""){
+                    btn.style.display = 'none';
+                }else{
+                    btn.textContent = nextLabel;
+                    btn.setAttribute('data-target', btn.getAttribute('data-next-target'));
+                    btn.setAttribute('data-label', btn.getAttribute('data-next-label'));
+                }
+
+                updateCounts();
+            }
+        }
+    });
+
+    function updateCounts(){
+        document.querySelectorAll('.column').forEach(column => {
+            const count = column.querySelectorAll('.card').length;
+            column.querySelector('.card-count').textContent = count;
+        });
+    }
+  </script>
+}
