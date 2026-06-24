@@ -5,6 +5,11 @@ namespace Trainee_Tracker.Controllers;
 
 public class MentorController : Controller
 {
+    public IActionResult Index()
+    {
+        return View();
+    }
+    
     /// <summary>
     ///  Assigns a Mentor to a trainee.
     /// </summary>
