@@ -131,3 +131,20 @@ body {
 
 .user-profile:hover .user-dropdown { display: block; }
 .user-dropdown:hover { display: block; }
+
+.section-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--licorice);
+    margin-bottom: 8px;
+}
+
+.input-validation-error {
+    border: 1px red solid;
+    margin-top: 1px;
+}
+
+.field-validation-error {
+    color: red;
+    font-size: smaller;
+}
