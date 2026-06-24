@@ -1,7 +1,12 @@
+using Trainee_Tracker.Data.LessonAssignments;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//registrieren von StaticLessonAssignmentRepository 
+builder.Services.AddScoped<ILessonAssignmentRepository, StaticLessonAssignemtRepository>();
 
 var app = builder.Build();
 
