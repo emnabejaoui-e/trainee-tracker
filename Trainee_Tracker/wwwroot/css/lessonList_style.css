@@ -1,0 +1,114 @@
+/*colors*/
+:root {
+  --licorice: #141210;
+  --white: #FFFFFF;
+  --gray-100: #F5F4F2;
+  --gray-200: #E8E6E2;
+  --gray-400: #9A9690;
+  --gray-600: #5C5854;
+  --pink-light: #FFE6EC;
+  --success: #1D9E75;
+  --warning: #BA7517;
+  --danger: #E24B4A;
+  --pink: #FF0844;
+  --navy: #253858;
+}
+
+.main-container {
+    background-color: var(--white);
+    border-radius: 24px;
+    padding: 40px;
+    width: calc(100% - 40px);
+    max-width: 100%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    margin: 20px;
+}
+
+.page-title {
+    font-size: 3.0rem;
+    font-weight: 700;
+    color: var(--licorice);
+    margin-bottom: 20px;
+}
+
+.lesson-subtitle {
+  color: var(--gray-600);
+  font-size: 15px;
+  margin-bottom: 15px;
+}
+
+.progress-bar {
+  height: 4px;
+  background: var(--gray-200);
+  border-radius: 2px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  background: var(--pink);
+  height: 100%;
+  border-radius: 2px;
+}
+
+.lesson-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--white);
+  border-radius: 8px;
+  transition: background .15s;
+}
+
+.lesson-item:last-child{ border-bottom: none;}
+.lesson-item:hover{ background: var(--gray-200);}
+.lesson-item.active{border: 1px solid var(--pink);}
+
+.lesson-num{
+  color: var(--gray-400);
+  min-width: 24px;
+  font-size: 17px;
+}
+
+.lesson-title{
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--licorice);
+  flex: 1;
+}
+
+.lstatus{
+  font-size: 14px;
+  font-weight: 600;
+  padding: 3px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.ls-done {background: var(--success-light); color: #085041;}
+.ls-active {background: var(--pink-light); color: #72243E;}
+.ls-todo {background: var(--blue-light); color: #0F3D6E; border: 1px solid var(--white);}
+.ls-rejected {background: var(--danger-light); color: #7A1F1F;}
+.ls-skipped {background: var(--warning-light); color: #7A4A0A;}
+.ls-rated {background: var(--blue-light); color: #0F3D6E;}
+
+.btn-go-to-card{
+  margin-left: auto;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 5px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--pink);
+  color: var(--pink);
+  background: transparent;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background .15s, color .25s;
+}
+
+.btn-go-to-card:hover{
+  background: var(--pink);
+  color:var(--licorice);
+}
