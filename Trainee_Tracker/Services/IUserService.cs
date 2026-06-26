@@ -24,5 +24,8 @@ namespace Trainee_Tracker.Services
         LoginResult ValidateUserCredentials(string email, string password);
 
         User GetUserByEmail(string email);
+
+        // Code-Owner: Andrej Basara
+        User GetById(int id);
     }
 }
