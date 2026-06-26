@@ -1,4 +1,5 @@
-// Code Owner: Jelena Cosic 
+// Code Owner: Jelena Cosic
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

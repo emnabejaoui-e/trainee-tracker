@@ -19,5 +19,8 @@ public class AppDbContext : DbContext
             .HasValue<Trainee>("Trainee")
             .HasValue<Mentor>("Mentor")
             .HasValue<Admin>("Admin");
+
+        modelBuilder.Entity<Mentor>()
+            .Ignore(m => m.Curriculum);
     }
 }
