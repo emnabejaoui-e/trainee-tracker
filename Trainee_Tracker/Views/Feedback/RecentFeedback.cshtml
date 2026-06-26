@@ -1,0 +1,40 @@
+@{
+    ViewData["Title"] = "Recent Feedback";
+}
+
+<h1 class="section-title">Last week</h1>
+
+<div class="activity-feed">
+    @foreach(LessonFeedback fb in @ViewBag.feedbacks) {
+    <article>
+        <header class="feedback-card-header">
+            <span class="float-left">
+                <author><i>Missing Name</i></author> <span>rated</span>
+            </span>
+
+            <span class="float-right">
+                <button class="btn">Edit</button>
+                <button class="btn btn-secondary">Delete</button>
+            </span>
+        </header>
+
+        <h2>card X</h2>
+
+        <dl>
+            <dt>Difficulty</dt>
+            <dd class="rating" aria-label="@fb.Difficulty / 5 stars">@for(var i = 0; i < fb.Difficulty; i++) {<span>★ </span>} @for(var i = fb.Difficulty; i < 5; i++) {<span>☆ </span>}</dd>
+
+            <dt>Previous Knowledge</dt>
+            <dd>@fb.PriorKnowledge</dd>
+
+            <dt>Actual effort</dt>
+            <dd>@fb.ActualEffort days</dd>
+
+            <dt>Comment</dt>
+            <dd>
+                @fb.Comment
+            </dd>
+        </dl>
+    </article>
+    }
+</div>
