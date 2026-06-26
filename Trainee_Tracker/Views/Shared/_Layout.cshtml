@@ -25,13 +25,7 @@
     {
         await Html.RenderPartialAsync("_NavbarTrainee");
     }
-    else
-    {
-    @* Fallback: Hier eure Rolle eingeben mit der ihr euere programm testet,
-     z.b  in diesen fall Trainee
-     Da Login noch nicht gibt, der die Rolle entscheidet *@
-    await Html.RenderPartialAsync("_NavbarAdmin");
-    }
+
 
     <div class="container">
         <main role="main" class="pb-3">
