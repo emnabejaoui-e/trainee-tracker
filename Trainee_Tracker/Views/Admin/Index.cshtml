@@ -1,14 +1,12 @@
 @* Code Owner: Jelena Cosic *@
 @{
     ViewData["Title"] = "Dashboard";
-    var name  = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? "Mentor";
+    var name  = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? "Admin";
     var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "";
 }
-
-@await Html.PartialAsync("_NavbarMentor")
 
 <div class="container">
     <h2>Hallo, @name!</h2>
     <p>@email</p>
-    <p>Hier siehst du bald eine Übersicht deiner zugewiesenen Trainees.</p>
+    <p>Hier verwaltest du bald alle Benutzer des Systems.</p>
 </div>
