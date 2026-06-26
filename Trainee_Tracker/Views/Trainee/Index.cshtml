@@ -5,18 +5,10 @@
     var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "";
 }
 
-<div class="page-title">Dashboard</div>
-<div class="page-subtitle">Willkommen zurück, @name.</div>
+@await Html.PartialAsync("_NavbarTrainee")
 
-<div class="welcome-banner">
-    <div>
-        <h2>Hallo, @name!</h2>
-        <p>@email</p>
-    </div>
-    <span class="welcome-badge">Trainee</span>
-</div>
-
-<div class="section-card">
-    <div class="section-card-title">Dein Fortschritt</div>
+<div class="container">
+    <h2>Hallo, @name!</h2>
+    <p>@email</p>
     <p>Hier siehst du bald deinen aktuellen Lernfortschritt.</p>
 </div>
