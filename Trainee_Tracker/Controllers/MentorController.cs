@@ -1,10 +1,19 @@
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Trainee_Tracker.Controllers;
 
+[Authorize(Roles = "Mentor")]
 public class MentorController : Controller
 {
+    /// <summary>
+    /// Displays the Mentor dashboard.
+    /// Only accessible by users with the Mentor role.
+    /// </summary>
+    /// <returns>The Mentor index view.</returns>
+    public IActionResult Index() => View();
+
     /// <summary>
     ///  Assigns a Mentor to a trainee.
     /// </summary>
@@ -15,7 +24,7 @@ public class MentorController : Controller
     {
         return StatusCode(501, "Not implemented!");
     }
-    
+
     /// <summary>
     /// Changes the order of lessons for a particular trainee.
     /// </summary>
@@ -26,5 +35,4 @@ public class MentorController : Controller
     {
         return StatusCode(501, "Not implemented!");
     }
-    
 }
