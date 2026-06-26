@@ -7,23 +7,21 @@
 <h1 class="section-title">Lehrplan importieren</h1>
 
 <form method="post" enctype="multipart/form-data">
-    <label>
-        <input name="cur" type="radio">
-        makandra Curriculum
-    </label>
-			
-    <label>
-        <input type="radio" name="cur">
-        DevOps Curriculum
-    </label>
+    @foreach(String curriculumName in @ViewBag.curriculumNames)
+    {
+        <label>
+            <input name="cur" type="radio" value="@curriculumName">
+            @curriculumName
+        </label>        
+    }
 
     <br>
 
     <label for="curriculum-file">
         <input id="curriculum-file" type="file" accept="application/json">
     </label>
-
-    <button class="btn" type="submit">Hochladen</button>
     
+    <button class="btn" type="submit">Hochladen</button>
+
     <span asp-validation-for="FileName"></span>
 </form>
