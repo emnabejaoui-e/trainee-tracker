@@ -97,6 +97,7 @@
   text-decoration: underline;
 }
 
+
 .card-duration-label {
   font-size: 13px;
   color: var(--grey3);
@@ -120,6 +121,9 @@
 .card-actions {
   display: flex;
   gap: 8px;
+  /* für zweiten Card button */
+  margin-top: auto;
+  justify-content: center;
 }
 
 .btn {
@@ -149,4 +153,19 @@
   border: 1px solid var(--pink);
   border-radius: 12px;
   margin-left: 6px;
+}
+
+.btn-see-card{
+  background-color: var(--white);
+  color: var(--licorice);
+  padding: 6px 14px;
+  border: 1px solid var(--pink);
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer; 
+}
+
+.btn-see-card:hover {
+  background-color: var(--pink);
 }

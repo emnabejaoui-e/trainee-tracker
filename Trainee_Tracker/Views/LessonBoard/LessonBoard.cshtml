@@ -27,11 +27,12 @@
                     <h3 class="card-title">@assignment.Position - @assignment.Lesson.Title</h3>
                     <span class="card-duration-badge">@assignment.Lesson.Effort Day(s)</span>
                 </div>
-
-                <a href="@assignment.Lesson.URL" class="card-link">external card-link</a>
+                
                 <div class="card-actions">
+                    <a href="@assignment.Lesson.URL" class="btn btn-see-card" target="_blank">see card</a>
                     <button class="btn btn-status" data-target="started" data-next-target="finished" data-label="finish" data-next-label="">start</button>
                 </div>
+                
             </div>
         }
     </div>
