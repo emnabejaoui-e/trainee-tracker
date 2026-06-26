@@ -36,14 +36,14 @@
                     <span asp-validation-for="EndDate" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn-user-create-confirm" />
+                    <input asp-action="UserManagment" type="submit" value="Create" class="btn-user-create-confirm" />
                 </div>
             </form>
         </div>
     </div>
 
     <div>
-        <a asp-action="Index" class = "grey-link">Back to List</a>
+        <a asp-action="UserManagment" class = "grey-link">Back to List</a>
     </div>
 </div>
 

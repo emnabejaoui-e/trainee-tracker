@@ -20,7 +20,7 @@ namespace Trainee_Tracker.Controllers
         }
 
         // Code-Owner: Andrej Basara
-        public IActionResult Index()
+        public IActionResult UserManagment()
         {
             var users = _userService.GetAllUsers();
             return View(users);
