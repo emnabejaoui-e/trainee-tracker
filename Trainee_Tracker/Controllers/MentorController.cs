@@ -35,6 +35,10 @@ public class MentorController : Controller
     [HttpGet]
     public IActionResult ImportCurriculum()
     {
+        var curriculumNames = new List<String>();
+        curriculumNames.Add("makandra Curriculum");
+        curriculumNames.Add("makandra DevOps Curriculum");
+        ViewBag.curriculumNames = curriculumNames;
         return View(null);
     }
 
