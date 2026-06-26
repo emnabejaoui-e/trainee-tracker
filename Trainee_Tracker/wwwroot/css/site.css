@@ -39,8 +39,15 @@ body {
     --gray-600: #5C5854;
     --pink-light: #FFE6EC;
     --success: #1D9E75;
+    --success-light: #E1F5EE;
+    --blue: #185FA5;
+    --blue-light:#E6F1FB;
+    --navy: #253858;
     --warning: #BA7517;
+    --warning-light: #FEF3C7;
+    --danger-light:#FCEBEB;
     --danger: #E24B4A;
+    
 }
 
 .page-header {
