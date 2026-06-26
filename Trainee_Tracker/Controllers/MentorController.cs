@@ -1,6 +1,5 @@
 using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
-using Trainee_Tracker.Models;
 
 namespace Trainee_Tracker.Controllers;
 
@@ -55,35 +54,5 @@ public class MentorController : Controller
             return RedirectToAction("Index", "Mentor");
         }
         return View(file);
-    }
-    
-    public IActionResult GatherRecentFeedback()
-    {
-        var feedbacks = new List<LessonFeedback>();
-        
-        feedbacks.Add(new LessonFeedback()
-        {
-            Difficulty = 4,
-            ActualEffort = 3,
-            Comment = "Very good",
-            PriorKnowledge = "None"
-        });
-        feedbacks.Add(new LessonFeedback()
-        {
-            Difficulty = 1,
-            ActualEffort = 0.5,
-            Comment = "Way to easy",
-            PriorKnowledge = "Everything"
-        });
-        feedbacks.Add(new LessonFeedback()
-        {
-            Difficulty = 3,
-            ActualEffort = 2,
-            Comment = "Was ok",
-            PriorKnowledge = "Javascrip basics"
-        });
-
-        ViewBag.feedbacks = feedbacks;
-        return View();
     }
 }
