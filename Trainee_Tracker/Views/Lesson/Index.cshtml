@@ -1,0 +1,65 @@
+@using Trainee_Tracker.Models
+
+@* Hauptverantwortlich: Julia *@
+@model IEnumerable<Trainee_Tracker.Models.LessonAssignment>
+
+@{
+    ViewData["Title"] = "Lesson";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var total = Model.Count();
+    var done = Model.Count(la => la.Status == LessonAssignmentStatus.Finished || la.Status == LessonAssignmentStatus.Accepted || la.Status == LessonAssignmentStatus.Rated);
+    var progress = total > 0 ? (int) ((double)done / total * 100) : 0;
+}
+
+<link rel="stylesheet" href="~/css/lessonList_style.css" />
+<style>
+    .container{
+        max-width: 100%;
+        padding: 0;
+    }
+</style>
+
+<div class="main-container">
+    <div class="page-title">Lessons</div>
+    <div class="lesson-subtitle">Your learning path - @done of @total completed</div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" style="width: @progress%"></div>
+    </div>
+
+    @foreach(var assignment in Model.OrderBy(l => l.Position))
+    {
+      var isActive = assignment.Status == LessonAssignmentStatus.Started;
+
+      <div class="lesson-item @(isActive ? "active" : "")">
+        <span class="lesson-num">@assignment.Position.ToString("D2")</span>
+        <span class="lesson-title">
+            <a href="@assignment.Lesson.URL" style="text-decoration: none; color: inherit;">@assignment.Lesson.Title</a>
+        </span>
+        <span class="lstatus @StatusCssClass(assignment.Status)">@StatusLabel(assignment.Status)</span>
+        <a href="@assignment.Lesson.URL" class="btn-go-to-card" target="_blank">Go to Card</a>
+      </div>  
+    }
+
+</div>
+
+@functions{
+    string StatusCssClass(LessonAssignmentStatus status) => status switch
+    {
+        LessonAssignmentStatus.Finished or LessonAssignmentStatus.Accepted or LessonAssignmentStatus.Rated => "ls-done",
+        LessonAssignmentStatus.Started => (string)"ls-active",
+        LessonAssignmentStatus.Rejected => (string)"ls-rejected",
+        LessonAssignmentStatus.Skipped => (string)"ls-skipped",
+        LessonAssignmentStatus.Open => (string)"ls-todo"
+    };
+
+    string StatusLabel(LessonAssignmentStatus status) => status switch{
+        LessonAssignmentStatus.Finished => (string)"✓ done",
+        LessonAssignmentStatus.Accepted => (string)"✓ done",
+        LessonAssignmentStatus.Rated => (string)"✓ done",
+        LessonAssignmentStatus.Rejected => (string)"✗ rejected",
+        LessonAssignmentStatus.Skipped => (string)"⊘ skipped",
+        LessonAssignmentStatus.Open => (string)"to do",
+        LessonAssignmentStatus.Started => (string)"▶ active"
+    };
+}

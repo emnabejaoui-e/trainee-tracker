@@ -1,4 +1,6 @@
+// Code Owner: Jelena Cosic
 using System.Collections.Generic;
+using System.Net.Mime;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +17,7 @@ public class MentorController : Controller
     public IActionResult Index() => View();
 
     /// <summary>
-    ///  Assigns a Mentor to a trainee.
+    /// Assigns a Mentor to a trainee.
     /// </summary>
     /// <param name="mentorId">The numeric id of the Mentor to assign.</param>
     /// <param name="traineeId">The numeric id of the Trainee to assign.</param>
@@ -34,5 +36,33 @@ public class MentorController : Controller
     public IActionResult UpdateLessonOrder(int traineeId, IList<int> order)
     {
         return StatusCode(501, "Not implemented!");
+    }
+
+    [HttpGet]
+    public IActionResult ImportCurriculum()
+    {
+        var curriculumNames = new List<String>();
+        curriculumNames.Add("makandra Curriculum");
+        curriculumNames.Add("makandra DevOps Curriculum");
+        ViewBag.curriculumNames = curriculumNames;
+        return View(null);
+    }
+
+    [HttpPost]
+    public IActionResult ImportCurriculum(IFormFile file)
+    {
+        if (file == null)
+            ModelState.AddModelError("FileName", "No file was selected.");
+        else
+        {
+            ContentType fileContentType = new ContentType(file.ContentType);
+            if (fileContentType.MediaType != "application/json")
+                ModelState.AddModelError("FileName", "This file is not a JSON file.");
+        }
+        if (ModelState.IsValid)
+        {
+            return RedirectToAction("Index", "Mentor");
+        }
+        return View(file);
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Trainee_Tracker.Data;
+using Trainee_Tracker.Data.LessonAssignments;
 using Trainee_Tracker.Models;
 using Trainee_Tracker.Repositories;
 using Trainee_Tracker.Services;
@@ -16,6 +17,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<DbContext, AppDbContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ILessonAssignmentRepository, StaticLessonAssignemtRepository>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -53,13 +55,12 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.EnsureCreated();
-
     if (!db.Users.Any())
     {
         db.Users.AddRange(
             new Trainee { Name = "Jelena3 Trainee", Email = "jelenacosic3@makandra.de", HashedPassword = "12345", Closed = false },
-            new Mentor  { Name = "Jelena2 Mentor",    Email = "jelenacosic2@makandra.de",   HashedPassword = "12345", Closed = false, Curriculum = null! },
-            new Admin   { Name = "Jelena3 Admin",    Email = "jelenacosic1@makandra.de",  HashedPassword = "12345", Closed = false }
+            new Mentor  { Name = "Jelena2 Mentor",  Email = "jelenacosic2@makandra.de", HashedPassword = "12345", Closed = false, Curriculum = null! },
+            new Admin   { Name = "Jelena3 Admin",   Email = "jelenacosic1@makandra.de", HashedPassword = "12345", Closed = false }
         );
         db.SaveChanges();
     }
