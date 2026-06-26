@@ -8,11 +8,13 @@ public class LessonController : Controller
 {
     private readonly ILessonAssignmentRepository _repo;
 
+    // Julia
     public LessonController(ILessonAssignmentRepository repository)
     {
         _repo = repository;
     }
 
+    // Julia
     public IActionResult Index()
     {
         var lessons = _repo.GetAllLessonAssignments();
