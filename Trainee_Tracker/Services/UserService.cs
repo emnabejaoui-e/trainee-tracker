@@ -80,6 +80,12 @@ namespace Trainee_Tracker.Services
             return _userRepository.GetUserByEmail(email);
         }
 
+        // Code-Owner: Andrej Basara
+        public User GetById(int id)
+        {
+            return _userRepository.GetById(id);
+        }
+
         private static string HashPassword(string rawPassword)
         {
 
