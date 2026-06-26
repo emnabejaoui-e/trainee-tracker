@@ -2,18 +2,24 @@ using Trainee_Tracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Trainee_Tracker.Repositories;
 using Trainee_Tracker.Services;
+using Trainee_Tracker.Data.LessonAssignments;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+<<<<<<< Trainee_Tracker/Program.cs
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ILessonAssignmentRepository, StaticLessonAssignemtRepository>();
 
 // Code-Owner: Andrej Basara
 builder.Services.AddDbContext<UserContext>(options =>
                 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
 
 var app = builder.Build();
 

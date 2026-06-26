@@ -1,10 +1,15 @@
-using System.Collections.Generic;
+using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Trainee_Tracker.Controllers;
 
 public class MentorController : Controller
 {
+    public IActionResult Index()
+    {
+        return View();
+    }
+    
     /// <summary>
     ///  Assigns a Mentor to a trainee.
     /// </summary>
@@ -26,5 +31,32 @@ public class MentorController : Controller
     {
         return StatusCode(501, "Not implemented!");
     }
-    
+
+    [HttpGet]
+    public IActionResult ImportCurriculum()
+    {
+        var curriculumNames = new List<String>();
+        curriculumNames.Add("makandra Curriculum");
+        curriculumNames.Add("makandra DevOps Curriculum");
+        ViewBag.curriculumNames = curriculumNames;
+        return View(null);
+    }
+
+    [HttpPost]
+    public IActionResult ImportCurriculum(IFormFile file)
+    {
+        if (file == null)
+            ModelState.AddModelError("FileName", "No file was selected.");
+        else
+        {
+            ContentType fileContentType = new ContentType(file.ContentType);
+            if (fileContentType.MediaType != "application/json")
+                ModelState.AddModelError("FileName", "This file is not a JSON file.");
+        }
+        if (ModelState.IsValid)
+        {
+            return RedirectToAction("Index", "Mentor");
+        }
+        return View(file);
+    }
 }
