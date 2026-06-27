@@ -1,6 +1,22 @@
-@* Controller-Namen usw müssen noch angepasst werden *@
-
-<nav class="navbar">
-    <a class="nav-link" asp-controller="User" asp-action="Index">Nutzerverwaltung</a>
-    <a class="nav-link" asp-controller="Report" asp-action="Index">Berichte</a>
-</nav>
+<header class="page-header">
+  <div style="display: flex; align-items: center; gap: 50px;">
+    <div class="brand">
+      <img src="~/images/makandra_word_white_color_rgb.png" alt="makandra" style="height: 15px; margin-top: -8px;">
+      <span>cards</span>
+      <span style="color:var(--gray-400);font-weight:300;padding-left: 30px;">|</span>
+    </div>
+    <div class="categories">
+      <a asp-controller="Home" asp-action="Index">HOME</a>
+      <a asp-controller="Admin" asp-action="UserManagment">USER-MANAGMENT</a>
+      <a asp-controller="Report" asp-action="Index">BERICHTE</a>
+    </div>
+  </div>
+  <div class="user-profile">
+    <span class="role">ADMIN</span>
+    <span class="email">admin@makandra.de</span>
+    <div class="user-dropdown">
+      <p><a asp-controller="Profile" asp-action="Index">My Profile</a></p>
+      <p><a asp-controller="Account" asp-action="Logout">Log out</a></p>
+    </div>
+  </div>
+</header>

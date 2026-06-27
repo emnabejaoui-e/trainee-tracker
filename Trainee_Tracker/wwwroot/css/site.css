@@ -29,7 +29,6 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
-/* FARBEN */
 :root {
     --licorice: #141210;
     --pink: #FF0844;
@@ -40,11 +39,17 @@ body {
     --gray-600: #5C5854;
     --pink-light: #FFE6EC;
     --success: #1D9E75;
+    --success-light: #E1F5EE;
+    --blue: #185FA5;
+    --blue-light:#E6F1FB;
+    --navy: #253858;
     --warning: #BA7517;
+    --warning-light: #FEF3C7;
+    --danger-light:#FCEBEB;
     --danger: #E24B4A;
+    
 }
 
-/* NAVBAR */
 .page-header {
     background: var(--licorice);
     padding: 13px 40px;
@@ -73,20 +78,22 @@ body {
     font-family: 'League Spartan', monospace;
     font-size: 16px;
     letter-spacing: 0.8px;
+    text-decoration: none;
+    padding-right: 30px;
 }
 
 .categories a:hover {
     text-decoration: underline;
     text-decoration-color: #FF0844;
     text-decoration-thickness: 3px;
-    text-underline-offset: 1.35em;
+    text-underline-offset: 1.42em;
 }
 
 .nav-selected {
     text-decoration: underline;
     text-decoration-color: #FF0844;
     text-decoration-thickness: 3px;
-    text-underline-offset: 1.35em;
+    text-underline-offset: 1.42em;
 }
 
 .user-profile {
@@ -129,5 +136,76 @@ body {
     padding: 1rem 2rem;
 }
 
+.user-table-main-container {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 40px;
+    width: calc(100% - 40px);
+    max-width: calc(100% - 40px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    margin: 60px auto 0 auto;
+    display: block;
+}
+
+.user-create-forum-container {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 40px;
+    width: 500px;
+    max-width: calc(100% - 40px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    margin: 60px auto 0 auto;
+    display: block;
+}
+
+.grey-link {
+    color: var(--gray-600);
+}
+
+.btn-user-create {
+    display: inline-block;
+    padding: 5px 15px;
+    background-color: var(--pink);
+    color: var(--white);
+    text-decoration: none;
+    text-align: center;
+    border-radius: 10px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    cursor: pointer;
+
+}
+
+.btn-user-create-confirm {
+    display: inline-block;
+    padding: 5px 15px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    background-color: var(--pink);
+    color: var(--white);
+    text-decoration: none;
+    text-align: center;
+    border-radius: 10px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    cursor: pointer;
+
+}
+
 .user-profile:hover .user-dropdown { display: block; }
 .user-dropdown:hover { display: block; }
+
+.section-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--licorice);
+    margin-bottom: 8px;
+}
+
+.input-validation-error {
+    border: 1px red solid;
+    margin-top: 1px;
+}
+
+.field-validation-error {
+    color: red;
+    font-size: smaller;
+}
