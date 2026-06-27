@@ -33,7 +33,7 @@ public class LoginController : Controller
     {
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
         {
-            ViewBag.ErrorMessage = "Bitte E-Mail und Passwort eingeben.";
+            ViewBag.ErrorMessage = "Please enter your email address and password.";
             return View();
         }
 
@@ -47,16 +47,16 @@ public class LoginController : Controller
                 return RedirectByRole();
 
             case LoginResult.AccountClosed:
-                ViewBag.ErrorMessage = "Ihr Konto wurde geschlossen.";
+                ViewBag.ErrorMessage = "Your account has been closed.";
                 return View();
 
             case LoginResult.InvalidCredentials:
-                ViewBag.ErrorMessage = "E-Mail oder Passwort ungültig.";
+                ViewBag.ErrorMessage = "Invalid email address or password.";
                 return View();
 
             default:
                 Debug.Assert(false, $"Unhandled LoginResult value: {result}");
-                ViewBag.ErrorMessage = "E-Mail oder Passwort ungültig.";
+                ViewBag.ErrorMessage = "Invalid email address or password.";
                 return View();
         }
     }
