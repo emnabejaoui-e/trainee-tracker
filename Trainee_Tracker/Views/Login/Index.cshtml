@@ -1,0 +1,251 @@
+@* Code Owner: Jelena Cosic *@
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>makandra – Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700&family=Open+Sans:wght@300..800&family=Source+Code+Pro&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --licorice: #141210;
+            --pink: #FF0844;
+            --peach: #FFB199;
+            --white: #FFFFFF;
+            --grey1: #DBDBDB;
+            --grey2: #AFAFAF;
+            --grey3: #626262;
+            --danger: #E24B4A;
+            --danger-light: #FCEBEB;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: #F5F4F2;
+            color: var(--licorice);
+            font-size: 14px;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .login-header {
+            background: var(--licorice);
+            border-bottom: 3px solid var(--pink);
+            height: 56px;
+            display: flex;
+            align-items: center;
+            padding: 0 36px;
+            flex-shrink: 0;
+        }
+
+        .login-header img {
+            height: 22px;
+        }
+
+        .header-divider {
+            width: 1px;
+            height: 22px;
+            background: rgba(255,255,255,.2);
+            margin: 0 14px;
+        }
+
+        .header-label {
+            font-family: 'League Spartan', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 13px;
+            color: var(--white);
+            letter-spacing: 0.12em;
+        }
+
+        .login-main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 16px;
+            background: #F5F4F2;
+        }
+
+        .login-box {
+            background: var(--white);
+            border-radius: 12px;
+            width: 700px;
+            max-width: 90vw;
+            box-shadow: 0 8px 40px rgba(0,0,0,.12);
+            overflow: hidden;
+        }
+
+        .login-box-inner { padding: 56px 56px 48px; }
+
+        .login-headline {
+            font-family: 'League Spartan', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 24px;
+            letter-spacing: 0.06em;
+            color: var(--licorice);
+            margin-bottom: 6px;
+        }
+
+        .login-sub {
+            font-size: 14px;
+            color: var(--pink);
+            margin-bottom: 32px;
+        }
+
+        .alert-error {
+            background: var(--danger-light);
+            border-left: 3px solid var(--danger);
+            color: #7A1F1F;
+            border-radius: 6px;
+            padding: 11px 14px;
+            font-size: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+        }
+
+        .alert-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--danger);
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .form-group { margin-bottom: 20px; }
+
+        .form-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--grey3);
+            margin-bottom: 6px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .form-input {
+            width: 100%;
+            border: 1px solid var(--grey1);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-family: 'Open Sans', sans-serif;
+            color: var(--licorice);
+            background: var(--white);
+            outline: none;
+            transition: border-color .15s;
+        }
+
+        .form-input:focus { border-color: var(--pink); }
+
+        .field-error {
+            font-size: 11px;
+            color: var(--danger);
+            margin-top: 4px;
+            display: none;
+        }
+
+        .field-error.show { display: block; }
+
+        .btn-login {
+            background: var(--pink);
+            color: var(--white);
+            border: none;
+            border-radius: 6px;
+            padding: 11px 28px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'League Spartan', sans-serif;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-top: 8px;
+            transition: background .15s;
+            text-decoration: underline;
+        }
+
+        .btn-login:hover { background: #D9063A; }
+
+        .login-footer {
+            background: #F5F4F2;
+            border-top: 1px solid var(--grey1);
+            padding: 16px 48px;
+            font-size: 11px;
+            color: var(--grey2);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="login-header">
+        <img src="~/images/makandra_word_white_color_rgb.png" alt="makandra">
+        <div class="header-divider"></div>
+        <span class="header-label">Cards</span>
+    </header>
+
+    <main class="login-main">
+        <div class="login-box">
+            <div class="login-box-inner">
+
+                <div class="login-headline">Sign In</div>
+                <div class="login-sub">Enter your credentials to continue</div>
+
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="alert-error">
+                        <span class="alert-dot"></span>
+                        <span>@ViewBag.ErrorMessage</span>
+                    </div>
+                }
+
+                <form method="post" action="/Login" id="login-form">
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address</label>
+                        <input class="form-input" type="email" id="email" name="email"
+                               placeholder="firstnamelastname@makandra.de"
+                               autocomplete="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <input class="form-input" type="password" id="password" name="password"
+                               placeholder="••••••••"
+                               autocomplete="current-password" required>
+                        <div class="field-error" id="pw-empty-error">Please enter your password.</div>
+                    </div>
+
+                    <button type="submit" class="btn-login">Sign In</button>
+                </form>
+
+            </div>
+            <div class="login-footer">
+                No account? Contact your admin.
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function (e) {
+            const pw = document.getElementById('password').value;
+            const pwErr = document.getElementById('pw-empty-error');
+            if (!pw) { e.preventDefault(); pwErr.classList.add('show'); }
+            else { pwErr.classList.remove('show'); }
+        });
+    </script>
+</body>
+</html>
