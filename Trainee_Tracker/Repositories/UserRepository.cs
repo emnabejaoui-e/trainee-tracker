@@ -8,9 +8,9 @@ namespace Trainee_Tracker.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly UserContext _context;
+        private readonly AppDbContext _context;
 
-        public UserRepository(UserContext context)
+        public UserRepository(AppDbContext context)
         {
             _context = context;
         }

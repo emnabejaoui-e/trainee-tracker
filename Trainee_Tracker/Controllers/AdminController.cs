@@ -55,7 +55,7 @@ public class AdminController : Controller
             EndDate = endDate
         };
         _userService.CreateTrainee(trainee, password);
-        return RedirectToAction("Index");
+        return RedirectToAction("UserManagment");
     }
 
     // Code-Owner: Andrej Basara
@@ -73,7 +73,7 @@ public class AdminController : Controller
             Email = email,
         };
         _userService.CreateMentor(mentor, password);
-        return RedirectToAction("Index");
+        return RedirectToAction("UserManagment");
     }
 
     // Code-Owner: Andrej Basara
