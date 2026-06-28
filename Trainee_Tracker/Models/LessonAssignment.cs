@@ -7,14 +7,20 @@ public class LessonAssignment
     public LessonAssignmentStatus Status {get; set;}
     public int Position {get; set;}
     public DateOnly ExpectedProcessingDate {get; set;}
+    public int TraineeId {get; set;}
+    public Trainee? Trainee {get; set;}
 
-    public LessonAssignment(int id, Lesson lesson, int position, DateOnly expectedProcessingDate)
+    public LessonAssignment(){}
+
+    public LessonAssignment(int id, Lesson lesson, int position, DateOnly expectedProcessingDate, Trainee trainee)
     {
         Id = id;
         Lesson = lesson;
         Status = LessonAssignmentStatus.Open;
         Position = position;
         ExpectedProcessingDate = expectedProcessingDate;
+        Trainee = trainee;
+        TraineeId = trainee.Id;
     }
 
     public void StartAssignment()
