@@ -1,4 +1,4 @@
-// Code Owner: Jelena Cosic 
+// Code Owner: Jelena Cosic
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +19,7 @@ public class LoginController : Controller
     }
 
     [HttpGet]
-    public IActionResult Index()
+    public IActionResult Login()
     {
         if (User.Identity?.IsAuthenticated == true)
             return RedirectByRole();
@@ -29,7 +29,7 @@ public class LoginController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Index(string email, string password)
+    public async Task<IActionResult> Login(string email, string password)
     {
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
         {
@@ -66,7 +66,7 @@ public class LoginController : Controller
     public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        return RedirectToAction("Index");
+        return RedirectToAction("Login");
     }
 
     private async Task SignInUser(User user)
