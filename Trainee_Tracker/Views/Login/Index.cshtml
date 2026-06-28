@@ -46,9 +46,7 @@
             flex-shrink: 0;
         }
 
-        .login-header img {
-            height: 22px;
-        }
+        .login-header img { height: 22px; }
 
         .header-divider {
             width: 1px;
@@ -211,7 +209,7 @@
                     </div>
                 }
 
-                <form method="post" action="/Login" id="login-form">
+                <form method="post" asp-controller="Login" asp-action="Login" id="login-form">
                     @Html.AntiForgeryToken()
 
                     <div class="form-group">

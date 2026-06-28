@@ -20,7 +20,7 @@ namespace Trainee_Tracker.Models
 
         public List<LessonAssignment> GetLessonsForWeek(int Week)
         {
-            // TODO LessonAssignment must return the Lesson, but they currently dont exists
+
             throw new NotImplementedException("GeLessonsForWeek in WeeklyPlan not implemented");
         }
     }
