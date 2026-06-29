@@ -63,7 +63,7 @@ using (var scope = app.Services.CreateScope())
         db.Users.AddRange(
             new Trainee { Name = "Jelena3 Trainee", Email = "jelenacosic3@makandra.de", HashedPassword = "12345", Closed = false },
             new Mentor  { Name = "Jelena2 Mentor",  Email = "jelenacosic2@makandra.de", HashedPassword = "12345", Closed = false, Curriculum = null! },
-            new Admin   { Name = "Admin 1",   Email = "admin1@makandra.de", HashedPassword = "12345", Closed = false }
+            new Admin   { Name = "Jelena1 Admin",   Email = "jelenacosic1@makandra.de", HashedPassword = "12345", Closed = false }
         );
         db.SaveChanges();
     }
