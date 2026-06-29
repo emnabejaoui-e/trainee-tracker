@@ -46,7 +46,7 @@ e2e-tests:
     - dotnet test
 
 deploy:
-  stage: build
+  stage: deploy
   image: quay.io/podman/stable
   tags:
     - sopro
