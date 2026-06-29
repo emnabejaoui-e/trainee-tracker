@@ -8,7 +8,7 @@ public class LessonAssignment
     public LessonAssignmentStatus Status {get; set;}
     public int Position {get; set;}
     public DateOnly ExpectedProcessingDate {get; set;}
-    public int TraineeId {get; init;}
+    public int TraineeId {get; set;}
     public Trainee? Trainee {get; set;}
 
     public LessonAssignment(){}

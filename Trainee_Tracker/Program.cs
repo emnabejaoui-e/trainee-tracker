@@ -17,7 +17,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<DbContext, AppDbContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<ILessonAssignmentRepository, LessonAssignmentRepository>();
+builder.Services.AddScoped<ILessonAssignmentRepository, StaticLessonAssignemtRepository>();
+
+// Code-Owner: Andrej Basara
+builder.Services.AddDbContext<UserContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
