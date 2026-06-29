@@ -16,10 +16,12 @@ namespace Trainee_Tracker.Controllers;
 public class AdminController : Controller
 {
     private readonly IUserService _userService;
+    private readonly IMentorService _mentorService;
 
-    public AdminController(IUserService userService)
+    public AdminController(IUserService userService, IMentorService mentorService)
     {
         _userService = userService;
+        _mentorService = mentorService;
     }
 
     /// <summary>
@@ -91,6 +93,21 @@ public class AdminController : Controller
         };
         _userService.CreateAdmin(admin, password);
         return RedirectToAction("UserManagment");
+    }
+
+    public IActionResult AssignMentor()
+    {
+        var users = _userService.GetAllUsers();
+        ViewBag.Trainees = users.OfType<Trainee>().Where(t => !t.Closed).ToList();
+        ViewBag.Mentors = users.OfType<Mentor>().Where(m => !m.Closed).ToList();
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult AssignMentor(int mentorID, int traineeId)
+    {
+        _mentorService.AssignTraineeToMentor(mentorID, traineeId);
+        return RedirectToAction(nameof(Index));
     }
 
     // Code-Owner: Andrej Basara
