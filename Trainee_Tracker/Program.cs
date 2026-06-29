@@ -51,21 +51,20 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Login}/{action=Index}/{id?}")
+    pattern: "{controller=Login}/{action=Login}/{id?}")
     .WithStaticAssets();
 
-// Seed test users
+
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    var db = scope.ServiceProvider.GetRequiredService<UserContext>();
     db.Database.EnsureCreated();
-    if (!db.Users.Any())
+
+    if (!db.Trainees.Any() && !db.Mentors.Any() && !db.Admins.Any())
     {
-        db.Users.AddRange(
-            new Trainee { Name = "Jelena3 Trainee", Email = "jelenacosic3@makandra.de", HashedPassword = "12345", Closed = false },
-            new Mentor  { Name = "Jelena2 Mentor",  Email = "jelenacosic2@makandra.de", HashedPassword = "12345", Closed = false, Curriculum = null! },
-            new Admin   { Name = "Jelena3 Admin",   Email = "jelenacosic1@makandra.de", HashedPassword = "12345", Closed = false }
-        );
+        db.Trainees.Add(new Trainee { Name = "Jelena3 Trainee", Email = "jelenacosic3@makandra.de", HashedPassword = BCrypt.Net.BCrypt.HashPassword("12345"), Closed = false });
+        db.Mentors.Add(new Mentor   { Name = "Jelena2 Mentor",  Email = "jelenacosic2@makandra.de", HashedPassword = BCrypt.Net.BCrypt.HashPassword("12345"), Closed = false, Curriculum = null! });
+        db.Admins.Add(new Admin     { Name = "Jelena3 Admin",   Email = "jelenacosic1@makandra.de", HashedPassword = BCrypt.Net.BCrypt.HashPassword("12345"), Closed = false });
         db.SaveChanges();
     }
 }
