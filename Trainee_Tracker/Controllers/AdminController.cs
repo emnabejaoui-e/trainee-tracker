@@ -104,10 +104,22 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    public IActionResult AssignMentor(int mentorID, int traineeId)
+    [ValidateAntiForgeryToken]
+    public IActionResult AssignMentor(int mentorId, int traineeId)
     {
-        _mentorService.AssignTraineeToMentor(mentorID, traineeId);
-        return RedirectToAction(nameof(Index));
+        try
+        {
+            _mentorService.AssignTraineeToMentor(mentorId, traineeId);
+            return RedirectToAction("UserManagment");
+        }
+        catch (InvalidOperationException ex)
+        {
+            ModelState.AddModelError(string.Empty, ex.Message);
+            var users = _userService.GetAllUsers();
+            ViewBag.Trainees = users.OfType<Trainee>().Where(t => !t.Closed).ToList();
+            ViewBag.Mentors = users.OfType<Mentor>().Where(m => !m.Closed).ToList();
+            return View();
+        }
     }
 
     // Code-Owner: Andrej Basara

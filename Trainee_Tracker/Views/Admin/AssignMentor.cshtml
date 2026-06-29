@@ -1,0 +1,23 @@
+@* Code Owner: Andrej Basara *@
+@{
+    ViewData["Title"] = "AssignMentor";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="post">
+    @Html.AntiForgeryToken()
+    <select name="mentorId">
+        @foreach (var m in ViewBag.Mentors)
+        {
+            <option value="@m.Id">@m.Name</option>
+        }
+    </select>
+    <select name="traineeId">
+        @foreach (var t in ViewBag.Trainees)
+        {
+            <option value="@t.Id">@t.Name</option>
+        }
+    </select>
+    <button type="submit">Assign</button>
+</form>
