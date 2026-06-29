@@ -11,16 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 builder.Services.AddScoped<DbContext, AppDbContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILessonAssignmentRepository, StaticLessonAssignemtRepository>();
 
-// Code-Owner: Andrej Basara
-builder.Services.AddDbContext<UserContext>(options =>
+builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -34,6 +30,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+var persistenceFolder = Path.Combine(Directory.GetCurrentDirectory(), "Persistence");
+Directory.CreateDirectory(persistenceFolder);
 
 if (!app.Environment.IsDevelopment())
 {
@@ -51,7 +50,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Login}/{action=Index}/{id?}")
+    pattern: "{controller=Login}/{action=Login}/{id?}")
     .WithStaticAssets();
 
 // Seed test users

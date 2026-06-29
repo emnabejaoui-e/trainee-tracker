@@ -4,7 +4,6 @@ namespace Trainee_Tracker.Data.LessonFeedbacks;
 
 public class LessonFeedbackRepository : ILessonFeedbackRepository
 {
-    // TODO: Replace traineeId with Trainee model
     public List<LessonFeedback> FindByTrainee(Trainee trainee, DateTime from, DateTime until)
     {
         throw new NotImplementedException();
