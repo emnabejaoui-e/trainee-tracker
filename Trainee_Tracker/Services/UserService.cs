@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using BCrypt.Net;
 using Trainee_Tracker.Models;
 using Trainee_Tracker.Repositories;
 
@@ -61,14 +62,10 @@ namespace Trainee_Tracker.Services
             var user = _userRepository.GetUserByEmail(email);
 
             if (user == null)
-            {
                 return LoginResult.InvalidCredentials;
-            }
 
             if (user.Closed)
-            {
                 return LoginResult.AccountClosed;
-            }
 
             var credentialsValid = _userRepository.ValidateUserCredentials(email, password);
 
@@ -88,8 +85,7 @@ namespace Trainee_Tracker.Services
 
         private static string HashPassword(string rawPassword)
         {
-
-            return rawPassword;
+            return BCrypt.Net.BCrypt.HashPassword(rawPassword);
         }
     }
 }

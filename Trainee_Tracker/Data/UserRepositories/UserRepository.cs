@@ -60,7 +60,8 @@ namespace Trainee_Tracker.Repositories
         public bool ValidateUserCredentials(string email, string password)
         {
             var user = GetUserByEmail(email);
-            return user != null && user.HashedPassword == password;
+            if (user == null) return false;
+            return BCrypt.Net.BCrypt.Verify(password, user.HashedPassword);
         }
 
         public User GetUserByEmail(string email)
