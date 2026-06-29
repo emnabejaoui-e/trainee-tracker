@@ -11,5 +11,6 @@ public interface ILessonAssignmentRepository
     public void Save(LessonAssignment assignment);
     public void Delete(LessonAssignment assignment);
     public IEnumerable<LessonAssignment> GetAllLessonAssignments();
+    public void UpdateStatus(int id, LessonAssignmentStatus newStatus);
 
 }

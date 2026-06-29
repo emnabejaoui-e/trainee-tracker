@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
 using Trainee_Tracker.Models;
 
 namespace Trainee_Tracker.Data.LessonAssignments;
@@ -58,5 +59,15 @@ public class LessonAssignmentRepository : ILessonAssignmentRepository
         }
 
         _context.SaveChanges();
+    }
+
+    public void UpdateStatus(int id, LessonAssignmentStatus newStatus)
+    {
+        var item = _context.LessonAssignments.FirstOrDefault(l => l.Id == id);
+        if(item != null)
+        {
+            item.Status = newStatus;
+            _context.SaveChanges();
+        }
     }
 }
