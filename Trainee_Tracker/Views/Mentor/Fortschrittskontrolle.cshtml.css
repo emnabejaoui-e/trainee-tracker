@@ -1,0 +1,143 @@
+
+    :root {
+        --licorice: #141210;
+        --pink: #FF0844;
+        --white: #FFFFFF;
+        --gray-100: #F5F4F2;
+        --gray-200: #E8E6E2;
+        --gray-400: #9A9690;
+        --gray-600: #5C5854;
+    }
+
+    .progress-page {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 40px 24px 80px;
+        color: var(--licorice);
+    }
+
+    .section-label {
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        color: var(--pink);
+        text-transform: uppercase;
+        margin-bottom: 6px;
+        font-weight: bold;
+    }
+
+    .section-title {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .section-desc {
+        font-size: 14px;
+        color: var(--gray-600);
+        margin-bottom: 26px;
+        max-width: 760px;
+    }
+
+    .screen {
+        background: var(--white);
+        border: 1px solid var(--gray-200);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(20,18,16,.08);
+    }
+
+    .page-content {
+        padding: 22px 18px;
+    }
+
+    .page-titlebar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--gray-200);
+    }
+
+    .page-titlebar h2 {
+        font-size: 18px;
+        margin: 0;
+    }
+
+    .role-badge {
+        background: #E6F1FB;
+        color: #0C447C;
+        font-size: 10px;
+        padding: 3px 7px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    .info-box {
+        background: var(--gray-100);
+        border: 1px solid var(--gray-200);
+        border-radius: 7px;
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+
+    .info-label {
+        color: var(--gray-600);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 4px;
+    }
+
+    .info-value {
+        font-weight: bold;
+    }
+
+    .lesson-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+        margin-top: 10px;
+    }
+
+    .lesson-table th {
+        text-align: left;
+        padding: 8px;
+        background: var(--licorice);
+        color: var(--white);
+        font-size: 12px;
+    }
+
+    .lesson-table td {
+        padding: 8px;
+        border-bottom: 1px solid var(--gray-200);
+    }
+
+    .lesson-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .note {
+        margin-top: 14px;
+        font-size: 12px;
+        color: var(--gray-600);
+    }
+
+    .btn-secondary-storyboard {
+        margin-top: 12px;
+        padding: 8px 13px;
+        border-radius: 5px;
+        border: 1px solid var(--gray-200);
+        background: var(--gray-100);
+        color: var(--licorice);
+        cursor: pointer;
+        font-size: 13px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-secondary-storyboard:hover {
+        background: var(--pink);
+        color: var(--white);
+        text-decoration: none;
+    }
