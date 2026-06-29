@@ -4,10 +4,11 @@ public class LessonAssignment
 {
     public int Id {get; init;}
     public Lesson Lesson{get; set;}
+    public int LessonId {get; init;}
     public LessonAssignmentStatus Status {get; set;}
     public int Position {get; set;}
     public DateOnly ExpectedProcessingDate {get; set;}
-    public int TraineeId {get; set;}
+    public int TraineeId {get; init;}
     public Trainee? Trainee {get; set;}
 
     public LessonAssignment(){}
@@ -16,6 +17,7 @@ public class LessonAssignment
     {
         Id = id;
         Lesson = lesson;
+        LessonId = lesson.Id;
         Status = LessonAssignmentStatus.Open;
         Position = position;
         ExpectedProcessingDate = expectedProcessingDate;
