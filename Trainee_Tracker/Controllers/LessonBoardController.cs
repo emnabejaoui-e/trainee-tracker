@@ -28,4 +28,11 @@ public class LessonBoardController : Controller
         return RedirectToAction("LessonBoard");
 
     }
+
+    [HttpPost]
+    public IActionResult RateAssignment(int id)
+    {
+        _repo.UpdateStatus(id, LessonAssignmentStatus.Rated);
+        return RedirectToAction("CreateFeedback", "Feedback", new {id = id});
+    }
 }
