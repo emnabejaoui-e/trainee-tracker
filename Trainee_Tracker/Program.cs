@@ -6,6 +6,7 @@ using Trainee_Tracker.Data.LessonAssignments;
 using Trainee_Tracker.Models;
 using Trainee_Tracker.Repositories;
 using Trainee_Tracker.Services;
+using Trainee_Tracker.Data.LessonFeedbacks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,11 @@ builder.Services.AddScoped<DbContext, AppDbContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILessonAssignmentRepository, StaticLessonAssignemtRepository>();
+//Emna
+builder.Services.AddScoped<LessonFeedbackService>();
+builder.Services.AddScoped<ILessonFeedbackRepository, LessonFeedbackRepository>();
+//
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -57,6 +63,9 @@ app.MapControllerRoute(
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    //Emna
+    db.Database.EnsureDeleted();
+    //Emna
     db.Database.EnsureCreated();
     if (!db.Users.Any())
     {
