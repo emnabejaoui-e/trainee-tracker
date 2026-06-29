@@ -76,6 +76,23 @@ public class AdminController : Controller
         return RedirectToAction("UserManagment");
     }
 
+    public IActionResult CreateAdmin()
+    {
+        return View();
+    }
+    
+    [HttpPost]
+    public IActionResult CreateAdmin(string name, string email, string password)
+    {
+        var admin = new Admin
+        {
+            Name = name,
+            Email = email,
+        };
+        _userService.CreateAdmin(admin, password);
+        return RedirectToAction("UserManagment");
+    }
+
     // Code-Owner: Andrej Basara
     // GET
     public IActionResult CloseUser(int? id)
