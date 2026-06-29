@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Trainee_Tracker.Data.MentorRepository;
 using Trainee_Tracker.Data.TraineeRepository;
 

@@ -56,8 +56,8 @@
                 }
             </td>
             <td>
-                @if (item is Trainee m) {
-                @Html.DisplayFor(modelItem => m.Mentors)
+                @if (item is Trainee t2) {
+                    @string.Join(", ", t2.Mentors.Select(m => m.Name))
                 }
             </td>
             <td>

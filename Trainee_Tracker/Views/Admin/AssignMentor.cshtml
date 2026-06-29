@@ -5,6 +5,8 @@
 
 <h1>@ViewData["Title"]</h1>
 
+@Html.ValidationSummary()
+
 <form method="post">
     @Html.AntiForgeryToken()
     <select name="mentorId">
