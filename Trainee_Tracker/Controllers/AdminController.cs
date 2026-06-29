@@ -95,6 +95,7 @@ public class AdminController : Controller
         return RedirectToAction("UserManagment");
     }
 
+    // Code Owner: Andrej Basara
     public IActionResult AssignMentor()
     {
         var users = _userService.GetAllUsers();
