@@ -1,0 +1,52 @@
+@* Code-Owner: Emna Bejaoui *@
+
+@{
+    ViewData["Title"] = "Create Feedback";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/feedback.css" />
+
+<div class="feedback-page">
+    <h1 class="feedback-title">Lesson feedback</h1>
+
+    <div class="feedback-card">
+        <div class="badge">COMPLETED</div>
+
+        <h2 class="lesson-title">Introduction to C#</h2>
+
+        <p class="feedback-description">
+            Please rate the lesson and provide feedback about your learning experience.
+        </p>
+
+        <form method="post">
+            <div class="feedback-box">
+                <label>Difficulty <span class="required">*</span></label>
+                <div class="rating">★ ★ ★ ★ ☆</div>
+            </div>
+
+            <div class="feedback-box">
+                <label>Previous knowledge <span class="required">*</span></label>
+                <select name="PriorKnowledge">
+                    <option>Beginner</option>
+                    <option>Intermediate</option>
+                    <option>Advanced</option>
+                </select>
+            </div>
+
+            <div class="feedback-box">
+                <label>Actual effort <span class="required">*</span></label>
+                <input name="ActualEffort" type="text" placeholder="e.g. 4 hours" />
+            </div>
+
+            <div class="feedback-box">
+                <label>Comment</label>
+                <textarea name="Comment" placeholder="Write your feedback here..."></textarea>
+            </div>
+
+            <button class="btn-submit-feedback" type="submit">
+                Submit feedback
+            </button>
+        </form>
+    </div>
+</div>

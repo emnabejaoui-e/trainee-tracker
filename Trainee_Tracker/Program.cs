@@ -11,10 +11,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-// Code-Owner: Andrej Basara
-builder.Services.AddDbContext<UserContext>(options =>
+builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddScoped<DbContext, AppDbContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILessonAssignmentRepository, StaticLessonAssignemtRepository>();
@@ -30,6 +30,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+var persistenceFolder = Path.Combine(Directory.GetCurrentDirectory(), "Persistence");
+Directory.CreateDirectory(persistenceFolder);
 
 if (!app.Environment.IsDevelopment())
 {
@@ -47,20 +50,22 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Login}/{action=Index}/{id?}")
+    pattern: "{controller=Login}/{action=Login}/{id?}")
     .WithStaticAssets();
-
 
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<UserContext>();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.EnsureCreated();
 
-    if (!db.Trainees.Any() && !db.Mentors.Any() && !db.Admins.Any())
+    if (!db.Users.Any())
     {
-        db.Trainees.Add(new Trainee { Name = "Jelena3 Trainee", Email = "jelenacosic3@makandra.de", HashedPassword = BCrypt.Net.BCrypt.HashPassword("12345"), Closed = false });
-        db.Mentors.Add(new Mentor   { Name = "Jelena2 Mentor",  Email = "jelenacosic2@makandra.de", HashedPassword = BCrypt.Net.BCrypt.HashPassword("12345"), Closed = false, Curriculum = null! });
-        db.Admins.Add(new Admin     { Name = "Jelena3 Admin",   Email = "jelenacosic1@makandra.de", HashedPassword = BCrypt.Net.BCrypt.HashPassword("12345"), Closed = false });
+        db.Users.AddRange(
+            
+            new Trainee { Name = "Jelena3 Trainee", Email = "jelenacosic3@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false },
+            new Mentor  { Name = "Jelena2 Mentor",  Email = "jelenacosic2@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false, Curriculum = null! },
+            new Admin   { Name = "Jelena3 Admin",   Email = "jelenacosic1@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false }
+        );
         db.SaveChanges();
     }
 }
