@@ -1,5 +1,5 @@
+// Hauptverantwortlich: Julia
 using Microsoft.EntityFrameworkCore;
-using SQLitePCL;
 using Trainee_Tracker.Models;
 
 namespace Trainee_Tracker.Data.LessonAssignments;

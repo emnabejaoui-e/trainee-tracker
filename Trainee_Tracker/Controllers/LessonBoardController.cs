@@ -22,6 +22,7 @@ public class LessonBoardController : Controller
         return View(lessons);
     }
 
+    //Julia
     [HttpPost]
     public IActionResult UpdateStatus(int id, LessonAssignmentStatus newStatus){
         _repo.UpdateStatus(id, newStatus);
@@ -29,6 +30,7 @@ public class LessonBoardController : Controller
 
     }
 
+    //Julia
     [HttpPost]
     public IActionResult RateAssignment(int id)
     {
