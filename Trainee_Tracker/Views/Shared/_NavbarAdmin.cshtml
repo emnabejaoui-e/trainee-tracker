@@ -1,3 +1,4 @@
+@* Code Owner: Jelena Cosic *@
 <header class="page-header">
   <div style="display: flex; align-items: center; gap: 50px;">
     <div class="brand">
@@ -7,7 +8,7 @@
     </div>
     <div class="categories">
       <a asp-controller="Home" asp-action="Index">HOME</a>
-      <a asp-controller="User" asp-action="Index">NUTZERVERWALTUNG</a>
+      <a asp-controller="Admin" asp-action="UserManagment">USER-MANAGMENT</a>
       <a asp-controller="Report" asp-action="Index">BERICHTE</a>
     </div>
   </div>
@@ -16,7 +17,12 @@
     <span class="email">admin@makandra.de</span>
     <div class="user-dropdown">
       <p><a asp-controller="Profile" asp-action="Index">My Profile</a></p>
-      <p><a asp-controller="Account" asp-action="Logout">Log out</a></p>
+      <p>
+        <form method="post" asp-controller="Login" asp-action="Logout">
+          @Html.AntiForgeryToken()
+          <button type="submit">Log out</button>
+        </form>
+      </p>
     </div>
   </div>
 </header>

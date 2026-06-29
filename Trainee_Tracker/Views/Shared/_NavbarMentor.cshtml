@@ -1,5 +1,4 @@
 @* Controllernamen usw müssen noch angepasst werden *@
-
 <header class="page-header">
   <div style="display: flex; align-items: center; gap: 50px;">
     <div class="brand">
@@ -11,8 +10,8 @@
       <a asp-controller="Mentor" asp-action="Index">HOME</a>
       <a asp-controller="Mentor" asp-action="MyTrainees">MY TRAINEES</a>
       <a asp-controller="Mentor" asp-action="Progress">PROGRESS</a>
-      <a asp-controller="Mentor" asp-action="Feedback">FEEDBACK</a>
-      <a asp-controller="Mentor" asp-action="Import">IMPORT</a>
+      <a asp-controller="Feedback" asp-action="RecentFeedback">FEEDBACK</a>
+      <a asp-controller="Mentor" asp-action="ImportCurriculum">IMPORT</a>
     </div>
   </div>
   <div class="user-profile">
@@ -20,7 +19,12 @@
     <span class="email">mentor@makandra.de</span>
     <div class="user-dropdown">
       <p><a asp-controller="Profile" asp-action="Index">My Profile</a></p>
-      <p><a asp-controller="Account" asp-action="Logout">Log out</a></p>
+      <p>
+        <form method="post" asp-controller="Login" asp-action="Logout">
+          @Html.AntiForgeryToken()
+          <button type="submit">Log out</button>
+        </form>
+      </p>
     </div>
   </div>
 </header>

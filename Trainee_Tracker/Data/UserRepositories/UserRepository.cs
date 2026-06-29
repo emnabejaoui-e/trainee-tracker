@@ -1,15 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Trainee_Tracker.Data;
 using Trainee_Tracker.Models;
 
 namespace Trainee_Tracker.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly DbContext _context;
+        private readonly AppDbContext _context;
 
-        public UserRepository(DbContext context)
+        public UserRepository(AppDbContext context)
         {
             _context = context;
         }
@@ -65,6 +66,12 @@ namespace Trainee_Tracker.Repositories
         public User GetUserByEmail(string email)
         {
             return _context.Set<User>().FirstOrDefault(u => u.Email == email);
+        }
+
+        // Code-Owner: Andrej Basara
+        public User GetById(int id)
+        {
+            return _context.Set<User>().FirstOrDefault(u => u.Id == id);
         }
     }
 }

@@ -1,0 +1,156 @@
+/* Recent Feedback */
+
+.activity-feed > article {
+    margin: 2rem;
+    background-color: #fafafa;
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid var(--gray-200);
+}
+
+.feedback-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.float-left,
+.float-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.rating {
+    color: #ffcc00;
+    font-size: 40px;
+}
+
+dt {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.section-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--licorice);
+    margin-bottom: 20px;
+}
+
+.btn {
+    margin-top: 12px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: none;
+    background: var(--licorice);
+    color: var(--white);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background: var(--pink);
+}
+
+.btn-secondary {
+    background: var(--gray-100);
+    color: var(--licorice);
+    border: 1px solid var(--gray-200);
+}
+
+/* Create Feedback */
+
+.feedback-page {
+    max-width: 900px;
+    margin: 40px auto;
+}
+
+.feedback-title {
+    font-size: 46px;
+    font-weight: 700;
+    color: var(--licorice);
+    margin-bottom: 24px;
+}
+
+.feedback-card {
+    position: relative;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 18px;
+    padding: 40px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, .08);
+}
+
+.badge {
+    position: absolute;
+    top: 22px;
+    right: 25px;
+    display: inline-block;
+    padding: 7px 18px;
+    background: var(--pink);
+    color: var(--white);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.lesson-title {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding-right: 160px;
+}
+
+.feedback-description {
+    color: var(--gray-400);
+    margin-bottom: 28px;
+}
+
+.feedback-box {
+    margin-bottom: 22px;
+}
+
+.feedback-box label {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.feedback-box input,
+.feedback-box select,
+.feedback-box textarea {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.feedback-box textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+.required {
+    color: var(--pink);
+}
+
+.btn-submit-feedback {
+    background: var(--pink);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    padding: 16px 34px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn-submit-feedback:hover {
+    background: var(--licorice);
+}

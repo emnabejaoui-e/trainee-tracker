@@ -1,29 +1,72 @@
+// Code Owner: Jelena Cosic
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+using Trainee_Tracker.Data;
+using Trainee_Tracker.Data.LessonAssignments;
+using Trainee_Tracker.Models;
+using Trainee_Tracker.Repositories;
+using Trainee_Tracker.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<DbContext, AppDbContext>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ILessonAssignmentRepository, StaticLessonAssignemtRepository>();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Login";
+        options.AccessDeniedPath = "/Login";
+        options.ExpireTimeSpan = TimeSpan.FromHours(8);
+    });
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+var persistenceFolder = Path.Combine(Directory.GetCurrentDirectory(), "Persistence");
+Directory.CreateDirectory(persistenceFolder);
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Login}/{action=Login}/{id?}")
     .WithStaticAssets();
 
+// Seed test users
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.EnsureCreated();
+    if (!db.Users.Any())
+    {
+        db.Users.AddRange(
+            new Trainee { Name = "Jelena3 Trainee", Email = "jelenacosic3@makandra.de", HashedPassword = "12345", Closed = false },
+            new Mentor  { Name = "Jelena2 Mentor",  Email = "jelenacosic2@makandra.de", HashedPassword = "12345", Closed = false, Curriculum = null! },
+            new Admin   { Name = "Jelena1 Admin",   Email = "jelenacosic1@makandra.de", HashedPassword = "12345", Closed = false }
+        );
+        db.SaveChanges();
+    }
+}
 
 app.Run();

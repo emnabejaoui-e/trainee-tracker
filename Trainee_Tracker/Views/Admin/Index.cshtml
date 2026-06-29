@@ -1,0 +1,12 @@
+@* Code Owner: Jelena Cosic *@
+@{
+    ViewData["Title"] = "Dashboard";
+    var name  = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? "Admin";
+    var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "";
+}
+
+<div class="container" style="margin-top: 40px;">
+    <h2>Hello, @name!</h2>
+    <p>@email</p>
+    <p>You'll soon be able to manage all system users here.</p>
+</div>
