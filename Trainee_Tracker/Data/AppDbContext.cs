@@ -32,7 +32,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Lesson>().HasData(
              new Lesson {Id = 11, Title = "Introduction to HTML", URL ="#", Effort = 1.0, Inactive = false, Position = 2},
              new Lesson {Id = 22, Title = "CSS Basics", URL ="#", Effort = 0.5, Inactive = false, Position = 3},
-             new Lesson {Id = 33, Title = "Ruby: What extend and include do", Effort = 2.0, Inactive = false, Position = 4},
+             new Lesson {Id = 33, Title = "Ruby: What extend and include do", URL ="#", Effort = 2.0, Inactive = false, Position = 4},
              new Lesson {Id = 44, Title = "Rules of thumb against flaky specs", URL ="#", Effort = 0.5, Inactive = false, Position = 5}, 
              new Lesson {Id = 55, Title = "How to use API", URL ="#", Effort = 1.5, Inactive = false, Position = 6}, 
              new Lesson {Id = 66, Title = "Linux", URL ="https://makandracards.com/makandra-devops-curriculum/509339-linux-2-pt", Effort = 2.0, Inactive = false, Position = 7}, 
