@@ -6,7 +6,7 @@ namespace Trainee_Tracker.Data.Curriculums;
 /// <author>Leon</author>
 public class StaticCurriculumRepository : ICurriculumRepository
 {
-    private List<Curriculum> _data;
+    private readonly List<Curriculum> _data;
 
     public StaticCurriculumRepository()
     {
@@ -22,9 +22,13 @@ public class StaticCurriculumRepository : ICurriculumRepository
         curriculum1.AddLesson(new Lesson {Id = 99, Title = "Linux Kernal parameter", URL ="#", Effort = 0.5, Inactive = false, Position = 9});
         curriculum1.AddLesson(new Lesson {Id = 100, Title = "Network", URL ="#", Effort = 4.0, Inactive = false, Position = 10});
         
+        var curriculum2 = new Curriculum("makandra DevOps-Curriculum");
+        curriculum2.AddLesson(new Lesson {Id = 1, Title = "How to exit Vim", URL ="#", Effort = 1.0, Inactive = false, Position = 1});
+        
         _data = new()
         {
             curriculum1,
+            curriculum2
         };
     }
 
