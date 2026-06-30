@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Trainee_Tracker.Models;
 
+/// <author>Leon</author>
 public class Mentor : User
 {
     public IList<Trainee> AssignedTrainees { get; set; } = new List<Trainee>();

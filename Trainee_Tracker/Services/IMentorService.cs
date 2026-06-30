@@ -1,5 +1,6 @@
 namespace Trainee_Tracker.Services;
 
+/// <author>Leon</author>
 public interface IMentorService
 {
     /// <summary>
