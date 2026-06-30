@@ -150,9 +150,10 @@ public class AdminController : Controller
     {
         var user = _userService.GetById(id);
         _userService.CloseUser(user.Email);
-        return RedirectToAction("Index");
+        return RedirectToAction("UserManagment");
     }
 
+    // Code Owner: Andrej Basara
      public IActionResult UserDetails(int? id)
     {
         if (id == null) return NotFound();
