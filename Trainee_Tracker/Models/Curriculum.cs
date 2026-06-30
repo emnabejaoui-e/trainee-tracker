@@ -7,7 +7,7 @@ namespace Trainee_Tracker.Models;
 public class Curriculum
 {
     public string Title { get; set; }
-    public IList<Lesson> Lessons { get; }
+    public IList<Lesson> Lessons { get; } = new List<Lesson>();
 
     public Curriculum(string title)
     {
@@ -17,10 +17,5 @@ public class Curriculum
     public void AddLesson(Lesson lesson)
     {
         Lessons.Add(lesson);
-    }
-
-    public void Update(IList<Lesson> Lessons)
-    {
-        throw new NotImplementedException();
     }
 }
