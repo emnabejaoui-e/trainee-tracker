@@ -7,25 +7,25 @@ namespace Trainee_Tracker.Controllers;
 
 public class LessonBoardController : Controller
 {
-    private readonly ILessonAssignmentRepository _repo;
+    private readonly ILessonAssignmentRepository _lessonAssignmnetRepo;
 
     // Julia
     public LessonBoardController(ILessonAssignmentRepository repo)
     {
-        _repo = repo;
+        _lessonAssignmnetRepo = repo;
     }
 
     // Julia
     public IActionResult LessonBoard()
     {
-        var lessons = _repo.GetAllLessonAssignments();
+        var lessons = _lessonAssignmnetRepo.GetAllLessonAssignments();
         return View(lessons);
     }
 
     //Julia
     [HttpPost]
     public IActionResult UpdateStatus(int id, LessonAssignmentStatus newStatus){
-        _repo.UpdateStatus(id, newStatus);
+        _lessonAssignmnetRepo.UpdateStatus(id, newStatus);
         return RedirectToAction("LessonBoard");
 
     }
@@ -34,7 +34,7 @@ public class LessonBoardController : Controller
     [HttpPost]
     public IActionResult RateAssignment(int id)
     {
-        _repo.UpdateStatus(id, LessonAssignmentStatus.Rated);
+        _lessonAssignmnetRepo.UpdateStatus(id, LessonAssignmentStatus.Rated);
         return RedirectToAction("CreateFeedback", "Feedback", new {id = id});
     }
 }
