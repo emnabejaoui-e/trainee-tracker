@@ -29,17 +29,15 @@ public class LessonRepository : ILessonRepository
         return _context.Lessons.ToList();
     }
 
-    public void Save(Lesson lesson)
+    public void Update(Lesson lesson)
     {
-        if(lesson.Id == 0)
-        {
-            _context.Lessons.Add(lesson);
-        }
-        else
-        {
-            _context.Lessons.Update(lesson);
-        }
+        _context.Lessons.Update(lesson);
+        _context.SaveChanges();
+    }
 
+    public void Add(Lesson lesson)
+    {
+        _context.Lessons.Add(lesson);
         _context.SaveChanges();
     }
 }
