@@ -3,6 +3,7 @@ using Trainee_Tracker.Models;
 
 namespace Trainee_Tracker.Data.Curriculums;
 
+/// <author>Leon</author>
 public class StaticCurriculumRepository : ICurriculumRepository
 {
     private List<Curriculum> _data;
@@ -25,6 +26,11 @@ public class StaticCurriculumRepository : ICurriculumRepository
         {
             curriculum1,
         };
+    }
+
+    public IEnumerable<Curriculum> GetAllCurriculums()
+    {
+        return _data.AsReadOnly();
     }
 
     public Curriculum GetByTitle(string title)
