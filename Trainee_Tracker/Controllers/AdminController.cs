@@ -32,10 +32,16 @@ public class AdminController : Controller
     public IActionResult Index() => View();
 
     // Code-Owner: Andrej Basara
-    public IActionResult UserManagment()
+    public IActionResult UserManagment(string searchString)
     {
-        var users = _userService.GetAllUsers();
-        return View(users);
+        ViewData["CurrentFilter"] = searchString;
+        IEnumerable<User> users = _userService.GetAllUsers();
+        if (!String.IsNullOrEmpty(searchString))
+        {
+            users = users.Where(s => s.Name.Contains(searchString)
+                                    || s.Email.Contains(searchString));
+        }
+        return View(users.ToList());
     }
 
     // Code-Owner: Andrej Basara

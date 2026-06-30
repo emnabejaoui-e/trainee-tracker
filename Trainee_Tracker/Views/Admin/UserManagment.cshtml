@@ -15,6 +15,15 @@
     <a asp-action="CreateAdmin" class="btn-user-create">Admin</a>
     <a asp-action="AssignMentor" class="btn-user-create ms-auto" >Assign Mentor</a>
 </p>
+<form asp-action="UserManagment" method="get">
+    <div class="form-actions no-color">
+        <p>
+            <label>Find by Name/ E-mail: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" /></label>
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="UserManagment">Back to Full List</a>
+        </p>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
