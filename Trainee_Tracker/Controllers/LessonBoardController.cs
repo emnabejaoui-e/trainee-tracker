@@ -34,7 +34,7 @@ public class LessonBoardController : Controller
     [HttpPost]
     public IActionResult RateAssignment(int id)
     {
-        _lessonAssignmnetRepo.UpdateStatus(id, LessonAssignmentStatus.Rated);
+       // _lessonAssignmnetRepo.UpdateStatus(id, LessonAssignmentStatus.Rated); -> methode gehört in FeedbackController zu CreateFeedback (zuerst merge von Julia dann von Emna)
         return RedirectToAction("CreateFeedback", "Feedback", new {id = id});
     }
 }
