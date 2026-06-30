@@ -5,7 +5,7 @@ namespace Trainee_Tracker.Data.Curriculums;
 /// <author>Leon</author>
 public interface ICurriculumRepository
 {
-    Curriculum GetByName(string name);
+    Curriculum GetByTitle(string title);
 
     void Create(Curriculum curriculum);
 
