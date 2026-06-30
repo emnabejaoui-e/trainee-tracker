@@ -49,6 +49,11 @@ public class AdminController : Controller
     [HttpPost]
     public IActionResult CreateTrainee(string name, string email, string password, DateOnly startingDate, DateOnly endDate)
     {
+        if (string.IsNullOrEmpty(password))
+        {
+            ModelState.AddModelError("password", "Password is required");
+            return View();
+        }
         var trainee = new Trainee
         {
             Name = name,
@@ -141,6 +146,15 @@ public class AdminController : Controller
         _userService.CloseUser(user.Email);
         return RedirectToAction("Index");
     }
+
+     public IActionResult UserDetails(int? id)
+    {
+        if (id == null) return NotFound();
+        var user = _userService.GetById(id.Value);
+        if (user == null) return NotFound();
+        return View(user);
+    }
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
