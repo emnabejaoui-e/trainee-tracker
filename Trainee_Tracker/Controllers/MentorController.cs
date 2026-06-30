@@ -71,7 +71,7 @@ public IActionResult Fortschrittskontrolle()
     
     /// <author>Leon</author>
     [HttpPost]
-    public IActionResult ImportCurriculum(IFormFile file)
+    public IActionResult ImportCurriculum(string curriculumName, IFormFile file)
     {
         if (file == null)
             ModelState.AddModelError("FileName", "No file was selected.");
@@ -81,10 +81,19 @@ public IActionResult Fortschrittskontrolle()
             if (fileContentType.MediaType != "application/json")
                 ModelState.AddModelError("FileName", "This file is not a JSON file.");
         }
+
+        if (curriculumName.IsWhiteSpace())
+        {
+            ModelState.AddModelError("FileName", "No curriculum was selected.");
+        }
         if (ModelState.IsValid)
         {
             return RedirectToAction("Index", "Mentor");
         }
+        var curriculumNames = new List<String>();
+        curriculumNames.Add("makandra Curriculum");
+        curriculumNames.Add("makandra DevOps Curriculum");
+        ViewBag.curriculumNames = curriculumNames;
         return View(file);
     }
 }
