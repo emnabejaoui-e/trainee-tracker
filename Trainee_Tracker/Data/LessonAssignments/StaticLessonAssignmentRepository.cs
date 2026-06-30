@@ -1,5 +1,7 @@
 // Hauptverantwortlich: Julia
 
+//no use
+
 using Microsoft.VisualBasic;
 using Trainee_Tracker.Models;
 
@@ -70,5 +72,10 @@ public class StaticLessonAssignemtRepository : ILessonAssignmentRepository
     public IEnumerable<LessonAssignment> GetAllLessonAssignments()
     {
         return _data;
+    }
+
+    public void UpdatePosition(int id, int newPosition)
+    {
+        throw new NotImplementedException();
     }
 }
