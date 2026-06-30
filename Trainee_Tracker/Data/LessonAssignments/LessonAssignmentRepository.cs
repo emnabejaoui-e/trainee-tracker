@@ -61,12 +61,30 @@ public class LessonAssignmentRepository : ILessonAssignmentRepository
         _context.SaveChanges();
     }
 
+    /// <summary>
+    /// Changes the state of the LessonAssignment with ID “id” to newStatus. 
+    ///  If no assignment with the matching ID is found, nothing is changed.
+    /// </summary>
     public void UpdateStatus(int id, LessonAssignmentStatus newStatus)
     {
         var item = _context.LessonAssignments.FirstOrDefault(l => l.Id == id);
         if(item != null)
         {
             item.Status = newStatus;
+            _context.SaveChanges();
+        }
+    }
+
+    /// <summary>
+    /// Changes the position of the LessonAssignment with ID “id” to newPosition. 
+    ///  If no assignment with the matching ID is found, nothing is changed.
+    /// </summary>
+    public void UpdatePosition(int id, int newPosition)
+    {
+        var item = _context.LessonAssignments.FirstOrDefault(l => l.Id == id);
+        if(item != null)
+        {
+            item.Position = newPosition;
             _context.SaveChanges();
         }
     }
