@@ -3,68 +3,65 @@ using System.Collections.Generic;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-  using Trainee_Tracker.Models;  
+using Trainee_Tracker.Models;
 
 namespace Trainee_Tracker.Controllers;
 
 [Authorize(Roles = "Mentor")]
 public class MentorController : Controller
 {
-
+    // Code-Owner: Jelena Cosic
+    // GET: /Mentor/Index
     /// <summary>
     /// Displays the Mentor dashboard.
     /// Only accessible by users with the Mentor role.
     /// </summary>
     /// <returns>The Mentor index view.</returns>
-// Code Owner: Jelena Cosic
-      public IActionResult Index() => View();
+    public IActionResult Index() => View();
 
+    // Code-Owner: Leon
     /// <summary>
     /// Assigns a Mentor to a trainee.
     /// </summary>
     /// <param name="mentorId">The numeric id of the Mentor to assign.</param>
     /// <param name="traineeId">The numeric id of the Trainee to assign.</param>
     /// <returns>501 Not Implemented status.</returns>
-    /// <author>Leon</author>
-    /// <returns></returns>
     public IActionResult AssignTrainee(int mentorId, int traineeId)
     {
         return StatusCode(501, "Not implemented!");
     }
+
+    // Code-Owner: Leon
     /// <summary>
     /// Changes the order of lessons for a particular trainee.
     /// </summary>
     /// <param name="traineeId">The numeric id of the Trainee to change the order for.</param>
     /// <param name="order">A list with the numeric ids of Lessons in the order they should appear for trainees.</param>
-<<<<<<< HEAD
-    /// <returns>501 Not Implemented status.<returns>
-=======
-    /// <author>Leon</author>
-    /// <returns></returns>
->>>>>>> 2c17b00441b7633a69a721d4527936e08a93bd89
+    /// <returns>501 Not Implemented status.</returns>
     public IActionResult UpdateLessonOrder(int traineeId, IList<int> order)
     {
         return StatusCode(501, "Not implemented!");
     }
 
-    [HttpGet]   // add this at the top if it isn't there
-
-public IActionResult Fortschrittskontrolle()
-{
-    var model = new ProgressControlData
+    // Code-Owner: Leon
+    // GET: /Mentor/Fortschrittskontrolle
+    [HttpGet]
+    public IActionResult Fortschrittskontrolle()
     {
-        DaysWorked = 15,
-        Finished = 12,
-        Open = 8,
-        Buffer = 2,
-        Speed = 110,
-        PredictedBuffer = 3
-    };
+        var model = new ProgressControlData
+        {
+            DaysWorked = 15,
+            Finished = 12,
+            Open = 8,
+            Buffer = 2,
+            Speed = 110,
+            PredictedBuffer = 3
+        };
+        return View(model);
+    }
 
-    return View(model);
-}
-    
-    /// <author>Leon</author>
+    // Code-Owner: Leon
+    // GET: /Mentor/ImportCurriculum
     [HttpGet]
     public IActionResult ImportCurriculum()
     {
@@ -74,8 +71,9 @@ public IActionResult Fortschrittskontrolle()
         ViewBag.curriculumNames = curriculumNames;
         return View(null);
     }
-    
-    /// <author>Leon</author>
+
+    // Code-Owner: Leon
+    // POST: /Mentor/ImportCurriculum
     [HttpPost]
     public IActionResult ImportCurriculum(string curriculumName, IFormFile file)
     {
@@ -87,7 +85,6 @@ public IActionResult Fortschrittskontrolle()
             if (fileContentType.MediaType != "application/json")
                 ModelState.AddModelError("FileName", "This file is not a JSON file.");
         }
-
         if (curriculumName.IsWhiteSpace())
         {
             ModelState.AddModelError("FileName", "No curriculum was selected.");
