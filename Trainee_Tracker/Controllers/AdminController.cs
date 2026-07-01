@@ -22,11 +22,7 @@ public class AdminController : Controller
         _userService = userService;
     }
 
-    /// <summary>
-    /// Displays the Admin dashboard.
-    /// Only accessible by users with the Admin role.
-    /// </summary>
-    /// <returns>The Admin index view.</returns>
+
     public IActionResult Index() => View();
 
     // Code-Owner: Andrej Basara
