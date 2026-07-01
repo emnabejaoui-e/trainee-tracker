@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Trainee_Tracker.Data;
 using Trainee_Tracker.Data.LessonAssignments;
+using Trainee_Tracker.Data.MentorRepository;
+using Trainee_Tracker.Data.TraineeRepository;
 using Trainee_Tracker.Models;
 using Trainee_Tracker.Repositories;
 using Trainee_Tracker.Services;
@@ -17,13 +19,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<DbContext, AppDbContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IMentorRepository, MentorRepository>();
+builder.Services.AddScoped<ITraineeRepository, TraineeRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<ILessonAssignmentRepository, StaticLessonAssignemtRepository>();
-//Emna
+
+builder.Services.AddScoped<IMentorService, MentorService>();
+builder.Services.AddScoped<ILessonAssignmentRepository, LessonAssignmentRepository>();
+
 builder.Services.AddScoped<LessonFeedbackService>();
 builder.Services.AddScoped<ILessonFeedbackRepository, LessonFeedbackRepository>();
-//
-
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -62,17 +66,17 @@ app.MapControllerRoute(
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    //Emna
-    db.Database.EnsureCreated();
+
+    db.Database.Migrate();
 
     if (!db.Users.Any())
     {
         db.Users.AddRange(
-            
             new Trainee { Name = "Jelena3 Trainee", Email = "jelenacosic3@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false },
-            new Mentor  { Name = "Jelena2 Mentor",  Email = "jelenacosic2@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false, Curriculum = null! },
-            new Admin   { Name = "Jelena3 Admin",   Email = "jelenacosic1@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false }
+            new Mentor { Name = "Jelena2 Mentor", Email = "jelenacosic2@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false, Curriculum = null! },
+            new Admin { Name = "Jelena3 Admin", Email = "jelenacosic1@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false }
         );
+
         db.SaveChanges();
     }
 }
