@@ -9,6 +9,7 @@ using Trainee_Tracker.Data.Lessons;
 using Trainee_Tracker.Models;
 using Trainee_Tracker.Repositories;
 using Trainee_Tracker.Services;
+using Trainee_Tracker.Data.LessonFeedbacks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,8 +23,12 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMentorRepository, MentorRepository>();
 builder.Services.AddScoped<ITraineeRepository, TraineeRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+
 builder.Services.AddScoped<IMentorService, MentorService>();
 builder.Services.AddScoped<ILessonAssignmentRepository, LessonAssignmentRepository>();
+
+builder.Services.AddScoped<LessonFeedbackService>();
+builder.Services.AddScoped<ILessonFeedbackRepository, LessonFeedbackRepository>();
 builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -63,6 +68,7 @@ app.MapControllerRoute(
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
     db.Database.Migrate();
     
 }
