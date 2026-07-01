@@ -85,9 +85,9 @@ namespace Trainee_Tracker.Services
 // Code Owner: Jelena Cosic
         /// <summary>Marks a user account as closed.</summary>
         /// <param name="email">The email address of the user to close.</param>
-        public void CloseUser(string email)
+        public void CloseUser(int id)
         {
-            _userRepository.CloseUser(email);
+            _userRepository.CloseUser(id);
         }
 
 // Code Owner: Jelena Cosic
@@ -119,6 +119,14 @@ namespace Trainee_Tracker.Services
         public User GetById(int id)
         {
             return _userRepository.GetById(id);
+        }
+
+        // Code-Owner: Andrej Basra
+        public bool IsEmailAvailable(string Email)
+        {
+            var user = _userRepository.GetUserByEmail(Email);
+            return user == null || user.Closed;
+
         }
 
 // Code Owner: Jelena Cosic
