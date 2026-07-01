@@ -17,7 +17,10 @@ namespace Trainee_Tracker.Repositories
 
         public IList<User> GetAllUsers()
         {
-            return _context.Set<User>().ToList();
+            var trainees = _context.Set<Trainee>().Include(t => t.Mentors).ToList<User>();
+            var mentors = _context.Set<Mentor>().ToList<User>();
+            var admins = _context.Set<Admin>().ToList<User>();
+            return trainees.Concat(mentors).Concat(admins).ToList();
         }
 
         public void CreateTrainee(Trainee trainee, string password)

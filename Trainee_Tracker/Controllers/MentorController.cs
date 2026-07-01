@@ -25,6 +25,8 @@ public class MentorController : Controller
     /// <param name="mentorId">The numeric id of the Mentor to assign.</param>
     /// <param name="traineeId">The numeric id of the Trainee to assign.</param>
     /// <returns>501 Not Implemented status.</returns>
+    /// <author>Leon</author>
+    /// <returns></returns>
     public IActionResult AssignTrainee(int mentorId, int traineeId)
     {
         return StatusCode(501, "Not implemented!");
@@ -34,7 +36,12 @@ public class MentorController : Controller
     /// </summary>
     /// <param name="traineeId">The numeric id of the Trainee to change the order for.</param>
     /// <param name="order">A list with the numeric ids of Lessons in the order they should appear for trainees.</param>
+<<<<<<< HEAD
     /// <returns>501 Not Implemented status.<returns>
+=======
+    /// <author>Leon</author>
+    /// <returns></returns>
+>>>>>>> 2c17b00441b7633a69a721d4527936e08a93bd89
     public IActionResult UpdateLessonOrder(int traineeId, IList<int> order)
     {
         return StatusCode(501, "Not implemented!");
@@ -56,6 +63,8 @@ public IActionResult Fortschrittskontrolle()
 
     return View(model);
 }
+    
+    /// <author>Leon</author>
     [HttpGet]
     public IActionResult ImportCurriculum()
     {
@@ -65,9 +74,10 @@ public IActionResult Fortschrittskontrolle()
         ViewBag.curriculumNames = curriculumNames;
         return View(null);
     }
-
+    
+    /// <author>Leon</author>
     [HttpPost]
-    public IActionResult ImportCurriculum(IFormFile file)
+    public IActionResult ImportCurriculum(string curriculumName, IFormFile file)
     {
         if (file == null)
             ModelState.AddModelError("FileName", "No file was selected.");
@@ -77,10 +87,19 @@ public IActionResult Fortschrittskontrolle()
             if (fileContentType.MediaType != "application/json")
                 ModelState.AddModelError("FileName", "This file is not a JSON file.");
         }
+
+        if (curriculumName.IsWhiteSpace())
+        {
+            ModelState.AddModelError("FileName", "No curriculum was selected.");
+        }
         if (ModelState.IsValid)
         {
             return RedirectToAction("Index", "Mentor");
         }
+        var curriculumNames = new List<String>();
+        curriculumNames.Add("makandra Curriculum");
+        curriculumNames.Add("makandra DevOps Curriculum");
+        ViewBag.curriculumNames = curriculumNames;
         return View(file);
     }
 }
