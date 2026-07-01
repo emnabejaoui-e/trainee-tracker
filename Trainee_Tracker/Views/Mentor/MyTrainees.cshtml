@@ -1,7 +1,7 @@
 @* Code Owner: Leon *@
 @model IEnumerable<Trainee>
 @{
-    ViewData["Title"] = "Fortschrittskontrolle";
+    ViewData["Title"] = "My Trainees";
 }
 
 <p>@ViewBag.text</p>
@@ -15,7 +15,7 @@
         {
             <li class="profile-item">
                 <div class="profile-main">
-                    <a href="#" class="name">@trainee.Name</a>
+                    <a class="name" href="/Mentor/Fortschrittskontrolle">@trainee.Name</a>
                     <br/>
                     <a href="mailto:@trainee.Email" class="email">@trainee.Email</a>
                 </div>
