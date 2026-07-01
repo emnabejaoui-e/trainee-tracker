@@ -32,7 +32,12 @@
                 
                 <div class="card-actions">
                     <a href="@assignment.Lesson.URL" class="btn btn-see-card" target="_blank">see card</a>
-                    <button class="btn btn-status" data-target="started" data-next-target="finished" data-label="finish" data-next-label="">start</button>
+                    <form method="post" asp-action="UpdateStatus" asp-controller="LessonBoard">
+                        <input type="hidden" name="id" value="@assignment.Id"/>
+                        <input type="hidden" name="newStatus" value="@LessonAssignmentStatus.Started"/>
+                        <button type="submit" class="btn btn-status">start</button>
+                        
+                    </form>
                 </div>
                 
             </div>
@@ -52,7 +57,12 @@
 
                 <div class="card-actions">
                     <a href="@assignment.Lesson.URL" class="btn btn-see-card" target="_blank">see card</a>
-                    <button class="btn btn-status" data-target="finished" data-next-target="" data-label="" data-next-label="">finish</button>
+                    <form method="post" asp-action="UpdateStatus" asp-controller="LessonBoard">
+                        <input type="hidden" name="id" value="@assignment.Id"/>
+                        <input type="hidden" name="newStatus" value="@LessonAssignmentStatus.Finished"/>
+                        <button type="submit" class="btn btn-status">finish</button>
+                        
+                    </form>
                 </div>
             </div>
         }
@@ -89,7 +99,11 @@
                 
                 <div class="card-actions">
                     <a href="@assignment.Lesson.URL" class="btn btn-see-card" target="_blank">see card</a>
-                    <button class="btn btn-status" data-target="rated" data-next-target="" data-label="" data-next-label="">rate</button>
+                    <form method="post" asp-action="RateAssignment" asp-controller="LessonBoard">
+                        <input type="hidden" name="id" value="@assignment.Id"/>
+                        <button type="submit" class="btn btn-status">rate</button>
+                        
+                    </form>
                 </div>
             </div>
         }
@@ -108,7 +122,12 @@
 
                 <div class="card-actions">
                     <a href="@assignment.Lesson.URL" class="btn btn-see-card" target="_blank">see card</a>
-                    <button class="btn btn-status" data-target="started" data-next-target="finished" data-label="finish" data-next-label="">restart</button>
+                    <form method="post" asp-action="UpdateStatus" asp-controller="LessonBoard">
+                        <input type="hidden" name="id" value="@assignment.Id"/>
+                        <input type="hidden" name="newStatus" value="@LessonAssignmentStatus.Started"/>
+                        <button type="submit" class="btn btn-status">restart</button>
+                        
+                    </form>
                 </div>
             </div>
         }
@@ -134,9 +153,8 @@
 </main>
 
 
-@* Java-Script-Logik weil noch mit Dummy-Daten gearbeitet wird*@
-@*hier müsste dann eigentlich das Repository eingebunden werden *@
-@section Scripts{
+
+@* @section Scripts{
     <script>
     document.addEventListener('click', function(e){
         if(e.target.classList.contains('btn-status')) {
@@ -169,4 +187,4 @@
         });
     }
   </script>
-}
+} *@

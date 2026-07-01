@@ -16,6 +16,9 @@ namespace Trainee_Tracker.Models
         public DateOnly StartingDate { get; set; }
 
         public DateOnly EndDate {get; set; }
+        
+        //ergänzt von Julia aus designklassendiagramm und wichtig für EFCore
+        public ICollection<LessonAssignment> Assignments {get; set;}
 
         [NotMapped]
         public ICollection<Break>? Breaks { get; set; }
