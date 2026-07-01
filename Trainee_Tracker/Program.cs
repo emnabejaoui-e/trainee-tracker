@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Trainee_Tracker.Data;
 using Trainee_Tracker.Data.LessonAssignments;
+using Trainee_Tracker.Data.MentorRepository;
+using Trainee_Tracker.Data.TraineeRepository;
 using Trainee_Tracker.Models;
 using Trainee_Tracker.Repositories;
 using Trainee_Tracker.Services;
@@ -16,6 +18,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<DbContext, AppDbContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IMentorRepository, MentorRepository>();
+builder.Services.AddScoped<ITraineeRepository, TraineeRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILessonAssignmentRepository, LessonAssignmentRepository>();
 

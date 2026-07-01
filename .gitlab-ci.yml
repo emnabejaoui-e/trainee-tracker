@@ -48,23 +48,19 @@ e2e-tests:
 deploy:
   stage: deploy
   image:
-    name: moby/buildkit:rootless
+    name: gcr.io/kaniko-project/executor:v1.24.0-debug
     entrypoint: [ "" ]
-  variables:
-    BUILDKITD_FLAGS: --oci-worker-no-process-sandbox
-  before_script:
-    - mkdir -p ~/.docker
-    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > ~/.docker/config.json
   script:
-    - |
-      buildctl-daemonless.sh build \
-        --frontend dockerfile.v0 \
-        --local context=. \
-        --local dockerfile=. \
-        --output type=image,name=gitlab.isse.de:5050/lehre/sopro/2026-sose/gruppen/team14/main:trainee_tracker,push=true
+    - echo "{\"auths\":{\"gitlab.isse.de:5050\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}" > /kaniko/.docker/config.jso
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/Trainee_Tracker/Dockerfile"
+      --destination "gitlab.isse.de:5050/lehre/sopro/2026-sose/gruppen/team14/main:trainee_tracker"
   needs:
     - unit-tests
     - e2e-tests
+  tags:
+    - sopro
   only:
     refs:
       - main

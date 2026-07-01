@@ -7,20 +7,17 @@ namespace Trainee_Tracker.Repositories
     {
         IList<User> GetAllUsers();
 
-        void CreateTrainee(Trainee trainee, string password);
-
-        void CreateMentor(Mentor mentor, string password);
-
-        void CreateAdmin(Admin admin, string password);
+        void CreateTrainee(Trainee trainee, string hashedPassword);
+        void CreateMentor(Mentor mentor, string hashedPassword);
+        void CreateAdmin(Admin admin, string hashedPassword);
 
         void UpdateUser(User user);
-
         void CloseUser(string email);
 
         bool ValidateUserCredentials(string email, string password);
 
         User GetUserByEmail(string email);
-        
+
         // Code-Owner: Andrej Basara
         User GetById(int id);
     }

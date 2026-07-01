@@ -1,0 +1,32 @@
+@* Code Owner: Andrej Basara *@
+@{
+    ViewData["Title"] = "AssignMentor";
+}
+
+@Html.ValidationSummary()
+
+<form method="post">
+    @Html.AntiForgeryToken()
+    <div class="user-create-forum-container"> 
+        <h1>Assign Mentor to Trainee</h1>
+        <p>Mentor:
+        <select name="mentorId">
+        @foreach (var m in ViewBag.Mentors)
+        {
+            <option value="@m.Id">@m.Name</option>
+        }
+        </select>
+        </p>
+    
+        <p> Trainee:
+        <select name="traineeId">
+            @foreach (var t in ViewBag.Trainees)
+            {
+                <option value="@t.Id">@t.Name</option>
+            }
+        </select>
+        </p>
+        <p> </p>
+        <button type="submit">Assign</button>
+    </div>
+</form>
