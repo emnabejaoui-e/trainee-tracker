@@ -1,0 +1,42 @@
+@*@model IEnumerable<Trainee>*@
+@model string
+@{
+    ViewData["Title"] = "Fortschrittskontrolle";
+}
+
+<p>@ViewBag.text</p>
+
+<h2>My Trainees</h2>
+
+<ul class="profile-list">
+    <li class="profile-item">
+        <div class="profile-main">
+            <a href="#" class="name">Alex Morgan</a>
+            <a href="mailto:alex@example.com" class="email">alex@example.com</a>
+        </div>
+        <div class="profile-meta">
+            <span class="meta-label">Mentor:</span>
+            <a href="mailto:jordan@example.com" class="mentor-link">Jordan Lee</a>
+        </div>
+    </li>
+    <li class="profile-item">
+        <div class="profile-main">
+            <a href="#" class="name">Sam Chen</a>
+            <a href="mailto:sam@example.com" class="email">sam@example.com</a>
+        </div>
+        <div class="profile-meta">
+            <span class="meta-label">Mentor:</span>
+            <a href="mailto:taylor@example.com" class="mentor-link">taylor@example.com</a>
+        </div>
+    </li>
+    <li class="profile-item">
+        <div class="profile-main">
+            <a href="#" class="name">Morgan Blake</a>
+            <a href="mailto:morgan@example.com" class="email">morgan@example.com</a>
+        </div>
+        <div class="profile-meta">
+            <span class="meta-label">Mentor:</span>
+            <a href="mailto:casey@example.com" class="mentor-link">Casey Reed</a>
+        </div>
+    </li>
+</ul>

@@ -1,6 +1,7 @@
 // Code Owner: Jelena Cosic (Grundgerüst, [Authorize], Index)
 using System.Collections.Generic;
 using System.Net.Mime;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Trainee_Tracker.Models;
@@ -41,6 +42,15 @@ public class MentorController : Controller
     public IActionResult UpdateLessonOrder(int traineeId, IList<int> order)
     {
         return StatusCode(501, "Not implemented!");
+    }
+
+    // Code-Owner: Leon
+    public IActionResult MyTrainees()
+    {
+        string mentorEmail = User.Identities.First().Claims
+            .First(cl => cl.Type == ClaimTypes.Email).Value;
+        
+        return View();
     }
 
     // Code-Owner: Leon
