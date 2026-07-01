@@ -63,8 +63,6 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     //Emna
-    db.Database.EnsureDeleted();
-    //Emna
     db.Database.EnsureCreated();
 
     if (!db.Users.Any())
