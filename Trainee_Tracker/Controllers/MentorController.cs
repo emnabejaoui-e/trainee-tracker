@@ -49,8 +49,41 @@ public class MentorController : Controller
     {
         string mentorEmail = User.Identities.First().Claims
             .First(cl => cl.Type == ClaimTypes.Email).Value;
+
+        var mentors = new List<Mentor>()
+        {
+            new Mentor
+            {
+                Id = 3, Name = "Jelena2 Mentor", Email = "jelenacosic2@makandra.de",
+                HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false,
+                Curriculum = null!
+            },
+            new Mentor
+            {
+                Id = 3, Name = "Test Mentor", Email = "jelenacosic2@makandra.de",
+                HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false,
+                Curriculum = null!
+            },
+        };
+
+        var trainees = new List<Trainee>()
+        {
+            new Trainee
+            {
+                Id = 2, Name = "Jelena3 Trainee", Email = "jelenacosic3@makandra.de",
+                HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false,
+                Mentors = mentors,
+            },
+            new Trainee
+            {
+                Id = 1, Name = "Test Trainee", Email = "testtrainee@makandra.de",
+                HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false,
+                StartingDate = new DateOnly(2026, 6, 30), EndDate = new DateOnly(2027, 1, 1),
+                Mentors = mentors,
+            },
+        };
         
-        return View();
+        return View(trainees);
     }
 
     // Code-Owner: Leon
