@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Trainee_Tracker.Data;
 
@@ -10,9 +11,11 @@ using Trainee_Tracker.Data;
 namespace Trainee_Tracker.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260701114315_AddAssignmentAndLessonToFeedback")]
+    partial class AddAssignmentAndLessonToFeedback
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.9");
@@ -206,7 +209,7 @@ namespace Trainee_Tracker.Migrations
                             ExpectedProcessingDate = new DateOnly(2026, 6, 26),
                             LessonId = 33,
                             Position = 4,
-                            Status = 3,
+                            Status = 5,
                             TraineeId = 1
                         },
                         new
