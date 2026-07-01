@@ -8,22 +8,29 @@
 
 <h2>My Trainees</h2>
 
-<ul class="profile-list">
-    @foreach(Trainee trainee in Model)
-    {
-        <li class="profile-item">
-            <div class="profile-main">
-                <a href="#" class="name">@trainee.Name</a>
-                <br/>
-                <a href="mailto:@trainee.Email" class="email">@trainee.Email</a>
-            </div>
-            <div class="profile-meta">
-                <span class="meta-label">Mentor:</span>
-                @foreach (Mentor mentor in trainee.Mentors)
-                {
-                    <a href="mailto:@mentor.Email" class="mentor-link">@mentor.Name</a>                    
-                }
-            </div>
-        </li>        
-    }
-</ul>
+@if (Model.Any())
+{
+    <ul class="profile-list">
+        @foreach(Trainee trainee in Model)
+        {
+            <li class="profile-item">
+                <div class="profile-main">
+                    <a href="#" class="name">@trainee.Name</a>
+                    <br/>
+                    <a href="mailto:@trainee.Email" class="email">@trainee.Email</a>
+                </div>
+                <div class="profile-meta">
+                    <span class="meta-label">Mentor:</span>
+                    @foreach (Mentor mentor in trainee.Mentors)
+                    {
+                        <a href="mailto:@mentor.Email" class="mentor-link">@mentor.Name</a>                    
+                    }
+                </div>
+            </li>        
+        }
+    </ul>
+}
+else
+{
+    <p>There are no trainees assigned to you.</p>
+}
