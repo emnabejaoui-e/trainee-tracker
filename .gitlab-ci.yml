@@ -53,7 +53,7 @@ deploy:
   script:
     - echo "{\"auths\":{\"gitlab.isse.de:5050\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}" > /kaniko/.docker/config.jso
     - /kaniko/executor
-      --context "${CI_PROJECT_DIR}"
+      --context "${CI_PROJECT_DIR}/Trainee_Tracker"
       --dockerfile "${CI_PROJECT_DIR}/Trainee_Tracker/Dockerfile"
       --destination "gitlab.isse.de:5050/lehre/sopro/2026-sose/gruppen/team14/main:trainee_tracker"
   needs:
