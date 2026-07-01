@@ -44,7 +44,16 @@ public class AppDbContext : DbContext
 
         //Julia: trainee for LessonAssignment SeedData
         modelBuilder.Entity<Trainee>().HasData(
+            new Trainee {Id = 2, Name = "Jelena3 Trainee", Email = "jelenacosic3@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false },
             new Trainee {Id = 1, Name="Test Trainee", Email="testtrainee@makandra.de", HashedPassword="$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed=false, StartingDate = new DateOnly(2026, 6, 30), EndDate = new DateOnly(2027, 1,1)}
+        );
+
+        modelBuilder.Entity<Mentor>().HasData(
+            new Mentor  {Id = 3, Name = "Jelena2 Mentor",  Email = "jelenacosic2@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false, Curriculum = null! }
+        );
+
+        modelBuilder.Entity<Admin>().HasData(
+            new Admin   {Id = 4, Name = "Jelena3 Admin",   Email = "jelenacosic1@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false }
         );
 
         //Julia: Seed Data for LessonAssignment
