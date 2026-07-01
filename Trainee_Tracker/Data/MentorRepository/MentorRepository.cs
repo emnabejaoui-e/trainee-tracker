@@ -20,6 +20,13 @@ namespace Trainee_Tracker.Data.MentorRepository
                 .Include(m => m.AssignedTrainees)
                 .FirstOrDefault(u => u.Id == id);
         }
+        
+        public Mentor GetMentorByEMail(string email)
+        {
+            return _context.Set<Mentor>()
+                .Include(m => m.AssignedTrainees)
+                .First(u => u.Email.Equals(email));
+        }
 
         // Code Owner: Andrej Basara
         public void UpdateMentor(Mentor mentor)
