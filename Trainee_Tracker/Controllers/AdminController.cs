@@ -1,4 +1,4 @@
-// Code Owner: Jelena Cosic
+// Code Owner: Jelena Cosic (Grundgerüst, [Authorize], Login)
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,7 +22,7 @@ public class AdminController : Controller
         _userService = userService;
     }
 
-
+// Code Owner: Jelena Cosic
     public IActionResult Index() => View();
 
     // Code-Owner: Andrej Basara

@@ -1,4 +1,4 @@
-// Code Owner: Jelena Cosic
+// Code Owner: Jelena Cosic (Grundgerüst, [Authorize], Index)
 using System.Collections.Generic;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Authorization;
@@ -10,30 +10,31 @@ namespace Trainee_Tracker.Controllers;
 [Authorize(Roles = "Mentor")]
 public class MentorController : Controller
 {
+
     /// <summary>
     /// Displays the Mentor dashboard.
     /// Only accessible by users with the Mentor role.
     /// </summary>
     /// <returns>The Mentor index view.</returns>
-    public IActionResult Index() => View();
+// Code Owner: Jelena Cosic
+      public IActionResult Index() => View();
 
     /// <summary>
     /// Assigns a Mentor to a trainee.
     /// </summary>
     /// <param name="mentorId">The numeric id of the Mentor to assign.</param>
     /// <param name="traineeId">The numeric id of the Trainee to assign.</param>
-    /// <returns></returns>
+    /// <returns>501 Not Implemented status.</returns>
     public IActionResult AssignTrainee(int mentorId, int traineeId)
     {
         return StatusCode(501, "Not implemented!");
     }
-
     /// <summary>
     /// Changes the order of lessons for a particular trainee.
     /// </summary>
     /// <param name="traineeId">The numeric id of the Trainee to change the order for.</param>
     /// <param name="order">A list with the numeric ids of Lessons in the order they should appear for trainees.</param>
-    /// <returns></returns>
+    /// <returns>501 Not Implemented status.<returns>
     public IActionResult UpdateLessonOrder(int traineeId, IList<int> order)
     {
         return StatusCode(501, "Not implemented!");

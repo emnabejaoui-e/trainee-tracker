@@ -1,3 +1,4 @@
+// Code Owner: Jelena Cosic
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,6 @@ namespace Trainee_Tracker.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly AppDbContext _context;
-
         public UserRepository(AppDbContext context)
         {
             _context = context;
