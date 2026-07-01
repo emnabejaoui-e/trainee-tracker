@@ -56,6 +56,11 @@ public class AdminController : Controller
             ModelState.AddModelError("password", "Password is required");
             return View();
         }
+        if(!_userService.IsEmailAvailable(email))
+        {
+            ModelState.AddModelError("Email", "Email already in user");
+            return View();
+        }
         var trainee = new Trainee
         {
             Name = name,
@@ -76,6 +81,11 @@ public class AdminController : Controller
     [HttpPost]
     public IActionResult CreateMentor(string name, string email, string password)
     {
+        if(!_userService.IsEmailAvailable(email))
+        {
+            ModelState.AddModelError("Email", "Email already in use");
+            return View();
+        }
         var mentor = new Mentor
         {
             Name = name,
@@ -93,6 +103,11 @@ public class AdminController : Controller
     [HttpPost]
     public IActionResult CreateAdmin(string name, string email, string password)
     {
+        if(!_userService.IsEmailAvailable(email))
+        {
+            ModelState.AddModelError("Email", "Email already in use");
+            return View();
+        }
         var admin = new Admin
         {
             Name = name,
@@ -145,7 +160,7 @@ public class AdminController : Controller
     public IActionResult CloseUser(int id)
     {
         var user = _userService.GetById(id);
-        _userService.CloseUser(user.Email);
+        _userService.CloseUser(user.Id);
         return RedirectToAction("UserManagment");
     }
 
