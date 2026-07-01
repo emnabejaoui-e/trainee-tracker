@@ -13,7 +13,6 @@ public class AppDbContext : DbContext
     public DbSet<Mentor> Mentors { get; set; }
     public DbSet<Admin> Admins { get; set; }
 
-    //Julia
     public DbSet<LessonAssignment> LessonAssignments {get; set;}
     //Julia
     public DbSet<Lesson> Lessons {get; set;}

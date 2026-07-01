@@ -5,6 +5,7 @@ using Trainee_Tracker.Data;
 using Trainee_Tracker.Data.LessonAssignments;
 using Trainee_Tracker.Data.MentorRepository;
 using Trainee_Tracker.Data.TraineeRepository;
+using Trainee_Tracker.Data.Lessons;
 using Trainee_Tracker.Models;
 using Trainee_Tracker.Repositories;
 using Trainee_Tracker.Services;
@@ -23,7 +24,7 @@ builder.Services.AddScoped<ITraineeRepository, TraineeRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMentorService, MentorService>();
 builder.Services.AddScoped<ILessonAssignmentRepository, LessonAssignmentRepository>();
-
+builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
