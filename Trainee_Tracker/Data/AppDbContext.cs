@@ -44,7 +44,7 @@ public class AppDbContext : DbContext
 
         //Julia: trainee for LessonAssignment SeedData
         modelBuilder.Entity<Trainee>().HasData(
-            new Trainee {Id = 1, Name="Test Trainee", Email="testtrainee@makandra.de", HashedPassword="12345", Closed=false, StartingDate = new DateOnly(2026, 6, 30), EndDate = new DateOnly(2027, 1,1)}
+            new Trainee {Id = 1, Name="Test Trainee", Email="testtrainee@makandra.de", HashedPassword="$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed=false, StartingDate = new DateOnly(2026, 6, 30), EndDate = new DateOnly(2027, 1,1)}
         );
 
         //Julia: Seed Data for LessonAssignment
