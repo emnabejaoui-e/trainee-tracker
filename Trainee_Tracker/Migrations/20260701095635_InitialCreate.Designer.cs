@@ -11,7 +11,7 @@ using Trainee_Tracker.Data;
 namespace Trainee_Tracker.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260701092434_InitialCreate")]
+    [Migration("20260701095635_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -317,6 +317,16 @@ namespace Trainee_Tracker.Migrations
                     b.HasBaseType("Trainee_Tracker.Models.User");
 
                     b.HasDiscriminator().HasValue("Admin");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 4,
+                            Closed = false,
+                            Email = "jelenacosic1@makandra.de",
+                            HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
+                            Name = "Jelena3 Admin"
+                        });
                 });
 
             modelBuilder.Entity("Trainee_Tracker.Models.Mentor", b =>
@@ -324,6 +334,16 @@ namespace Trainee_Tracker.Migrations
                     b.HasBaseType("Trainee_Tracker.Models.User");
 
                     b.HasDiscriminator().HasValue("Mentor");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 3,
+                            Closed = false,
+                            Email = "jelenacosic2@makandra.de",
+                            HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
+                            Name = "Jelena2 Mentor"
+                        });
                 });
 
             modelBuilder.Entity("Trainee_Tracker.Models.Trainee", b =>
@@ -339,6 +359,16 @@ namespace Trainee_Tracker.Migrations
                     b.HasDiscriminator().HasValue("Trainee");
 
                     b.HasData(
+                        new
+                        {
+                            Id = 2,
+                            Closed = false,
+                            Email = "jelenacosic3@makandra.de",
+                            HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
+                            Name = "Jelena3 Trainee",
+                            EndDate = new DateOnly(1, 1, 1),
+                            StartingDate = new DateOnly(1, 1, 1)
+                        },
                         new
                         {
                             Id = 1,
