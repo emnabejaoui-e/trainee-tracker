@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+  using Trainee_Tracker.Models;  
 
 namespace Trainee_Tracker.Controllers;
 
@@ -38,6 +39,22 @@ public class MentorController : Controller
         return StatusCode(501, "Not implemented!");
     }
 
+    [HttpGet]   // add this at the top if it isn't there
+
+public IActionResult Fortschrittskontrolle()
+{
+    var model = new ProgressControlData
+    {
+        DaysWorked = 15,
+        Finished = 12,
+        Open = 8,
+        Buffer = 2,
+        Speed = 110,
+        PredictedBuffer = 3
+    };
+
+    return View(model);
+}
     [HttpGet]
     public IActionResult ImportCurriculum()
     {

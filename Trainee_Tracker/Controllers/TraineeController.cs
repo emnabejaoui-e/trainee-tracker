@@ -9,4 +9,6 @@ namespace Trainee_Tracker.Controllers;
 public class TraineeController : Controller
 {
     public IActionResult Index() => View();
+
+    public IActionResult Home() => RedirectToAction("Index");
 }

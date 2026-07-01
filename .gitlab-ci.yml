@@ -47,15 +47,21 @@ e2e-tests:
 
 deploy:
   stage: deploy
-  image: quay.io/podman/stable
-  tags:
-    - sopro
+  image:
+    name: moby/buildkit:rootless
+    entrypoint: [ "" ]
+  variables:
+    BUILDKITD_FLAGS: --oci-worker-no-process-sandbox
   before_script:
-    - podman info
-    - podman login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - mkdir -p ~/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > ~/.docker/config.json
   script:
-    - podman build -t gitlab.isse.de:5050/lehre/sopro/2026-sose/gruppen/team14/main:trainee_tracker .
-    - podman push gitlab.isse.de:5050/lehre/sopro/2026-sose/gruppen/team14/main:trainee_tracker
+    - |
+      buildctl-daemonless.sh build \
+        --frontend dockerfile.v0 \
+        --local context=. \
+        --local dockerfile=. \
+        --output type=image,name=gitlab.isse.de:5050/lehre/sopro/2026-sose/gruppen/team14/main:trainee_tracker,push=true
   needs:
     - unit-tests
     - e2e-tests
