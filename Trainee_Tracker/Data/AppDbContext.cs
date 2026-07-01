@@ -60,7 +60,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<LessonAssignment>().HasData(
             new LessonAssignment{Id = 1, LessonId = 11, TraineeId = 1, Position = 2, ExpectedProcessingDate = new DateOnly(2026, 6, 24), Status = LessonAssignmentStatus.Accepted},
             new LessonAssignment{Id = 2, LessonId = 22, TraineeId = 1, Position = 3, ExpectedProcessingDate = new DateOnly(2026, 6, 25), Status = LessonAssignmentStatus.Accepted},
-            new LessonAssignment{Id = 3, LessonId = 33, TraineeId = 1, Position = 4, ExpectedProcessingDate = new DateOnly(2026, 6, 26), Status = LessonAssignmentStatus.Rated},
+            new LessonAssignment{Id = 3, LessonId = 33, TraineeId = 1, Position = 4, ExpectedProcessingDate = new DateOnly(2026, 6, 26), Status = LessonAssignmentStatus.Accepted},
             new LessonAssignment{Id = 4, LessonId = 44, TraineeId = 1, Position = 5, ExpectedProcessingDate = new DateOnly(2026, 6, 26), Status = LessonAssignmentStatus.Accepted},
             new LessonAssignment{Id = 5, LessonId = 55, TraineeId = 1, Position = 6, ExpectedProcessingDate = new DateOnly(2026, 6, 27), Status = LessonAssignmentStatus.Finished},
             new LessonAssignment{Id = 6, LessonId = 66, TraineeId = 1, Position = 7, ExpectedProcessingDate = new DateOnly(2026, 6, 28), Status = LessonAssignmentStatus.Finished},

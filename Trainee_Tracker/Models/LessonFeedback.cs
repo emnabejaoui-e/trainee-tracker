@@ -26,4 +26,8 @@ public class LessonFeedback
 
     public int MentorId { get; set; }
     public Mentor? Mentor { get; set; }
+
+    public int LessonId { get; set; }
+    public Lesson? Lesson { get; set; }
+    public int AssignmentId { get; set; }
 }

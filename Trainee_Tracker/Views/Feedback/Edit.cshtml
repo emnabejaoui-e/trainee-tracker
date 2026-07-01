@@ -2,50 +2,41 @@
 @model Trainee_Tracker.Models.LessonFeedback
 
 @{
-    ViewData["Title"] = "Create Feedback";
+    ViewData["Title"] = "Edit Feedback";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <link rel="stylesheet" href="~/css/feedback.css" />
 
 <div class="feedback-page">
-    <h1 class="feedback-title">Lesson Feedback</h1>
+    <h1 class="feedback-title">Edit Feedback</h1>
 
     <div class="feedback-card">
-        <div class="badge">COMPLETED</div>
+        <h2 class="lesson-title">@(Model.Lesson?.Title ?? "Lesson Feedback")</h2>
 
-        <h2 class="lesson-title">@ViewBag.LessonTitle</h2>
-
-        <p class="feedback-description">
-            Please rate the lesson and provide feedback about your learning experience.
-        </p>
-
-        <form asp-action="CreateFeedback" asp-controller="Feedback" method="post">
+        <form asp-action="Edit" asp-controller="Feedback" method="post">
             @Html.AntiForgeryToken()
 
-            <input type="hidden" asp-for="LessonId" />
-            <input type="hidden" asp-for="AssignmentId" />
+            <input type="hidden" asp-for="Id" />
 
             <div class="feedback-box">
-                <label>
-                    Difficulty <span class="required">*</span>
-                </label>
+                <label>Difficulty <span class="required">*</span></label>
 
-                <div class="rating-input" aria-label="Difficulty rating">
+                <div class="rating-input">
                     <input asp-for="Difficulty" type="radio" id="star5" value="5" />
-                    <label for="star5" aria-label="5 stars">★</label>
+                    <label for="star5">★</label>
 
                     <input asp-for="Difficulty" type="radio" id="star4" value="4" />
-                    <label for="star4" aria-label="4 stars">★</label>
+                    <label for="star4">★</label>
 
                     <input asp-for="Difficulty" type="radio" id="star3" value="3" />
-                    <label for="star3" aria-label="3 stars">★</label>
+                    <label for="star3">★</label>
 
                     <input asp-for="Difficulty" type="radio" id="star2" value="2" />
-                    <label for="star2" aria-label="2 stars">★</label>
+                    <label for="star2">★</label>
 
                     <input asp-for="Difficulty" type="radio" id="star1" value="1" />
-                    <label for="star1" aria-label="1 star">★</label>
+                    <label for="star1">★</label>
                 </div>
 
                 <span asp-validation-for="Difficulty" class="text-danger"></span>
@@ -77,18 +68,20 @@
             </div>
 
             <div class="feedback-box">
-                <label asp-for="Comment">
-                    Comment (optional)
-                </label>
+                <label asp-for="Comment">Comment (optional)</label>
 
                 <textarea asp-for="Comment"></textarea>
 
                 <span asp-validation-for="Comment" class="text-danger"></span>
             </div>
 
-            <button type="submit" class="btn-submit-feedback">
-                Submit Feedback
+            <button class="btn-submit-feedback" type="submit">
+                Save Changes
             </button>
+
+            <a asp-action="RecentFeedback" asp-controller="Feedback" class="btn">
+                Cancel
+            </a>
 
             <div asp-validation-summary="All" class="text-danger"></div>
         </form>

@@ -36,15 +36,24 @@ public class LessonFeedbackService
         );
     }
 
-    // TODO: Implement feedback update functionality.
-    public List<LessonFeedback> UpdateFeedback()
+    public LessonFeedback? GetById(int id)
     {
-        throw new NotImplementedException();
+        return _feedbackRepository.GetById(id);
     }
 
-    // TODO: Implement feedback deletion functionality.
-    public void DeleteFeedback()
+    public void UpdateFeedback(LessonFeedback feedback)
     {
-        throw new NotImplementedException();
+        _feedbackRepository.Update(feedback);
+    }
+
+
+    public void DeleteFeedback(int id)
+    {
+        var feedback = _feedbackRepository.GetById(id);
+
+        if (feedback != null)
+        {
+            _feedbackRepository.Delete(feedback);
+        }
     }
 }
