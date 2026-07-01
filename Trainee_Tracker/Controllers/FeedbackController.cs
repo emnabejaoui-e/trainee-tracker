@@ -102,6 +102,8 @@ public class FeedbackController : Controller
             LessonAssignmentStatus.Rated
         );
 
+        TempData["SuccessMessage"] = "Your feedback has been submitted successfully.";
+
         return RedirectToAction("RecentFeedback", "Feedback", new
         {
             from = DateTime.Today.ToString("yyyy-MM-dd"),
@@ -142,6 +144,9 @@ public class FeedbackController : Controller
 
         _lessonFeedbackService.UpdateFeedback(existingFeedback);
 
+        TempData["SuccessMessage"] = "Your feedback has been updated successfully.";
+
+
         return RedirectToAction("RecentFeedback", "Feedback", new
         {
             from = DateTime.Today.ToString("yyyy-MM-dd"),
@@ -153,6 +158,8 @@ public class FeedbackController : Controller
     public IActionResult Delete(int id)
     {
         _lessonFeedbackService.DeleteFeedback(id);
+
+        TempData["SuccessMessage"] = "Your feedback has been deleted successfully.";
 
         return RedirectToAction("RecentFeedback", "Feedback", new
         {
