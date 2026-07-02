@@ -157,6 +157,12 @@ public class FeedbackController : Controller
     [HttpPost]
     public IActionResult Delete(int id)
     {
+        var feedback = _lessonFeedbackService.GetById(id);
+
+        if (feedback == null)
+            return NotFound();
+
+        _lessonAssignmentRepository.UpdateStatus(feedback.AssignmentId, LessonAssignmentStatus.Accepted);
         _lessonFeedbackService.DeleteFeedback(id);
 
         TempData["SuccessMessage"] = "Your feedback has been deleted successfully.";
