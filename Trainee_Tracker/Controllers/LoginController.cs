@@ -13,13 +13,13 @@ public class LoginController : Controller
 {
     private readonly IUserService _userService;
 
-    // Code Owner: Jelena Cosic
+// Code Owner: Jelena Cosic
     public LoginController(IUserService userService)
     {
         _userService = userService;
     }
 
-    // Code Owner: Jelena Cosic
+// Code Owner: Jelena Cosic
     [HttpGet]
     public IActionResult Login()
     {
@@ -29,7 +29,7 @@ public class LoginController : Controller
         return View();
     }
 
-    // Code Owner: Jelena Cosic
+// Code Owner: Jelena Cosic
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(string email, string password)
@@ -64,7 +64,7 @@ public class LoginController : Controller
         }
     }
 
-    // Code Owner: Jelena Cosic
+// Code Owner: Jelena Cosic
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Logout()
@@ -73,7 +73,7 @@ public class LoginController : Controller
         return RedirectToAction("Login");
     }
 
-    // Code Owner: Jelena Cosic
+// Code Owner: Jelena Cosic
     private async Task SignInUser(User user)
     {
         var claims = new List<Claim>
@@ -93,7 +93,7 @@ public class LoginController : Controller
         );
     }
 
-    // Code Owner: Jelena Cosic
+// Code Owner: Jelena Cosic
 
     private string GetRoleString(User user)
     {
@@ -102,7 +102,7 @@ public class LoginController : Controller
         return "Trainee";
     }
 
-    // Code Owner: Jelena Cosic
+// Code Owner: Jelena Cosic
     private IActionResult RedirectByRole()
     {
         if (User.IsInRole("Admin"))   return RedirectToAction("Index", "Admin");

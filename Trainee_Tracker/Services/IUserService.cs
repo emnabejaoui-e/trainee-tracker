@@ -13,7 +13,7 @@ namespace Trainee_Tracker.Services
         void UpdateMentor(Mentor mentor);
         void UpdateAdmin(Admin admin);
         IList<User> GetAllUsers();
-        void CloseUser(string email);
+        void CloseUser(int id);
         LoginResult ValidateUserCredentials(string email, string password); 
         User GetUserByEmail(string email);
 
