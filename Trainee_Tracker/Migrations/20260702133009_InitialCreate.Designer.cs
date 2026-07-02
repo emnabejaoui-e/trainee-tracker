@@ -11,8 +11,8 @@ using Trainee_Tracker.Data;
 namespace Trainee_Tracker.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260701114315_AddAssignmentAndLessonToFeedback")]
-    partial class AddAssignmentAndLessonToFeedback
+    [Migration("20260702133009_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,20 +66,29 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 11,
-                            Effort = 1.0,
+                            Effort = 3.5,
                             Inactive = false,
-                            Position = 2,
-                            Title = "Introduction to HTML",
-                            URL = "#"
+                            Position = 1,
+                            Title = "Fundamentals of Web Development",
+                            URL = "https://makandracards.com/makandra-devops-curriculum/509333-grundlagen-aus-der-web-entwicklung-3-5-pt"
+                        },
+                        new
+                        {
+                            Id = 111,
+                            Effort = 0.5,
+                            Inactive = false,
+                            Position = 6,
+                            Title = "SSH",
+                            URL = "https://makandracards.com/makandra-devops-curriculum/511181-ssh-0-5-pt"
                         },
                         new
                         {
                             Id = 22,
-                            Effort = 0.5,
+                            Effort = 2.0,
                             Inactive = false,
                             Position = 3,
-                            Title = "CSS Basics",
-                            URL = "#"
+                            Title = "Virtualization",
+                            URL = "https://makandracards.com/makandra-devops-curriculum/509340-virtualisierung-2-pt"
                         },
                         new
                         {
@@ -87,33 +96,33 @@ namespace Trainee_Tracker.Migrations
                             Effort = 2.0,
                             Inactive = false,
                             Position = 4,
-                            Title = "Ruby: What extend and include do",
-                            URL = "#"
+                            Title = "Lxc/LXD",
+                            URL = "https://makandracards.com/makandra-devops-curriculum/517382-lxc-lxd-2-pt"
                         },
                         new
                         {
                             Id = 44,
-                            Effort = 0.5,
+                            Effort = 1.0,
                             Inactive = false,
                             Position = 5,
-                            Title = "Rules of thumb against flaky specs",
-                            URL = "#"
+                            Title = "A Brief Introduction to Docker and Containers ",
+                            URL = "https://makandracards.com/makandra-devops-curriculum/523491-kurze-einfuehrung-docker-und-container-1-pt"
                         },
                         new
                         {
                             Id = 55,
-                            Effort = 1.5,
+                            Effort = 0.5,
                             Inactive = false,
                             Position = 6,
-                            Title = "How to use API",
-                            URL = "#"
+                            Title = "Firewalling with iptables",
+                            URL = "https://makandracards.com/makandra-devops-curriculum/531475-firewalling-mit-iptables-0-5-pt"
                         },
                         new
                         {
                             Id = 66,
                             Effort = 2.0,
                             Inactive = false,
-                            Position = 7,
+                            Position = 2,
                             Title = "Linux",
                             URL = "https://makandracards.com/makandra-devops-curriculum/509339-linux-2-pt"
                         },
@@ -152,6 +161,15 @@ namespace Trainee_Tracker.Migrations
                             Position = 10,
                             Title = "Network",
                             URL = "https://makandracards.com/makandra-devops-curriculum/509341-netzwerke-4-pt"
+                        },
+                        new
+                        {
+                            Id = 222,
+                            Effort = 2.5,
+                            Inactive = false,
+                            Position = 11,
+                            Title = "HTTP Protocoll and Webserver",
+                            URL = "https://makandracards.com/makandra-devops-curriculum/519412-http-protokoll-und-webserver-2-5-pt"
                         });
                 });
 
@@ -209,7 +227,7 @@ namespace Trainee_Tracker.Migrations
                             ExpectedProcessingDate = new DateOnly(2026, 6, 26),
                             LessonId = 33,
                             Position = 4,
-                            Status = 5,
+                            Status = 3,
                             TraineeId = 1
                         },
                         new
@@ -273,7 +291,115 @@ namespace Trainee_Tracker.Migrations
                             LessonId = 100,
                             Position = 11,
                             Status = 0,
-                            TraineeId = 1
+                            TraineeId = 3
+                        },
+                        new
+                        {
+                            Id = 11,
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 24),
+                            LessonId = 11,
+                            Position = 2,
+                            Status = 3,
+                            TraineeId = 3
+                        },
+                        new
+                        {
+                            Id = 12,
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 25),
+                            LessonId = 22,
+                            Position = 3,
+                            Status = 3,
+                            TraineeId = 3
+                        },
+                        new
+                        {
+                            Id = 13,
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 26),
+                            LessonId = 33,
+                            Position = 4,
+                            Status = 3,
+                            TraineeId = 3
+                        },
+                        new
+                        {
+                            Id = 14,
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 26),
+                            LessonId = 44,
+                            Position = 6,
+                            Status = 3,
+                            TraineeId = 3
+                        },
+                        new
+                        {
+                            Id = 15,
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 27),
+                            LessonId = 55,
+                            Position = 5,
+                            Status = 2,
+                            TraineeId = 3
+                        },
+                        new
+                        {
+                            Id = 16,
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 28),
+                            LessonId = 66,
+                            Position = 7,
+                            Status = 2,
+                            TraineeId = 3
+                        },
+                        new
+                        {
+                            Id = 17,
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 30),
+                            LessonId = 77,
+                            Position = 9,
+                            Status = 2,
+                            TraineeId = 3
+                        },
+                        new
+                        {
+                            Id = 18,
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 30),
+                            LessonId = 88,
+                            Position = 8,
+                            Status = 1,
+                            TraineeId = 3
+                        },
+                        new
+                        {
+                            Id = 19,
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
+                            LessonId = 99,
+                            Position = 10,
+                            Status = 1,
+                            TraineeId = 3
+                        },
+                        new
+                        {
+                            Id = 20,
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
+                            LessonId = 100,
+                            Position = 11,
+                            Status = 0,
+                            TraineeId = 3
+                        },
+                        new
+                        {
+                            Id = 21,
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
+                            LessonId = 111,
+                            Position = 12,
+                            Status = 0,
+                            TraineeId = 3
+                        },
+                        new
+                        {
+                            Id = 22,
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
+                            LessonId = 222,
+                            Position = 13,
+                            Status = 0,
+                            TraineeId = 3
                         });
                 });
 
@@ -367,7 +493,7 @@ namespace Trainee_Tracker.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 4,
+                            Id = 5,
                             Closed = false,
                             Email = "jelenacosic1@makandra.de",
                             HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
@@ -384,7 +510,7 @@ namespace Trainee_Tracker.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 3,
+                            Id = 4,
                             Closed = false,
                             Email = "jelenacosic2@makandra.de",
                             HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
@@ -419,11 +545,21 @@ namespace Trainee_Tracker.Migrations
                         {
                             Id = 1,
                             Closed = false,
-                            Email = "testtrainee@makandra.de",
+                            Email = "torstentrainee@makandra.de",
                             HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
-                            Name = "Test Trainee",
+                            Name = "Torsten Trainee",
                             EndDate = new DateOnly(2027, 1, 1),
                             StartingDate = new DateOnly(2026, 6, 30)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Closed = false,
+                            Email = "tildatrainee@makandra.de",
+                            HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
+                            Name = "Tilda Trainee",
+                            EndDate = new DateOnly(2027, 1, 1),
+                            StartingDate = new DateOnly(2026, 7, 1)
                         });
                 });
 
