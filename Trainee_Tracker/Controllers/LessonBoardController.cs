@@ -1,31 +1,48 @@
 using System.Collections.Generic;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Trainee_Tracker.Data.LessonAssignments;
 using Trainee_Tracker.Models;
+using Trainee_Tracker.Repositories;
 
 namespace Trainee_Tracker.Controllers;
 
 public class LessonBoardController : Controller
 {
-    private readonly ILessonAssignmentRepository _lessonAssignmnetRepo;
+    private readonly ILessonAssignmentRepository _lessonAssignmentRepo;
+    private readonly IUserRepository _userRepo;
 
     // Julia
-    public LessonBoardController(ILessonAssignmentRepository repo)
+    public LessonBoardController(ILessonAssignmentRepository lessonAssignmentRepo, IUserRepository userRepo)
     {
-        _lessonAssignmnetRepo = repo;
+        _lessonAssignmentRepo = lessonAssignmentRepo;
+        _userRepo = userRepo;
     }
 
     // Julia
     public IActionResult LessonBoard()
     {
-        var lessons = _lessonAssignmnetRepo.GetAllLessonAssignments();
-        return View(lessons);
+        var traineeIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(traineeIdString == null)
+        {
+            return Unauthorized();
+        }
+        var traineeId = int.Parse(traineeIdString);
+        var trainee = _userRepo.GetById(traineeId) as Trainee;
+
+        if(trainee == null)
+        {
+            return Unauthorized();
+        }
+
+        var assignments = _lessonAssignmentRepo.FindByTrainee(trainee);
+        return View(assignments);
     }
 
     //Julia
     [HttpPost]
     public IActionResult UpdateStatus(int id, LessonAssignmentStatus newStatus){
-        _lessonAssignmnetRepo.UpdateStatus(id, newStatus);
+        _lessonAssignmentRepo.UpdateStatus(id, newStatus);
         return RedirectToAction("LessonBoard");
 
     }
@@ -34,7 +51,6 @@ public class LessonBoardController : Controller
     [HttpPost]
     public IActionResult RateAssignment(int id)
     {
-       // _lessonAssignmnetRepo.UpdateStatus(id, LessonAssignmentStatus.Rated); -> methode gehört in FeedbackController zu CreateFeedback (zuerst merge von Julia dann von Emna)
         return RedirectToAction("CreateFeedback", "Feedback", new {id = id});
     }
 }
