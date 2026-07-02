@@ -99,11 +99,8 @@
                 
                 <div class="card-actions">
                     <a href="@assignment.Lesson.URL" class="btn btn-see-card" target="_blank">see card</a>
-                    <form method="post" asp-action="RateAssignment" asp-controller="LessonBoard">
-                        <input type="hidden" name="id" value="@assignment.Id"/>
-                        <button type="submit" class="btn btn-status">rate</button>
-                        
-                    </form>
+                    <a asp-controller="Feedback" asp-action="CreateFeedback" asp-route-lessonId="@assignment.Lesson.Id" asp-route-assignmentId="@assignment.Id"
+                    class="btn btn-status"> rate </a>
                 </div>
             </div>
         }

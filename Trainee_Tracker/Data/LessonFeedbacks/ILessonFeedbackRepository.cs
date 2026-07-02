@@ -10,7 +10,11 @@ public interface ILessonFeedbackRepository
 
     List<LessonFeedback> FindByTimeSpan(DateTime from, DateTime until);
 
+    LessonFeedback? GetById(int id);
+
     void Save(LessonFeedback feedback);
+
+    void Update(LessonFeedback feedback);
 
     void Delete(LessonFeedback feedback);
 }

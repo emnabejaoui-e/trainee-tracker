@@ -1,53 +1,17 @@
-@* Code-Owner: Emna Bejaoui *@
 @model IEnumerable<Trainee_Tracker.Models.LessonFeedback>
 
 @{
-    ViewData["Title"] = "Recent Feedback";
+    ViewData["Title"] = "My Feedback";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <link rel="stylesheet" href="~/css/feedback.css" />
 
-<h1 class="section-title">Recent Feedback</h1>
+<h1 class="section-title">My Feedback</h1>
 
-@if (TempData["SuccessMessage"] != null)
+@if (!Model.Any())
 {
-    <div class="alert alert-success" role="alert">
-        @TempData["SuccessMessage"]
-    </div>
-}
-
-<form asp-action="RecentFeedback" method="get" class="feedback-filter">
-    <div>
-        <label for="from">From</label>
-        <input type="date"
-               id="from"
-               name="from"
-               value="@(ViewBag.From != null ? ((DateTime)ViewBag.From).ToString("yyyy-MM-dd") : "")" />
-    </div>
-
-    <div>
-        <label for="until">Until</label>
-        <input type="date"
-               id="until"
-               name="until"
-               value="@(ViewBag.Until != null ? ((DateTime)ViewBag.Until).ToString("yyyy-MM-dd") : "")" />
-    </div>
-
-    <button type="submit" class="btn">Show Feedback</button>
-</form>
-
-@if (ViewBag.DateError != null)
-{
-    <p class="text-danger">@ViewBag.DateError</p>
-}
-
-@if (Context.Request.Query.ContainsKey("from") &&
-     Context.Request.Query.ContainsKey("until") &&
-     !Model.Any() &&
-     ViewData.ModelState.IsValid)
-{
-    <p>No feedback found for the selected period.</p>
+    <p>You have not submitted any feedback yet.</p>
 }
 else
 {
@@ -56,13 +20,7 @@ else
         {
             <article>
                 <header class="feedback-card-header">
-
-                    <span class="float-left">
-                        <span>
-                            <i>@(feedback.Trainee?.Name ?? "Unknown Trainee")</i>
-                        </span>
-                        <span>rated</span>
-                    </span>
+                    <span class="float-left"></span>
 
                     <span class="float-right">
                         <a asp-action="Edit"
@@ -87,32 +45,26 @@ else
                             </button>
                         </form>
                     </span>
-
                 </header>
 
                 <h2>@(feedback.Lesson?.Title ?? "Unknown Lesson")</h2>
 
                 <p class="feedback-date">
-                    Submitted on @feedback.CreatedAt.ToString("dd.MM.yyyy 'at' HH:mm")
+                    Submitted: @feedback.CreatedAt.ToString("dd.MM.yyyy, HH:mm")
                 </p>
 
                 <dl>
-
                     <dt>Difficulty</dt>
-
-                    <dd class="rating"
-                        aria-label="@feedback.Difficulty out of 5 stars">
-
+                    <dd class="rating">
                         @for (var i = 0; i < feedback.Difficulty; i++)
                         {
-                            <span aria-hidden="true">★</span>
+                            <span>★</span>
                         }
 
                         @for (var i = feedback.Difficulty; i < 5; i++)
                         {
-                            <span aria-hidden="true">☆</span>
+                            <span>☆</span>
                         }
-
                     </dd>
 
                     <dt>Previous Knowledge</dt>
@@ -127,9 +79,7 @@ else
                             ? "No comment"
                             : feedback.Comment)
                     </dd>
-
                 </dl>
-
             </article>
         }
     </div>

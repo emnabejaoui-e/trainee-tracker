@@ -50,9 +50,9 @@ namespace Trainee_Tracker.Repositories
             _context.SaveChanges();
         }
 
-        public void CloseUser(string email)
+        public void CloseUser(int id)
         {
-            var user = GetUserByEmail(email);
+            var user = GetById(id);
             if (user != null)
             {
                 user.Closed = true;

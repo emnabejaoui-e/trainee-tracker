@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Trainee_Tracker.Data;
 
@@ -10,9 +11,11 @@ using Trainee_Tracker.Data;
 namespace Trainee_Tracker.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260701113940_AddLessonAndAssignmentToFeedback")]
+    partial class AddLessonAndAssignmentToFeedback
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.9");
@@ -206,7 +209,7 @@ namespace Trainee_Tracker.Migrations
                             ExpectedProcessingDate = new DateOnly(2026, 6, 26),
                             LessonId = 33,
                             Position = 4,
-                            Status = 3,
+                            Status = 5,
                             TraineeId = 1
                         },
                         new
@@ -283,9 +286,6 @@ namespace Trainee_Tracker.Migrations
                     b.Property<double>("ActualEffort")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("AssignmentId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Comment")
                         .HasMaxLength(500)
                         .HasColumnType("TEXT");
@@ -294,9 +294,6 @@ namespace Trainee_Tracker.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Difficulty")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("LessonId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("MentorId")
@@ -310,8 +307,6 @@ namespace Trainee_Tracker.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LessonId");
 
                     b.HasIndex("MentorId");
 
@@ -460,12 +455,6 @@ namespace Trainee_Tracker.Migrations
 
             modelBuilder.Entity("Trainee_Tracker.Models.LessonFeedback", b =>
                 {
-                    b.HasOne("Trainee_Tracker.Models.Lesson", "Lesson")
-                        .WithMany()
-                        .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Trainee_Tracker.Models.Mentor", "Mentor")
                         .WithMany()
                         .HasForeignKey("MentorId")
@@ -477,8 +466,6 @@ namespace Trainee_Tracker.Migrations
                         .HasForeignKey("TraineeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Lesson");
 
                     b.Navigation("Mentor");
 

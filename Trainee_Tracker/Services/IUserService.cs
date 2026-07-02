@@ -19,5 +19,7 @@ namespace Trainee_Tracker.Services
 
         // Code-Owner: Andrej Basara
         User GetById(int id);
+
+        bool IsEmailAvailable(string email);
     }
 }
