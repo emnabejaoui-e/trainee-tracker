@@ -11,8 +11,8 @@ using Trainee_Tracker.Data;
 namespace Trainee_Tracker.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260702133009_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260702190010_FreshStart")]
+    partial class FreshStart
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
