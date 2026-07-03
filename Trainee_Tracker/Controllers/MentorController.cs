@@ -1,8 +1,10 @@
 // Code Owner: Jelena Cosic (Grundgerüst, [Authorize], Index)
-using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Net.Mime;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Trainee_Tracker.Data.MentorRepository;
 using Trainee_Tracker.Models;
 
 namespace Trainee_Tracker.Controllers;
@@ -10,6 +12,13 @@ namespace Trainee_Tracker.Controllers;
 [Authorize(Roles = "Mentor")]
 public class MentorController : Controller
 {
+    private IMentorRepository _mentorRepo;
+
+    public MentorController(IMentorRepository mentorRepo)
+    {
+        _mentorRepo = mentorRepo;
+    }
+
     // Code-Owner: Jelena Cosic
     // GET: /Mentor/Index
     /// <summary>
@@ -41,6 +50,20 @@ public class MentorController : Controller
     public IActionResult UpdateLessonOrder(int traineeId, IList<int> order)
     {
         return StatusCode(501, "Not implemented!");
+    }
+
+    // Code-Owner: Leon
+    public IActionResult MyTrainees()
+    {
+        string mentorEmail = User.Identities.First().Claims
+            .First(cl => cl.Type == ClaimTypes.Email).Value;
+
+        Mentor? currentUser = _mentorRepo.GetMentorByEMail(mentorEmail);
+
+        // You must be logged in as a mentor to event call this Action method
+        Contract.Assert(currentUser != null, "Inconsistent login state (no/invalid email set).");
+        
+        return View(currentUser.AssignedTrainees);
     }
 
     // Code-Owner: Leon
