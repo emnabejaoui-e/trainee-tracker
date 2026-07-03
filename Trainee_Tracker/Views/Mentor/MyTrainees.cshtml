@@ -23,7 +23,14 @@
                     <span class="meta-label">Mentor:</span>
                     @foreach (Mentor mentor in trainee.Mentors)
                     {
-                        <a href="mailto:@mentor.Email" class="mentor-link">@mentor.Name</a>                    
+                        @if (!mentor.Closed)
+                        {
+                            <a href="mailto:@mentor.Email" class="mentor-link">@mentor.Name</a>
+                        }
+                        else
+                        {
+                            <a href="mailto:@mentor.Email" class="mentor-link-closed" aria-disabled="True">@mentor.Name</a>
+                        }
                     }
                 </div>
             </li>        

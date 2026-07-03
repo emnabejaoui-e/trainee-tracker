@@ -68,6 +68,10 @@
     margin-right: 5px;
 }
 
+.mentor-link-closed {
+    color: var(--gray-600);
+}
+
 .mentor-link:hover {
     border-bottom-color: var(--pink);
 }
