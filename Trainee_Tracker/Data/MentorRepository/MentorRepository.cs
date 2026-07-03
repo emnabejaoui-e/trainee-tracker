@@ -21,11 +21,17 @@ namespace Trainee_Tracker.Data.MentorRepository
                 .FirstOrDefault(u => u.Id == id);
         }
         
-        public Mentor GetMentorByEMail(string email)
+        public Mentor? GetMentorByEMail(string email)
+        {
+            return GetMentorsByEMail(email, false).FirstOrDefault((Mentor?) null);
+        }
+        
+        public IEnumerable<Mentor> GetMentorsByEMail(string email, bool canBeClosed)
         {
             return _context.Set<Mentor>()
                 .Include(m => m.AssignedTrainees)
-                .First(u => u.Email.Equals(email));
+                .Where(m => !canBeClosed || !m.Closed)
+                .Where(m => email.Equals(m.Email));
         }
 
         // Code Owner: Andrej Basara

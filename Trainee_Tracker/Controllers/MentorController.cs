@@ -1,5 +1,5 @@
 // Code Owner: Jelena Cosic (Grundgerüst, [Authorize], Index)
-using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Net.Mime;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
@@ -58,7 +58,10 @@ public class MentorController : Controller
         string mentorEmail = User.Identities.First().Claims
             .First(cl => cl.Type == ClaimTypes.Email).Value;
 
-        Mentor currentUser = _mentorRepo.GetMentorByEMail(mentorEmail);
+        Mentor? currentUser = _mentorRepo.GetMentorByEMail(mentorEmail);
+
+        // You must be logged in as a mentor to event call this Action method
+        Contract.Assert(currentUser != null, "Inconsistent login state (no/invalid email set).");
         
         return View(currentUser.AssignedTrainees);
     }
