@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Trainee_Tracker.Migrations
 {
     /// <inheritdoc />
-    public partial class FreshStart : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -184,28 +184,28 @@ namespace Trainee_Tracker.Migrations
                 columns: new[] { "Id", "ExpectedProcessingDate", "LessonId", "Position", "Status", "TraineeId" },
                 values: new object[,]
                 {
-                    { 1, new DateOnly(2026, 6, 24), 11, 2, 3, 1 },
-                    { 2, new DateOnly(2026, 6, 25), 22, 3, 3, 1 },
-                    { 3, new DateOnly(2026, 6, 26), 33, 4, 3, 1 },
-                    { 4, new DateOnly(2026, 6, 26), 44, 5, 3, 1 },
-                    { 5, new DateOnly(2026, 6, 27), 55, 6, 2, 1 },
-                    { 6, new DateOnly(2026, 6, 28), 66, 7, 2, 1 },
-                    { 7, new DateOnly(2026, 6, 30), 77, 8, 1, 1 },
-                    { 8, new DateOnly(2026, 6, 30), 88, 9, 1, 1 },
-                    { 9, new DateOnly(2026, 7, 1), 99, 10, 0, 1 },
-                    { 10, new DateOnly(2026, 7, 1), 100, 11, 0, 3 },
-                    { 11, new DateOnly(2026, 6, 24), 11, 2, 3, 3 },
-                    { 12, new DateOnly(2026, 6, 25), 22, 3, 3, 3 },
-                    { 13, new DateOnly(2026, 6, 26), 33, 4, 3, 3 },
-                    { 14, new DateOnly(2026, 6, 26), 44, 6, 3, 3 },
-                    { 15, new DateOnly(2026, 6, 27), 55, 5, 2, 3 },
-                    { 16, new DateOnly(2026, 6, 28), 66, 7, 2, 3 },
-                    { 17, new DateOnly(2026, 6, 30), 77, 9, 2, 3 },
-                    { 18, new DateOnly(2026, 6, 30), 88, 8, 1, 3 },
-                    { 19, new DateOnly(2026, 7, 1), 99, 10, 1, 3 },
-                    { 20, new DateOnly(2026, 7, 1), 100, 11, 0, 3 },
-                    { 21, new DateOnly(2026, 7, 1), 111, 12, 0, 3 },
-                    { 22, new DateOnly(2026, 7, 1), 222, 13, 0, 3 }
+                    { 1, new DateOnly(2026, 6, 29), 11, 2, 3, 1 },
+                    { 2, new DateOnly(2026, 6, 29), 22, 3, 3, 1 },
+                    { 3, new DateOnly(2026, 6, 29), 33, 4, 3, 1 },
+                    { 4, new DateOnly(2026, 6, 30), 44, 5, 3, 1 },
+                    { 5, new DateOnly(2026, 6, 30), 55, 6, 2, 1 },
+                    { 6, new DateOnly(2026, 7, 1), 66, 7, 2, 1 },
+                    { 7, new DateOnly(2026, 7, 1), 77, 8, 1, 1 },
+                    { 8, new DateOnly(2026, 7, 1), 88, 9, 1, 1 },
+                    { 9, new DateOnly(2026, 7, 2), 99, 10, 0, 1 },
+                    { 10, new DateOnly(2026, 7, 3), 100, 11, 0, 3 },
+                    { 11, new DateOnly(2026, 6, 29), 11, 2, 3, 3 },
+                    { 12, new DateOnly(2026, 6, 29), 22, 3, 3, 3 },
+                    { 13, new DateOnly(2026, 6, 29), 33, 4, 3, 3 },
+                    { 14, new DateOnly(2026, 6, 30), 44, 6, 3, 3 },
+                    { 15, new DateOnly(2026, 6, 30), 55, 5, 2, 3 },
+                    { 16, new DateOnly(2026, 7, 1), 66, 7, 2, 3 },
+                    { 17, new DateOnly(2026, 7, 1), 77, 9, 2, 3 },
+                    { 18, new DateOnly(2026, 7, 2), 88, 8, 1, 3 },
+                    { 19, new DateOnly(2026, 7, 2), 99, 10, 1, 3 },
+                    { 20, new DateOnly(2026, 7, 3), 100, 11, 0, 3 },
+                    { 21, new DateOnly(2026, 7, 3), 111, 12, 0, 3 },
+                    { 22, new DateOnly(2026, 7, 3), 222, 13, 0, 3 }
                 });
 
             migrationBuilder.CreateIndex(
