@@ -23,7 +23,7 @@ public class TraineeController : Controller
         _userRepo = userRepo;
     }
 
-    public IActionResult Index()
+    public IActionResult WeekPlan()
     {
         var traineeIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (traineeIdString == null)

@@ -108,6 +108,6 @@ public class LoginController : Controller
     {
         if (User.IsInRole("Admin"))   return RedirectToAction("Index", "Admin");
         if (User.IsInRole("Mentor"))  return RedirectToAction("Index", "Mentor");
-        return RedirectToAction("Index", "Trainee");
+        return RedirectToAction("WeekPlan", "Trainee");
     }
 }
