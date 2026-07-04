@@ -1,8 +1,14 @@
-@* Code Owner: Jelena Cosic *@
+@model List<Trainee_Tracker.Models.LessonAssignment>
+@using Trainee_Tracker.Models
+@using System.Globalization
 @{
     ViewData["Title"] = "Dashboard";
+    @* Code Owner: Jelena Cosic *@
     var name  = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? "Trainee";
     var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "";
+    @* Code Owner: Andrej Basara*@
+    var weekStart = (DateOnly)ViewData["WeekStart"]!;
+    var weekDays = Enumerable.Range(0, 7).Select(i => weekStart.AddDays(i)).ToList();
 }
 
 @* Code Owner: Andrej Basara *@
@@ -15,99 +21,50 @@
         </div>
 
         <div class="planner-layout">
-            <div class="date-row-spacer"></div>
-            <div class="date-card"><div class="day-name">Monday</div><div class="day-number">12</div></div>
-            <div class="date-card"><div class="day-name">Tuesday</div><div class="day-number">13</div></div>
-            <div class="date-card"><div class="day-name">Wednesday</div><div class="day-number">14</div></div>
-            <div class="date-card"><div class="day-name">Thursday</div><div class="day-number">15</div></div>
-            <div class="date-card"><div class="day-name">Friday</div><div class="day-number">16</div></div>
-            <div class="date-card"><div class="day-name">Saturday</div><div class="day-number">17</div></div>
-            <div class="date-card"><div class="day-name">Sunday</div><div class="day-number">18</div></div>
-
-            <div class="time-axis">
-                <div class="time-slot">08:00</div>
-                <div class="time-slot">09:00</div>
-                <div class="time-slot">10:00</div>
-                <div class="time-slot">11:00</div>
-                <div class="time-slot">12:00</div>
-                <div class="time-slot">13:00</div>
-                <div class="time-slot">14:00</div>
-                <div class="time-slot">15:00</div>
-                <div class="time-slot">16:00</div>
-                <div class="time-slot">17:00</div>
-            </div>
-
-            <div class="day-column">
-                <div class="event-card theme-grey time-0800-1200">
-                    <div class="event-info">
-                        <h3>Ruby: What extend and include do</h3>
-                        <div class="time"> </div>
-                    </div>
-                    <button class="btn-open">Open Lesson</button>
+            @foreach (var day in weekDays)
+            {
+                <div class="date-card">
+                    <div class="day-name">@day.ToString("dddd", CultureInfo.InvariantCulture)</div>
+                    <div class="day-number">@day.Day</div>
                 </div>
-                <div class="event-card theme-grey time-1300-1700">
-                    <div class="event-info">
-                        <h3>Printing background color of elements</h3>
-                        <div class="time"> </div>
-                    </div>
-                    <button class="btn-open">Open Lesson</button>
-                </div>
-            </div>
+            }
 
-            <div class="day-column">
-                <div class="event-card theme-grey time-0800-1200">
-                    <div class="event-info">
-                        <h3>Knapsack: Rerun a flaky test locally</h3>
-                        <div class="time"> </div>
-                    </div>
-                    <button class="btn-open">Open Lesson</button>
+            @foreach (var day in weekDays)
+            {
+                <div class="day-column">
+                    @foreach (var assignment in Model.Where(a => a.ExpectedProcessingDate == day).OrderBy(a => a.Position))
+                    {
+                        <div class="event-card @ThemeCssClass(assignment.Status)">
+                            <div class="event-info">
+                                <h3>@assignment.Lesson.Title</h3>
+                            </div>
+                            @if (assignment.Status == LessonAssignmentStatus.Open)
+                            {
+                                <form method="post" asp-action="UpdateStatus" asp-controller="Trainee">
+                                    <input type="hidden" name="id" value="@assignment.Id" />
+                                    <input type="hidden" name="newStatus" value="@LessonAssignmentStatus.Started" />
+                                    <button type="submit" class="btn-open">Start</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <a href="@assignment.Lesson.URL" target="_blank" class="btn-open">Open Lesson</a>
+                            }
+                        </div>
+                    }
                 </div>
-            </div>
-
-            <div class="day-column">
-                <div class="event-card theme-pink time-0800-1700">
-                    <div class="event-info">
-                        <h3>Sinatra</h3>
-                        <div class="time"> </div>
-                    </div>
-                    <button class="btn-open">Open Lesson</button>
-                </div>
-            </div>
-
-            <div class="day-column">
-                <div class="event-card theme-licorice time-0800-1700">
-                    <div class="event-info">
-                        <h3>How to view a file from another branch</h3>
-                        <div class="time"> </div>
-                    </div>
-                    <button class="btn-open">Start</button>
-                </div>
-            </div>
-
-            <div class="day-column">
-                <div class="event-card theme-licorice time-0800-1200">
-                    <div class="event-info">
-                        <h3>Tracking External API Performance in Rails Logs</h3>
-                        <div class="time"> </div>
-                    </div>
-                    <button class="btn-open">Start</button>
-                </div>
-                <div class="event-card theme-licorice time-1300-1700">
-                    <div class="event-info">
-                        <h3>Ruby object equ.</h3>
-                        <div class="time"> </div>
-                    </div>
-                    <button class="btn-open">Start</button>
-                </div>
-            </div>
-
-            <div class="day-column">
-        
-            </div>
-
-            <div class="day-column"></div>
+            }
         </div>
     </div>
 
 </body>
 </html>
+
+@functions {
+    string ThemeCssClass(LessonAssignmentStatus status) => status switch
+    {
+        LessonAssignmentStatus.Finished or LessonAssignmentStatus.Accepted or LessonAssignmentStatus.Rated => "theme-grey",
+        LessonAssignmentStatus.Started => "theme-pink",
+        _ => "theme-licorice"
+    };
+}
