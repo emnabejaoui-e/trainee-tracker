@@ -4,8 +4,6 @@ namespace Trainee_Tracker.Services;
 
 public interface ISchedulingService
 {
-    WeeklyPlan GenerateWeeklyProjection(Trainee trainee, DateOnly start);
-    
     /// <summary>
     /// Changes the order of lessons for a particular trainee.
     /// </summary>
