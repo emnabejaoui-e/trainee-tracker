@@ -1,4 +1,7 @@
 @* Code Owner: Jelena Cosic *@
+@{
+    var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "";
+}
 <header class="page-header">
   <div style="display: flex; align-items: center; gap: 50px;">
     <div class="brand">
@@ -13,7 +16,7 @@
   </div>
   <div class="user-profile">
     <span class="role">ADMIN</span>
-    <span class="email">admin@makandra.de</span>
+    <span class="email">@email</span>
     <div class="user-dropdown">
       <p><a asp-controller="Profile" asp-action="Index">My Profile</a></p>
       <p>
