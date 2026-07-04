@@ -30,30 +30,33 @@ public class AppDbContext : DbContext
 
         //Julia: Seed data for Lessons
         modelBuilder.Entity<Lesson>().HasData(
-             new Lesson {Id = 11, Title = "Introduction to HTML", URL ="#", Effort = 1.0, Inactive = false, Position = 2},
-             new Lesson {Id = 22, Title = "CSS Basics", URL ="#", Effort = 0.5, Inactive = false, Position = 3},
-             new Lesson {Id = 33, Title = "Ruby: What extend and include do", URL ="#", Effort = 2.0, Inactive = false, Position = 4},
-             new Lesson {Id = 44, Title = "Rules of thumb against flaky specs", URL ="#", Effort = 0.5, Inactive = false, Position = 5}, 
-             new Lesson {Id = 55, Title = "How to use API", URL ="#", Effort = 1.5, Inactive = false, Position = 6}, 
-             new Lesson {Id = 66, Title = "Linux", URL ="https://makandracards.com/makandra-devops-curriculum/509339-linux-2-pt", Effort = 2.0, Inactive = false, Position = 7}, 
+             new Lesson {Id = 11, Title = "Fundamentals of Web Development", URL ="https://makandracards.com/makandra-devops-curriculum/509333-grundlagen-aus-der-web-entwicklung-3-5-pt", Effort = 3.5, Inactive = false, Position = 1},
+             new Lesson {Id = 111, Title = "SSH", URL ="https://makandracards.com/makandra-devops-curriculum/511181-ssh-0-5-pt", Effort = 0.5, Inactive = false, Position = 6},
+             new Lesson {Id = 22, Title = "Virtualization", URL ="https://makandracards.com/makandra-devops-curriculum/509340-virtualisierung-2-pt", Effort = 2.0, Inactive = false, Position = 3},
+             new Lesson {Id = 33, Title = "Lxc/LXD", URL ="https://makandracards.com/makandra-devops-curriculum/517382-lxc-lxd-2-pt", Effort = 2.0, Inactive = false, Position = 4},
+             new Lesson {Id = 44, Title = "A Brief Introduction to Docker and Containers ", URL ="https://makandracards.com/makandra-devops-curriculum/523491-kurze-einfuehrung-docker-und-container-1-pt", Effort = 1.0, Inactive = false, Position = 5}, 
+             new Lesson {Id = 55, Title = "Firewalling with iptables", URL ="https://makandracards.com/makandra-devops-curriculum/531475-firewalling-mit-iptables-0-5-pt", Effort = 0.5, Inactive = false, Position = 6}, 
+             new Lesson {Id = 66, Title = "Linux", URL ="https://makandracards.com/makandra-devops-curriculum/509339-linux-2-pt", Effort = 2.0, Inactive = false, Position = 2}, 
              new Lesson {Id = 77, Title = "Linux file system", URL ="https://makandracards.com/makandra-devops-curriculum/511179-linux-filesystems-und-verschluesselung-2-pt", Effort = 1.0, Inactive = false, Position = 7}, 
              new Lesson {Id = 88, Title = "Resource use", URL ="https://makandracards.com/makandra-devops-curriculum/509415-ressourcen-nutzung-1-pt", Effort = 1.0, Inactive = false, Position = 8}, 
              new Lesson {Id = 99, Title = "Linux Kernal parameter", URL ="https://makandracards.com/makandra-devops-curriculum/511330-linux-kernel-parameter-0-5-pt", Effort = 0.5, Inactive = false, Position = 9}, 
-             new Lesson {Id = 100, Title = "Network", URL ="https://makandracards.com/makandra-devops-curriculum/509341-netzwerke-4-pt", Effort = 4.0, Inactive = false, Position = 10}
+             new Lesson {Id = 100, Title = "Network", URL ="https://makandracards.com/makandra-devops-curriculum/509341-netzwerke-4-pt", Effort = 4.0, Inactive = false, Position = 10},
+             new Lesson {Id = 222, Title = "HTTP Protocoll and Webserver", URL ="https://makandracards.com/makandra-devops-curriculum/519412-http-protokoll-und-webserver-2-5-pt", Effort = 2.5, Inactive = false, Position = 11}
         );
 
         //Julia: trainee for LessonAssignment SeedData
         modelBuilder.Entity<Trainee>().HasData(
             new Trainee {Id = 2, Name = "Jelena3 Trainee", Email = "jelenacosic3@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false },
-            new Trainee {Id = 1, Name="Test Trainee", Email="testtrainee@makandra.de", HashedPassword="$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed=false, StartingDate = new DateOnly(2026, 6, 30), EndDate = new DateOnly(2027, 1,1)}
+            new Trainee {Id = 1, Name="Torsten Trainee", Email="torstentrainee@makandra.de", HashedPassword="$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed=false, StartingDate = new DateOnly(2026, 6, 30), EndDate = new DateOnly(2027, 1,1)},
+            new Trainee {Id = 3, Name="Tilda Trainee", Email="tildatrainee@makandra.de", HashedPassword="$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed=false, StartingDate = new DateOnly(2026, 7, 01), EndDate = new DateOnly(2027, 1,1)}
         );
 
         modelBuilder.Entity<Mentor>().HasData(
-            new Mentor  {Id = 3, Name = "Jelena2 Mentor",  Email = "jelenacosic2@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false, Curriculum = null! }
+            new Mentor  {Id = 4, Name = "Jelena2 Mentor",  Email = "jelenacosic2@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false, Curriculum = null! }
         );
 
         modelBuilder.Entity<Admin>().HasData(
-            new Admin   {Id = 4, Name = "Jelena3 Admin",   Email = "jelenacosic1@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false }
+            new Admin   {Id = 5, Name = "Jelena3 Admin",   Email = "jelenacosic1@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false }
         );
 
         //Julia: Seed Data for LessonAssignment
@@ -67,7 +70,19 @@ public class AppDbContext : DbContext
             new LessonAssignment{Id = 7, LessonId = 77, TraineeId = 1, Position = 8, ExpectedProcessingDate = new DateOnly(2026, 6, 30), Status = LessonAssignmentStatus.Started},
             new LessonAssignment{Id = 8, LessonId = 88, TraineeId = 1, Position = 9, ExpectedProcessingDate = new DateOnly(2026, 6, 30), Status = LessonAssignmentStatus.Started},
             new LessonAssignment{Id = 9, LessonId = 99, TraineeId = 1, Position = 10, ExpectedProcessingDate = new DateOnly(2026, 7, 1), Status = LessonAssignmentStatus.Open},
-            new LessonAssignment{Id = 10, LessonId = 100, TraineeId = 1, Position = 11, ExpectedProcessingDate = new DateOnly(2026, 7, 1), Status = LessonAssignmentStatus.Open}
+            new LessonAssignment{Id = 10, LessonId = 100, TraineeId = 3, Position = 11, ExpectedProcessingDate = new DateOnly(2026, 7, 1), Status = LessonAssignmentStatus.Open},
+            new LessonAssignment{Id = 11, LessonId = 11, TraineeId = 3, Position = 2, ExpectedProcessingDate = new DateOnly(2026, 6, 24), Status = LessonAssignmentStatus.Accepted},
+            new LessonAssignment{Id = 12, LessonId = 22, TraineeId = 3, Position = 3, ExpectedProcessingDate = new DateOnly(2026, 6, 25), Status = LessonAssignmentStatus.Accepted},
+            new LessonAssignment{Id = 13, LessonId = 33, TraineeId = 3, Position = 4, ExpectedProcessingDate = new DateOnly(2026, 6, 26), Status = LessonAssignmentStatus.Accepted},
+            new LessonAssignment{Id = 14, LessonId = 44, TraineeId = 3, Position = 6, ExpectedProcessingDate = new DateOnly(2026, 6, 26), Status = LessonAssignmentStatus.Accepted},
+            new LessonAssignment{Id = 15, LessonId = 55, TraineeId = 3, Position = 5, ExpectedProcessingDate = new DateOnly(2026, 6, 27), Status = LessonAssignmentStatus.Finished},
+            new LessonAssignment{Id = 16, LessonId = 66, TraineeId = 3, Position = 7, ExpectedProcessingDate = new DateOnly(2026, 6, 28), Status = LessonAssignmentStatus.Finished},
+            new LessonAssignment{Id = 17, LessonId = 77, TraineeId = 3, Position = 9, ExpectedProcessingDate = new DateOnly(2026, 6, 30), Status = LessonAssignmentStatus.Finished},
+            new LessonAssignment{Id = 18, LessonId = 88, TraineeId = 3, Position = 8, ExpectedProcessingDate = new DateOnly(2026, 6, 30), Status = LessonAssignmentStatus.Started},
+            new LessonAssignment{Id = 19, LessonId = 99, TraineeId = 3, Position = 10, ExpectedProcessingDate = new DateOnly(2026, 7, 1), Status = LessonAssignmentStatus.Started},
+            new LessonAssignment{Id = 20, LessonId = 100, TraineeId = 3, Position = 11, ExpectedProcessingDate = new DateOnly(2026, 7, 1), Status = LessonAssignmentStatus.Open},
+            new LessonAssignment{Id = 21, LessonId = 111, TraineeId = 3, Position = 12, ExpectedProcessingDate = new DateOnly(2026, 7, 1), Status = LessonAssignmentStatus.Open},
+            new LessonAssignment{Id = 22, LessonId = 222, TraineeId = 3, Position = 13, ExpectedProcessingDate = new DateOnly(2026, 7, 1), Status = LessonAssignmentStatus.Open}
         );
 
     }

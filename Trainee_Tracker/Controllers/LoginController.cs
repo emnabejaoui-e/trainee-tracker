@@ -80,7 +80,8 @@ public class LoginController : Controller
         {
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.Name,  user.Name),
-            new Claim(ClaimTypes.Role,  GetRoleString(user))
+            new Claim(ClaimTypes.Role,  GetRoleString(user)),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()) //Code Owner: Julia Sandner 
         };
 
         var identity  = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
