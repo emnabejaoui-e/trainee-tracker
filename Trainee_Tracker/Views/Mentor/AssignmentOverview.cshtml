@@ -1,0 +1,90 @@
+@using Trainee_Tracker.Models;
+
+@model IEnumerable<Trainee_Tracker.Models.LessonAssignment>
+
+@{
+    ViewData["Title"] = "Lesson Assignments Overview";
+    var traineeName = Model.FirstOrDefault()?.Trainee?.Name ?? "Trainee";
+
+    var statusCounts = Model
+    . GroupBy(la => la.Status)
+    .ToDictionary(g => g.Key, g => g.Count());
+
+    var allStati = Enum.GetValues(typeof(LessonAssignmentStatus)).Cast<LessonAssignmentStatus>();
+
+    var toReview = Model
+    .Where(la=>la.Status == LessonAssignmentStatus.Finished)
+    .OrderBy(la =>la.Position)
+    .ToList();
+}
+
+<div class="review-container">
+
+    <h1 class="page-title">Lesson Assignments of @traineeName</h1>
+
+    <h2 class="section-title">Overview</h2>
+
+    <table class="overview-table">
+        <thead>
+            <tr>
+                <th>Status</th>
+                <th>Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var status in allStati)
+            {
+                var count = statusCounts.ContainsKey(status) ? statusCounts[status] : 0;
+                <tr>
+                    <th>@status</th>
+                    <th>@count</th>
+                </tr>
+            }   
+        </tbody>
+    </table>
+
+    <h2 class="section-title">Needs Review</h2>
+
+    @if(!toReview.Any()){
+        <p class="empty-hint">No lesson assignments are currently waiting for review</p>
+    }
+    else
+    {
+        <ul class="review-list">
+            @foreach(var assignment in toReview){
+                <li class="review-item">
+                    <div class="review-item-info">
+                        <span class="review-item-title">@assignment.Lesson.Title</span>
+                        <span class="review-item-meta">@assignment.Position</span>
+                    </div>
+                    <div class="review-item-action">
+                        <form asp-controller="LessonBoard" asp-action="UpadteStatus" asp-route-id="@assignment.Id" method="post" class="inline-form">
+                            <input type="hidden" name="newStatus" value="Accepted" />
+                            <button type="submit" class="action-btn action-btn-accept">Accept</button>
+                        </form>
+                        
+                        <button type="button" class="action-btn action-btn-reject"
+                                onclick="document.getElementById('reject-dialog-@assignment.Id').showModal()">Reject</button>
+                        
+                    </div>
+                </li>
+            }
+        </ul>
+
+        @foreach(var assignment in toReview)
+        {
+            <dialog id="reject-dialog-@assignment.Id" class="reject-dialog">
+                <form asp-controller="Rejection" asp-action="Reject" asp-route-id="@assignment.Id" method="post">
+                    <p class="rejection-dialog-title">Reason for rejecting "@assignment.Lesson.Title":</p>
+                    <textarea name="reason" required rows="3" placeholder="Reason..."></textarea>
+                    <div class ="rejection-dialog-action">
+                        <button type="button" class="action-btn action-btn-cancel" onclick="document.getElementById('rejection-dialog-@assignment.Id').close()">Cancel</button>
+                        <button type="submit" class="action-btn action-btn-reject">Reject</button>
+                    </div>
+                </form>
+            </dialog>
+        }
+    }
+
+    <a asp-controller="Rejection" asp-action="RejectedOverview" class="rejected-link">See all rejected Lesson Assignments and reasons</a>
+</div>
