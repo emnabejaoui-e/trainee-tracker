@@ -131,6 +131,13 @@ public class FeedbackController : Controller
 
         if (feedback == null)
             return NotFound();
+        
+        var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        if (User.IsInRole("Trainee") && feedback.TraineeId != currentUserId)
+        {
+            TempData["ErrorMessage"] = "You are not authorized to edit this feedback.";
+            return RedirectToAction("RecentFeedback");
+        }
 
         return View(feedback);
     }
@@ -149,6 +156,14 @@ public class FeedbackController : Controller
 
         if (existingFeedback == null)
             return NotFound();
+
+        var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+        if (User.IsInRole("Trainee") && existingFeedback.TraineeId != currentUserId)
+        {
+            TempData["ErrorMessage"] = "You are not authorized to edit this feedback.";
+            return RedirectToAction("RecentFeedback");
+        }
 
         existingFeedback.Difficulty = feedback.Difficulty;
         existingFeedback.PriorKnowledge = feedback.PriorKnowledge;
@@ -174,6 +189,14 @@ public class FeedbackController : Controller
 
         if (feedback == null)
             return NotFound();
+
+        var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        if (User.IsInRole("Trainee") && feedback.TraineeId != currentUserId)
+        {
+            TempData["ErrorMessage"] = "You are not authorized to delete this feedback.";
+            return RedirectToAction("RecentFeedback");
+        }
+
 
         _lessonAssignmentRepository.UpdateStatus(feedback.AssignmentId, LessonAssignmentStatus.Accepted);
         _lessonFeedbackService.DeleteFeedback(id);

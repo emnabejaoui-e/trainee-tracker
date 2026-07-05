@@ -1,9 +1,12 @@
 @* Code-Owner: Emna Bejaoui *@
 @model IEnumerable<Trainee_Tracker.Models.LessonFeedback>
+@using System.Security.Claims
 
 @{
     ViewData["Title"] = "Recent Feedback";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 }
 
 <link rel="stylesheet" href="~/css/feedback.css" />
@@ -14,6 +17,13 @@
 {
     <div class="alert alert-success" role="alert">
         @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
     </div>
 }
 
@@ -56,70 +66,82 @@ else
         {
             <article>
                 <header class="feedback-card-header">
+                    <div class="feedback-card-title">
+                        <h2>@(feedback.Lesson?.Title ?? "Unknown Lesson")</h2>
 
-                    <span class="float-left">
-                        <span>
-                            <i>@(feedback.Trainee?.Name ?? "Unknown Trainee")</i>
-                        </span>
-                        <span>rated</span>
-                    </span>
+                        <p class="feedback-date">
+                            Submitted on @feedback.CreatedAt.ToString("dd.MM.yyyy 'at' HH:mm")
+                        </p>
 
-                    <span class="float-right">
-                        <a asp-action="Edit"
-                           asp-route-id="@feedback.Id"
-                           class="btn">
-                            Edit
-                        </a>
+                        <p class="feedback-author">
+                            Rated by <i>@(feedback.Trainee?.Name ?? "Unknown Trainee")</i>
+                        </p>
+                    </div>
 
-                        <form asp-action="Delete"
-                              method="post"
-                              style="display:inline;"
-                              onsubmit="return confirm('Are you sure you want to delete this feedback?');">
-                            @Html.AntiForgeryToken()
+                    <div class="feedback-actions">
+                        @if
+                            (!User.IsInRole("Trainee") || feedback.TraineeId == currentUserId)
+                        {
+                            <a asp-action="Edit"
+                               asp-route-id="@feedback.Id"
+                               class="btn">
+                                Edit
+                            </a>
 
-                            <input type="hidden"
-                                   name="id"
-                                   value="@feedback.Id" />
+                            <form asp-action="Delete"
+                                  method="post"
+                                  onsubmit="return confirm('Are you sure you want to delete this feedback?');">
+                                @Html.AntiForgeryToken()
 
-                            <button type="submit"
-                                    class="btn btn-secondary">
-                                Delete
-                            </button>
-                        </form>
-                    </span>
+                                <input type="hidden"
+                                       name="id"
+                                       value="@feedback.Id" />
 
+                                <button type="submit"
+                                        class="btn btn-secondary">
+                                    Delete
+                                </button>
+                            </form>
+                        }
+                    </div>
                 </header>
 
-                <h2>@(feedback.Lesson?.Title ?? "Unknown Lesson")</h2>
-
-                <p class="feedback-date">
-                    Submitted on @feedback.CreatedAt.ToString("dd.MM.yyyy 'at' HH:mm")
-                </p>
-
                 <dl>
-
                     <dt>Difficulty</dt>
 
-                    <dd class="rating"
-                        aria-label="@feedback.Difficulty out of 5 stars">
+                    @if (feedback.Difficulty.HasValue)
+                    {
+                        <dd class="rating"
+                            aria-label="@feedback.Difficulty.Value out of 5 stars">
+                            @for (var i = 0; i < feedback.Difficulty.Value; i++)
+                            {
+                                <span aria-hidden="true">★</span>
+                            }
 
-                        @for (var i = 0; i < feedback.Difficulty; i++)
-                        {
-                            <span aria-hidden="true">★</span>
-                        }
-
-                        @for (var i = feedback.Difficulty; i < 5; i++)
-                        {
-                            <span aria-hidden="true">☆</span>
-                        }
-
-                    </dd>
+                            @for (var i = feedback.Difficulty.Value; i < 5; i++)
+                            {
+                                <span aria-hidden="true">☆</span>
+                            }
+                        </dd>
+                    }
+                    else
+                    {
+                        <dd class="empty-feedback-value">No rating</dd>
+                    }
 
                     <dt>Previous Knowledge</dt>
-                    <dd>@feedback.PriorKnowledge</dd>
+                    <dd>
+                        @(string.IsNullOrWhiteSpace(feedback.PriorKnowledge)
+                            ? "No information"
+                            : feedback.PriorKnowledge)
+                    </dd>
 
                     <dt>Actual Effort</dt>
-                    <dd>@feedback.ActualEffort days</dd>
+                    <dd>
+                        @(feedback.ActualEffort.HasValue
+                            ? $"{feedback.ActualEffort} days"
+                            : "No information")
+                    </dd>
 
                     <dt>Comment</dt>
                     <dd>
@@ -127,9 +149,7 @@ else
                             ? "No comment"
                             : feedback.Comment)
                     </dd>
-
                 </dl>
-
             </article>
         }
     </div>
