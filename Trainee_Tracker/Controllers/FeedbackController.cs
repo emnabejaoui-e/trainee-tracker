@@ -3,6 +3,7 @@ using Trainee_Tracker.Models;
 using Trainee_Tracker.Services;
 using Trainee_Tracker.Data.Lessons;
 using Trainee_Tracker.Data.LessonAssignments;
+using System.Security.Claims;
 
 namespace Trainee_Tracker.Controllers;
 
@@ -48,7 +49,13 @@ public class FeedbackController : Controller
     [HttpGet]
     public IActionResult MyFeedback()
     {
-        var trainee = new Trainee { Id = 1 }; // später durch Login ersetzen
+        //var trainee = new Trainee { Id = 1 }; // später durch Login ersetzen
+
+        //Julia:
+        var traineeIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var traineeId = int.Parse(traineeIdString);
+        var trainee = new Trainee {Id = traineeId};
+        //ende
 
         var feedbacks = _lessonFeedbackService.GetFeedback(trainee)
             .OrderByDescending(f => f.CreatedAt)
@@ -77,8 +84,14 @@ public class FeedbackController : Controller
     [HttpPost]
     public IActionResult CreateFeedback(LessonFeedback feedback)
     {
-        feedback.TraineeId = 1;
-        feedback.MentorId = 3;
+        //feedback.TraineeId = 1; //hardcoded !! Wir müssen aber immer den Trainee betrachten, der gerade eingeloggt ist!
+        //Julia:
+        var traineeIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var traineeId = int.Parse(traineeIdString);
+        feedback.TraineeId = traineeId;
+        //ende
+
+        feedback.MentorId = 4;
         feedback.CreatedAt = DateTime.Now;
 
         ModelState.Remove(nameof(LessonFeedback.Trainee));
@@ -157,6 +170,12 @@ public class FeedbackController : Controller
     [HttpPost]
     public IActionResult Delete(int id)
     {
+        var feedback = _lessonFeedbackService.GetById(id);
+
+        if (feedback == null)
+            return NotFound();
+
+        _lessonAssignmentRepository.UpdateStatus(feedback.AssignmentId, LessonAssignmentStatus.Accepted);
         _lessonFeedbackService.DeleteFeedback(id);
 
         TempData["SuccessMessage"] = "Your feedback has been deleted successfully.";

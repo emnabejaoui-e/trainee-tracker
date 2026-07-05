@@ -1,0 +1,43 @@
+@* Code Owner: Leon *@
+@model IEnumerable<Trainee>
+@{
+    ViewData["Title"] = "My Trainees";
+}
+
+<p>@ViewBag.text</p>
+
+<h2>My Trainees</h2>
+
+@if (Model.Any())
+{
+    <ul class="profile-list">
+        @foreach(Trainee trainee in Model)
+        {
+            <li class="profile-item">
+                <div class="profile-main">
+                    <a class="name" href="/Mentor/Fortschrittskontrolle">@trainee.Name</a>
+                    <br/>
+                    <a href="mailto:@trainee.Email" class="email">@trainee.Email</a>
+                </div>
+                <div class="profile-meta">
+                    <span class="meta-label">Mentor:</span>
+                    @foreach (Mentor mentor in trainee.Mentors)
+                    {
+                        @if (!mentor.Closed)
+                        {
+                            <a href="mailto:@mentor.Email" class="mentor-link">@mentor.Name</a>
+                        }
+                        else
+                        {
+                            <a href="mailto:@mentor.Email" class="mentor-link-closed" aria-disabled="True">@mentor.Name</a>
+                        }
+                    }
+                </div>
+            </li>        
+        }
+    </ul>
+}
+else
+{
+    <p>There are no trainees assigned to you.</p>
+}
