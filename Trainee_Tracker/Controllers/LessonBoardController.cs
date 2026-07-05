@@ -53,4 +53,26 @@ public class LessonBoardController : Controller
     {
         return RedirectToAction("CreateFeedback", "Feedback", new {id = id});
     }
+
+
+    //nur zu testzwecken
+    [HttpGet]
+    public IActionResult ReviewPreview()
+    {
+        var traineeIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (traineeIdString == null)
+        {
+            return Unauthorized();
+        }
+        var traineeId = int.Parse(traineeIdString);
+        var trainee = _userRepo.GetById(traineeId) as Trainee;
+
+        if (trainee == null)
+        {
+            return Unauthorized();
+        }
+
+        var assignments = _lessonAssignmentRepo.FindByTrainee(trainee);
+        return View("~/Views/Mentor/AssignmentOverview.cshtml", assignments); 
+    }
 }
