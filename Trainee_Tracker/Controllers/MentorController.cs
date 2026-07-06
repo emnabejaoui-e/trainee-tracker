@@ -59,13 +59,15 @@ public class MentorController : Controller
     // Code-Owner: Leon
     public IActionResult MyTrainees()
     {
-        string mentorEmail = User.Identities.First().Claims
-            .First(cl => cl.Type == ClaimTypes.Email).Value;
+        string? mentorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        Contract.Assert(mentorId != null, "user must be logged in");
 
-        Mentor? currentUser = _mentorRepo.GetMentorByEMail(mentorEmail);
-
-        Contract.Assert(currentUser != null, "Inconsistent login state (no/invalid email set).");
-
+        Mentor? currentUser = _mentorRepo.GetMentorById(int.Parse(mentorId));
+        if (currentUser == null)
+        {
+            return Unauthorized();
+        }
+        
         return View(currentUser.AssignedTrainees);
     }
 
