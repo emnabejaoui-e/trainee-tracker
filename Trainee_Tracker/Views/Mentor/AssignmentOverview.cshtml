@@ -16,75 +16,176 @@
     .Where(la=>la.Status == LessonAssignmentStatus.Finished)
     .OrderBy(la =>la.Position)
     .ToList();
+
+    var rejectedAssignments = Model
+    .Where(la=>la.Status == LessonAssignmentStatus.Rejected)
+    .OrderBy(la => la.Position)
+    .ToList();
+
+    var raw = ViewBag.RejectionReasons;
+    var rejectionHistory = raw as Dictionary<int, List<Rejection>>;
+    @* var rejectionHistory = ViewBag.RejectionReasons as Dictionary<int, List<Rejection>>;
+         *@
+
+    var statusOrder = new[] {"Open", "Started", "Finished", "Rejected", "Accepted", "Rated"};
+    var grouped = Model
+            .GroupBy(x => x.Status.ToString())
+            .ToDictionary(g => g.Key, g => g.OrderBy(x => x.Position)
+            .ToList());
 }
+<p style="background:orange;">Roher Typ: @(raw?.GetType().FullName ?? "raw ist null")</p>
+
 
 <div class="review-container">
 
-    <h1 class="page-title">Lesson Assignments of @traineeName</h1>
+    <h1 class="page-title">Lesson Assignments Overview of @traineeName</h1>
 
     <h2 class="section-title">Overview</h2>
 
-    <table class="overview-table">
-        <thead>
-            <tr>
-                <th>Status</th>
-                <th>Count</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach(var status in allStati)
+    <div class="board-container">
+
+        <div class="board-search">
+            <input id="boardSearch" type="text" placeholder="search for a card e.g. Linux or 34" />
+        </div>
+
+        <div class="board-columns">
+            @foreach(var status in statusOrder)
             {
-                var count = statusCounts.ContainsKey(status) ? statusCounts[status] : 0;
-                <tr>
-                    <th>@status</th>
-                    <th>@count</th>
-                </tr>
-            }   
-        </tbody>
-    </table>
+                var cards = grouped.ContainsKey(status) ? grouped[status] : new List<LessonAssignment>();
 
-    <h2 class="section-title">Needs Review</h2>
+                    <div class="board-column column-@status.ToLower()">
+                        <div class ="column-header">
+                            <span class="column-title">@status</span>
+                            <span class="column-count">@cards.Count</span>
+                        </div>
 
-    @if(!toReview.Any()){
-        <p class="empty-hint">No lesson assignments are currently waiting for review</p>
+                        <div class="column-body" data-status="@status" id="column-body-@status">
+                            @if(!cards.Any())
+                            {
+                                <div class="column-empty">no crads</div>
+                            }
+                            else
+                            {
+                                @foreach(var card in cards){
+                                    
+                                        <div class ="board-card" data-title="@card.Lesson.Title.ToLower()" data-num="@card.Position">
+                                            <div class="card-top">
+                                                <a class="card-link" href="@card.Lesson.URL">
+                                                    <span class="card-title">@card.Lesson.Title</span> 
+                                                </a>
+                                                
+                                            </div> 
+
+                                            <div class="card-bottom-row">
+                                                <div class="card-meta">
+                                                    <span>#@card.Position</span>
+                                                    @if(card.Lesson.Effort != 0){
+                                                        <span class="dot"></span>
+                                                        <span>@card.Lesson.Effort d</span>
+                                                    }
+                                                </div>
+                                                <div class="card-actions">
+                                                @switch(status)
+                                                {
+                                                    case "Finished":
+                                                        <div class="review-item-action">
+                                                            <form asp-controller="LessonBoard" asp-action="UpdateStatus" asp-route-id="@card.Id" method="post" class="inline-form">
+                                                                <input type="hidden" name="newStatus" value="Accepted" />
+                                                                <button type="submit" class="action-btn action-btn-accept">Accept</button>
+                                                            </form>
+                                                            
+                                                            <button type="button" class="action-btn action-btn-reject"
+                                                                    onclick="document.getElementById('reject-dialog-@card.Id').showModal()">Reject</button>
+                                                            
+                                                        </div>
+                                                        break;
+
+                                                    default:
+                                                        break;
+                                                }
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                    
+                                }
+                            }
+                        </div>
+                    </div>
+            }
+        </div>
+    </div>
+
+    <h2 class="section-title">Rejected Assignment History</h2>
+
+    @if(!rejectedAssignments.Any()){
+        <p class="empty-hint">No lesson assignments are currently rejected</p>
     }
     else
     {
-        <ul class="review-list">
-            @foreach(var assignment in toReview){
-                <li class="review-item">
-                    <div class="review-item-info">
-                        <span class="review-item-title">@assignment.Lesson.Title</span>
-                        <span class="review-item-meta">@assignment.Position</span>
+        <ul class="rejected-list">
+            @foreach(var assignment in rejectedAssignments){
+                <li class="rejected-item">
+                    <div class="rejected-item-info">
+                        <span class="rejected-item-title">@assignment.Lesson.Title</span>
+                        <span class="rejected-item-meta">@assignment.Position</span>
                     </div>
-                    <div class="review-item-action">
-                        <form asp-controller="LessonBoard" asp-action="UpadteStatus" asp-route-id="@assignment.Id" method="post" class="inline-form">
-                            <input type="hidden" name="newStatus" value="Accepted" />
-                            <button type="submit" class="action-btn action-btn-accept">Accept</button>
-                        </form>
-                        
-                        <button type="button" class="action-btn action-btn-reject"
-                                onclick="document.getElementById('reject-dialog-@assignment.Id').showModal()">Reject</button>
-                        
-                    </div>
+                    
+                    @if(rejectionHistory != null && rejectionHistory.TryGetValue(assignment.Id, out var history))
+                    {
+                        <ul class="rejection-history-list">
+                            @foreach(var rejection in history)
+                            {
+                               <li class="rejection-history-item">
+                                <strong>@rejection.RejectedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</strong>
+                                <p>@rejection.Reason</p>
+                               </li> 
+                            }
+                        </ul>
+                    }
                 </li>
             }
-        </ul>
-
-        @foreach(var assignment in toReview)
-        {
-            <dialog id="reject-dialog-@assignment.Id" class="reject-dialog">
-                <form asp-controller="Rejection" asp-action="Reject" asp-route-id="@assignment.Id" method="post">
-                    <p class="rejection-dialog-title">Reason for rejecting "@assignment.Lesson.Title":</p>
-                    <textarea name="reason" required rows="3" placeholder="Reason..."></textarea>
-                    <div class ="rejection-dialog-action">
-                        <button type="button" class="action-btn action-btn-cancel" onclick="document.getElementById('rejection-dialog-@assignment.Id').close()">Cancel</button>
-                        <button type="submit" class="action-btn action-btn-reject">Reject</button>
-                    </div>
-                </form>
-            </dialog>
-        }
+        </ul> 
     }
 
-    <a asp-controller="Rejection" asp-action="RejectedOverview" class="rejected-link">See all rejected Lesson Assignments and reasons</a>
+    @foreach(var assignment in toReview)
+    {
+        <dialog id="reject-dialog-@assignment.Id" class="reject-dialog">
+            <form asp-controller="Rejection" asp-action="Reject" asp-route-assignmentId="@assignment.Id" method="post">
+                <p class="rejection-dialog-title">Reason for rejecting "@assignment.Lesson.Title":</p>
+                <textarea name="reason" required rows="3" placeholder="Reason..."></textarea>
+                <div class ="rejection-dialog-action">
+                    <button type="button" class="action-btn action-btn-cancel" onclick="document.getElementById('reject-dialog-@assignment.Id').close()">Cancel</button>
+                    <button type="submit" class="action-btn action-btn-reject">Reject</button>
+                </div>
+            </form>
+        </dialog>
+    }
 </div>
+
+
+@* JavaScript for search *@
+<script>
+    document.getElementById('boardSearch').addEventListener('input', function(e){
+
+        var query = e.target.value.toLowerCase().trim();
+
+        document.querySelectorAll('.board-card').forEach(function(card){
+            var title = card.dataset.title || '';
+            var num = card.dataset.num || '';
+            var match = !query || title.indexOf(query) !== -1 || num.indexOf(query) !== -1;
+            card.style.display = match ? '' : 'none';
+        });
+
+        document.querySelectorAll('.board-column').forEach(function(col){
+            var visibleCards = col.querySelectorAll('.board-card:not([style*="display: none"])').length;
+            var emptyMsg = col.querySelector('.column-empty');
+            if(emptyMsg){
+                emptyMsg.style.display = (query && visibleCards == 0) ? '' : (visibleCards === 0 && !query ? '' : 'none');
+            }
+        });
+
+    });
+
+</script>
