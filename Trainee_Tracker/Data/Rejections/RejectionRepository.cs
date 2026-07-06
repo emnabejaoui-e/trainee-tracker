@@ -50,4 +50,27 @@ public class RejectionRepository : IRejectionRepository
         return rejection;
         
     }
+
+    public IEnumerable<Rejection> GetRejectionsByAssignmentId(int assignmentId)
+    {
+        return _context.Rejections
+        .Where(r => r.AssignmentId == assignmentId)
+        .OrderByDescending(r => r.RejectedAt)
+        .ToList();
+    }
+
+    public IDictionary<int, List<Rejection>> GetByAssignmentIds(IEnumerable<int> assignmentIds)
+    {
+        return _context.Rejections
+        .Where(r => assignmentIds.Contains(r.AssignmentId))
+        .OrderByDescending(r => r.RejectedAt)
+        .GroupBy(r => r.AssignmentId)
+        .ToDictionary(g => g.Key, g=>g.ToList());
+    }
+
+    public void Add(Rejection rejection)
+    {
+        _context.Rejections.Add(rejection);
+        _context.SaveChanges();
+    }
 }
