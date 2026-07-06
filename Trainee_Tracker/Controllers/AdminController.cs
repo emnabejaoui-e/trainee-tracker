@@ -184,6 +184,30 @@ public class AdminController : Controller
         return View(user);
     }
 
+    [HttpPost]
+    public IActionResult EditTrainee(int id, string name, string email, DateOnly startingDate, DateOnly endDate)
+    {
+        if (_userService.GetById(id) is not Trainee trainee) return NotFound();
+
+        var emailChanged = !string.Equals(trainee.Email, email, StringComparison.OrdinalIgnoreCase);
+        if (emailChanged && !_userService.IsEmailAvailable(email))
+        {
+            ModelState.AddModelError("Email", "Email already in use");
+            trainee.Name = name;
+            trainee.StartingDate = startingDate;
+            trainee.EndDate = endDate;
+            // doesn't delete already changed data on error
+            return View(trainee);
+        }
+
+        trainee.Name = name;
+        trainee.Email = email;
+        trainee.StartingDate = startingDate;
+        trainee.EndDate = endDate;
+        _userService.UpdateTrainee(trainee);
+        return RedirectToAction("UserManagment");
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
