@@ -24,8 +24,11 @@ public class AdminController : Controller
         _mentorService = mentorService;
     }
 
-// Code Owner: Jelena Cosic
-    public IActionResult Index() => View();
+    // Code Owner: Jelena Cosic
+    public IActionResult Index()
+    {
+        return RedirectToAction("UserManagment");
+    }
 
     // Code-Owner: Andrej Basara
     public IActionResult UserManagment(string searchString)
@@ -99,7 +102,7 @@ public class AdminController : Controller
     {
         return View();
     }
-    
+
     [HttpPost]
     public IActionResult CreateAdmin(string name, string email, string password)
     {
@@ -165,14 +168,13 @@ public class AdminController : Controller
     }
 
     // Code Owner: Andrej Basara
-     public IActionResult UserDetails(int? id)
+    public IActionResult UserDetails(int? id)
     {
         if (id == null) return NotFound();
         var user = _userService.GetById(id.Value);
         if (user == null) return NotFound();
         return View(user);
     }
-
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
