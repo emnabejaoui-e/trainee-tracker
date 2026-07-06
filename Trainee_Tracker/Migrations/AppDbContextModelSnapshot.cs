@@ -459,6 +459,9 @@ namespace Trainee_Tracker.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("RejectedAt")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AssignmentId");
@@ -499,23 +502,6 @@ namespace Trainee_Tracker.Migrations
                     b.HasDiscriminator<string>("Role").HasValue("User");
 
                     b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("Trainee_Tracker.Models.Admin", b =>
-                {
-                    b.HasBaseType("Trainee_Tracker.Models.User");
-
-                    b.HasDiscriminator().HasValue("Admin");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 5,
-                            Closed = false,
-                            Email = "jelenacosic1@makandra.de",
-                            HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
-                            Name = "Jelena3 Admin"
-                        });
                 });
 
             modelBuilder.Entity("Trainee_Tracker.Models.Mentor", b =>
@@ -577,6 +563,23 @@ namespace Trainee_Tracker.Migrations
                             Name = "Tilda Trainee",
                             EndDate = new DateOnly(2027, 1, 1),
                             StartingDate = new DateOnly(2026, 7, 1)
+                        });
+                });
+
+            modelBuilder.Entity("Trainee_Tracker.Models.Admin", b =>
+                {
+                    b.HasBaseType("Trainee_Tracker.Models.Mentor");
+
+                    b.HasDiscriminator().HasValue("Admin");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 5,
+                            Closed = false,
+                            Email = "jelenacosic1@makandra.de",
+                            HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
+                            Name = "Jelena3 Admin"
                         });
                 });
 
