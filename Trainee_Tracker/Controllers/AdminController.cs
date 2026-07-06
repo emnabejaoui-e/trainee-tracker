@@ -176,6 +176,14 @@ public class AdminController : Controller
         return View(user);
     }
 
+    public IActionResult EditTrainee(int? id)
+    {
+        if (id == null) return NotFound();
+        var user = _userService.GetById(id.Value);
+        if (user == null) return NotFound();
+        return View(user);
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
