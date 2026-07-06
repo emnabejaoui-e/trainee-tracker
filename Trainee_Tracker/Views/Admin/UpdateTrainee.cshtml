@@ -8,7 +8,7 @@
     <h1 class="mb-4">@ViewData["Title"]</h1>
     <div class="row">
         <div  class="col-12">
-            <form asp-action="EditTrainee" asp-route-id="@Model.Id">
+            <form asp-action="UpdateTrainee" asp-route-id="@Model.Id">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Id" />
 

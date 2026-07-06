@@ -176,7 +176,7 @@ public class AdminController : Controller
         return View(user);
     }
 
-    public IActionResult EditTrainee(int? id)
+    public IActionResult UpdateTrainee(int? id)
     {
         if (id == null) return NotFound();
         var user = _userService.GetById(id.Value);
@@ -185,7 +185,7 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    public IActionResult EditTrainee(int id, string name, string email, DateOnly startingDate, DateOnly endDate)
+    public IActionResult UpdateTrainee(int id, string name, string email, DateOnly startingDate, DateOnly endDate)
     {
         if (_userService.GetById(id) is not Trainee trainee) return NotFound();
 
