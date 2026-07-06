@@ -41,9 +41,15 @@ public class LessonBoardController : Controller
 
     //Julia
     [HttpPost]
-    public IActionResult UpdateStatus(int id, LessonAssignmentStatus newStatus){
+    public IActionResult UpdateStatus(int id, LessonAssignmentStatus newStatus)
+    {
+        var assignment = _lessonAssignmentRepo.GetById(id);
+        if(assignment == null)
+        {
+            return NotFound();
+        }
         _lessonAssignmentRepo.UpdateStatus(id, newStatus);
-        return RedirectToAction("LessonBoard");
+        return RedirectToAction("LessonBoard", new {traineeId = assignment.TraineeId});
 
     }
 
@@ -54,25 +60,4 @@ public class LessonBoardController : Controller
         return RedirectToAction("CreateFeedback", "Feedback", new {id = id});
     }
 
-
-    //nur zu testzwecken
-    [HttpGet]
-    public IActionResult ReviewPreview()
-    {
-        var traineeIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (traineeIdString == null)
-        {
-            return Unauthorized();
-        }
-        var traineeId = int.Parse(traineeIdString);
-        var trainee = _userRepo.GetById(traineeId) as Trainee;
-
-        if (trainee == null)
-        {
-            return Unauthorized();
-        }
-
-        var assignments = _lessonAssignmentRepo.FindByTrainee(trainee);
-        return View("~/Views/Mentor/AssignmentOverview.cshtml", assignments); 
-    }
 }

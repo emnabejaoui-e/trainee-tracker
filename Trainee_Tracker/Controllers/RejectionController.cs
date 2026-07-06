@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
+using Trainee_Tracker.Data.LessonAssignments;
 using Trainee_Tracker.Data.Rejections;
 using Trainee_Tracker.Models;
 using Trainee_Tracker.Repositories;
@@ -12,11 +13,13 @@ public class RejectionController : Controller
 {
     private readonly IRejectionRepository _rejectionRepo;
     public readonly IUserRepository _userRepo;
+    public readonly ILessonAssignmentRepository _assignmentRepo;
 
-    public RejectionController(IRejectionRepository rejectionRepo, IUserRepository userRepo)
+    public RejectionController(IRejectionRepository rejectionRepo, IUserRepository userRepo, ILessonAssignmentRepository assignmentRepo)
     {
         _rejectionRepo = rejectionRepo;
         _userRepo = userRepo;
+        _assignmentRepo =assignmentRepo;
     }
 
     public IActionResult RejectedOverview()
@@ -63,14 +66,19 @@ public class RejectionController : Controller
     }
 
     public IActionResult Reject(int assignmentId, string reason)
-    {
+    {   var assignment = _assignmentRepo.GetById(assignmentId);
+        if(assignment == null)
+        {
+            return NotFound();
+        }
+
         if (string.IsNullOrWhiteSpace(reason))
         {
             ModelState.AddModelError(string.Empty, "A reason is required.");
-            return RedirectToAction("ReviewPreview", "LessonBoard"); //Provisorisch! Muss noch angepasst werden, wenn das view eingebaut wird
+            return RedirectToAction("AssignmentOverview", "Mentor", new {traineeId = assignment.TraineeId}); //Provisorisch! Muss noch angepasst werden, wenn das view eingebaut wird
         }
 
         _rejectionRepo.Reject(assignmentId, reason);
-        return RedirectToAction("ReviewPreview", "LessonBoard"); //Provisorisch! Muss noch angepasst werden, wenn das view eingebaut wird
+        return RedirectToAction("AssignmentOverview", "Mentor", new {traineeId = assignment.TraineeId}); //Provisorisch! Muss noch angepasst werden, wenn das view eingebaut wird
     }
 }
