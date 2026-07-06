@@ -75,3 +75,17 @@
 .mentor-link:hover {
     border-bottom-color: var(--pink);
 }
+
+.profile-links a {
+    all: unset;
+    display: block;
+    font-size: 0.9rem;
+    color: var(--gray-600) !important;
+    text-decoration: none !important;
+    
+}
+
+.profile-links a:hover{
+    color: var(--pink);
+} 
+
