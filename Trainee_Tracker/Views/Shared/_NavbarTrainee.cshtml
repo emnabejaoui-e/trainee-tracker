@@ -1,4 +1,7 @@
 @* Controllernamen usw müssen noch angepasst werden *@
+@{
+    var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "";
+}
 <header class="page-header">
   <div style="display: flex; align-items: center; gap: 50px;">
     <div class="brand">
@@ -7,16 +10,15 @@
       <span style="color:var(--gray-400);font-weight:300;padding-left: 30px;">|</span>
     </div>
     <div class="categories">
-      <a asp-controller="Trainee" asp-action="Index">HOME</a>
+      <a asp-controller="Trainee" asp-action="WeekPlan">HOME</a>
       <a asp-controller="Lesson" asp-action="Index">LESSON</a>
       <a asp-controller="LessonBoard" asp-action="LessonBoard">LESSON BOARD</a>
       <a asp-controller="Feedback" asp-action="MyFeedback">MY FEEDBACK</a>
-      <a asp-controller="Profile" asp-action="Index">PROFILE</a>
     </div>
   </div>
   <div class="user-profile">
     <span class="role">TRAINEE</span>
-    <span class="email">trainee@makandra.de</span>
+    <span class="email">@email</span>
     <div class="user-dropdown">
       <p><a asp-controller="Profile" asp-action="Index">My Profile</a></p>
       <p><a href="mailto:mentor@makandra.de">My Mentor</a></p>
