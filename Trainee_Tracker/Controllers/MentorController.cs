@@ -9,7 +9,7 @@ using Trainee_Tracker.Models;
 
 namespace Trainee_Tracker.Controllers;
 
-[Authorize(Roles = "Mentor")]
+[Authorize(Roles = "Mentor, Admin")]
 public class MentorController : Controller
 {
     private IMentorRepository _mentorRepo;
