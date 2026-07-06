@@ -4,8 +4,11 @@ using System.Net.Mime;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Trainee_Tracker.Data.LessonAssignments;
 using Trainee_Tracker.Data.MentorRepository;
+using Trainee_Tracker.Data.Rejections;
 using Trainee_Tracker.Models;
+using Trainee_Tracker.Repositories;
 
 namespace Trainee_Tracker.Controllers;
 
@@ -13,10 +16,16 @@ namespace Trainee_Tracker.Controllers;
 public class MentorController : Controller
 {
     private IMentorRepository _mentorRepo;
+    private IUserRepository _userRepo;
+    private ILessonAssignmentRepository _assignmentRepo;
+    private IRejectionRepository _rejectionRepo;
 
-    public MentorController(IMentorRepository mentorRepo)
+    public MentorController(IMentorRepository mentorRepo, IUserRepository userRepo, ILessonAssignmentRepository assignmentRepo, IRejectionRepository rejectionRepo)
     {
         _mentorRepo = mentorRepo;
+        _userRepo = userRepo;
+        _assignmentRepo = assignmentRepo;
+        _rejectionRepo = rejectionRepo;
     }
 
     // Code-Owner: Jelena Cosic
@@ -129,5 +138,30 @@ public class MentorController : Controller
         curriculumNames.Add("makandra DevOps Curriculum");
         ViewBag.curriculumNames = curriculumNames;
         return View(file);
+    }
+
+
+    // Code-Owner: Julia
+    // GET: /Mentor/AssignmentOverview
+    [HttpGet]
+    public IActionResult AssignmentOverview(int traineeId)
+    {        
+        var trainee = _userRepo.GetById(traineeId) as Trainee;
+
+        if (trainee == null)
+        {
+            return Unauthorized();
+        }
+
+        var assignments = _assignmentRepo.FindByTrainee(trainee);
+        var rejections = _rejectionRepo.GetRejectedByTrainee(trainee);
+
+        Console.WriteLine($"Anzahl rejections: {rejections.Count()}");
+        Console.WriteLine($"Typ von Rejection: {rejections.FirstOrDefault()?.GetType().FullName}");
+        ViewBag.RejectionReasons = rejections
+        .GroupBy(r=> r.AssignmentId)
+        .ToDictionary(g => g.Key, g => g.OrderByDescending(r=>r.RejectedAt).ToList());
+
+        return View("AssignmentOverview", assignments); 
     }
 }
