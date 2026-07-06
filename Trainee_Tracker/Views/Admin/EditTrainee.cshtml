@@ -1,0 +1,55 @@
+@* Code-Owner: Andrej Basara *@
+@model Trainee_Tracker.Models.Trainee
+@{
+    ViewData["Title"] = "Edit Trainee";
+}
+
+<div>
+    <h1>@ViewData["Title"]</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="EditTrainee" asp-route-id="@Model.Id">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="StartingDate" class="control-label"></label>
+                    <input asp-for="StartingDate" type="date" class="form-control" />
+                    <span asp-validation-for="StartingDate" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="EndDate" class="control-label"></label>
+                    <input asp-for="EndDate" type="date" class="form-control" />
+                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Details" asp-route-id="@Model.Id">Details</a> |
+        <a asp-action="Index">Zurück zur Liste</a>
+    </div>
+</div>
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
+
