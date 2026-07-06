@@ -13,7 +13,11 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    @if (User.IsInRole("Admin"))
+    @if (ViewData["NavbarOverride"]?.ToString() == "Mentor")
+    {
+        await Html.RenderPartialAsync("_NavbarMentor");
+    }
+    else if (User.IsInRole("Admin"))
     {
         await Html.RenderPartialAsync("_NavbarAdmin");
     }
@@ -27,19 +31,14 @@
     }
     else
     {
-    @* Fallback: Hier eure Rolle eingeben mit der ihr euere programm testet,
-     z.b  in diesen fall Trainee
-     Da Login noch nicht gibt, der die Rolle entscheidet *@
-    await Html.RenderPartialAsync("_NavbarMentor");
+        await Html.RenderPartialAsync("_NavbarMentor");
     }
-    
 
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2026 - Trainee_Tracker - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>

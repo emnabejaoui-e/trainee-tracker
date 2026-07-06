@@ -23,10 +23,14 @@ public class MentorController : Controller
     // GET: /Mentor/Index
     /// <summary>
     /// Displays the Mentor dashboard.
-    /// Only accessible by users with the Mentor role.
+    /// Only accessible by users with the Mentor or Admin role.
     /// </summary>
     /// <returns>The Mentor index view.</returns>
-    public IActionResult Index() => View();
+    public IActionResult Index()
+    {
+        ViewData["NavbarOverride"] = "Mentor";
+        return View();
+    }
 
     // Code-Owner: Leon
     /// <summary>
@@ -72,6 +76,7 @@ public class MentorController : Controller
     [HttpGet]
     public IActionResult Fortschrittskontrolle()
     {
+        ViewData["NavbarOverride"] = "Mentor";
         var model = new ProgressControlData
         {
             DaysWorked = 15,
@@ -89,6 +94,7 @@ public class MentorController : Controller
     [HttpGet]
     public IActionResult ImportCurriculum()
     {
+        ViewData["NavbarOverride"] = "Mentor";
         var curriculumNames = new List<String>();
         curriculumNames.Add("makandra Curriculum");
         curriculumNames.Add("makandra DevOps Curriculum");
@@ -101,6 +107,7 @@ public class MentorController : Controller
     [HttpPost]
     public IActionResult ImportCurriculum(string curriculumName, IFormFile file)
     {
+        ViewData["NavbarOverride"] = "Mentor";
         if (file == null)
             ModelState.AddModelError("FileName", "No file was selected.");
         else
