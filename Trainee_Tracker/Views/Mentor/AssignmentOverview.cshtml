@@ -22,10 +22,8 @@
     .OrderBy(la => la.Position)
     .ToList();
 
-    var raw = ViewBag.RejectionReasons;
-    var rejectionHistory = raw as Dictionary<int, List<Rejection>>;
-    @* var rejectionHistory = ViewBag.RejectionReasons as Dictionary<int, List<Rejection>>;
-         *@
+    var rejectionHistory = ViewBag.RejectionReasons as Dictionary<int, List<Rejection>>;
+    var assignmentsWithHistory = ViewBag.AssignmentsWithHistory as List<LessonAssignment>;
 
     var statusOrder = new[] {"Open", "Started", "Finished", "Rejected", "Accepted", "Rated"};
     var grouped = Model
@@ -33,8 +31,13 @@
             .ToDictionary(g => g.Key, g => g.OrderBy(x => x.Position)
             .ToList());
 }
-<p style="background:orange;">Roher Typ: @(raw?.GetType().FullName ?? "raw ist null")</p>
 
+<style> 
+    .container {
+        max-width: 100%;
+        padding: 0%;
+    }
+</style>
 
 <div class="review-container">
 
@@ -119,13 +122,13 @@
 
     <h2 class="section-title">Rejected Assignment History</h2>
 
-    @if(!rejectedAssignments.Any()){
+    @if(assignmentsWithHistory == null || !assignmentsWithHistory.Any()){
         <p class="empty-hint">No lesson assignments are currently rejected</p>
     }
     else
-    {
+    {   <div class="rejected-list-container">
         <ul class="rejected-list">
-            @foreach(var assignment in rejectedAssignments){
+            @foreach(var assignment in assignmentsWithHistory){
                 <li class="rejected-item">
                     <div class="rejected-item-info">
                         <span class="rejected-item-title">@assignment.Lesson.Title</span>
@@ -147,6 +150,7 @@
                 </li>
             }
         </ul> 
+        </div>
     }
 
     @foreach(var assignment in toReview)

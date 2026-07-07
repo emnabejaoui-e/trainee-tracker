@@ -11,9 +11,16 @@
 
 
  .review-container {
-    max-width: 100%; 
+    /* max-width: 100%; 
     margin: 0 auto;
-    padding: 20px;
+    padding: 20px; */
+    background-color: var(--white);
+    border-radius: 24px;
+    padding: 40px;
+    width: calc(100% - 40px);
+    max-width: 100%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    margin: 20px;
 } 
 
 .page-title {
@@ -427,4 +434,21 @@
     border-left: 3px solid #f87171;
     padding: 0.5rem 0.75rem;
     border-radius: 4px;
+}
+
+.rejected-list-container{
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+.rejected-list-container::-webkit-scrollbar-thumb{
+    background: #d1d5db;
+    border-radius: 4px;
+}
+
+.rejected-list-container::-webkit-scrollbar-track{
+    background: transparent;
 }

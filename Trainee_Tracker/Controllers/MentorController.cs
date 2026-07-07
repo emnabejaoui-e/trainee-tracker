@@ -156,12 +156,18 @@ public class MentorController : Controller
         var assignments = _assignmentRepo.FindByTrainee(trainee);
         var rejections = _rejectionRepo.GetRejectedByTrainee(trainee);
 
-        Console.WriteLine($"Anzahl rejections: {rejections.Count()}");
-        Console.WriteLine($"Typ von Rejection: {rejections.FirstOrDefault()?.GetType().FullName}");
-        ViewBag.RejectionReasons = rejections
+        var rejectionHistory = rejections
         .GroupBy(r=> r.AssignmentId)
         .ToDictionary(g => g.Key, g => g.OrderByDescending(r=>r.RejectedAt).ToList());
 
+        var assignmentsWithHistory = assignments
+        .Where(a => rejectionHistory.ContainsKey(a.Id))
+        .OrderByDescending(a => rejectionHistory[a.Id].Max(r =>r.RejectedAt))
+        .ToList();
+
+        ViewBag.RejectionReasons = rejectionHistory;
+        ViewBag.AssignmentsWithHistory = assignmentsWithHistory;
+        
         return View("AssignmentOverview", assignments); 
     }
 }
