@@ -13,7 +13,7 @@
     @foreach(String curriculumName in @ViewBag.curriculumNames)
     {
         <label>
-            <input name="cur" type="radio" value="@curriculumName">
+            <input name="curriculumName" type="radio" value="@curriculumName">
             @curriculumName
         </label>        
     }
@@ -21,7 +21,7 @@
     <br>
 
     <label for="curriculum-file">
-        <input id="curriculum-file" type="file" accept="application/json">
+        <input id="curriculum-file" name="file" type="file" accept="application/json">
     </label>
     
     <button class="btn" type="submit">Hochladen</button>
