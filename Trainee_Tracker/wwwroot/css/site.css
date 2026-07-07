@@ -209,3 +209,16 @@ body {
     color: red;
     font-size: smaller;
 }
+
+
+.profile-links .profile-link {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--gray-600);
+    text-decoration: none;
+    
+}
+
+.profile-links a:hover{
+    color: var(--pink);
+} 
