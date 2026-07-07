@@ -4,10 +4,6 @@ namespace Trainee_Tracker.Services;
 
 public interface ISchedulingService
 {
-    WeeklyPlan GenerateWeeklyProjection(Trainee trainee, DateOnly start);
-
-    WeeklyPlan MarkAbsentDays(WeeklyPlan plan, List<Break> breaks);
-    
     /// <summary>
     /// Changes the order of lessons for a particular trainee.
     /// </summary>
