@@ -209,6 +209,35 @@ public class AdminController : Controller
         return RedirectToAction("UserManagment");
     }
 
+    public IActionResult UpdateMentor(int? id)
+    {
+        if (id == null) return NotFound();
+        var user = _userService.GetById(id.Value);
+        if (user == null) return NotFound();
+        return View(user);
+    }
+
+    [HttpPost]
+    public IActionResult UpdateMentor(int id, string name, string email, string? newPassword)
+    {
+        if(_userService.GetById(id) is not Mentor mentor) {
+            return NotFound();
+        }
+        var emailChanged = !string.Equals(mentor.Email, email, StringComparison.OrdinalIgnoreCase);
+        if (!_userService.IsEmailAvailable(email) && emailChanged)
+        {
+            ModelState.AddModelError("Email", "email already in use");
+            mentor.Name = name;
+            mentor.Email = email;
+            return View(mentor);
+        }
+
+        mentor.Name = name;
+        mentor.Email = email;
+        _userService.UpdateMentor(mentor, newPassword);
+        return RedirectToAction("UserManagment");
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
