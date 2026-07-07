@@ -1,15 +1,13 @@
-/* Form Container */
 .upload-form {
     max-width: 480px;
     margin: 2rem auto;
     padding: 2rem;
-    background: var(--gray100);
+    background: var(--gray-100);
     border-radius: 12px;
-    border: 1px solid var(--gray200);
+    border: 1px solid var(--gray-200);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
 }
 
-/* Title */
 .section-title {
     color: var(--licorice);
     margin: 0 0 1.5rem;
@@ -18,7 +16,6 @@
     letter-spacing: -0.02em;
 }
 
-/* Radio Group */
 .radio-group {
     display: flex;
     flex-direction: column;
@@ -32,16 +29,16 @@
     gap: 0.75rem;
     padding: 0.75rem 1rem;
     background: var(--white);
-    border: 1px solid var(--gray300);
+    border: 1px solid var(--gray-400);
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
-    color: var(--gray600);
+    color: var(--gray-600);
 }
 
 .radio-group label:hover {
     border-color: var(--pink);
-    background: var(--gray100);
+    background: var(--gray-100);
 }
 
 .radio-group input[type="radio"] {
@@ -63,7 +60,7 @@
 .file-input-wrapper label {
     display: block;
     margin-bottom: 0.5rem;
-    color: var(--gray600);
+    color: var(--gray-600);
     font-weight: 500;
     font-size: 0.875rem;
 }
@@ -73,9 +70,9 @@
     width: 100%;
     padding: 0.75rem;
     background: var(--white);
-    border: 1px solid var(--gray300);
+    border: 1px solid var(--gray-400);
     border-radius: 8px;
-    color: var(--gray600);
+    color: var(--gray-600);
     font-size: 0.875rem;
     cursor: pointer;
     transition: border-color 0.2s;
