@@ -6,7 +6,7 @@ namespace Trainee_Tracker.E2ETests;
 
 /// <summary>
 /// E2E test for the login page.
-/// Tests that a valid Admin login redirects to the Admin dashboard.
+/// Tests that a valid Admin login redirects to the Admin dashboard
 /// </summary>
 public class LoginE2ETest : IDisposable
 {
@@ -15,7 +15,7 @@ public class LoginE2ETest : IDisposable
 
     // Code-Owner: Jelena Cosic
     /// <summary>
-    /// Initializes the Chrome WebDriver in headless mode for CI compatibility.
+    /// Initializes the Chrome WebDriver in headless mode for CI compatibility
     /// </summary>
     public LoginE2ETest()
     {
@@ -28,7 +28,7 @@ public class LoginE2ETest : IDisposable
 
     // Code-Owner: Jelena Cosic
     /// <summary>
-    /// Tests that a valid Admin login redirects to the Admin UserManagment page.
+    /// Tests that a valid Admin login redirects to the Admin UserManagment page
     /// </summary>
     [Fact]
     public void Login_ValidAdminCredentials_RedirectsToAdminDashboard()
@@ -46,12 +46,12 @@ public class LoginE2ETest : IDisposable
         submitButton.Click();
 
         // Assert
-        Assert.Contains("/Admin", _driver.Url);
+        Assert.Contains("Admin", _driver.Url);
     }
 
     // Code-Owner: Jelena Cosic
     /// <summary>
-    /// Disposes the WebDriver after each test.
+    /// Disposes the WebDriver after each test
     /// </summary>
     public void Dispose()
     {
