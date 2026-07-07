@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Trainee_Tracker.Data.LessonAssignments;
 using Trainee_Tracker.Models;
 using Trainee_Tracker.Repositories;
+using Trainee_Tracker.Services;
 
 namespace Trainee_Tracker.Controllers;
 
@@ -16,27 +17,34 @@ public class TraineeController : Controller
 {
     private readonly ILessonAssignmentRepository _lessonAssignmentRepo;
     private readonly IUserRepository _userRepo;
+    private readonly ILessonDateCalculator _lessonDateCalculator;
 
-    public TraineeController(ILessonAssignmentRepository lessonAssignmentRepo, IUserRepository userRepo)
+    public TraineeController(ILessonAssignmentRepository lessonAssignmentRepo, IUserRepository userRepo, ILessonDateCalculator lessonDateCalculator)
     {
         _lessonAssignmentRepo = lessonAssignmentRepo;
         _userRepo = userRepo;
+        _lessonDateCalculator = lessonDateCalculator;
     }
 
     public IActionResult WeekPlan()
     {
+        // get the trainee string id from login claim
         var traineeIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (traineeIdString == null)
         {
             return Unauthorized();
         }
+
+        // convert the string id in int and fetch it from db
         var traineeId = int.Parse(traineeIdString);
         var trainee = _userRepo.GetById(traineeId) as Trainee;
-
         if (trainee == null)
         {
             return Unauthorized();
         }
+        
+        // user service to calculate rough dates of the lesson assignment
+        var allAssignments = _lessonDateCalculator.RecalculateRoughExpectedDates(trainee);
 
         var today = DateOnly.FromDateTime(DateTime.Today);
         // Because .Net sees sunday as 0 and Monday as 1 and Saturday is 6
@@ -44,7 +52,8 @@ public class TraineeController : Controller
         var weekStart = today.AddDays(-daysSinceMonday);
         var weekEnd = weekStart.AddDays(6);
 
-        var weeklyAssignments = _lessonAssignmentRepo.FindByTrainee(trainee)
+        // only assignemnts in current week
+        var weeklyAssignments = allAssignments
             .Where(a => a.ExpectedProcessingDate >= weekStart && a.ExpectedProcessingDate <= weekEnd)
             .OrderBy(a => a.Position)
             .ToList();
