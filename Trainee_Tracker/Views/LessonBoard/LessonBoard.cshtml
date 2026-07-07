@@ -17,9 +17,16 @@
     var grouped = Model
             .GroupBy(x => x.Status.ToString())
             .ToDictionary(g => g.Key, g => g.OrderBy(x => x.Position).ToList());
+
+    var rejectedAssignments = Model
+    .Where(la=>la.Status == LessonAssignmentStatus.Rejected)
+    .OrderBy(la => la.Position)
+    .ToList();
+
+    var rejectionHistory = ViewBag.RejectionReasons as Dictionary<int, List<Rejection>>;
+    var assignmentsWithHistory = ViewBag.AssignmentsWithHistory as List<LessonAssignment>;
 }
 
-<link rel="stylesheet" href="~/css/lessonBoard_syle.css" /> 
 <style> 
     .container {
         max-width: 100%;
@@ -90,7 +97,7 @@
                                                     break;
 
                                                 case "Started":
-                                                        <form asp-action="UpdateStatus" asp-controller="LessonBoard" asp-route-id="@card.Id" method="post">
+                                                    <form asp-action="UpdateStatus" asp-controller="LessonBoard" asp-route-id="@card.Id" method="post">
                                                         <input type="hidden" name="id" value="@card.Id"/>
                                                         <input type="hidden" name="newStatus" value="@LessonAssignmentStatus.Finished"/>
 
@@ -103,7 +110,12 @@
                                                     break;
 
                                                 case "Rejected":
-                                                        <a asp-controller="Rejection" asp-action="SeeRejection" asp-route-id="@card.Id" class="action-btn action-btn-primary">see Rejection</a>
+                                                    <form asp-action="UpdateStatus" asp-controller="LessonBoard" asp-route-id="@card.Id" method="post">
+                                                        <input type="hidden" name="id" value="@card.Id"/>
+                                                        <input type="hidden" name="newStatus" value="@LessonAssignmentStatus.Started"/>
+
+                                                        <button type="submit" class="action-btn action-btn-primary">restart</button>
+                                                    </form>
                                                     break;
 
                                                 default:
@@ -122,6 +134,39 @@
         }
     </div>
 
+    <h2 class="section-title">Rejected Assignment History</h2>
+    <div class="rejected-list-container">
+    @if(assignmentsWithHistory == null || !assignmentsWithHistory.Any()){
+        <p class="empty-hint">No lesson assignments are rejected</p>
+    }
+    else
+    {   
+        <ul class="rejected-list">
+            @foreach(var assignment in assignmentsWithHistory){
+                <li class="rejected-item">
+                    <div class="rejected-item-info">
+                        <span class="rejected-item-title">@assignment.Lesson.Title</span>
+                        <span class="rejected-item-meta">@assignment.Position</span>
+                    </div>
+                    
+                    @if(rejectionHistory != null && rejectionHistory.TryGetValue(assignment.Id, out var history))
+                    {
+                        <ul class="rejection-history-list">
+                            @foreach(var rejection in history)
+                            {
+                               <li class="rejection-history-item">
+                                <strong>@rejection.RejectedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</strong>
+                                <p>@rejection.Reason</p>
+                               </li> 
+                            }
+                        </ul>
+                    }
+                </li>
+            }
+        </ul> 
+        
+    }
+    </div>
 </div>
 
 <script>
