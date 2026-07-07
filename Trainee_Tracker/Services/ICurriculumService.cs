@@ -4,5 +4,5 @@ namespace Trainee_Tracker.Services;
 
 public interface ICurriculumService
 {
-    void ImportCurriculum(string title, IList<Lesson> lessons);
+    void MergeLessons(Curriculum curriculum, IList<Lesson> importedLessons);
 }

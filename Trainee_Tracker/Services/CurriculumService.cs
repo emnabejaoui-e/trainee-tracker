@@ -15,8 +15,17 @@ public class CurriculumService : ICurriculumService
         _lessonRepo = lessonRepo;
     }
 
-    public void ImportCurriculum(string title, IList<Lesson> lessons)
+    public void MergeLessons(Curriculum curriculum, IList<Lesson> importedLessons)
     {
-        throw new NotImplementedException();
+        foreach (var less in curriculum.Lessons)
+        {
+            if (!importedLessons.Contains(less))
+            {
+                // All removed lessons are moved to the end and set to inactive
+                curriculum.Lessons.Remove(less);
+                less.Inactive = true;
+                curriculum.Lessons.Insert(curriculum.Lessons.Count - 1, less);
+            }
+        }
     }
 }
