@@ -93,35 +93,6 @@
         font-weight: bold;
     }
 
-    .lesson-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 13px;
-        margin-top: 10px;
-    }
-
-    .lesson-table th {
-        text-align: left;
-        padding: 8px;
-        background: var(--licorice);
-        color: var(--white);
-        font-size: 12px;
-    }
-
-    .lesson-table td {
-        padding: 8px;
-        border-bottom: 1px solid var(--gray-200);
-    }
-
-    .lesson-table tr:last-child td {
-        border-bottom: none;
-    }
-
-    .note {
-        margin-top: 14px;
-        font-size: 12px;
-        color: var(--gray-600);
-    }
 
     .btn-secondary-storyboard {
         margin-top: 12px;

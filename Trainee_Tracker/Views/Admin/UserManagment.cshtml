@@ -48,12 +48,10 @@
             <td>
                 @if (item is Trainee) {
                     <text> Trainee </text>
-                }
-                @if (item is Mentor) {
-                    <text> Mentor </text>
-                }
-                @if (item is Admin) {
+                } else if (item is Admin) {
                     <text> Admin </text>
+                } else if (item is Mentor) {
+                    <text> Mentor </text>
                 }
             </td>
             <td>

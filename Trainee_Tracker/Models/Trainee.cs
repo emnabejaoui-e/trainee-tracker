@@ -20,7 +20,5 @@ namespace Trainee_Tracker.Models
         //ergänzt von Julia aus designklassendiagramm und wichtig für EFCore
         public ICollection<LessonAssignment> Assignments {get; set;}
 
-        [NotMapped]
-        public ICollection<Break>? Breaks { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 @* Code Owner: Jelena Cosic *@
+@using System.Security.Claims
 <header class="page-header">
   <div style="display: flex; align-items: center; gap: 50px;">
     <div class="brand">
@@ -7,16 +8,15 @@
       <span style="color:var(--gray-400);font-weight:300;padding-left: 30px;">|</span>
     </div>
     <div class="categories">
-      <a asp-controller="Admin" asp-action="Index">HOME</a>
       <a asp-controller="Admin" asp-action="UserManagment">USER-MANAGMENT</a>
-      <a asp-controller="Report" asp-action="Index">BREAKS</a>
     </div>
   </div>
   <div class="user-profile">
-    <span class="role">ADMIN</span>
-    <span class="email">admin@makandra.de</span>
+    <span class="role">@User.FindFirst(ClaimTypes.Role)?.Value?.ToUpper()</span>
+    <span class="email">@User.FindFirst(ClaimTypes.Email)?.Value</span>
     <div class="user-dropdown">
       <p><a asp-controller="Profile" asp-action="Index">My Profile</a></p>
+      <p><a href="/Mentor/Index">Switch to Mentor View</a></p>
       <p>
         <form method="post" asp-controller="Login" asp-action="Logout">
           @Html.AntiForgeryToken()

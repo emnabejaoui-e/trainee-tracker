@@ -1,3 +1,4 @@
+@using Trainee_Tracker.Controllers
 @using Trainee_Tracker.Models
 
 @* Hauptverantwortlich: Julia *@
@@ -7,6 +8,15 @@
 @{
     ViewData ["Title"] = "Lesson Board";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var total = Model.Count();
+    var done = Model.Count(la => la.Status == LessonAssignmentStatus.Finished || la.Status == LessonAssignmentStatus.Accepted || la.Status == LessonAssignmentStatus.Rated);
+    var progress = total > 0 ? (int) ((double)done / total * 100) : 0;
+
+    var statusOrder = new[] {"Open", "Started", "Finished", "Rejected", "Accepted", "Rated"};
+    var grouped = Model
+            .GroupBy(x => x.Status.ToString())
+            .ToDictionary(g => g.Key, g => g.OrderBy(x => x.Position).ToList());
 }
 
 <link rel="stylesheet" href="~/css/lessonBoard_syle.css" /> 
@@ -17,171 +27,126 @@
     }
 </style>   
 
-<main class="board">
 
-    @* Open-Spalte *@
-    <div class="column" id="open">
-        <h2>Open<span class="card-count">@Model.Count(l => l.Status == LessonAssignmentStatus.Open)</span></h2>
-        @foreach(var assignment in Model.Where(l => l.Status == LessonAssignmentStatus.Open))
+
+<div class="board-container">
+    <div class="page-title">Lessons</div>
+    <div class="lesson-subtitle">Your learning path - @done of @total completed</div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" style="width: @progress%"></div>
+    </div>
+
+    <div class="board-search">
+        <input id="boardSearch" type="text" placeholder="search for a card e.g. Linux or 34" />
+    </div>
+
+    <div class="board-columns">
+        @foreach(var status in statusOrder)
         {
-            <div class="card" data-id="@assignment.Id">
-                <div class="card-header">
-                    <h3 class="card-title">@assignment.Position - @assignment.Lesson.Title</h3>
-                    <span class="card-duration-badge">@assignment.Lesson.Effort Day(s)</span>
+            var cards = grouped.ContainsKey(status) ? grouped[status] : new List<LessonAssignment>();
+
+                <div class="board-column column-@status.ToLower()">
+                    <div class ="column-header">
+                        <span class="column-title">@status</span>
+                        <span class="column-count">@cards.Count</span>
+                    </div>
+
+                    <div class="column-body" data-status="@status" id="column-body-@status">
+                        @if(!cards.Any())
+                        {
+                            <div class="column-empty">no crads</div>
+                        }
+                        else
+                        {
+                            @foreach(var card in cards){
+                                
+                                    <div class ="board-card" data-title="@card.Lesson.Title.ToLower()" data-num="@card.Position">
+                                        <div class="card-top">
+                                            <a class="card-link" href="@card.Lesson.URL">
+                                                <span class="card-title">@card.Lesson.Title</span> 
+                                            </a>
+                                            
+                                        </div> 
+
+                                        <div class="card-bottom-row">
+                                            <div class="card-meta">
+                                                <span>#@card.Position</span>
+                                                @if(card.Lesson.Effort != 0){
+                                                    <span class="dot"></span>
+                                                    <span>@card.Lesson.Effort d</span>
+                                                }
+                                            </div>
+                                            <div class="card-actions">
+                                            @switch(status)
+                                            {
+                                                case "Open":
+                                                    <form asp-action="UpdateStatus" asp-controller="LessonBoard" asp-route-id="@card.Id" method="post">
+                                                        <input type="hidden" name="id" value="@card.Id"/>
+                                                        <input type="hidden" name="newStatus" value="@LessonAssignmentStatus.Started"/>
+
+                                                        <button type="submit" class="action-btn action-btn-primary">start</button>
+                                                    </form>
+                                                    break;
+
+                                                case "Started":
+                                                        <form asp-action="UpdateStatus" asp-controller="LessonBoard" asp-route-id="@card.Id" method="post">
+                                                        <input type="hidden" name="id" value="@card.Id"/>
+                                                        <input type="hidden" name="newStatus" value="@LessonAssignmentStatus.Finished"/>
+
+                                                        <button type="submit" class="action-btn action-btn-primary">finish</button>
+                                                    </form>
+                                                    break;
+
+                                                case "Accepted":
+                                                        <a asp-controller="Feedback" asp-action="CreateFeedback" asp-route-assignmentId="@card.Id" asp-route-lessonId="@card.Lesson.Id" class="action-btn action-btn-primary">rate</a>
+                                                    break;
+
+                                                case "Rejected":
+                                                        <a asp-controller="Rejection" asp-action="SeeRejection" asp-route-id="@card.Id" class="action-btn action-btn-primary">see Rejection</a>
+                                                    break;
+
+                                                default:
+                                                    break;
+                                            }
+                                        </div>
+                                    </div>
+                                       
+                                </div>
+                                   
+                                
+                            }
+                        }
+                    </div>
                 </div>
-                
-                <div class="card-actions">
-                    <a href="@assignment.Lesson.URL" class="btn btn-see-card" target="_blank">see card</a>
-                    <form method="post" asp-action="UpdateStatus" asp-controller="LessonBoard">
-                        <input type="hidden" name="id" value="@assignment.Id"/>
-                        <input type="hidden" name="newStatus" value="@LessonAssignmentStatus.Started"/>
-                        <button type="submit" class="btn btn-status">start</button>
-                        
-                    </form>
-                </div>
-                
-            </div>
         }
     </div>
 
-    @* Started-Spalte *@
-    <div class="column" id="started">
-        <h2>Started<span class="card-count">@Model.Count(l => l.Status == LessonAssignmentStatus.Started)</span></h2>
-        @foreach(var assignment in Model.Where(l => l.Status == LessonAssignmentStatus.Started))
-        {
-            <div class="card" data-id="@assignment.Id">
-                <div class="card-header">
-                    <h3 class="card-title">@assignment.Position - @assignment.Lesson.Title</h3>
-                    <span class="card-duration-badge">@assignment.Lesson.Effort Day(s)</span>
-                </div>
+</div>
 
-                <div class="card-actions">
-                    <a href="@assignment.Lesson.URL" class="btn btn-see-card" target="_blank">see card</a>
-                    <form method="post" asp-action="UpdateStatus" asp-controller="LessonBoard">
-                        <input type="hidden" name="id" value="@assignment.Id"/>
-                        <input type="hidden" name="newStatus" value="@LessonAssignmentStatus.Finished"/>
-                        <button type="submit" class="btn btn-status">finish</button>
-                        
-                    </form>
-                </div>
-            </div>
-        }
-    </div>
+<script>
+    document.getElementById('boardSearch').addEventListener('input', function(e){
 
-    @* Finished-Spalte *@
-    <div class="column" id="finished">
-        <h2>Finished<span class="card-count">@Model.Count(l => l.Status == LessonAssignmentStatus.Finished)</span></h2>
-        @foreach(var assignment in Model.Where(l => l.Status == LessonAssignmentStatus.Finished))
-        {
-            <div class="card" data-id="@assignment.Id">
-                <div class="card-header">
-                    <h3 class="card-title">@assignment.Position - @assignment.Lesson.Title</h3>
-                    <span class="card-duration-badge">@assignment.Lesson.Effort Day(s)</span>
-                </div>
-                <div class="card-actions">
-                    <a href="@assignment.Lesson.URL" class="btn btn-see-card" target="_blank">see card</a>
-                </div>
-            </div>
-        }
-    </div>
+        var query = e.target.value.toLowerCase().trim();
 
-    @* Accepted-Spalte *@
-    <div class="column" id="accepted">
-        <h2>Accepted<span class="card-count">@Model.Count(l => l.Status == LessonAssignmentStatus.Accepted)</span></h2>
-        @foreach(var assignment in Model.Where(l => l.Status == LessonAssignmentStatus.Accepted))
-        {
-            <div class="card" data-id="@assignment.Id">
-                <div class="card-header">
-                    <h3 class="card-title">@assignment.Position - @assignment.Lesson.Title</h3>
-                    <span class="card-duration-badge">@assignment.Lesson.Effort Day(s)</span>
-                </div>
+        document.querySelectorAll('.board-card').forEach(function(card){
+            var title = card.dataset.title || '';
+            var num = card.dataset.num || '';
+            var match = !query || title.indexOf(query) !== -1 || num.indexOf(query) !== -1;
+            card.style.display = match ? '' : 'none';
+        });
 
-                
-                <div class="card-actions">
-                    <a href="@assignment.Lesson.URL" class="btn btn-see-card" target="_blank">see card</a>
-                    <a asp-controller="Feedback" asp-action="CreateFeedback" asp-route-lessonId="@assignment.Lesson.Id" asp-route-assignmentId="@assignment.Id"
-                    class="btn btn-status"> rate </a>
-                </div>
-            </div>
-        }
-    </div>
-
-    @* Rejected-Spalte *@
-    <div class="column" id="rejected">
-        <h2>Rejected<span class="card-count">@Model.Count(l => l.Status == LessonAssignmentStatus.Rejected)</span></h2>
-        @foreach(var assignment in Model.Where(l => l.Status == LessonAssignmentStatus.Rejected))
-        {
-            <div class="card" data-id="@assignment.Id">
-                <div class="card-header">
-                    <h3 class="card-title">@assignment.Position - @assignment.Lesson.Title</h3>
-                    <span class="card-duration-badge">@assignment.Lesson.Effort Day(s)</span>
-                </div>
-
-                <div class="card-actions">
-                    <a href="@assignment.Lesson.URL" class="btn btn-see-card" target="_blank">see card</a>
-                    <form method="post" asp-action="UpdateStatus" asp-controller="LessonBoard">
-                        <input type="hidden" name="id" value="@assignment.Id"/>
-                        <input type="hidden" name="newStatus" value="@LessonAssignmentStatus.Started"/>
-                        <button type="submit" class="btn btn-status">restart</button>
-                        
-                    </form>
-                </div>
-            </div>
-        }
-    </div>
-
-    @* Rated-Spalte *@
-    <div class="column" id="rated">
-        <h2>Rated<span class="card-count">@Model.Count(l => l.Status == LessonAssignmentStatus.Rated)</span></h2>
-        @foreach(var assignment in Model.Where(l => l.Status == LessonAssignmentStatus.Rated))
-        {
-            <div class="card" data-id="@assignment.Id">
-                <div class="card-header">
-                    <h3 class="card-title">@assignment.Position - @assignment.Lesson.Title</h3>
-                    <span class="card-duration-badge">@assignment.Lesson.Effort Day(s)</span>
-                </div>
-
-                <div class="card-actions">
-                    <a href="@assignment.Lesson.URL" class="btn btn-see-card" target="_blank">see card</a>
-                </div>
-            </div>
-        }
-    </div>
-</main>
-
-
-
-@* @section Scripts{
-    <script>
-    document.addEventListener('click', function(e){
-        if(e.target.classList.contains('btn-status')) {
-            const btn = e.target;
-            const card= btn.closest('.card');
-            const targetId = btn.getAttribute('data-target');
-            const targetColumn = document.getElementById(targetId);
-
-            if(card && targetColumn){
-                targetColumn.appendChild(card);
-                
-                const nextLabel = btn.getAttribute('data-label');
-                if(nextLabel == ""){
-                    btn.style.display = 'none';
-                }else{
-                    btn.textContent = nextLabel;
-                    btn.setAttribute('data-target', btn.getAttribute('data-next-target'));
-                    btn.setAttribute('data-label', btn.getAttribute('data-next-label'));
-                }
-
-                updateCounts();
+        document.querySelectorAll('.board-column').forEach(function(col){
+            var visibleCards = col.querySelectorAll('.board-card:not([style*="display: none"])').length;
+            var emptyMsg = col.querySelector('.column-empty');
+            if(emptyMsg){
+                emptyMsg.style.display = (query && visibleCards == 0) ? '' : (visibleCards === 0 && !query ? '' : 'none');
             }
-        }
+        });
+
     });
 
-    function updateCounts(){
-        document.querySelectorAll('.column').forEach(column => {
-            const count = column.querySelectorAll('.card').length;
-            column.querySelector('.card-count').textContent = count;
-        });
-    }
-  </script>
-} *@
+    
+
+    
+</script>

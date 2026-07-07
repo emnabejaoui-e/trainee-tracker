@@ -1,0 +1,65 @@
+@model List<Trainee_Tracker.Models.LessonAssignment>
+@using Trainee_Tracker.Models
+@using System.Globalization
+@{
+    ViewData["Title"] = "Dashboard";
+    @* Code Owner: Jelena Cosic *@
+    var name  = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? "Trainee";
+    var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "";
+    @* Code Owner: Andrej Basara*@
+    var weekStart = (DateOnly)ViewData["WeekStart"]!;
+    var weekDays = Enumerable.Range(0, 7).Select(i => weekStart.AddDays(i)).ToList();
+}
+
+@* Code Owner: Andrej Basara *@
+    <div class="planner-container">
+        <div class="planner-header">
+            <h1>Weekly Planner</h1>
+            <p>Makandra Trainee Programm</p>
+        </div>
+
+        <div class="planner-layout">
+            @foreach (var day in weekDays)
+            {
+                <div class="date-card">
+                    <div class="day-name">@day.ToString("dddd", CultureInfo.InvariantCulture)</div>
+                    <div class="day-number">@day.Day</div>
+                </div>
+            }
+
+            @foreach (var day in weekDays)
+            {
+                <div class="day-column">
+                    @foreach (var assignment in Model.Where(a => a.ExpectedProcessingDate == day).OrderBy(a => a.Position))
+                    {
+                        <div class="event-card @ThemeCssClass(assignment.Status)">
+                            <div class="event-info">
+                                <h3>@assignment.Lesson.Title</h3>
+                            </div>
+                            @if (assignment.Status == LessonAssignmentStatus.Open)
+                            {
+                                <form method="post" asp-action="UpdateStatus" asp-controller="Trainee">
+                                    <input type="hidden" name="id" value="@assignment.Id" />
+                                    <input type="hidden" name="newStatus" value="@LessonAssignmentStatus.Started" />
+                                    <button type="submit" class="btn-open">Start</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <a href="@assignment.Lesson.URL" target="_blank" class="btn-open">Open Lesson</a>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+@functions {
+    string ThemeCssClass(LessonAssignmentStatus status) => status switch
+    {
+        LessonAssignmentStatus.Finished or LessonAssignmentStatus.Accepted or LessonAssignmentStatus.Rated => "theme-grey",
+        LessonAssignmentStatus.Started => "theme-pink",
+        _ => "theme-licorice"
+    };
+}

@@ -203,7 +203,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 1,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 24),
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 29),
                             LessonId = 11,
                             Position = 2,
                             Status = 3,
@@ -212,7 +212,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 2,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 25),
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 29),
                             LessonId = 22,
                             Position = 3,
                             Status = 3,
@@ -221,7 +221,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 3,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 26),
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 29),
                             LessonId = 33,
                             Position = 4,
                             Status = 3,
@@ -230,7 +230,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 4,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 26),
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 30),
                             LessonId = 44,
                             Position = 5,
                             Status = 3,
@@ -239,7 +239,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 5,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 27),
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 30),
                             LessonId = 55,
                             Position = 6,
                             Status = 2,
@@ -248,7 +248,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 6,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 28),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
                             LessonId = 66,
                             Position = 7,
                             Status = 2,
@@ -257,7 +257,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 7,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 30),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
                             LessonId = 77,
                             Position = 8,
                             Status = 1,
@@ -266,7 +266,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 8,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 30),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
                             LessonId = 88,
                             Position = 9,
                             Status = 1,
@@ -275,7 +275,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 9,
-                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 2),
                             LessonId = 99,
                             Position = 10,
                             Status = 0,
@@ -284,7 +284,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 10,
-                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 3),
                             LessonId = 100,
                             Position = 11,
                             Status = 0,
@@ -293,7 +293,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 11,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 24),
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 29),
                             LessonId = 11,
                             Position = 2,
                             Status = 3,
@@ -302,7 +302,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 12,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 25),
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 29),
                             LessonId = 22,
                             Position = 3,
                             Status = 3,
@@ -311,7 +311,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 13,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 26),
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 29),
                             LessonId = 33,
                             Position = 4,
                             Status = 3,
@@ -320,7 +320,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 14,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 26),
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 30),
                             LessonId = 44,
                             Position = 6,
                             Status = 3,
@@ -329,7 +329,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 15,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 27),
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 30),
                             LessonId = 55,
                             Position = 5,
                             Status = 2,
@@ -338,7 +338,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 16,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 28),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
                             LessonId = 66,
                             Position = 7,
                             Status = 2,
@@ -347,7 +347,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 17,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 30),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
                             LessonId = 77,
                             Position = 9,
                             Status = 2,
@@ -356,7 +356,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 18,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 30),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 2),
                             LessonId = 88,
                             Position = 8,
                             Status = 1,
@@ -365,7 +365,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 19,
-                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 2),
                             LessonId = 99,
                             Position = 10,
                             Status = 1,
@@ -374,7 +374,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 20,
-                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 3),
                             LessonId = 100,
                             Position = 11,
                             Status = 0,
@@ -383,7 +383,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 21,
-                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 3),
                             LessonId = 111,
                             Position = 12,
                             Status = 0,
@@ -392,7 +392,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 22,
-                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 3),
                             LessonId = 222,
                             Position = 13,
                             Status = 0,

@@ -23,10 +23,14 @@ public class MentorController : Controller
     // GET: /Mentor/Index
     /// <summary>
     /// Displays the Mentor dashboard.
-    /// Only accessible by users with the Mentor role.
+    /// Only accessible by users with the Mentor or Admin role.
     /// </summary>
     /// <returns>The Mentor index view.</returns>
-    public IActionResult Index() => View();
+    public IActionResult Index()
+    {
+        ViewData["NavbarOverride"] = "Mentor";
+        return View();
+    }
 
     // Code-Owner: Leon
     /// <summary>
@@ -55,13 +59,14 @@ public class MentorController : Controller
     // Code-Owner: Leon
     public IActionResult MyTrainees()
     {
-        string mentorEmail = User.Identities.First().Claims
-            .First(cl => cl.Type == ClaimTypes.Email).Value;
+        string? mentorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        Contract.Assert(mentorId != null, "user must be logged in");
 
-        Mentor? currentUser = _mentorRepo.GetMentorByEMail(mentorEmail);
-
-        // You must be logged in as a mentor to event call this Action method
-        Contract.Assert(currentUser != null, "Inconsistent login state (no/invalid email set).");
+        Mentor? currentUser = _mentorRepo.GetMentorById(int.Parse(mentorId));
+        if (currentUser == null)
+        {
+            return Unauthorized();
+        }
         
         return View(currentUser.AssignedTrainees);
     }
@@ -71,6 +76,7 @@ public class MentorController : Controller
     [HttpGet]
     public IActionResult Fortschrittskontrolle()
     {
+        ViewData["NavbarOverride"] = "Mentor";
         var model = new ProgressControlData
         {
             DaysWorked = 15,
@@ -88,6 +94,7 @@ public class MentorController : Controller
     [HttpGet]
     public IActionResult ImportCurriculum()
     {
+        ViewData["NavbarOverride"] = "Mentor";
         var curriculumNames = new List<String>();
         curriculumNames.Add("makandra Curriculum");
         curriculumNames.Add("makandra DevOps Curriculum");
@@ -100,6 +107,7 @@ public class MentorController : Controller
     [HttpPost]
     public IActionResult ImportCurriculum(string curriculumName, IFormFile file)
     {
+        ViewData["NavbarOverride"] = "Mentor";
         if (file == null)
             ModelState.AddModelError("FileName", "No file was selected.");
         else
