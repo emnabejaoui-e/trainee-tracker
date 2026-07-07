@@ -1,5 +1,6 @@
 // Code Owner: Jelena Cosic
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Trainee_Tracker.Models;
 using Trainee_Tracker.Repositories;
 
@@ -46,6 +47,13 @@ namespace Trainee_Tracker.Services
         {
             var hashedPassword = string.IsNullOrEmpty(newPassword) ? null : HashPassword(newPassword);
             _userRepository.UpdateUser(trainee, hashedPassword);
+        }
+
+        // Code Owner: Andrej Basara 
+        public void UpdateMentor(Mentor mentor, string? newPassword = null)
+        {
+            var hashedPassword = string.IsNullOrEmpty(newPassword) ? null : HashPassword(newPassword);
+            _userRepository.UpdateUser(mentor, hashedPassword);
         }
 
 // Code Owner: Jelena Cosic
