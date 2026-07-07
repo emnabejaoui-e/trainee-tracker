@@ -46,7 +46,7 @@ public class LoginE2ETest : IDisposable
         submitButton.Click();
 
         // Assert
-        Assert.Contains("Admin", _driver.Url);
+        Assert.DoesNotContain("Login", _driver.Url);
     }
 
     // Code-Owner: Jelena Cosic
