@@ -1,12 +1,131 @@
+/* Form Container */
+.upload-form {
+    max-width: 480px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: var(--gray100);
+    border-radius: 12px;
+    border: 1px solid var(--gray200);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+/* Title */
+.section-title {
+    color: var(--licorice);
+    margin: 0 0 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+/* Radio Group */
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--white);
+    border: 1px solid var(--gray300);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--gray600);
+}
+
+.radio-group label:hover {
+    border-color: var(--pink);
+    background: var(--gray100);
+}
+
+.radio-group input[type="radio"] {
+    accent-color: var(--licorice);
+    width: 1.125rem;
+    height: 1.125rem;
+    cursor: pointer;
+}
+
+.radio-group input[type="radio"]:checked + span {
+    color: var(--licorice);
+    font-weight: 500;
+}
+
+.file-input-wrapper {
+    margin-bottom: 1.5rem;
+}
+
+.file-input-wrapper label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--gray600);
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.file-input-wrapper input[type="file"] {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--white);
+    border: 1px solid var(--gray300);
+    border-radius: 8px;
+    color: var(--gray600);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.file-input-wrapper input[type="file"]:hover {
+    border-color: var(--pink);
+}
+
+.file-input-wrapper input[type="file"]::file-selector-button {
+    background: var(--licorice);
+    color: var(--white);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    margin-right: 1rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.file-input-wrapper input[type="file"]::file-selector-button:hover {
+    background: var(--pink);
+}
+
 .btn {
-    margin-top: 12px;
-    padding: 8px 13px;
-    border-radius: 5px;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
     border: none;
     background: var(--licorice);
     color: var(--white);
     cursor: pointer;
-    font-size: 13px;
-    text-decoration: none;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    transition: background 0.2s, transform 0.1s;
 }
 
+.btn:hover {
+    background: var(--pink);
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.file-input-wrapper input[type="file"]:focus,
+.btn:focus {
+    outline: 2px solid var(--pink);
+    outline-offset: 2px;
+}

@@ -7,26 +7,27 @@
 
 @model IFormFile
 
-<h1 class="section-title">Lehrplan importieren</h1>
+<div class="upload-form">
+    <h1 class="section-title">Import Curriculum</h1>
 
-<form method="post" enctype="multipart/form-data">
-    @foreach(String curriculumName in @ViewBag.curriculumNames)
-    {
-        <label>
-            <input name="curriculumName" type="radio" value="@curriculumName">
-            @curriculumName
-        </label>        
-    }
+    <form method="post" enctype="multipart/form-data">
+        <div class="radio-group">
+            @foreach(String curriculumName in @ViewBag.curriculumNames)
+            {
+                <label>
+                    <input name="curriculumName" type="radio" value="@curriculumName">
+                    <span>@curriculumName</span>
+                </label>        
+            }
+        </div>
 
-    <br>
-
-    <label for="curriculum-file">
-        <input id="curriculum-file" name="file" type="file" accept="application/json">
-    </label>
-    
-    <button class="btn" type="submit">Hochladen</button>
-    
-    <br/>
-
-    <span asp-validation-for="FileName"></span>
-</form>
+        <div class="file-input-wrapper">
+            <label for="curriculum-file">Select JSON File</label>
+            <input id="curriculum-file" name="file" type="file" accept="application/json">
+        </div>
+        
+        <button class="btn" type="submit">Submit</button>
+        
+        <span asp-validation-for="FileName" class="field-validation-error"></span>
+    </form>
+</div>
