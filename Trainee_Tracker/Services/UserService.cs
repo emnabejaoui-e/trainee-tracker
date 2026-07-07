@@ -58,20 +58,6 @@ namespace Trainee_Tracker.Services
 
 // Code Owner: Jelena Cosic
 
-        public void UpdateMentor(Mentor mentor)
-        {
-            _userRepository.UpdateUser(mentor);
-        }
-
-// Code Owner: Jelena Cosic
-
-        public void UpdateAdmin(Admin admin)
-        {
-            _userRepository.UpdateUser(admin);
-        }
-
-// Code Owner: Jelena Cosic
-
         public IList<User> GetAllUsers()
         {
             return _userRepository.GetAllUsers();

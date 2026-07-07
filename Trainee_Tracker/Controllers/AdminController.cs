@@ -195,6 +195,7 @@ public class AdminController : Controller
         {
             ModelState.AddModelError("Email", "Email already in use");
             trainee.Name = name;
+            trainee.Email = email;
             trainee.StartingDate = startingDate;
             trainee.EndDate = endDate;
             // doesn't delete already changed/ entered data on error in forum

@@ -11,7 +11,6 @@ namespace Trainee_Tracker.Services
         void CreateAdmin(Admin admin, string rawPassword);
         void UpdateTrainee(Trainee trainee, string? newPassword = null);
         void UpdateMentor(Mentor mentor, string? newPassword = null);
-        void UpdateAdmin(Admin admin);
         IList<User> GetAllUsers();
         void CloseUser(int id);
         LoginResult ValidateUserCredentials(string email, string password); 
