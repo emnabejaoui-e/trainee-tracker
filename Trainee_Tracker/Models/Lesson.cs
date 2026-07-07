@@ -35,4 +35,16 @@ public class Lesson
     /// Where in the order this lesson should be done (ordinal).
     /// </summary>
     public int Position { get; set; }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is Lesson lesson)
+        {
+            return Id.Equals(lesson.Id);
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
