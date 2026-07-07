@@ -68,7 +68,10 @@
                 }
             </td>
             <td>
-                <a asp-action="UpdateTrainee" asp-route-id="@item.Id" class = "grey-link">Edit</a> |
+                @{
+                    var editAction = item is Trainee ? "UpdateTrainee" : "UpdateMentor";
+                }
+                <a asp-action="@editAction" asp-route-id="@item.Id" class = "grey-link">Edit</a> |
                 <a asp-action="UserDetails" asp-route-id="@item.Id" class = "grey-link">Details</a> |
                 <a asp-action="CloseUser" asp-route-id="@item.Id" class = "grey-link">Close</a>
             </td>
