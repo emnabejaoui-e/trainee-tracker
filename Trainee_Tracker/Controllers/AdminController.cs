@@ -176,6 +176,7 @@ public class AdminController : Controller
         return View(user);
     }
 
+    // Code Owner: Andrej Basara
     public IActionResult UpdateTrainee(int? id)
     {
         if (id == null) return NotFound();
@@ -185,7 +186,7 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    public IActionResult UpdateTrainee(int id, string name, string email, DateOnly startingDate, DateOnly endDate)
+    public IActionResult UpdateTrainee(int id, string name, string email, string? password, DateOnly startingDate, DateOnly endDate)
     {
         if (_userService.GetById(id) is not Trainee trainee) return NotFound();
 
@@ -196,7 +197,7 @@ public class AdminController : Controller
             trainee.Name = name;
             trainee.StartingDate = startingDate;
             trainee.EndDate = endDate;
-            // doesn't delete already changed data on error
+            // doesn't delete already changed/ entered data on error in forum
             return View(trainee);
         }
 
@@ -204,7 +205,7 @@ public class AdminController : Controller
         trainee.Email = email;
         trainee.StartingDate = startingDate;
         trainee.EndDate = endDate;
-        _userService.UpdateTrainee(trainee);
+        _userService.UpdateTrainee(trainee, password);
         return RedirectToAction("UserManagment");
     }
 

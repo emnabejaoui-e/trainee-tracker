@@ -41,11 +41,11 @@ namespace Trainee_Tracker.Services
             _userRepository.CreateAdmin(admin, hashedPassword);
         }
 
-// Code Owner: Jelena Cosic
-
-        public void UpdateTrainee(Trainee trainee)
+        // Code Owner: Andrej Basara
+        public void UpdateTrainee(Trainee trainee, string? newPassword = null)
         {
-            _userRepository.UpdateUser(trainee);
+            var hashedPassword = string.IsNullOrEmpty(newPassword) ? null : HashPassword(newPassword);
+            _userRepository.UpdateUser(trainee, hashedPassword);
         }
 
 // Code Owner: Jelena Cosic

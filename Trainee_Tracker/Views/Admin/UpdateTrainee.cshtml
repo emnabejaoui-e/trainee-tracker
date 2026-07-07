@@ -37,6 +37,11 @@
                 </div>
 
                 <div class="mb-3">
+                    <label for="password" class="control-label">New Password</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Leave empty to keep current password" />
+                </div>
+
+                <div class="mb-3">
                     <input type="submit" value="Save" class="btn btn-primary" />
                 </div>
             </form>
@@ -44,8 +49,7 @@
     </div>
 
     <div>
-        <a asp-action="Details" asp-route-id="@Model.Id">Details</a> |
-        <a asp-action="Index">Zurück zur Liste</a>
+        <a asp-action="UserManagment">Zurück zur Liste</a>
     </div>
 </div>
 @section Scripts {
