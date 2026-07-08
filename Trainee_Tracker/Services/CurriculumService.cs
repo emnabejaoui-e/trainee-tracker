@@ -17,6 +17,25 @@ public class CurriculumService : ICurriculumService
 
     public void MergeLessons(Curriculum curriculum, IList<Lesson> importedLessons)
     {
+        
+        for (int i = 0; i < importedLessons.Count; i++)
+        {
+            var lessonUpdate = importedLessons[i];
+            int idx = curriculum.Lessons.IndexOf(lessonUpdate);
+            if (idx != -1)
+            {
+                // Lesson already exists in Curriculum.
+                var existingLesson = curriculum.Lessons[idx];
+
+                // Update values
+                existingLesson.Update(lessonUpdate);
+                
+                // Update position
+                curriculum.Lessons.RemoveAt(idx);
+                curriculum.Lessons.Insert(i, existingLesson);
+            }
+        }
+        
         foreach (var less in curriculum.Lessons)
         {
             if (!importedLessons.Contains(less))
