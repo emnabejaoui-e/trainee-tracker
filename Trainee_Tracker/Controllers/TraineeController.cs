@@ -35,8 +35,11 @@ public class TraineeController : Controller
             return Unauthorized();
         }
 
-        // convert the string id in int and fetch it from db
-        var traineeId = int.Parse(traineeIdString);
+        // convert the string id in int and fetch it from db hcek if possible
+        if (!int.TryParse(traineeIdString, out var traineeId))
+        {
+            return BadRequest();
+        }
         var trainee = _userRepo.GetById(traineeId) as Trainee;
         if (trainee == null)
         {
