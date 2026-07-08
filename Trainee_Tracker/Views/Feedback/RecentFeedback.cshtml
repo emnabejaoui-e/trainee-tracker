@@ -3,7 +3,7 @@
 @using System.Security.Claims
 
 @{
-    ViewData["Title"] = "Recent Feedback";
+    ViewData["Title"] = "Feedback";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
@@ -11,7 +11,10 @@
 
 <link rel="stylesheet" href="~/css/feedback.css" />
 
-<h1 class="section-title">Recent Feedback</h1>
+<h1 class="section-title">
+    <i class="bi bi-chat-square-text"></i>
+    Feedback
+</h1>
 
 @if (TempData["SuccessMessage"] != null)
 {
@@ -27,25 +30,61 @@
     </div>
 }
 
+<div class="feedback-show-filter">
+    <a  asp-action="RecentFeedback"
+        asp-route-show="all"
+        asp-route-from="@(ViewBag.From != null ? ((DateTime)ViewBag.From).ToString("yyyy-MM-dd") : "")"
+        asp-route-until="@(ViewBag.Until != null ? ((DateTime)ViewBag.Until).ToString("yyyy-MM-dd") : "")"
+        class="filter-tab @(ViewBag.Show == "mine" ? "" : "active")">
+            All Feedback
+    </a>
+
+    @if (User.IsInRole("Trainee"))
+    {
+        <a asp-action="RecentFeedback"
+            asp-route-show="mine"
+            asp-route-from="@(ViewBag.From != null ? ((DateTime)ViewBag.From).ToString("yyyy-MM-dd") : "")"
+            asp-route-until="@(ViewBag.Until != null ? ((DateTime)ViewBag.Until).ToString("yyyy-MM-dd") : "")"
+            class="filter-tab @(ViewBag.Show == "mine" ? "active" : "")">
+                My Feedback
+        </a>
+    }
+
+    @if (User.IsInRole("Mentor") || User.IsInRole("Admin"))
+    {
+        <a asp-action="RecentFeedback"
+            asp-route-show="assigned"
+            asp-route-from="@(ViewBag.From != null ? ((DateTime)ViewBag.From).ToString("yyyy-MM-dd") : "")"
+            asp-route-until="@(ViewBag.Until != null ? ((DateTime)ViewBag.Until).ToString("yyyy-MM-dd") : "")"
+            class="filter-tab @(ViewBag.Show == "mine" ? "active" : "")">
+                My Trainees
+        </a>
+    }
+
+</div>
+
+
 <form asp-action="RecentFeedback" method="get" class="feedback-filter">
     <div>
         <label for="from">From</label>
-        <input type="date"
-               id="from"
-               name="from"
-               value="@(ViewBag.From != null ? ((DateTime)ViewBag.From).ToString("yyyy-MM-dd") : "")" />
+        <input  type="date"
+                id="from"
+                name="from"
+                value="@(ViewBag.From != null ? ((DateTime)ViewBag.From).ToString("yyyy-MM-dd") : "")" />
     </div>
 
     <div>
         <label for="until">Until</label>
         <input type="date"
-               id="until"
-               name="until"
-               value="@(ViewBag.Until != null ? ((DateTime)ViewBag.Until).ToString("yyyy-MM-dd") : "")" />
+                id="until"
+                name="until"
+                value="@(ViewBag.Until != null ? ((DateTime)ViewBag.Until).ToString("yyyy-MM-dd") : "")" />
     </div>
 
     <button type="submit" class="btn">Show Feedback</button>
 </form>
+
+<input type="hidden" id="show" name="show" value="@ViewBag.Show" />
 
 @if (ViewBag.DateError != null)
 {
@@ -53,9 +92,9 @@
 }
 
 @if (Context.Request.Query.ContainsKey("from") &&
-     Context.Request.Query.ContainsKey("until") &&
-     !Model.Any() &&
-     ViewData.ModelState.IsValid)
+    Context.Request.Query.ContainsKey("until") &&
+    !Model.Any() &&
+    ViewData.ModelState.IsValid)
 {
     <p>No feedback found for the selected period.</p>
 }
@@ -83,19 +122,19 @@ else
                             (!User.IsInRole("Trainee") || feedback.TraineeId == currentUserId)
                         {
                             <a asp-action="Edit"
-                               asp-route-id="@feedback.Id"
-                               class="btn">
+                                asp-route-id="@feedback.Id"
+                                class="btn">
                                 Edit
                             </a>
 
                             <form asp-action="Delete"
-                                  method="post"
-                                  onsubmit="return confirm('Are you sure you want to delete this feedback?');">
+                                method="post"
+                                onsubmit="return confirm('Are you sure you want to delete this feedback?');">
                                 @Html.AntiForgeryToken()
 
                                 <input type="hidden"
-                                       name="id"
-                                       value="@feedback.Id" />
+                                        name="id"
+                                        value="@feedback.Id" />
 
                                 <button type="submit"
                                         class="btn btn-secondary">
