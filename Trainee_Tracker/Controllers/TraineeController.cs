@@ -69,7 +69,7 @@ public class TraineeController : Controller
     public IActionResult UpdateStatus(int id, LessonAssignmentStatus newStatus)
     {
         _lessonAssignmentRepo.UpdateStatus(id, newStatus);
-        return RedirectToAction("Index");
+        return RedirectToAction("WeekPlan");
     }
 
     public IActionResult Home() => RedirectToAction("Index");
