@@ -15,42 +15,44 @@ public class CurriculumService : ICurriculumService
         _lessonRepo = lessonRepo;
     }
 
-    public void MergeLessons(Curriculum curriculum, IList<Lesson> importedLessons)
+    public IList<Lesson> MergeLessons(IList<Lesson> existingLessons, IList<Lesson> importedLessons)
     {
         
         for (int i = 0; i < importedLessons.Count; i++)
         {
             var lessonUpdate = importedLessons[i];
-            int idx = curriculum.Lessons.IndexOf(lessonUpdate);
+            int idx = existingLessons.IndexOf(lessonUpdate);
             if (idx != -1)
             {
                 // Lesson already exists in Curriculum.
-                var existingLesson = curriculum.Lessons[idx];
+                var existingLesson = existingLessons[idx];
 
                 // Update values
                 existingLesson.Update(lessonUpdate);
                 
                 // Update position
-                curriculum.Lessons.RemoveAt(idx);
-                curriculum.Lessons.Insert(i, existingLesson);
+                existingLessons.RemoveAt(idx);
+                existingLessons.Insert(i, existingLesson);
             }
             else
             {
                 // Lesson does not already exist in Curriculum:
                 // Insert new Lesson at the correct position.
-                curriculum.Lessons.Insert(i, lessonUpdate);
+                existingLessons.Insert(i, lessonUpdate);
             }
         }
         
-        foreach (var less in curriculum.Lessons)
+        foreach (var less in existingLessons)
         {
             if (!importedLessons.Contains(less))
             {
                 // All removed lessons are moved to the end and set to inactive
-                curriculum.Lessons.Remove(less);
+                existingLessons.Remove(less);
                 less.Inactive = true;
-                curriculum.Lessons.Insert(curriculum.Lessons.Count - 1, less);
+                existingLessons.Insert(existingLessons.Count - 1, less);
             }
         }
+
+        return existingLessons;
     }
 }
