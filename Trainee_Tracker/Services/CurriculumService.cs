@@ -1,5 +1,3 @@
-using Trainee_Tracker.Data.Curriculums;
-using Trainee_Tracker.Data.Lessons;
 using Trainee_Tracker.Models;
 
 namespace Trainee_Tracker.Services;
@@ -35,14 +33,16 @@ public class CurriculumService : ICurriculumService
             }
         }
         
-        foreach (var less in existingLessons)
+        for(var i = 0; i < existingLessons.Count; i++)
         {
-            if (!importedLessons.Contains(less))
+            var less = existingLessons[i];
+            if (!less.Inactive && !importedLessons.Contains(less))
             {
                 // All removed lessons are moved to the end and set to inactive
-                existingLessons.Remove(less);
+                existingLessons.RemoveAt(i);
                 less.Inactive = true;
                 existingLessons.Insert(existingLessons.Count - 1, less);
+                i--;
             }
         }
 
