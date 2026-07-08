@@ -43,8 +43,14 @@ namespace Trainee_Tracker.Repositories
             _context.SaveChanges();
         }
 
-        public void UpdateUser(User user)
+
+        // Code Owner: Andrej Basara
+        public void UpdateUser(User user, string? password = null)
         {
+            if (!string.IsNullOrEmpty(password))
+            {
+                user.HashedPassword = password;
+            }
             _context.Set<User>().Update(user);
             _context.SaveChanges();
         }
