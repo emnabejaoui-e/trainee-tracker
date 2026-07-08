@@ -49,4 +49,49 @@ public class CurriculumServiceMergeLessonsTest
         
         Assert.True(removedLesson.Inactive, "Removed Lesson should be inactive.");
     }
+
+    [Fact]
+    public void TestLessonsAreInsertedInTheCorrectSpot()
+    {
+        var existingLessons = new List<Lesson>()
+        {
+            new()
+            {
+                Id = 1,
+            },
+            new()
+            {
+                Id = 2,
+            }
+        };
+        
+        var importedLessons = new List<Lesson>()
+        {
+            new()
+            {
+                Id = 1,
+            },
+            new()
+            {
+                Id = 3
+            },
+            new()
+            {
+                Id = 2,
+            }
+        };
+        
+        var result = _service.MergeLessons(existingLessons, importedLessons);
+
+        var idx = result.IndexOf(new Lesson() { Id = 3 });
+
+        var expectedResult = new List<Lesson>()
+        {
+            new() { Id = 1 },
+            new() { Id = 3 },
+            new() { Id = 2 }
+        };
+        
+        Assert.Equal(expectedResult, result);
+    }
 }
