@@ -34,6 +34,12 @@ public class CurriculumService : ICurriculumService
                 curriculum.Lessons.RemoveAt(idx);
                 curriculum.Lessons.Insert(i, existingLesson);
             }
+            else
+            {
+                // Lesson does not already exist in Curriculum:
+                // Insert new Lesson at the correct position.
+                curriculum.Lessons.Insert(i, lessonUpdate);
+            }
         }
         
         foreach (var less in curriculum.Lessons)
