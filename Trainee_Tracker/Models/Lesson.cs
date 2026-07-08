@@ -47,4 +47,16 @@ public class Lesson
             return false;
         }
     }
+
+    /// <summary>
+    /// Updates this lesson with the values from the previous lesson.
+    /// </summary>
+    /// <param name="newValues">A Lesson object to take the new values from.</param>
+    public void Update(Lesson newValues)
+    {
+        Title = newValues.Title;
+        URL = newValues.URL;
+        Effort = newValues.Effort;
+        Inactive = newValues.Inactive;
+    }
 }
