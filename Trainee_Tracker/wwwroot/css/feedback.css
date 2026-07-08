@@ -40,6 +40,13 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
+.filter-tab:hover {
+    background: var(--gray-100);
+    border-color: var(--gray-300);
+    color: var(--licorice);
+    transition: 0.2s ease;
+}
+
 .filter-tab.active {
     color: var(--white);
     background: var(--licorice);

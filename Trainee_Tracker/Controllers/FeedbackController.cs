@@ -4,6 +4,7 @@ using Trainee_Tracker.Services;
 using Trainee_Tracker.Data.Lessons;
 using Trainee_Tracker.Data.LessonAssignments;
 using System.Security.Claims;
+using Trainee_Tracker.Data.MentorRepository;
 
 namespace Trainee_Tracker.Controllers;
 
@@ -12,15 +13,18 @@ public class FeedbackController : Controller
     private readonly LessonFeedbackService _lessonFeedbackService;
     private readonly ILessonRepository _lessonRepository;
     private readonly ILessonAssignmentRepository _lessonAssignmentRepository;
+    private readonly IMentorRepository _mentorRepo;
 
     public FeedbackController(
         LessonFeedbackService lessonFeedbackService,
         ILessonRepository lessonRepository,
-        ILessonAssignmentRepository lessonAssignmentRepository)
+        ILessonAssignmentRepository lessonAssignmentRepository,
+        IMentorRepository mentorRepo)
     {
         _lessonFeedbackService = lessonFeedbackService;
         _lessonRepository = lessonRepository;
         _lessonAssignmentRepository = lessonAssignmentRepository;
+        _mentorRepo = mentorRepo;
     }
 
     [HttpGet]
@@ -47,8 +51,16 @@ public class FeedbackController : Controller
                 }
                 else if (show == "assigned")
                 {
-                    // TODO: Show only feedback from trainees assigned to the current mentor.
-                    feedbacks = feedbacks.ToList();
+                    var mentor = _mentorRepo.GetMentorById(currentUserId);
+                    if(mentor == null)
+                    {
+                        TempData["ErrorMessage"] = "You are not authorized to view assigned feedback.";
+                        return RedirectToAction("RecentFeedback", new { show = "all" });
+                    }
+                    var assignedTraineeIds = mentor.AssignedTrainees.Select(t => t.Id).ToHashSet();
+                    feedbacks = feedbacks
+                        .Where(f => assignedTraineeIds.Contains(f.TraineeId))
+                        .ToList();
                 }
                 else
                 {
@@ -61,6 +73,10 @@ public class FeedbackController : Controller
         ViewBag.From = from;
         ViewBag.Until = until;
         ViewBag.Show = show;
+        ViewBag.EditableFeedbackIds = feedbacks
+            .Where(f => CanManageFeedback(f, currentUserId))
+            .Select(f => f.Id)
+            .ToHashSet();
 
         return View(feedbacks);
     }
@@ -126,7 +142,7 @@ public class FeedbackController : Controller
             LessonAssignmentStatus.Rated
         );
 
-        TempData["SuccessMessage"] = "Your feedback has been submitted successfully.";
+        TempData["SuccessMessage"] = "Feedback has been submitted successfully.";
 
         return RedirectToAction("RecentFeedback", "Feedback", new
         {
@@ -146,12 +162,11 @@ public class FeedbackController : Controller
 
         var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-        if (User.IsInRole("Trainee") && feedback.TraineeId != currentUserId)
+        if (!CanManageFeedback(feedback, currentUserId))
         {
             TempData["ErrorMessage"] = "You are not authorized to edit this feedback.";
             return RedirectToAction("RecentFeedback", new { show = "all" });
         }
-
         return View(feedback);
     }
 
@@ -172,7 +187,7 @@ public class FeedbackController : Controller
 
         var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-        if (User.IsInRole("Trainee") && existingFeedback.TraineeId != currentUserId)
+        if (!CanManageFeedback(existingFeedback, currentUserId))
         {
             TempData["ErrorMessage"] = "You are not authorized to edit this feedback.";
             return RedirectToAction("RecentFeedback", new { show = "all" });
@@ -185,7 +200,7 @@ public class FeedbackController : Controller
 
         _lessonFeedbackService.UpdateFeedback(existingFeedback);
 
-        TempData["SuccessMessage"] = "Your feedback has been updated successfully.";
+        TempData["SuccessMessage"] = "Feedback has been updated successfully.";
 
         return RedirectToAction("RecentFeedback", "Feedback", new
         {
@@ -205,7 +220,7 @@ public class FeedbackController : Controller
 
         var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-        if (User.IsInRole("Trainee") && feedback.TraineeId != currentUserId)
+        if (!CanManageFeedback(feedback, currentUserId))
         {
             TempData["ErrorMessage"] = "You are not authorized to delete this feedback.";
             return RedirectToAction("RecentFeedback", new { show = "all" });
@@ -218,7 +233,7 @@ public class FeedbackController : Controller
 
         _lessonFeedbackService.DeleteFeedback(id);
 
-        TempData["SuccessMessage"] = "Your feedback has been deleted successfully.";
+        TempData["SuccessMessage"] = "Feedback has been deleted successfully.";
 
         return RedirectToAction("RecentFeedback", "Feedback", new
         {
@@ -226,5 +241,23 @@ public class FeedbackController : Controller
             until = DateTime.Today.ToString("yyyy-MM-dd"),
             show = "all"
         });
+    }
+
+    private bool CanManageFeedback(LessonFeedback feedback , int currentUserId)
+    {
+        if (User.IsInRole("Admin"))
+        {
+            return true;
+        }
+        if (User.IsInRole("Trainee"))
+        {
+            return feedback.TraineeId == currentUserId;
+        }
+        if (User.IsInRole("Mentor"))
+        {
+            var mentor = _mentorRepo.GetMentorById(currentUserId);
+            return mentor != null && mentor.AssignedTrainees.Any(t => t.Id == feedback.TraineeId);
+        }
+        return false;
     }
 }
