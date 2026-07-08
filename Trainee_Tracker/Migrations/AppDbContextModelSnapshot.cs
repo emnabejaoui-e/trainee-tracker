@@ -446,6 +446,29 @@ namespace Trainee_Tracker.Migrations
                     b.ToTable("LessonFeedbacks");
                 });
 
+            modelBuilder.Entity("Trainee_Tracker.Models.Rejection", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AssignmentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("RejectedAt")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssignmentId");
+
+                    b.ToTable("Rejections");
+                });
+
             modelBuilder.Entity("Trainee_Tracker.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -479,23 +502,6 @@ namespace Trainee_Tracker.Migrations
                     b.HasDiscriminator<string>("Role").HasValue("User");
 
                     b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("Trainee_Tracker.Models.Admin", b =>
-                {
-                    b.HasBaseType("Trainee_Tracker.Models.User");
-
-                    b.HasDiscriminator().HasValue("Admin");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 5,
-                            Closed = false,
-                            Email = "jelenacosic1@makandra.de",
-                            HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
-                            Name = "Jelena3 Admin"
-                        });
                 });
 
             modelBuilder.Entity("Trainee_Tracker.Models.Mentor", b =>
@@ -560,6 +566,23 @@ namespace Trainee_Tracker.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Trainee_Tracker.Models.Admin", b =>
+                {
+                    b.HasBaseType("Trainee_Tracker.Models.Mentor");
+
+                    b.HasDiscriminator().HasValue("Admin");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 5,
+                            Closed = false,
+                            Email = "jelenacosic1@makandra.de",
+                            HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
+                            Name = "Jelena3 Admin"
+                        });
+                });
+
             modelBuilder.Entity("MentorTrainee", b =>
                 {
                     b.HasOne("Trainee_Tracker.Models.Trainee", null)
@@ -619,6 +642,17 @@ namespace Trainee_Tracker.Migrations
                     b.Navigation("Mentor");
 
                     b.Navigation("Trainee");
+                });
+
+            modelBuilder.Entity("Trainee_Tracker.Models.Rejection", b =>
+                {
+                    b.HasOne("Trainee_Tracker.Models.LessonAssignment", "Assignment")
+                        .WithMany()
+                        .HasForeignKey("AssignmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Assignment");
                 });
 
             modelBuilder.Entity("Trainee_Tracker.Models.Trainee", b =>

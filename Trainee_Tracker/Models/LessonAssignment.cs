@@ -55,7 +55,8 @@ public class LessonAssignment
         this.Status = LessonAssignmentStatus.Rejected;
         var rejection = new Rejection
         {
-            Reason = reason
+            Reason = reason,
+            Assignment = this
         };
         return rejection;
     }
