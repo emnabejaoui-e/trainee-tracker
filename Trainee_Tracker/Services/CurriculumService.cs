@@ -6,15 +6,6 @@ namespace Trainee_Tracker.Services;
 
 public class CurriculumService : ICurriculumService
 {
-    private readonly ICurriculumRepository _curriculumRepo;
-    private readonly ILessonRepository _lessonRepo;
-
-    public CurriculumService(ICurriculumRepository curriculumRepo, ILessonRepository lessonRepo)
-    {
-        _curriculumRepo = curriculumRepo;
-        _lessonRepo = lessonRepo;
-    }
-
     public IList<Lesson> MergeLessons(IList<Lesson> existingLessons, IList<Lesson> importedLessons)
     {
         
