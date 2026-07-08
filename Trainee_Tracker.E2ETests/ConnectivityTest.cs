@@ -1,3 +1,4 @@
+// Code Owner: Leon Paintner
 namespace Trainee_Tracker.E2ETests;
 
 public class ConnectivityTest
