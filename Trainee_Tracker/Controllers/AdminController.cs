@@ -219,7 +219,7 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    public IActionResult UpdateMentor(int id, string name, string email, string? newPassword)
+    public IActionResult UpdateMentor(int id, string name, string email, string? password)
     {
         if(_userService.GetById(id) is not Mentor mentor) {
             return NotFound();
@@ -235,7 +235,7 @@ public class AdminController : Controller
 
         mentor.Name = name;
         mentor.Email = email;
-        _userService.UpdateMentor(mentor, newPassword);
+        _userService.UpdateMentor(mentor, password);
         return RedirectToAction("UserManagement");
     }
 
