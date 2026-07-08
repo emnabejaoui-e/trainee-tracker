@@ -170,4 +170,19 @@ public class MentorController : Controller
         
         return View("AssignmentOverview", assignments); 
     }
+
+//Code-Owner: Julia 
+    [HttpPost]
+    public IActionResult Accept(int assignmentId)
+    {
+        var assignment = _assignmentRepo.GetById(assignmentId);
+        if (assignment == null)
+        {
+            return NotFound();
+        }
+
+        _assignmentRepo.UpdateStatus(assignmentId, LessonAssignmentStatus.Accepted);
+
+        return RedirectToAction("AssignmentOverview", new { traineeId = assignment.TraineeId });
+    }
 }

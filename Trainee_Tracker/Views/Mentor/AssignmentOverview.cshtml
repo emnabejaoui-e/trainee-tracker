@@ -92,8 +92,7 @@
                                                 {
                                                     case "Finished":
                                                         <div class="review-item-action">
-                                                            <form asp-controller="LessonBoard" asp-action="UpdateStatus" asp-route-id="@card.Id" method="post" class="inline-form">
-                                                                <input type="hidden" name="newStatus" value="Accepted" />
+                                                            <form asp-controller="Mentor" asp-action="Accept" asp-route-assignmentId="@card.Id" method="post" class="inline-form">
                                                                 <button type="submit" class="action-btn action-btn-accept">Accept</button>
                                                             </form>
                                                             
