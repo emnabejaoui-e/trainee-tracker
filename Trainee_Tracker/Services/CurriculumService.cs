@@ -8,6 +8,8 @@ public class CurriculumService : ICurriculumService
 {
     public IList<Lesson> MergeLessons(IList<Lesson> existingLessons, IList<Lesson> importedLessons)
     {
+        if (existingLessons == importedLessons)
+            throw new ArgumentException("The existing and the imported List must not refer to the same object.");
         
         for (int i = 0; i < importedLessons.Count; i++)
         {
