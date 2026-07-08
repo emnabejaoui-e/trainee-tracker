@@ -27,11 +27,11 @@ public class AdminController : Controller
     // Code Owner: Jelena Cosic
     public IActionResult Index()
     {
-        return RedirectToAction("UserManagment");
+        return RedirectToAction("UserManagement");
     }
 
     // Code-Owner: Andrej Basara
-    public IActionResult UserManagment(string searchString)
+    public IActionResult UserManagement(string searchString)
     {
         ViewData["CurrentFilter"] = searchString;
         IEnumerable<User> users = _userService.GetAllUsers();
@@ -72,7 +72,7 @@ public class AdminController : Controller
             EndDate = endDate
         };
         _userService.CreateTrainee(trainee, password);
-        return RedirectToAction("UserManagment");
+        return RedirectToAction("UserManagement");
     }
 
     // Code-Owner: Andrej Basara
@@ -95,7 +95,7 @@ public class AdminController : Controller
             Email = email,
         };
         _userService.CreateMentor(mentor, password);
-        return RedirectToAction("UserManagment");
+        return RedirectToAction("UserManagement");
     }
 
     public IActionResult CreateAdmin()
@@ -117,7 +117,7 @@ public class AdminController : Controller
             Email = email,
         };
         _userService.CreateAdmin(admin, password);
-        return RedirectToAction("UserManagment");
+        return RedirectToAction("UserManagement");
     }
 
     // Code Owner: Andrej Basara
@@ -136,7 +136,7 @@ public class AdminController : Controller
         try
         {
             _mentorService.AssignTraineeToMentor(mentorId, traineeId);
-            return RedirectToAction("UserManagment");
+            return RedirectToAction("UserManagement");
         }
         catch (InvalidOperationException ex)
         {
@@ -164,7 +164,7 @@ public class AdminController : Controller
     {
         var user = _userService.GetById(id);
         _userService.CloseUser(user.Id);
-        return RedirectToAction("UserManagment");
+        return RedirectToAction("UserManagement");
     }
 
     // Code Owner: Andrej Basara
@@ -207,7 +207,7 @@ public class AdminController : Controller
         trainee.StartingDate = startingDate;
         trainee.EndDate = endDate;
         _userService.UpdateTrainee(trainee, password);
-        return RedirectToAction("UserManagment");
+        return RedirectToAction("UserManagement");
     }
 
     public IActionResult UpdateMentor(int? id)
@@ -236,7 +236,7 @@ public class AdminController : Controller
         mentor.Name = name;
         mentor.Email = email;
         _userService.UpdateMentor(mentor, newPassword);
-        return RedirectToAction("UserManagment");
+        return RedirectToAction("UserManagement");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
