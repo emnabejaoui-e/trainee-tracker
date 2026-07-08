@@ -40,21 +40,21 @@ public class UnitTest1
     [Fact]
     public void ValidateUserCredentials_UnknownEmail_ReturnsInvalidCredentials()
     {
-        // Arrange
+
         var repo = new FakeUserRepository();
         var service = new UserService(repo);
 
-        // Act
+
         var result = service.ValidateUserCredentials("unknown@makandra.de", "anyPassword");
 
-        // Assert
+
         Assert.Equal(LoginResult.InvalidCredentials, result);
     }
 
     [Fact]
     public void ValidateUserCredentials_ClosedAccount_ReturnsAccountClosed()
     {
-        // Arrange
+    
         var repo = new FakeUserRepository();
         var service = new UserService(repo);
 
@@ -67,10 +67,10 @@ public class UnitTest1
         };
         repo.AddUser(closedUser);
 
-        // Act
+
         var result = service.ValidateUserCredentials("closed@makandra.de", "Test1234!");
 
-        // Assert
+
         Assert.Equal(LoginResult.AccountClosed, result);
     }
 }

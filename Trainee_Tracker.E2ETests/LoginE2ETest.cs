@@ -13,7 +13,7 @@ public class LoginE2ETest : IDisposable
     private readonly IWebDriver _driver;
     private const string BaseUrl = "http://localhost:5089";
 
-    // Code-Owner: Jelena Cosic
+    // Code Owner: Jelena Cosic
     /// <summary>
     /// Initializes the Chrome WebDriver in headless mode for CI compatibility
     /// </summary>
@@ -26,17 +26,17 @@ public class LoginE2ETest : IDisposable
         _driver = new ChromeDriver(options);
     }
 
-    // Code-Owner: Jelena Cosic
+    // Code Owner: Jelena Cosic
     /// <summary>
     /// Tests that a valid Admin login redirects to the Admin UserManagment page
     /// </summary>
     [Fact]
     public void Login_ValidAdminCredentials_RedirectsToAdminDashboard()
     {
-        // Arrange
+    
         _driver.Navigate().GoToUrl($"{BaseUrl}/Login");
 
-        // Act
+    
         var emailField = _driver.FindElement(By.Id("email"));
         var passwordField = _driver.FindElement(By.Id("password"));
         var submitButton = _driver.FindElement(By.CssSelector("button[type='submit']"));
@@ -45,11 +45,11 @@ public class LoginE2ETest : IDisposable
         passwordField.SendKeys("12345");
         submitButton.Click();
 
-        // Assert
+
         Assert.DoesNotContain("Login", _driver.Url);
     }
 
-    // Code-Owner: Jelena Cosic
+    // Code Owner: Jelena Cosic
     /// <summary>
     /// Disposes the WebDriver after each test
     /// </summary>
