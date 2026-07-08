@@ -210,7 +210,7 @@ body {
     font-size: smaller;
 }
 
-
+/* for link in My-Trainees-view */
 .profile-links .profile-link {
     display: block;
     font-size: 0.9rem;
@@ -222,3 +222,31 @@ body {
 .profile-links a:hover{
     color: var(--pink);
 } 
+
+/* for LessonBoard-rate-button */
+.action-btn{
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+}
+
+.action-btn-primary{
+  background-color: var(--state-color, #378ADD);
+  color: var(--white);
+}
+
+.action-btn-primary:hover{
+  opacity: 0.9;
+}
+
+.column-open{--state-color: #888780;}
+.column-started{--state-color: #378ADD;}
+.column-finished{--state-color: #1D9E75;}
+.column-accepted{--state-color: #639922; }
+.column-rejected{--state-color: #E24B4A; }
+.column-rated{--state-color: #7F77DD; }
