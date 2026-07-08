@@ -6,13 +6,11 @@ public class LessonFeedback
 {
     public int Id { get; set; }
 
-    [Range(1, 5, ErrorMessage = "Please select a difficulty rating.")]
-    public int Difficulty { get; set; }
+    [Range(1, 5, ErrorMessage = "Please select a valid difficulty rating.")]
+    public int? Difficulty { get; set; }
 
-    [Required(ErrorMessage = "Please select your previous knowledge.")]
-    public string PriorKnowledge { get; set; } = string.Empty;
+    public string? PriorKnowledge { get; set; }
 
-    [Required(ErrorMessage = "Please enter the actual effort.")]
     [Range(0.1, 1000, ErrorMessage = "Please enter a valid number.")]
     public double? ActualEffort { get; set; }
 
@@ -29,5 +27,6 @@ public class LessonFeedback
 
     public int LessonId { get; set; }
     public Lesson? Lesson { get; set; }
+
     public int AssignmentId { get; set; }
 }
