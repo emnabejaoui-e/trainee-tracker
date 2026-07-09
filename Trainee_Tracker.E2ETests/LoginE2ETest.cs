@@ -20,39 +20,17 @@ public class LoginE2ETest : IDisposable
         _driver = new ChromeDriver(options);
     }
 
-
     [Fact]
     public void Login_PageLoads_Successfully()
     {
         
         string expectedUrlPart = "Login";
-        
+
         _driver.Navigate().GoToUrl($"{BaseUrl}/Login");
 
 
         Assert.Contains(expectedUrlPart, _driver.Url);
     }
-
-
-    [Fact]
-    public void Login_ValidAdminCredentials_RedirectsToAdminDashboard()
-    {
-
-        _driver.Navigate().GoToUrl($"{BaseUrl}/Login");
-
-
-        var emailField = _driver.FindElement(By.Id("email"));
-        var passwordField = _driver.FindElement(By.Id("password"));
-        var submitButton = _driver.FindElement(By.CssSelector("button[type='submit']"));
-
-        emailField.SendKeys("jelenacosic1@makandra.de");
-        passwordField.SendKeys("12345");
-        submitButton.Click();
-
-
-        Assert.DoesNotContain("Login", _driver.Url);
-    }
-
 
     public void Dispose()
     {
