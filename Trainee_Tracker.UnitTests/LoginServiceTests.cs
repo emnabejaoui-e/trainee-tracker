@@ -35,7 +35,7 @@ public class FakeUserRepository : IUserRepository
         => _users.FirstOrDefault(u => u.Id == id)!;
 }
 
-public class UnitTest1
+public class LoginServiceTests
 {
     [Fact]
     public void ValidateUserCredentials_UnknownEmail_ReturnsInvalidCredentials()
