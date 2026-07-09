@@ -28,7 +28,7 @@
 
             <div class="feedback-box">
                 <label>
-                    Difficulty <span class="required">*</span>
+                    Difficulty (optional)
                 </label>
 
                 <div class="rating-input" aria-label="Difficulty rating">
@@ -53,7 +53,7 @@
 
             <div class="feedback-box">
                 <label asp-for="PriorKnowledge">
-                    Previous Knowledge <span class="required">*</span>
+                    Previous Knowledge (optional)
                 </label>
 
                 <select asp-for="PriorKnowledge">
@@ -68,10 +68,13 @@
 
             <div class="feedback-box">
                 <label asp-for="ActualEffort">
-                    Actual Effort <span class="required">*</span>
+                    Actual Effort (optional)
                 </label>
 
-                <input asp-for="ActualEffort" type="number" step="0.1" min="0.1" />
+                <input asp-for="ActualEffort"
+                       type="number"
+                       step="0.1"
+                       min="0.1" />
 
                 <span asp-validation-for="ActualEffort" class="text-danger"></span>
             </div>

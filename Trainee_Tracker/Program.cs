@@ -6,10 +6,10 @@ using Trainee_Tracker.Data.LessonAssignments;
 using Trainee_Tracker.Data.MentorRepository;
 using Trainee_Tracker.Data.TraineeRepository;
 using Trainee_Tracker.Data.Lessons;
-using Trainee_Tracker.Models;
 using Trainee_Tracker.Repositories;
 using Trainee_Tracker.Services;
 using Trainee_Tracker.Data.LessonFeedbacks;
+using Trainee_Tracker.Data.Rejections;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -29,10 +29,13 @@ builder.Services.AddScoped<IProgressService, ProgressService>();
 
 builder.Services.AddScoped<IMentorService, MentorService>();
 builder.Services.AddScoped<ILessonAssignmentRepository, LessonAssignmentRepository>();
+builder.Services.AddScoped<ILessonDateCalculator, LessonDateCalculator>();
 
 builder.Services.AddScoped<LessonFeedbackService>();
 builder.Services.AddScoped<ILessonFeedbackRepository, LessonFeedbackRepository>();
 builder.Services.AddScoped<ILessonRepository, LessonRepository>();
+builder.Services.AddScoped<IRejectionRepository, RejectionRepository>();
+
 
 builder.Services.AddHttpClient<WorkingHoursService>(client =>
 {

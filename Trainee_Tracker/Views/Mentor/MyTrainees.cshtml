@@ -21,6 +21,7 @@
    asp-route-traineeId="@trainee.Id">
     @trainee.Name
 </a>
+                    <h1 class="name">@trainee.Name</h1>
                     <br/>
                     <a href="mailto:@trainee.Email" class="email">@trainee.Email</a>
                 </div>
@@ -37,6 +38,12 @@
                             <a href="mailto:@mentor.Email" class="mentor-link-closed" aria-disabled="True">@mentor.Name</a>
                         }
                     }
+                </div>
+                
+@* Code-Owner: Julia *@
+                <div class="profile-links">
+                    <a  href="/Mentor/Fortschrittskontrolle" class="profile-link">See Progress-Control-Data</a> 
+                    <a  asp-controller="Mentor" asp-action="AssignmentOverview" asp-route-traineeId="@trainee.Id" class="profile-link">See Lesson Assignments</a>
                 </div>
             </li>        
         }

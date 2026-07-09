@@ -3,35 +3,36 @@
 @{
     ViewData["Title"] = "UserDetails";
 }
+<div class="user-create-forum-container">
+    <h3>User Details</h3>
+    <div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            @if (Model is Trainee_Tracker.Models.Trainee t)
+            {
+            <dt class="col-sm-2">
+                Role:
+            </dt>
+            <dd class="col-sm-10">Trainee</dd>
 
-<h3>User Details</h3>
-<div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        @if (Model is Trainee_Tracker.Models.Trainee t)
-        {
-        <dt class="col-sm-2">
-            Role:
-        </dt>
-        <dd class="col-sm-10">Trainee</dd>
-
-        <dt class="col-sm-2">Starting Date</dt>
-        <dd class="col-sm-10">@t.StartingDate</dd>
-        
-        <dt class="col-sm-2">End Date</dt>
-        <dd class="col-sm-10">@t.EndDate</dd>
-        }
-    </dl>
+            <dt class="col-sm-2">Starting Date</dt>
+            <dd class="col-sm-10">@t.StartingDate</dd>
+            
+            <dt class="col-sm-2">End Date</dt>
+            <dd class="col-sm-10">@t.EndDate</dd>
+            }
+        </dl>
+    </div>
 </div>

@@ -141,6 +141,27 @@ namespace Trainee_Tracker.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Rejections",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Reason = table.Column<string>(type: "TEXT", nullable: false),
+                    AssignmentId = table.Column<int>(type: "INTEGER", nullable: false),
+                    RejectedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rejections", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Rejections_LessonAssignments_AssignmentId",
+                        column: x => x.AssignmentId,
+                        principalTable: "LessonAssignments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Lessons",
                 columns: new[] { "Id", "Effort", "Inactive", "Position", "Title", "URL" },
@@ -237,19 +258,27 @@ namespace Trainee_Tracker.Migrations
                 name: "IX_MentorTrainee_MentorsId",
                 table: "MentorTrainee",
                 column: "MentorsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rejections_AssignmentId",
+                table: "Rejections",
+                column: "AssignmentId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "LessonAssignments");
-
-            migrationBuilder.DropTable(
                 name: "LessonFeedbacks");
 
             migrationBuilder.DropTable(
                 name: "MentorTrainee");
+
+            migrationBuilder.DropTable(
+                name: "Rejections");
+
+            migrationBuilder.DropTable(
+                name: "LessonAssignments");
 
             migrationBuilder.DropTable(
                 name: "Lessons");

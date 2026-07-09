@@ -14,6 +14,9 @@ public class AppDbContext : DbContext
     public DbSet<Admin> Admins { get; set; }
     public DbSet<LessonFeedback> LessonFeedbacks { get; set; }
 
+    //Julia
+    public DbSet<Rejection> Rejections {get; set;}
+    //Julia
     public DbSet<LessonAssignment> LessonAssignments {get; set;}
     //Julia
     public DbSet<Lesson> Lessons {get; set;}

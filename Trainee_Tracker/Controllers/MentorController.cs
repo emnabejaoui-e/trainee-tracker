@@ -5,9 +5,12 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Trainee_Tracker.Data.LessonAssignments;
+using Trainee_Tracker.Data.LessonAssignments;
 using Trainee_Tracker.Data.MentorRepository;
+using Trainee_Tracker.Data.Rejections;
 using Trainee_Tracker.Models;
 using Trainee_Tracker.Services;
+using Trainee_Tracker.Repositories;
 
 namespace Trainee_Tracker.Controllers;
 
@@ -18,17 +21,25 @@ namespace Trainee_Tracker.Controllers;
     private readonly WorkingHoursService _workingHoursService;
     private readonly IProgressService _progressService;
     private readonly ILessonAssignmentRepository _lessonAssignmentRepo;
+    private IMentorRepository _mentorRepo;
+    private IUserRepository _userRepo;
+    private ILessonAssignmentRepository _assignmentRepo;
+    private IRejectionRepository _rejectionRepo;
 
     public MentorController(
         IMentorRepository mentorRepo,
         WorkingHoursService workingHoursService,
         IProgressService progressService,
         ILessonAssignmentRepository lessonAssignmentRepo)
+    public MentorController(IMentorRepository mentorRepo, IUserRepository userRepo, ILessonAssignmentRepository assignmentRepo, IRejectionRepository rejectionRepo)
     {
         _mentorRepo = mentorRepo;
         _workingHoursService = workingHoursService;
         _progressService = progressService;
         _lessonAssignmentRepo = lessonAssignmentRepo;
+        _userRepo = userRepo;
+        _assignmentRepo = assignmentRepo;
+        _rejectionRepo = rejectionRepo;
     }
     // Code-Owner: Jelena Cosic
     // GET: /Mentor/Index
@@ -181,5 +192,51 @@ namespace Trainee_Tracker.Controllers;
 
         ViewBag.curriculumNames = curriculumNames;
         return View(file);
+    }
+
+
+    // Code-Owner: Julia
+    // GET: /Mentor/AssignmentOverview
+    [HttpGet]
+    public IActionResult AssignmentOverview(int traineeId)
+    {        
+        var trainee = _userRepo.GetById(traineeId) as Trainee;
+
+        if (trainee == null)
+        {
+            return Unauthorized();
+        }
+
+        var assignments = _assignmentRepo.FindByTrainee(trainee);
+        var rejections = _rejectionRepo.GetRejectedByTrainee(trainee);
+
+        var rejectionHistory = rejections
+        .GroupBy(r=> r.AssignmentId)
+        .ToDictionary(g => g.Key, g => g.OrderByDescending(r=>r.RejectedAt).ToList());
+
+        var assignmentsWithHistory = assignments
+        .Where(a => rejectionHistory.ContainsKey(a.Id))
+        .OrderByDescending(a => rejectionHistory[a.Id].Max(r =>r.RejectedAt))
+        .ToList();
+
+        ViewBag.RejectionReasons = rejectionHistory;
+        ViewBag.AssignmentsWithHistory = assignmentsWithHistory;
+        
+        return View("AssignmentOverview", assignments); 
+    }
+
+//Code-Owner: Julia 
+    [HttpPost]
+    public IActionResult Accept(int assignmentId)
+    {
+        var assignment = _assignmentRepo.GetById(assignmentId);
+        if (assignment == null)
+        {
+            return NotFound();
+        }
+
+        _assignmentRepo.UpdateStatus(assignmentId, LessonAssignmentStatus.Accepted);
+
+        return RedirectToAction("AssignmentOverview", new { traineeId = assignment.TraineeId });
     }
 }

@@ -111,15 +111,23 @@
             margin-top: auto;
         }
 
-        /* Themes */
-        .theme-pink { background-color: #FF0844; color: #ffffff; }
-        .theme-pink .btn-open { background-color: #ffffff; color: #000000; }
+        .status-open { background-color: #888780; color: #ffffff; }
+        .status-open .btn-open { background-color: #ffffff; color: #141210; }
 
-        .theme-licorice { background-color: #141210; color: #ffffff; }
-        .theme-licorice .btn-open { background-color: #ffffff; color: #141210; }
+        .status-started { background-color: #378ADD; color: #ffffff; }
+        .status-started .btn-open { background-color: #ffffff; color: #141210; }
 
-        .theme-grey { background-color: #DBDBDB; color: #141210; }
-        .theme-grey .btn-open { background-color: #141210; color: #ffffff; }
+        .status-finished { background-color: #1D9E75; color: #ffffff; }
+        .status-finished .btn-open { background-color: #ffffff; color: #141210; }
 
-        .theme-peach { background-color: #FFB199; color: #141210;}
-        .theme-peach .btn-open { background-color: #ffffff; color: #141210; }
+        .status-accepted { background-color: #639922; color: #ffffff; }
+        .status-accepted .btn-open { background-color: #ffffff; color: #141210; }
+
+        .status-rejected { background-color: #E24B4A; color: #ffffff; }
+        .status-rejected .btn-open { background-color: #ffffff; color: #141210; }
+
+        .status-rated { background-color: #7F77DD; color: #ffffff; }
+        .status-rated .btn-open { background-color: #ffffff; color: #141210; }
+
+        .status-skipped { background-color: #9A9690; color: #ffffff; }
+        .status-skipped .btn-open { background-color: #ffffff; color: #141210; }

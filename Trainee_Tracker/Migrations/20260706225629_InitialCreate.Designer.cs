@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Trainee_Tracker.Data;
 
@@ -10,9 +11,11 @@ using Trainee_Tracker.Data;
 namespace Trainee_Tracker.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260706225629_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.9");
@@ -406,7 +409,7 @@ namespace Trainee_Tracker.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<double?>("ActualEffort")
+                    b.Property<double>("ActualEffort")
                         .HasColumnType("REAL");
 
                     b.Property<int>("AssignmentId")
@@ -419,7 +422,7 @@ namespace Trainee_Tracker.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("Difficulty")
+                    b.Property<int>("Difficulty")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("LessonId")
@@ -429,6 +432,7 @@ namespace Trainee_Tracker.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("PriorKnowledge")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("TraineeId")
