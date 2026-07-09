@@ -10,6 +10,8 @@ using Trainee_Tracker.Models;
 using Trainee_Tracker.Repositories;
 using Trainee_Tracker.Services;
 using Trainee_Tracker.Data.LessonFeedbacks;
+using System.Net.Http.Headers;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMentorRepository, MentorRepository>();
 builder.Services.AddScoped<ITraineeRepository, TraineeRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IProgressService, ProgressService>();
 
 builder.Services.AddScoped<IMentorService, MentorService>();
 builder.Services.AddScoped<ILessonAssignmentRepository, LessonAssignmentRepository>();
@@ -30,6 +33,17 @@ builder.Services.AddScoped<ILessonAssignmentRepository, LessonAssignmentReposito
 builder.Services.AddScoped<LessonFeedbackService>();
 builder.Services.AddScoped<ILessonFeedbackRepository, LessonFeedbackRepository>();
 builder.Services.AddScoped<ILessonRepository, LessonRepository>();
+
+builder.Services.AddHttpClient<WorkingHoursService>(client =>
+{
+    client.BaseAddress = new Uri("https://api.sopro.makandra.de/");
+
+    var credentials = Convert.ToBase64String(
+        Encoding.ASCII.GetBytes("sopro:capybara"));
+
+    client.DefaultRequestHeaders.Authorization =
+        new AuthenticationHeaderValue("Basic", credentials);
+});
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

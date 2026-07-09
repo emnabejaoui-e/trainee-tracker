@@ -4,21 +4,32 @@ using System.Net.Mime;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Trainee_Tracker.Data.LessonAssignments;
 using Trainee_Tracker.Data.MentorRepository;
 using Trainee_Tracker.Models;
+using Trainee_Tracker.Services;
 
 namespace Trainee_Tracker.Controllers;
 
 [Authorize(Roles = "Mentor, Admin")]
-public class MentorController : Controller
+    public class MentorController : Controller
 {
-    private IMentorRepository _mentorRepo;
+    private readonly IMentorRepository _mentorRepo;
+    private readonly WorkingHoursService _workingHoursService;
+    private readonly IProgressService _progressService;
+    private readonly ILessonAssignmentRepository _lessonAssignmentRepo;
 
-    public MentorController(IMentorRepository mentorRepo)
+    public MentorController(
+        IMentorRepository mentorRepo,
+        WorkingHoursService workingHoursService,
+        IProgressService progressService,
+        ILessonAssignmentRepository lessonAssignmentRepo)
     {
         _mentorRepo = mentorRepo;
+        _workingHoursService = workingHoursService;
+        _progressService = progressService;
+        _lessonAssignmentRepo = lessonAssignmentRepo;
     }
-
     // Code-Owner: Jelena Cosic
     // GET: /Mentor/Index
     /// <summary>
@@ -73,60 +84,101 @@ public class MentorController : Controller
 
     // Code-Owner: Leon
     // GET: /Mentor/Fortschrittskontrolle
-    [HttpGet]
-    public IActionResult Fortschrittskontrolle()
+
+   [HttpGet]
+    public async Task<IActionResult> Fortschrittskontrolle(int traineeId)
     {
         ViewData["NavbarOverride"] = "Mentor";
-        var model = new ProgressControlData
+
+        string? mentorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (mentorId == null)
         {
-            DaysWorked = 15,
-            Finished = 12,
-            Open = 8,
-            Buffer = 2,
-            Speed = 110,
-            PredictedBuffer = 3
-        };
+            return Unauthorized();
+        }
+
+        Mentor? mentor = _mentorRepo.GetMentorById(int.Parse(mentorId));
+        if (mentor == null)
+        {
+            return Unauthorized();
+        }
+
+        Trainee? trainee = mentor.AssignedTrainees
+            .FirstOrDefault(t => t.Id == traineeId);
+
+        if (trainee == null)
+        {
+            return Unauthorized();
+        }
+
+        DateOnly startDate = trainee.StartingDate;
+        DateOnly endDate = DateOnly.FromDateTime(DateTime.Today);
+
+        double? daysWorked = await _workingHoursService.GetWorkedPersonDaysAsync(
+            trainee.Email,
+            startDate,
+            endDate
+        );
+
+        List<LessonAssignment> assignments =
+            _lessonAssignmentRepo.FindByTrainee(trainee);
+
+        ProgressControlData model = _progressService.CalculateProgress(
+            assignments,
+            daysWorked ?? 0
+        );
+
         return View(model);
     }
 
-    // Code-Owner: Leon
-    // GET: /Mentor/ImportCurriculum
     [HttpGet]
     public IActionResult ImportCurriculum()
     {
         ViewData["NavbarOverride"] = "Mentor";
-        var curriculumNames = new List<String>();
-        curriculumNames.Add("makandra Curriculum");
-        curriculumNames.Add("makandra DevOps Curriculum");
+
+        var curriculumNames = new List<string>
+        {
+            "makandra Curriculum",
+            "makandra DevOps Curriculum"
+        };
+
         ViewBag.curriculumNames = curriculumNames;
         return View(null);
     }
 
-    // Code-Owner: Leon
-    // POST: /Mentor/ImportCurriculum
     [HttpPost]
     public IActionResult ImportCurriculum(string curriculumName, IFormFile file)
     {
         ViewData["NavbarOverride"] = "Mentor";
+
         if (file == null)
+        {
             ModelState.AddModelError("FileName", "No file was selected.");
+        }
         else
         {
             ContentType fileContentType = new ContentType(file.ContentType);
             if (fileContentType.MediaType != "application/json")
+            {
                 ModelState.AddModelError("FileName", "This file is not a JSON file.");
+            }
         }
+
         if (curriculumName.IsWhiteSpace())
         {
             ModelState.AddModelError("FileName", "No curriculum was selected.");
         }
+
         if (ModelState.IsValid)
         {
             return RedirectToAction("Index", "Mentor");
         }
-        var curriculumNames = new List<String>();
-        curriculumNames.Add("makandra Curriculum");
-        curriculumNames.Add("makandra DevOps Curriculum");
+
+        var curriculumNames = new List<string>
+        {
+            "makandra Curriculum",
+            "makandra DevOps Curriculum"
+        };
+
         ViewBag.curriculumNames = curriculumNames;
         return View(file);
     }

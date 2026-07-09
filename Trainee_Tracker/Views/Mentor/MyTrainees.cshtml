@@ -15,7 +15,12 @@
         {
             <li class="profile-item">
                 <div class="profile-main">
-                    <a class="name" href="/Mentor/Fortschrittskontrolle">@trainee.Name</a>
+                    <a class="name"
+   asp-controller="Mentor"
+   asp-action="Fortschrittskontrolle"
+   asp-route-traineeId="@trainee.Id">
+    @trainee.Name
+</a>
                     <br/>
                     <a href="mailto:@trainee.Email" class="email">@trainee.Email</a>
                 </div>
