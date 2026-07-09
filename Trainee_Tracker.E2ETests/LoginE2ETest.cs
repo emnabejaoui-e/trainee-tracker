@@ -5,8 +5,7 @@ using OpenQA.Selenium.Chrome;
 namespace Trainee_Tracker.E2ETests;
 
 /// <summary>
-/// E2E test for the login page.
-/// Tests that the login page loads successfully.
+/// E2E tests for the login page.
 /// </summary>
 public class LoginE2ETest : IDisposable
 {
@@ -41,6 +40,29 @@ public class LoginE2ETest : IDisposable
 
         // Assert
         Assert.Contains(expectedUrlPart, _driver.Url);
+    }
+
+    // Code-Owner: Jelena Cosic
+    /// <summary>
+    /// Tests that a valid Admin login redirects away from the login page.
+    /// </summary>
+    [Fact]
+    public void Login_ValidAdminCredentials_RedirectsToAdminDashboard()
+    {
+        // Arrange
+        _driver.Navigate().GoToUrl($"{BaseUrl}/Login");
+
+        // Act
+        var emailField = _driver.FindElement(By.Id("email"));
+        var passwordField = _driver.FindElement(By.Id("password"));
+        var submitButton = _driver.FindElement(By.CssSelector("button[type='submit']"));
+
+        emailField.SendKeys("jelenacosic1@makandra.de");
+        passwordField.SendKeys("12345");
+        submitButton.Click();
+
+        // Assert
+        Assert.DoesNotContain("Login", _driver.Url);
     }
 
     // Code-Owner: Jelena Cosic
