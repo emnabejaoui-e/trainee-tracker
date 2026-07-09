@@ -5,41 +5,38 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Trainee_Tracker.Data.LessonAssignments;
-using Trainee_Tracker.Data.LessonAssignments;
 using Trainee_Tracker.Data.MentorRepository;
 using Trainee_Tracker.Data.Rejections;
 using Trainee_Tracker.Models;
-using Trainee_Tracker.Services;
 using Trainee_Tracker.Repositories;
+using Trainee_Tracker.Services;
 
 namespace Trainee_Tracker.Controllers;
 
 [Authorize(Roles = "Mentor, Admin")]
-    public class MentorController : Controller
+public class MentorController : Controller
 {
     private readonly IMentorRepository _mentorRepo;
+    private readonly IUserRepository _userRepo;
+    private readonly ILessonAssignmentRepository _assignmentRepo;
+    private readonly IRejectionRepository _rejectionRepo;
     private readonly WorkingHoursService _workingHoursService;
     private readonly IProgressService _progressService;
-    private readonly ILessonAssignmentRepository _lessonAssignmentRepo;
-    private IMentorRepository _mentorRepo;
-    private IUserRepository _userRepo;
-    private ILessonAssignmentRepository _assignmentRepo;
-    private IRejectionRepository _rejectionRepo;
 
     public MentorController(
         IMentorRepository mentorRepo,
+        IUserRepository userRepo,
+        ILessonAssignmentRepository assignmentRepo,
+        IRejectionRepository rejectionRepo,
         WorkingHoursService workingHoursService,
-        IProgressService progressService,
-        ILessonAssignmentRepository lessonAssignmentRepo)
-    public MentorController(IMentorRepository mentorRepo, IUserRepository userRepo, ILessonAssignmentRepository assignmentRepo, IRejectionRepository rejectionRepo)
+        IProgressService progressService)
     {
         _mentorRepo = mentorRepo;
-        _workingHoursService = workingHoursService;
-        _progressService = progressService;
-        _lessonAssignmentRepo = lessonAssignmentRepo;
         _userRepo = userRepo;
         _assignmentRepo = assignmentRepo;
         _rejectionRepo = rejectionRepo;
+        _workingHoursService = workingHoursService;
+        _progressService = progressService;
     }
     // Code-Owner: Jelena Cosic
     // GET: /Mentor/Index
@@ -131,7 +128,7 @@ namespace Trainee_Tracker.Controllers;
         );
 
         List<LessonAssignment> assignments =
-            _lessonAssignmentRepo.FindByTrainee(trainee);
+            _assignmentRepo.FindByTrainee(trainee);
 
         ProgressControlData model = _progressService.CalculateProgress(
             assignments,
