@@ -47,6 +47,7 @@ public class FeedbackController : Controller
                 }
                 else if (show == "assigned")
                 {
+                    ViewData["NavbarOverride"] = "Mentor";
                     // TODO: Show only feedback from trainees assigned to the current mentor.
                     feedbacks = feedbacks.ToList();
                 }
