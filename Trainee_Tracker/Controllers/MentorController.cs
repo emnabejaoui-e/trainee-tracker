@@ -38,11 +38,7 @@ public class MentorController : Controller
     /// Only accessible by users with the Mentor or Admin role.
     /// </summary>
     /// <returns>The Mentor index view.</returns>
-    public IActionResult Index()
-    {
-        ViewData["NavbarOverride"] = "Mentor";
-        return View();
-    }
+    public IActionResult Index() => RedirectToAction("MyTrainees");
 
     // Code-Owner: Leon
     /// <summary>
