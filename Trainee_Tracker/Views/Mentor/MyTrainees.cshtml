@@ -2,6 +2,7 @@
 @model IEnumerable<Trainee>
 @{
     ViewData["Title"] = "My Trainees";
+    ViewData["NavbarOverride"] = "Mentor";
 }
 
 <p>@ViewBag.text</p>
@@ -46,4 +47,42 @@
 else
 {
     <p>There are no trainees assigned to you.</p>
+}
+
+@* Code-Owner: Leon Paintner *@
+@if (ViewBag.isAdmin)
+{
+    <h2>Overview over all Trainees</h2>
+    <ul class="profile-list">
+        @foreach(Trainee trainee in Model)
+        {
+            <li class="profile-item">
+                <div class="profile-main">
+                    <h1 class="name">@trainee.Name</h1>
+                    <br/>
+                    <a href="mailto:@trainee.Email" class="email">@trainee.Email</a>
+                </div>
+                <div class="profile-meta">
+                    <span class="meta-label">Mentor:</span>
+                    @foreach (Mentor mentor in trainee.Mentors)
+                    {
+                        @if (!mentor.Closed)
+                        {
+                            <a href="mailto:@mentor.Email" class="mentor-link">@mentor.Name</a>
+                        }
+                        else
+                        {
+                            <a href="mailto:@mentor.Email" class="mentor-link-closed" aria-disabled="True">@mentor.Name</a>
+                        }
+                    }
+                </div>
+                
+                @* Code-Owner: Julia *@
+                <div class="profile-links">
+                    <a  href="/Mentor/Fortschrittskontrolle" class="profile-link">See Progress-Control-Data</a> 
+                    <a  asp-controller="Mentor" asp-action="AssignmentOverview" asp-route-traineeId="@trainee.Id" class="profile-link">See Lesson Assignments</a>
+                </div>
+            </li>        
+        }
+    </ul>
 }

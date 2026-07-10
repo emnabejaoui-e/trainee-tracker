@@ -1,4 +1,4 @@
-// Code Owner: Jelena Cosic (Grundgerüst, [Authorize], Index)
+// Code Owner: Jelena Cosic ([Authorize])
 using System.Diagnostics.Contracts;
 using System.Net.Mime;
 using System.Security.Claims;
@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Trainee_Tracker.Data.LessonAssignments;
 using Trainee_Tracker.Data.MentorRepository;
 using Trainee_Tracker.Data.Rejections;
+using Trainee_Tracker.Data.TraineeRepository;
 using Trainee_Tracker.Models;
 using Trainee_Tracker.Repositories;
 
@@ -19,13 +20,15 @@ public class MentorController : Controller
     private IUserRepository _userRepo;
     private ILessonAssignmentRepository _assignmentRepo;
     private IRejectionRepository _rejectionRepo;
+    private ITraineeRepository _traineeRepo;
 
-    public MentorController(IMentorRepository mentorRepo, IUserRepository userRepo, ILessonAssignmentRepository assignmentRepo, IRejectionRepository rejectionRepo)
+    public MentorController(IMentorRepository mentorRepo, IUserRepository userRepo, ILessonAssignmentRepository assignmentRepo, IRejectionRepository rejectionRepo, ITraineeRepository traineeRepo)
     {
         _mentorRepo = mentorRepo;
         _userRepo = userRepo;
         _assignmentRepo = assignmentRepo;
         _rejectionRepo = rejectionRepo;
+        _traineeRepo = traineeRepo;
     }
 
     // Code-Owner: Jelena Cosic
@@ -35,11 +38,7 @@ public class MentorController : Controller
     /// Only accessible by users with the Mentor or Admin role.
     /// </summary>
     /// <returns>The Mentor index view.</returns>
-    public IActionResult Index()
-    {
-        ViewData["NavbarOverride"] = "Mentor";
-        return View();
-    }
+    public IActionResult Index() => RedirectToAction("MyTrainees");
 
     // Code-Owner: Leon
     /// <summary>
@@ -75,6 +74,12 @@ public class MentorController : Controller
         if (currentUser == null)
         {
             return Unauthorized();
+        }
+        
+        ViewBag.isAdmin = "Admin".Equals(User.FindFirstValue(ClaimTypes.Role));
+        if (ViewBag.isAdmin)
+        {
+            ViewBag.allTrainees = _traineeRepo.GetAllTrainees();            
         }
         
         return View(currentUser.AssignedTrainees);
@@ -188,10 +193,21 @@ public class MentorController : Controller
 
 //Code-Owner: Julia
     [HttpPost]
+    public IActionResult SkipAssignment(int assignmentId)
+    {
+        var assignment =_assignmentRepo.GetById(assignmentId);
+        if(assignment == null)
+        {
+            return NotFound();
+        }
+        _assignmentRepo.UpdateStatus(assignmentId, LessonAssignmentStatus.Skipped);
+        return RedirectToAction("AssignmentOverview", new {traineeId = assignment.TraineeId});
+
+    }    
+
     public IActionResult UpdateAssignmentOrder(int traineeId, [FromForm] List<int> orderedIds)
     {
         _assignmentRepo.UpdateAssignmentPositions(orderedIds);
         return RedirectToAction("AssignmentOverview", new {traineeId});
     }
-
 }

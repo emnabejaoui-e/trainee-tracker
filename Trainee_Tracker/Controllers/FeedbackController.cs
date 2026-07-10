@@ -51,16 +51,9 @@ public class FeedbackController : Controller
                 }
                 else if (show == "assigned")
                 {
-                    var mentor = _mentorRepo.GetMentorById(currentUserId);
-                    if(mentor == null)
-                    {
-                        TempData["ErrorMessage"] = "You are not authorized to view assigned feedback.";
-                        return RedirectToAction("RecentFeedback", new { show = "all" });
-                    }
-                    var assignedTraineeIds = mentor.AssignedTrainees.Select(t => t.Id).ToHashSet();
-                    feedbacks = feedbacks
-                        .Where(f => assignedTraineeIds.Contains(f.TraineeId))
-                        .ToList();
+                    ViewData["NavbarOverride"] = "Mentor";
+                    // TODO: Show only feedback from trainees assigned to the current mentor.
+                    feedbacks = feedbacks.ToList();
                 }
                 else
                 {
