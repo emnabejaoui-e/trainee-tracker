@@ -43,6 +43,8 @@ public class LoginE2ETest : IDisposable
         passwordField.SendKeys("Admin1!");
         submitButton.Click();
 
+        await Task.Delay(3000);
+
         Assert.DoesNotContain("Login", _driver.Url);
     }
 
