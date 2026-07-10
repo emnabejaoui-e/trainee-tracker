@@ -23,4 +23,5 @@ public class UserServiceTests
 
             Assert.False(result, "Email shouldn't be available");
         }
+
     }
