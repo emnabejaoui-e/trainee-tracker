@@ -1,4 +1,4 @@
-@* Controllernamen usw müssen noch angepasst werden *@
+﻿@* Controllernamen usw müssen noch angepasst werden *@
 @{
     var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "";
 }
@@ -19,14 +19,14 @@
     <span class="role">TRAINEE</span>
     <span class="email">@email</span>
     <div class="user-dropdown">
-      <p><a asp-controller="Profile" asp-action="Index">My Profile</a></p>
-      <p><a href="mailto:mentor@makandra.de">My Mentor</a></p>
-      <p>
-        <form method="post" asp-controller="Login" asp-action="Logout">
+      <div class="dropdown-btn-container">
+        <a asp-controller="Profile" asp-action="Index" class="dropdown-btn">My Profile</a>
+        <a href="mailto:mentor@makandra.de" class="dropdown-btn">My Mentor</a>
+        <form method="post" asp-controller="Login" asp-action="Logout" style="margin:0;">
           @Html.AntiForgeryToken()
-          <button type="submit">Log out</button>
+          <button type="submit" class="dropdown-btn">Log out</button>
         </form>
-      </p>
+      </div>
     </div>
   </div>
 </header>
