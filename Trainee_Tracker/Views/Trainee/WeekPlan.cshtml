@@ -58,8 +58,13 @@
 @functions {
     string ThemeCssClass(LessonAssignmentStatus status) => status switch
     {
-        LessonAssignmentStatus.Finished or LessonAssignmentStatus.Accepted or LessonAssignmentStatus.Rated => "theme-grey",
-        LessonAssignmentStatus.Started => "theme-pink",
-        _ => "theme-licorice"
+        LessonAssignmentStatus.Open => "status-open",
+        LessonAssignmentStatus.Started => "status-started",
+        LessonAssignmentStatus.Finished => "status-finished",
+        LessonAssignmentStatus.Accepted => "status-accepted",
+        LessonAssignmentStatus.Rejected => "status-rejected",
+        LessonAssignmentStatus.Rated => "status-rated",
+        LessonAssignmentStatus.Skipped => "status-skipped",
+        _ => "status-open"
     };
 }

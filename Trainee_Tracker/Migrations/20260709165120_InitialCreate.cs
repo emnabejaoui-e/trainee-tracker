@@ -84,9 +84,9 @@ namespace Trainee_Tracker.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Difficulty = table.Column<int>(type: "INTEGER", nullable: false),
-                    PriorKnowledge = table.Column<string>(type: "TEXT", nullable: false),
-                    ActualEffort = table.Column<double>(type: "REAL", nullable: false),
+                    Difficulty = table.Column<int>(type: "INTEGER", nullable: true),
+                    PriorKnowledge = table.Column<string>(type: "TEXT", nullable: true),
+                    ActualEffort = table.Column<double>(type: "REAL", nullable: true),
                     Comment = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     TraineeId = table.Column<int>(type: "INTEGER", nullable: false),
@@ -141,6 +141,27 @@ namespace Trainee_Tracker.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Rejections",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Reason = table.Column<string>(type: "TEXT", nullable: false),
+                    AssignmentId = table.Column<int>(type: "INTEGER", nullable: false),
+                    RejectedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rejections", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Rejections_LessonAssignments_AssignmentId",
+                        column: x => x.AssignmentId,
+                        principalTable: "LessonAssignments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Lessons",
                 columns: new[] { "Id", "Effort", "Inactive", "Position", "Title", "URL" },
@@ -176,7 +197,20 @@ namespace Trainee_Tracker.Migrations
                 values: new object[,]
                 {
                     { 4, false, "jelenacosic2@makandra.de", "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", "Jelena2 Mentor", "Mentor" },
-                    { 5, false, "jelenacosic1@makandra.de", "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", "Jelena3 Admin", "Admin" }
+                    { 5, false, "jelenacosic1@makandra.de", "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", "Jelena3 Admin", "Admin" },
+                    { 6, false, "admin@makandra.de", "$2a$11$NWoCmWYUtc4Kj0eDILuyxOjWj0GReHhxe2bh6Crx1QR4heeWH1EcO", "Admin", "Admin" },
+                    { 7, false, "manfred.mental@makandra.de", "$2a$11$kce.fXXVmBy2n0DaoYUcuujmpl.lXCCgZC7WSoFT94B98q5FS.gMa", "Manfred Mental", "Mentor" },
+                    { 8, false, "hans.hilfreich@makandra.de", "$2a$11$RirFsrHzwqEKO0Wr8sIiZuprcJ5Pz8y45bRGLltqSos0cePlhhLvC", "Hans Hilfreich", "Mentor" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Closed", "Email", "EndDate", "HashedPassword", "Name", "Role", "StartingDate" },
+                values: new object[,]
+                {
+                    { 9, false, "vanessa.vital@makandra.de", new DateOnly(2027, 3, 31), "$2a$11$OvYPz8FkuxXJe7WyPIHpzOc1bi5beKtsB2WYXBJlVDqsNRCJatfzK", "Vanessa Vital", "Trainee", new DateOnly(2026, 7, 17) },
+                    { 10, false, "stefan.schnupfen@makandra.de", new DateOnly(2026, 10, 31), "$2a$11$1YdXfUYVKPO7t0wmYKVirOq4mYR4k/sxxO6YlY7c2CdSO50yRSqGW", "Stefan Schnupfen", "Trainee", new DateOnly(2026, 5, 1) },
+                    { 11, false, "ursula.urlaub@makandra.de", new DateOnly(2026, 7, 31), "$2a$11$aemTP4KrL44P1z23XD39u.7nnd3zoXeME0PFZzVkQPTEmmK/fVqRm", "Ursula Urlaub", "Trainee", new DateOnly(2026, 1, 1) }
                 });
 
             migrationBuilder.InsertData(
@@ -208,6 +242,20 @@ namespace Trainee_Tracker.Migrations
                     { 22, new DateOnly(2026, 7, 3), 222, 13, 0, 3 }
                 });
 
+            migrationBuilder.InsertData(
+                table: "MentorTrainee",
+                columns: new[] { "AssignedTraineesId", "MentorsId" },
+                values: new object[,]
+                {
+                    { 1, 4 },
+                    { 1, 5 },
+                    { 3, 5 },
+                    { 9, 7 },
+                    { 10, 7 },
+                    { 11, 7 },
+                    { 11, 8 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_LessonAssignments_LessonId",
                 table: "LessonAssignments",
@@ -237,19 +285,27 @@ namespace Trainee_Tracker.Migrations
                 name: "IX_MentorTrainee_MentorsId",
                 table: "MentorTrainee",
                 column: "MentorsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rejections_AssignmentId",
+                table: "Rejections",
+                column: "AssignmentId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "LessonAssignments");
-
-            migrationBuilder.DropTable(
                 name: "LessonFeedbacks");
 
             migrationBuilder.DropTable(
                 name: "MentorTrainee");
+
+            migrationBuilder.DropTable(
+                name: "Rejections");
+
+            migrationBuilder.DropTable(
+                name: "LessonAssignments");
 
             migrationBuilder.DropTable(
                 name: "Lessons");

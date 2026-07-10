@@ -24,9 +24,10 @@ public class FeedbackController : Controller
     }
 
     [HttpGet]
-    public IActionResult RecentFeedback(DateTime? from, DateTime? until)
+    public IActionResult RecentFeedback(DateTime? from, DateTime? until, string show = "all")
     {
         var feedbacks = new List<LessonFeedback>();
+        var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
         if (from.HasValue && until.HasValue)
         {
@@ -37,11 +38,29 @@ public class FeedbackController : Controller
             else
             {
                 feedbacks = _lessonFeedbackService.CollectFeedback(from.Value, until.Value);
+
+                if (show == "mine")
+                {
+                    feedbacks = feedbacks
+                        .Where(f => f.TraineeId == currentUserId)
+                        .ToList();
+                }
+                else if (show == "assigned")
+                {
+                    // TODO: Show only feedback from trainees assigned to the current mentor.
+                    feedbacks = feedbacks.ToList();
+                }
+                else
+                {
+                    show = "all";
+                    feedbacks = feedbacks.ToList();
+                }
             }
         }
 
         ViewBag.From = from;
         ViewBag.Until = until;
+        ViewBag.Show = show;
 
         return View(feedbacks);
     }
@@ -49,13 +68,8 @@ public class FeedbackController : Controller
     [HttpGet]
     public IActionResult MyFeedback()
     {
-        //var trainee = new Trainee { Id = 1 }; // später durch Login ersetzen
-
-        //Julia:
-        var traineeIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var traineeId = int.Parse(traineeIdString);
-        var trainee = new Trainee {Id = traineeId};
-        //ende
+        var traineeId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var trainee = new Trainee { Id = traineeId };
 
         var feedbacks = _lessonFeedbackService.GetFeedback(trainee)
             .OrderByDescending(f => f.CreatedAt)
@@ -84,13 +98,10 @@ public class FeedbackController : Controller
     [HttpPost]
     public IActionResult CreateFeedback(LessonFeedback feedback)
     {
-        //feedback.TraineeId = 1; //hardcoded !! Wir müssen aber immer den Trainee betrachten, der gerade eingeloggt ist!
-        //Julia:
-        var traineeIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var traineeId = int.Parse(traineeIdString);
+        var traineeId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         feedback.TraineeId = traineeId;
-        //ende
 
+        // TODO: Replace hardcoded MentorId with assigned mentor once mentor assignment logic is available.
         feedback.MentorId = 4;
         feedback.CreatedAt = DateTime.Now;
 
@@ -120,7 +131,8 @@ public class FeedbackController : Controller
         return RedirectToAction("RecentFeedback", "Feedback", new
         {
             from = DateTime.Today.ToString("yyyy-MM-dd"),
-            until = DateTime.Today.ToString("yyyy-MM-dd")
+            until = DateTime.Today.ToString("yyyy-MM-dd"),
+            show = "all"
         });
     }
 
@@ -131,6 +143,14 @@ public class FeedbackController : Controller
 
         if (feedback == null)
             return NotFound();
+
+        var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+        if (User.IsInRole("Trainee") && feedback.TraineeId != currentUserId)
+        {
+            TempData["ErrorMessage"] = "You are not authorized to edit this feedback.";
+            return RedirectToAction("RecentFeedback", new { show = "all" });
+        }
 
         return View(feedback);
     }
@@ -150,6 +170,14 @@ public class FeedbackController : Controller
         if (existingFeedback == null)
             return NotFound();
 
+        var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+        if (User.IsInRole("Trainee") && existingFeedback.TraineeId != currentUserId)
+        {
+            TempData["ErrorMessage"] = "You are not authorized to edit this feedback.";
+            return RedirectToAction("RecentFeedback", new { show = "all" });
+        }
+
         existingFeedback.Difficulty = feedback.Difficulty;
         existingFeedback.PriorKnowledge = feedback.PriorKnowledge;
         existingFeedback.ActualEffort = feedback.ActualEffort;
@@ -159,11 +187,11 @@ public class FeedbackController : Controller
 
         TempData["SuccessMessage"] = "Your feedback has been updated successfully.";
 
-
         return RedirectToAction("RecentFeedback", "Feedback", new
         {
             from = DateTime.Today.ToString("yyyy-MM-dd"),
-            until = DateTime.Today.ToString("yyyy-MM-dd")
+            until = DateTime.Today.ToString("yyyy-MM-dd"),
+            show = "all"
         });
     }
 
@@ -175,7 +203,19 @@ public class FeedbackController : Controller
         if (feedback == null)
             return NotFound();
 
-        _lessonAssignmentRepository.UpdateStatus(feedback.AssignmentId, LessonAssignmentStatus.Accepted);
+        var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+        if (User.IsInRole("Trainee") && feedback.TraineeId != currentUserId)
+        {
+            TempData["ErrorMessage"] = "You are not authorized to delete this feedback.";
+            return RedirectToAction("RecentFeedback", new { show = "all" });
+        }
+
+        _lessonAssignmentRepository.UpdateStatus(
+            feedback.AssignmentId,
+            LessonAssignmentStatus.Accepted
+        );
+
         _lessonFeedbackService.DeleteFeedback(id);
 
         TempData["SuccessMessage"] = "Your feedback has been deleted successfully.";
@@ -183,7 +223,8 @@ public class FeedbackController : Controller
         return RedirectToAction("RecentFeedback", "Feedback", new
         {
             from = DateTime.Today.ToString("yyyy-MM-dd"),
-            until = DateTime.Today.ToString("yyyy-MM-dd")
+            until = DateTime.Today.ToString("yyyy-MM-dd"),
+            show = "all"
         });
     }
 }

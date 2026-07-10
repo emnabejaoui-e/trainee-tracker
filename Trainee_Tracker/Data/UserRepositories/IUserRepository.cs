@@ -12,7 +12,7 @@ namespace Trainee_Tracker.Repositories
         void CreateMentor(Mentor mentor, string hashedPassword);
         void CreateAdmin(Admin admin, string hashedPassword);
 
-        void UpdateUser(User user);
+        void UpdateUser(User user, string? password = null);
         void CloseUser(int id);
 
         bool ValidateUserCredentials(string email, string password);

@@ -27,11 +27,11 @@ public class AdminController : Controller
     // Code Owner: Jelena Cosic
     public IActionResult Index()
     {
-        return RedirectToAction("UserManagment");
+        return RedirectToAction("UserManagement");
     }
 
     // Code-Owner: Andrej Basara
-    public IActionResult UserManagment(string searchString)
+    public IActionResult UserManagement(string searchString)
     {
         ViewData["CurrentFilter"] = searchString;
         IEnumerable<User> users = _userService.GetAllUsers();
@@ -72,7 +72,7 @@ public class AdminController : Controller
             EndDate = endDate
         };
         _userService.CreateTrainee(trainee, password);
-        return RedirectToAction("UserManagment");
+        return RedirectToAction("UserManagement");
     }
 
     // Code-Owner: Andrej Basara
@@ -95,7 +95,7 @@ public class AdminController : Controller
             Email = email,
         };
         _userService.CreateMentor(mentor, password);
-        return RedirectToAction("UserManagment");
+        return RedirectToAction("UserManagement");
     }
 
     public IActionResult CreateAdmin()
@@ -117,7 +117,7 @@ public class AdminController : Controller
             Email = email,
         };
         _userService.CreateAdmin(admin, password);
-        return RedirectToAction("UserManagment");
+        return RedirectToAction("UserManagement");
     }
 
     // Code Owner: Andrej Basara
@@ -136,7 +136,7 @@ public class AdminController : Controller
         try
         {
             _mentorService.AssignTraineeToMentor(mentorId, traineeId);
-            return RedirectToAction("UserManagment");
+            return RedirectToAction("UserManagement");
         }
         catch (InvalidOperationException ex)
         {
@@ -164,7 +164,7 @@ public class AdminController : Controller
     {
         var user = _userService.GetById(id);
         _userService.CloseUser(user.Id);
-        return RedirectToAction("UserManagment");
+        return RedirectToAction("UserManagement");
     }
 
     // Code Owner: Andrej Basara
@@ -174,6 +174,69 @@ public class AdminController : Controller
         var user = _userService.GetById(id.Value);
         if (user == null) return NotFound();
         return View(user);
+    }
+
+    // Code Owner: Andrej Basara
+    public IActionResult UpdateTrainee(int? id)
+    {
+        if (id == null) return NotFound();
+        var user = _userService.GetById(id.Value);
+        if (user == null) return NotFound();
+        return View(user);
+    }
+
+    [HttpPost]
+    public IActionResult UpdateTrainee(int id, string name, string email, string? password, DateOnly startingDate, DateOnly endDate)
+    {
+        if (_userService.GetById(id) is not Trainee trainee) return NotFound();
+
+        var emailChanged = !string.Equals(trainee.Email, email, StringComparison.OrdinalIgnoreCase);
+        if (emailChanged && !_userService.IsEmailAvailable(email))
+        {
+            ModelState.AddModelError("Email", "Email already in use");
+            trainee.Name = name;
+            trainee.Email = email;
+            trainee.StartingDate = startingDate;
+            trainee.EndDate = endDate;
+            // doesn't delete already changed/ entered data on error in forum
+            return View(trainee);
+        }
+
+        trainee.Name = name;
+        trainee.Email = email;
+        trainee.StartingDate = startingDate;
+        trainee.EndDate = endDate;
+        _userService.UpdateTrainee(trainee, password);
+        return RedirectToAction("UserManagement");
+    }
+
+    public IActionResult UpdateMentor(int? id)
+    {
+        if (id == null) return NotFound();
+        var user = _userService.GetById(id.Value);
+        if (user == null) return NotFound();
+        return View(user);
+    }
+
+    [HttpPost]
+    public IActionResult UpdateMentor(int id, string name, string email, string? password)
+    {
+        if(_userService.GetById(id) is not Mentor mentor) {
+            return NotFound();
+        }
+        var emailChanged = !string.Equals(mentor.Email, email, StringComparison.OrdinalIgnoreCase);
+        if (!_userService.IsEmailAvailable(email) && emailChanged)
+        {
+            ModelState.AddModelError("Email", "email already in use");
+            mentor.Name = name;
+            mentor.Email = email;
+            return View(mentor);
+        }
+
+        mentor.Name = name;
+        mentor.Email = email;
+        _userService.UpdateMentor(mentor, password);
+        return RedirectToAction("UserManagement");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

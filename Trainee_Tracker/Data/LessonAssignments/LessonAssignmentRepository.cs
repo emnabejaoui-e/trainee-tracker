@@ -88,4 +88,13 @@ public class LessonAssignmentRepository : ILessonAssignmentRepository
             _context.SaveChanges();
         }
     }
+
+    public LessonAssignment? GetById(int assignmentId)
+    {
+        return _context.LessonAssignments
+        .Include(la => la.Lesson)
+        .Include(la => la.Trainee)
+        .FirstOrDefault(la => la.Id == assignmentId);
+                
+    }
 }

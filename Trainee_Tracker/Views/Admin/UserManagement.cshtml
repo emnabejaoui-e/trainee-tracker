@@ -15,12 +15,12 @@
     <a asp-action="CreateAdmin" class="btn-user-create">Admin</a>
     <a asp-action="AssignMentor" class="btn-user-create ms-auto" >Assign Mentor</a>
 </p>
-<form asp-action="UserManagment" method="get">
+<form asp-action="UserManagement" method="get">
     <div class="form-actions no-color">
         <p>
             <label>Find by: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" placeholder="E-Mail/ Name"/></label>
             <input type="submit" value="Search" class="btn btn-outline-secondary btn-sm" style="position: relative; top: -2px;" /> |
-            <a asp-action="UserManagment">Back to Full List</a>
+            <a asp-action="UserManagement">Back to Full List</a>
         </p>
     </div>
 </form>
@@ -68,7 +68,10 @@
                 }
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class = "grey-link">Edit</a> |
+                @{
+                    var editAction = item is Trainee ? "UpdateTrainee" : "UpdateMentor";
+                }
+                <a asp-action="@editAction" asp-route-id="@item.Id" class = "grey-link">Edit</a> |
                 <a asp-action="UserDetails" asp-route-id="@item.Id" class = "grey-link">Details</a> |
                 <a asp-action="CloseUser" asp-route-id="@item.Id" class = "grey-link">Close</a>
             </td>
