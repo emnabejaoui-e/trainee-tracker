@@ -199,4 +199,10 @@ public class MentorController : Controller
         return RedirectToAction("AssignmentOverview", new {traineeId = assignment.TraineeId});
 
     }    
+
+    public IActionResult UpdateAssignmentOrder(int traineeId, [FromForm] List<int> orderedIds)
+    {
+        _assignmentRepo.UpdateAssignmentPositions(orderedIds);
+        return RedirectToAction("AssignmentOverview", new {traineeId});
+    }
 }

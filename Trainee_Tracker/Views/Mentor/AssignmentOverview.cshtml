@@ -171,6 +171,7 @@
         </dialog>
     }
 
+
     <h2 class="section-title">Skip an Assignment</h2>
     <div>
         <button type="button" class="action-btn action-btn-primary" onclick="document.getElementById('skip-select-dialog').showModal()">Choose a Assignment</button>
@@ -200,6 +201,37 @@
 
     </div>
 
+
+    <h2 class="section-title">Edit Assignment Order</h2>
+    <div>
+        <button type="button" class="action-btn action-btn-primary" onclick="document.getElementById('sort-dialog').showModal()">Edit Order</button>
+
+        <dialog id="sort-dialog" class="sort-dialog">
+            <h3 class="rejection-dialog-title">Reorder Assignments for @traineeName</h3>
+            <form asp-controller="Mentor" asp-action="UpdateAssignmentOrder" method="post" id="sort-form">
+                <input type="hidden" name="traineeId" value="@Model.FirstOrDefault()?.TraineeId" />
+                <ul id="sortable-list" class="sortable-list">
+                    @foreach(var assignment in Model.OrderBy(a => a.Position))
+                    {
+                        <li class="sortable-item" draggable="true" data-id="@assignment.Id">
+                            <span class="drag-handle">⠿</span>
+                            <span class="sortable-item-position">@assignment.Position -</span>
+                            <span class="sortable-title">@assignment.Lesson.Title</span>
+                            <input type="hidden" name="orderedIds" value="@assignment.Id"/>
+                        </li>
+                    }
+                </ul>
+                <div class="rejection-dialog-action">
+                    <button type="button" class="action-btn action-btn-cancel" onclick="document.getElementById('sort-dialog').close()">cancel</button>
+                    <button type="submit" class="action-btn action-btn-accept">save</button>
+                </div>
+            </form>
+        </dialog>
+    </div>
+
+    
+
+
 </div>
 
 
@@ -226,4 +258,33 @@
 
     });
 
+</script>
+
+@* Vanilla Js for drag-&-drop *@
+<script>
+    (function() {
+        const list = document.getElementById('sortable-list');
+        let dragged = null;
+
+        list.addEventListener('dragstart', e => {
+            dragged = e.target.closest('.sortable-item');
+            dragged.classList.add('dragging');
+        });
+
+        list.addEventListener('dragend', () => {
+            dragged?.classList.remove('dragging');
+            dragged = null;
+        });
+
+        list.addEventListener('dragover', e => {
+            e.preventDefault();
+            const target = e.target.closest('.sortable-item');
+            if(!target || target == dragged) return;
+
+            const rect = target.getBoundingClientRect();
+            const after = (e.clientY - rect.top) > rect.height / 2;
+            list.insertBefore(dragged, after ? target.nextSibling : target);
+        });
+
+    })();
 </script>

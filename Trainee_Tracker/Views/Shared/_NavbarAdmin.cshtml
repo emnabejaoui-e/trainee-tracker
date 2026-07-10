@@ -1,4 +1,4 @@
-@* Code Owner: Jelena Cosic *@
+﻿@* Code Owner: Jelena Cosic *@
 @using System.Security.Claims
 <header class="page-header">
   <div style="display: flex; align-items: center; gap: 50px;">
@@ -15,14 +15,14 @@
     <span class="role">@User.FindFirst(ClaimTypes.Role)?.Value?.ToUpper()</span>
     <span class="email">@User.FindFirst(ClaimTypes.Email)?.Value</span>
     <div class="user-dropdown">
-      <p><a asp-controller="Profile" asp-action="Index">My Profile</a></p>
-      <p><a href="/Mentor/Index">Switch to Mentor View</a></p>
-      <p>
-        <form method="post" asp-controller="Login" asp-action="Logout">
+      <div class="dropdown-btn-container">
+        <a asp-controller="Profile" asp-action="Index" class="dropdown-btn">My Profile</a>
+        <a href="/Mentor/Index" class="dropdown-btn">Switch to Mentor View</a>
+        <form method="post" asp-controller="Login" asp-action="Logout" style="margin:0;">
           @Html.AntiForgeryToken()
-          <button type="submit">Log out</button>
+          <button type="submit" class="dropdown-btn">Log out</button>
         </form>
-      </p>
+      </div>
     </div>
   </div>
 </header>
