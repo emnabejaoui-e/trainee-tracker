@@ -13,13 +13,21 @@ public class LessonAssignmentRepository : ILessonAssignmentRepository
         _context = context;
     }
 
-
-
+    /// <summary>
+    /// Removes an assignment from the Repository 
+    /// </summary>
+    /// <param name="assignment">LessonAssignment that is to be deleted</param>
     public void Delete(LessonAssignment assignment)
     {
         _context.LessonAssignments.Remove(assignment);
     }
 
+    /// <summary>
+    /// Returns a list of all assignments for a specific trainee that are in the state status
+    /// </summary>
+    /// <param name="trainee"></param>
+    /// <param name="status"></param>
+    /// <returns></returns>
     public List<LessonAssignment> FindByStatus(Trainee trainee, LessonAssignmentStatus status)
     {
         return _context.LessonAssignments
@@ -87,5 +95,31 @@ public class LessonAssignmentRepository : ILessonAssignmentRepository
             item.Position = newPosition;
             _context.SaveChanges();
         }
+    }
+
+    public LessonAssignment? GetById(int assignmentId)
+    {
+        return _context.LessonAssignments
+        .Include(la => la.Lesson)
+        .Include(la => la.Trainee)
+        .FirstOrDefault(la => la.Id == assignmentId);
+                
+    }
+
+    /// <summary>
+    /// Changes the order of the given LessonAssignments
+    /// </summary>
+    /// <param name="orderedAssignmentIds"> list of the new order of lesson Assignments (only the Assignment-Ids) </param>
+    public void UpdateAssignmentPositions(List<int> orderedAssignmentIds)
+    {
+        for(int i = 0; i < orderedAssignmentIds.Count; i++ )
+        {
+            var assignment = _context.LessonAssignments.Find(orderedAssignmentIds[i]);
+            if(assignment != null)
+            {
+                assignment.Position = i + 1;
+            }       
+        }
+        _context.SaveChanges();
     }
 }
