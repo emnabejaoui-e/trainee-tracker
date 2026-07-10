@@ -12,9 +12,10 @@
 }
 
 .section-title {
+    margin-top: 28px;
     margin-bottom: 24px;
     color: var(--licorice);
-    font-size: 46px;
+    font-size: 38px;
     font-weight: 700;
 }
 
@@ -172,6 +173,15 @@ dd {
 
 .btn:hover {
     background: var(--pink);
+}
+
+.feedback-filter .btn {
+    background: var(--pink);
+    color: white !important;
+}
+
+.feedback-filter .btn:hover {
+    background: var(--licorice);
 }
 
 .btn-secondary {
