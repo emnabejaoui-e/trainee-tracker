@@ -11,18 +11,16 @@
 @if (Model.Any())
 {
     <ul class="profile-list">
-        @foreach(Trainee trainee in Model)
+        @foreach (Trainee trainee in Model)
         {
             <li class="profile-item">
                 <div class="profile-main">
-                    <a class="name"
-                    asp-controller="Mentor"
-                    asp-action="Fortschrittskontrolle"
-                    asp-route-traineeId="@trainee.Id">
-                    @trainee.Name
+                    <a class="name" asp-controller="Mentor" asp-action="Fortschrittskontrolle"
+                       asp-route-traineeId="@trainee.Id">
+                        @trainee.Name
                     </a>
                     <h1 class="name">@trainee.Name</h1>
-                    <br/>
+                    <br />
                     <a href="mailto:@trainee.Email" class="email">@trainee.Email</a>
                 </div>
                 <div class="profile-meta">
@@ -39,13 +37,17 @@
                         }
                     }
                 </div>
-                
-@* Code-Owner: Julia *@
+
+                @* Code-Owner: Julia *@
                 <div class="profile-links">
-                    <a  href="/Mentor/Fortschrittskontrolle" class="profile-link">See Progress-Control-Data</a> 
-                    <a  asp-controller="Mentor" asp-action="AssignmentOverview" asp-route-traineeId="@trainee.Id" class="profile-link">See Lesson Assignments</a>
+                    <a asp-controller="Mentor" asp-action="Fortschrittskontrolle" asp-route-traineeId="@trainee.Id"
+                       class="profile-link">
+                        See Progress-Control-Data
+                    </a>
+                    <a asp-controller="Mentor" asp-action="AssignmentOverview" asp-route-traineeId="@trainee.Id"
+                       class="profile-link">See Lesson Assignments</a>
                 </div>
-            </li>        
+            </li>
         }
     </ul>
 }
