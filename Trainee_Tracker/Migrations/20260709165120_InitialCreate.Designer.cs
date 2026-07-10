@@ -11,8 +11,8 @@ using Trainee_Tracker.Data;
 namespace Trainee_Tracker.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260705205347_MakeFeedbackFieldsOptional")]
-    partial class MakeFeedbackFieldsOptional
+    [Migration("20260709165120_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,43 @@ namespace Trainee_Tracker.Migrations
                     b.HasIndex("MentorsId");
 
                     b.ToTable("MentorTrainee");
+
+                    b.HasData(
+                        new
+                        {
+                            AssignedTraineesId = 9,
+                            MentorsId = 7
+                        },
+                        new
+                        {
+                            AssignedTraineesId = 10,
+                            MentorsId = 7
+                        },
+                        new
+                        {
+                            AssignedTraineesId = 11,
+                            MentorsId = 7
+                        },
+                        new
+                        {
+                            AssignedTraineesId = 11,
+                            MentorsId = 8
+                        },
+                        new
+                        {
+                            AssignedTraineesId = 3,
+                            MentorsId = 5
+                        },
+                        new
+                        {
+                            AssignedTraineesId = 1,
+                            MentorsId = 5
+                        },
+                        new
+                        {
+                            AssignedTraineesId = 1,
+                            MentorsId = 4
+                        });
                 });
 
             modelBuilder.Entity("Trainee_Tracker.Models.Lesson", b =>
@@ -206,7 +243,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 1,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 24),
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 29),
                             LessonId = 11,
                             Position = 2,
                             Status = 3,
@@ -215,7 +252,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 2,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 25),
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 29),
                             LessonId = 22,
                             Position = 3,
                             Status = 3,
@@ -224,7 +261,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 3,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 26),
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 29),
                             LessonId = 33,
                             Position = 4,
                             Status = 3,
@@ -233,7 +270,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 4,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 26),
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 30),
                             LessonId = 44,
                             Position = 5,
                             Status = 3,
@@ -242,7 +279,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 5,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 27),
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 30),
                             LessonId = 55,
                             Position = 6,
                             Status = 2,
@@ -251,7 +288,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 6,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 28),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
                             LessonId = 66,
                             Position = 7,
                             Status = 2,
@@ -260,7 +297,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 7,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 30),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
                             LessonId = 77,
                             Position = 8,
                             Status = 1,
@@ -269,7 +306,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 8,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 30),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
                             LessonId = 88,
                             Position = 9,
                             Status = 1,
@@ -278,7 +315,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 9,
-                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 2),
                             LessonId = 99,
                             Position = 10,
                             Status = 0,
@@ -287,7 +324,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 10,
-                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 3),
                             LessonId = 100,
                             Position = 11,
                             Status = 0,
@@ -296,7 +333,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 11,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 24),
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 29),
                             LessonId = 11,
                             Position = 2,
                             Status = 3,
@@ -305,7 +342,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 12,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 25),
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 29),
                             LessonId = 22,
                             Position = 3,
                             Status = 3,
@@ -314,7 +351,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 13,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 26),
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 29),
                             LessonId = 33,
                             Position = 4,
                             Status = 3,
@@ -323,7 +360,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 14,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 26),
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 30),
                             LessonId = 44,
                             Position = 6,
                             Status = 3,
@@ -332,7 +369,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 15,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 27),
+                            ExpectedProcessingDate = new DateOnly(2026, 6, 30),
                             LessonId = 55,
                             Position = 5,
                             Status = 2,
@@ -341,7 +378,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 16,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 28),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
                             LessonId = 66,
                             Position = 7,
                             Status = 2,
@@ -350,7 +387,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 17,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 30),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
                             LessonId = 77,
                             Position = 9,
                             Status = 2,
@@ -359,7 +396,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 18,
-                            ExpectedProcessingDate = new DateOnly(2026, 6, 30),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 2),
                             LessonId = 88,
                             Position = 8,
                             Status = 1,
@@ -368,7 +405,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 19,
-                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 2),
                             LessonId = 99,
                             Position = 10,
                             Status = 1,
@@ -377,7 +414,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 20,
-                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 3),
                             LessonId = 100,
                             Position = 11,
                             Status = 0,
@@ -386,7 +423,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 21,
-                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 3),
                             LessonId = 111,
                             Position = 12,
                             Status = 0,
@@ -395,7 +432,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 22,
-                            ExpectedProcessingDate = new DateOnly(2026, 7, 1),
+                            ExpectedProcessingDate = new DateOnly(2026, 7, 3),
                             LessonId = 222,
                             Position = 13,
                             Status = 0,
@@ -448,6 +485,29 @@ namespace Trainee_Tracker.Migrations
                     b.ToTable("LessonFeedbacks");
                 });
 
+            modelBuilder.Entity("Trainee_Tracker.Models.Rejection", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AssignmentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("RejectedAt")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssignmentId");
+
+                    b.ToTable("Rejections");
+                });
+
             modelBuilder.Entity("Trainee_Tracker.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -483,23 +543,6 @@ namespace Trainee_Tracker.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("Trainee_Tracker.Models.Admin", b =>
-                {
-                    b.HasBaseType("Trainee_Tracker.Models.User");
-
-                    b.HasDiscriminator().HasValue("Admin");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 5,
-                            Closed = false,
-                            Email = "jelenacosic1@makandra.de",
-                            HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
-                            Name = "Jelena3 Admin"
-                        });
-                });
-
             modelBuilder.Entity("Trainee_Tracker.Models.Mentor", b =>
                 {
                     b.HasBaseType("Trainee_Tracker.Models.User");
@@ -514,6 +557,22 @@ namespace Trainee_Tracker.Migrations
                             Email = "jelenacosic2@makandra.de",
                             HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
                             Name = "Jelena2 Mentor"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Closed = false,
+                            Email = "manfred.mental@makandra.de",
+                            HashedPassword = "$2a$11$kce.fXXVmBy2n0DaoYUcuujmpl.lXCCgZC7WSoFT94B98q5FS.gMa",
+                            Name = "Manfred Mental"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Closed = false,
+                            Email = "hans.hilfreich@makandra.de",
+                            HashedPassword = "$2a$11$RirFsrHzwqEKO0Wr8sIiZuprcJ5Pz8y45bRGLltqSos0cePlhhLvC",
+                            Name = "Hans Hilfreich"
                         });
                 });
 
@@ -559,6 +618,61 @@ namespace Trainee_Tracker.Migrations
                             Name = "Tilda Trainee",
                             EndDate = new DateOnly(2027, 1, 1),
                             StartingDate = new DateOnly(2026, 7, 1)
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Closed = false,
+                            Email = "vanessa.vital@makandra.de",
+                            HashedPassword = "$2a$11$OvYPz8FkuxXJe7WyPIHpzOc1bi5beKtsB2WYXBJlVDqsNRCJatfzK",
+                            Name = "Vanessa Vital",
+                            EndDate = new DateOnly(2027, 3, 31),
+                            StartingDate = new DateOnly(2026, 7, 17)
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Closed = false,
+                            Email = "stefan.schnupfen@makandra.de",
+                            HashedPassword = "$2a$11$1YdXfUYVKPO7t0wmYKVirOq4mYR4k/sxxO6YlY7c2CdSO50yRSqGW",
+                            Name = "Stefan Schnupfen",
+                            EndDate = new DateOnly(2026, 10, 31),
+                            StartingDate = new DateOnly(2026, 5, 1)
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Closed = false,
+                            Email = "ursula.urlaub@makandra.de",
+                            HashedPassword = "$2a$11$aemTP4KrL44P1z23XD39u.7nnd3zoXeME0PFZzVkQPTEmmK/fVqRm",
+                            Name = "Ursula Urlaub",
+                            EndDate = new DateOnly(2026, 7, 31),
+                            StartingDate = new DateOnly(2026, 1, 1)
+                        });
+                });
+
+            modelBuilder.Entity("Trainee_Tracker.Models.Admin", b =>
+                {
+                    b.HasBaseType("Trainee_Tracker.Models.Mentor");
+
+                    b.HasDiscriminator().HasValue("Admin");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 5,
+                            Closed = false,
+                            Email = "jelenacosic1@makandra.de",
+                            HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
+                            Name = "Jelena3 Admin"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Closed = false,
+                            Email = "admin@makandra.de",
+                            HashedPassword = "$2a$11$NWoCmWYUtc4Kj0eDILuyxOjWj0GReHhxe2bh6Crx1QR4heeWH1EcO",
+                            Name = "Admin"
                         });
                 });
 
@@ -621,6 +735,17 @@ namespace Trainee_Tracker.Migrations
                     b.Navigation("Mentor");
 
                     b.Navigation("Trainee");
+                });
+
+            modelBuilder.Entity("Trainee_Tracker.Models.Rejection", b =>
+                {
+                    b.HasOne("Trainee_Tracker.Models.LessonAssignment", "Assignment")
+                        .WithMany()
+                        .HasForeignKey("AssignmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Assignment");
                 });
 
             modelBuilder.Entity("Trainee_Tracker.Models.Trainee", b =>

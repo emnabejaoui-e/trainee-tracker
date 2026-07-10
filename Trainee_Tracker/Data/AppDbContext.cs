@@ -51,15 +51,33 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Trainee>().HasData(
             new Trainee {Id = 2, Name = "Jelena3 Trainee", Email = "jelenacosic3@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false },
             new Trainee {Id = 1, Name="Torsten Trainee", Email="torstentrainee@makandra.de", HashedPassword="$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed=false, StartingDate = new DateOnly(2026, 6, 30), EndDate = new DateOnly(2027, 1,1)},
-            new Trainee {Id = 3, Name="Tilda Trainee", Email="tildatrainee@makandra.de", HashedPassword="$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed=false, StartingDate = new DateOnly(2026, 7, 01), EndDate = new DateOnly(2027, 1,1)}
+            new Trainee {Id = 3, Name="Tilda Trainee", Email="tildatrainee@makandra.de", HashedPassword="$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed=false, StartingDate = new DateOnly(2026, 7, 01), EndDate = new DateOnly(2027, 1,1)},
+            new Trainee {Id = 9, Name="Vanessa Vital", Email="vanessa.vital@makandra.de", HashedPassword="$2a$11$OvYPz8FkuxXJe7WyPIHpzOc1bi5beKtsB2WYXBJlVDqsNRCJatfzK", Closed=false, StartingDate = new DateOnly(2026, 7, 17), EndDate = new DateOnly(2027, 3,31)},
+            new Trainee {Id = 10, Name="Stefan Schnupfen", Email="stefan.schnupfen@makandra.de", HashedPassword="$2a$11$1YdXfUYVKPO7t0wmYKVirOq4mYR4k/sxxO6YlY7c2CdSO50yRSqGW", Closed=false, StartingDate = new DateOnly(2026, 5, 01), EndDate = new DateOnly(2026, 10,31)},
+            new Trainee {Id = 11, Name="Ursula Urlaub", Email="ursula.urlaub@makandra.de", HashedPassword="$2a$11$aemTP4KrL44P1z23XD39u.7nnd3zoXeME0PFZzVkQPTEmmK/fVqRm", Closed=false, StartingDate = new DateOnly(2026, 1, 01), EndDate = new DateOnly(2026, 7,31)}
         );
 
+        //Code-Owner: Julia
         modelBuilder.Entity<Mentor>().HasData(
-            new Mentor  {Id = 4, Name = "Jelena2 Mentor",  Email = "jelenacosic2@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false, Curriculum = null! }
+            new Mentor  {Id = 4, Name = "Jelena2 Mentor",  Email = "jelenacosic2@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false, Curriculum = null! },
+            new Mentor  {Id = 7, Name = "Manfred Mental",  Email = "manfred.mental@makandra.de", HashedPassword = "$2a$11$kce.fXXVmBy2n0DaoYUcuujmpl.lXCCgZC7WSoFT94B98q5FS.gMa", Closed = false, Curriculum = null! },
+            new Mentor  {Id = 8, Name = "Hans Hilfreich",  Email = "hans.hilfreich@makandra.de", HashedPassword = "$2a$11$RirFsrHzwqEKO0Wr8sIiZuprcJ5Pz8y45bRGLltqSos0cePlhhLvC", Closed = false, Curriculum = null!}
+        );
+        //Code-Owner: Julia
+        modelBuilder.Entity<Admin>().HasData(
+            new Admin   {Id = 5, Name = "Jelena3 Admin",   Email = "jelenacosic1@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false },
+            new Admin {Id = 6, Name = "Admin", Email ="admin@makandra.de", HashedPassword = "$2a$11$NWoCmWYUtc4Kj0eDILuyxOjWj0GReHhxe2bh6Crx1QR4heeWH1EcO", Closed = false}
         );
 
-        modelBuilder.Entity<Admin>().HasData(
-            new Admin   {Id = 5, Name = "Jelena3 Admin",   Email = "jelenacosic1@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false }
+        //Code-Owner: Julia 
+        modelBuilder.Entity("MentorTrainee").HasData(
+            new {MentorsId = 7, AssignedTraineesId = 9},
+            new {MentorsId = 7, AssignedTraineesId = 10},
+            new {MentorsId = 7, AssignedTraineesId = 11},
+            new {MentorsId = 8, AssignedTraineesId = 11},
+            new {MentorsId = 5, AssignedTraineesId = 3},
+            new {MentorsId = 5, AssignedTraineesId = 1},
+            new {MentorsId = 4, AssignedTraineesId = 1}
         );
 
         //Julia: Seed Data for LessonAssignment
