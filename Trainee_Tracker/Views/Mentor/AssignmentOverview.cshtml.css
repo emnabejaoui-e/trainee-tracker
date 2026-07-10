@@ -452,3 +452,137 @@
 .rejected-list-container::-webkit-scrollbar-track{
     background: transparent;
 }
+
+.skip-dialog {
+    border: none;
+    border-radius: 8px;
+    padding: 1.5rem;
+    max-width: 420px;
+    width: 90%;
+}
+
+.sort-dialog {
+    border: none;
+    border-radius: 8px;
+    padding: 1.5rem;
+    max-width: 420px;
+    width: 90%;
+}
+
+
+.skip-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.sort-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.sortable-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.skip-select-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.skip-select-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.sortable-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+
+}
+
+.skip-select-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.skip-select-title {
+    font-size: 0.9rem;
+    color: var(--licorice);
+}
+
+.skip-select-postion{
+    font-size: 0.9rem;
+    color: var(--licorice);
+}
+
+.skip-select-status {
+    font-size: 0.75rem;
+    color: #9ca3af;
+}
+
+.action-btn-skip-confirm {
+    background: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fca5a5;
+    font-size: 0.8rem;
+    padding: 0.3rem 0.7rem;
+}
+
+.skipped-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.skipped-item {
+    display: flex;
+    justify-content: space-between;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    color: #6b7280;
+    cursor: grab;
+}
+
+.sortable-item.dragging {
+    opacity: 0.4;
+}
+
+.drag-handle {
+    color: #9ca3af;
+    font-size: 1.1rem;
+}
+
+.sortable-title {
+    font-size: 0.9rem;
+    color: #1f2937;
+}
+
+.sortable-item-position{
+    font-size: 0.9rem;
+    color: #1f2937;
+
+}

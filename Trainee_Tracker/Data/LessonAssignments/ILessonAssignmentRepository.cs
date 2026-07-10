@@ -13,6 +13,7 @@ public interface ILessonAssignmentRepository
     public IEnumerable<LessonAssignment> GetAllLessonAssignments();
     public void UpdateStatus(int id, LessonAssignmentStatus newStatus);
     public void UpdatePosition(int id, int newPosition);
+    public void UpdateAssignmentPositions(List<int> orderedAssignmentIds);
     public LessonAssignment? GetById(int assignmentId);
 
 

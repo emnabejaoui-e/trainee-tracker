@@ -1,11 +1,10 @@
 @* Code-Owner: Emna Bejaoui *@
 @model IEnumerable<Trainee_Tracker.Models.LessonFeedback>
 @using System.Security.Claims
-
 @{
     ViewData["Title"] = "Feedback";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
+    var editableFeedbackIds = ViewBag.EditableFeedbackIds as HashSet<int> ?? new HashSet<int>();
     var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 }
 
@@ -35,7 +34,7 @@
         asp-route-show="all"
         asp-route-from="@(ViewBag.From != null ? ((DateTime)ViewBag.From).ToString("yyyy-MM-dd") : "")"
         asp-route-until="@(ViewBag.Until != null ? ((DateTime)ViewBag.Until).ToString("yyyy-MM-dd") : "")"
-        class="filter-tab @(ViewBag.Show == "mine" ? "" : "active")">
+        class="filter-tab @(ViewBag.Show == "all" ? "active" : "")">
             All Feedback
     </a>
 
@@ -50,13 +49,13 @@
         </a>
     }
 
-    @if (User.IsInRole("Mentor") || User.IsInRole("Admin"))
+    @if (User.IsInRole("Mentor") )
     {
         <a asp-action="RecentFeedback"
             asp-route-show="assigned"
             asp-route-from="@(ViewBag.From != null ? ((DateTime)ViewBag.From).ToString("yyyy-MM-dd") : "")"
             asp-route-until="@(ViewBag.Until != null ? ((DateTime)ViewBag.Until).ToString("yyyy-MM-dd") : "")"
-            class="filter-tab @(ViewBag.Show == "mine" ? "active" : "")">
+            class="filter-tab @(ViewBag.Show == "assigned" ? "active" : "")">
                 My Trainees
         </a>
     }
@@ -65,6 +64,7 @@
 
 
 <form asp-action="RecentFeedback" method="get" class="feedback-filter">
+    <input type="hidden" name="show" value="@ViewBag.Show" />
     <div>
         <label for="from">From</label>
         <input  type="date"
@@ -84,7 +84,6 @@
     <button type="submit" class="btn">Show Feedback</button>
 </form>
 
-<input type="hidden" id="show" name="show" value="@ViewBag.Show" />
 
 @if (ViewBag.DateError != null)
 {
@@ -119,7 +118,7 @@ else
 
                     <div class="feedback-actions">
                         @if
-                            (!User.IsInRole("Trainee") || feedback.TraineeId == currentUserId)
+                            (editableFeedbackIds.Contains(feedback.Id))
                         {
                             <a asp-action="Edit"
                                 asp-route-id="@feedback.Id"
