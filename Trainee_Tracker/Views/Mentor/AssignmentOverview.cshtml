@@ -130,7 +130,7 @@
         <p class="empty-hint">No lesson assignments are currently rejected</p>
     }
     else
-    {   <div class="rejected-list-container">
+    {   <div class="rejected-list-container" id="rejectedListContainer">
         <ul class="rejected-list">
             @foreach(var assignment in assignmentsWithHistory){
                 <li class="rejected-item">
@@ -260,7 +260,7 @@
 
 </script>
 
-@* Vanilla Js for drag-&-drop *@
+@* JavaScript for drag-&-drop *@
 <script>
     (function() {
         const list = document.getElementById('sortable-list');
@@ -286,5 +286,34 @@
             list.insertBefore(dragged, after ? target.nextSibling : target);
         });
 
+    })();
+</script>
+
+@* JavaScript for saving position when scrolling *@
+<script>
+    (function () {
+        function persistScroll(elementId){
+            const el = document.getElementById(elementId);
+            if(!el) return;
+            const key = 'scrollPosition:' + window.location.pathname + ':' + elementId;
+            const saved = sessionStorage.getItem(key);
+            if(saved !== null){
+                el.scrollTop = parseInt(saved, 10);
+            }
+            let timeout;
+            el.addEventListener('scroll', () => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => sessionStorage.setItem(key, el.scrollTop), 100);
+            });
+        }
+
+        persistScroll('rejectedListContainer');
+        persistScroll('column-body-Open');
+        persistScroll('column-body-Started');
+        persistScroll('column-body-Finished');
+        persistScroll('column-body-Rejected');
+        persistScroll('column-body-Accepted');
+        persistScroll('column-body-Rated');
+        persistScroll('column-body-Skipped');
     })();
 </script>
