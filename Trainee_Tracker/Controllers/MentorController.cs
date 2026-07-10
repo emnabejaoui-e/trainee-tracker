@@ -1,4 +1,4 @@
-// Code Owner: Jelena Cosic (Grundgerüst, [Authorize], Index)
+// Code Owner: Jelena Cosic ([Authorize])
 using System.Diagnostics.Contracts;
 using System.Net.Mime;
 using System.Security.Claims;
@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Trainee_Tracker.Data.LessonAssignments;
 using Trainee_Tracker.Data.MentorRepository;
 using Trainee_Tracker.Data.Rejections;
+using Trainee_Tracker.Data.TraineeRepository;
 using Trainee_Tracker.Models;
 using Trainee_Tracker.Repositories;
 
@@ -19,13 +20,15 @@ public class MentorController : Controller
     private IUserRepository _userRepo;
     private ILessonAssignmentRepository _assignmentRepo;
     private IRejectionRepository _rejectionRepo;
+    private ITraineeRepository _traineeRepo;
 
-    public MentorController(IMentorRepository mentorRepo, IUserRepository userRepo, ILessonAssignmentRepository assignmentRepo, IRejectionRepository rejectionRepo)
+    public MentorController(IMentorRepository mentorRepo, IUserRepository userRepo, ILessonAssignmentRepository assignmentRepo, IRejectionRepository rejectionRepo, ITraineeRepository traineeRepo)
     {
         _mentorRepo = mentorRepo;
         _userRepo = userRepo;
         _assignmentRepo = assignmentRepo;
         _rejectionRepo = rejectionRepo;
+        _traineeRepo = traineeRepo;
     }
 
     // Code-Owner: Jelena Cosic
@@ -75,6 +78,12 @@ public class MentorController : Controller
         if (currentUser == null)
         {
             return Unauthorized();
+        }
+        
+        ViewBag.isAdmin = "Admin".Equals(User.FindFirstValue(ClaimTypes.Role));
+        if (ViewBag.isAdmin)
+        {
+            ViewBag.allTrainees = _traineeRepo.GetAllTrainees();            
         }
         
         return View(currentUser.AssignedTrainees);
