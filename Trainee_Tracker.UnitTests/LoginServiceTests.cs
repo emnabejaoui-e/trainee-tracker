@@ -26,6 +26,7 @@ public class FakeUserRepository : IUserRepository
     public void CreateMentor(Mentor mentor, string hashedPassword) { }
     public void CreateAdmin(Admin admin, string hashedPassword) { }
     public void UpdateUser(User user) { }
+    public void UpdateUser(User user, string? password) { }
     public void CloseUser(int id)
     {
         var user = _users.FirstOrDefault(u => u.Id == id);
@@ -40,7 +41,7 @@ public class LoginServiceTests
     [Fact]
     public void ValidateUserCredentials_UnknownEmail_ReturnsInvalidCredentials()
     {
-
+        
         var repo = new FakeUserRepository();
         var service = new UserService(repo);
 
@@ -54,7 +55,7 @@ public class LoginServiceTests
     [Fact]
     public void ValidateUserCredentials_ClosedAccount_ReturnsAccountClosed()
     {
-    
+
         var repo = new FakeUserRepository();
         var service = new UserService(repo);
 
