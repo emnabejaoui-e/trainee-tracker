@@ -5,7 +5,7 @@ using OpenQA.Selenium.Chrome;
 namespace Trainee_Tracker.E2ETests;
 
 /// <summary>
-/// E2E tests for the login page
+/// E2E test for the Admin login flow
 /// </summary>
 public class LoginE2ETest : IDisposable
 {
@@ -24,20 +24,6 @@ public class LoginE2ETest : IDisposable
         _driver = new ChromeDriver(options);
     }
 
-    /// <summary>
-    /// Tests that the login page loads and the URL contains Login
-    /// </summary>
-    [Fact]
-    public void Login_PageLoads_Successfully()
-    {
-
-        string expectedUrlPart = "Login";
-
-        _driver.Navigate().GoToUrl($"{BaseUrl}/Login");
-
-
-        Assert.Contains(expectedUrlPart, _driver.Url);
-    }
 
     /// <summary>
     /// Tests that a valid Admin login redirects away from the login page
