@@ -188,10 +188,21 @@ public class MentorController : Controller
 
 //Code-Owner: Julia
     [HttpPost]
+    public IActionResult SkipAssignment(int assignmentId)
+    {
+        var assignment =_assignmentRepo.GetById(assignmentId);
+        if(assignment == null)
+        {
+            return NotFound();
+        }
+        _assignmentRepo.UpdateStatus(assignmentId, LessonAssignmentStatus.Skipped);
+        return RedirectToAction("AssignmentOverview", new {traineeId = assignment.TraineeId});
+
+    }    
+
     public IActionResult UpdateAssignmentOrder(int traineeId, [FromForm] List<int> orderedIds)
     {
         _assignmentRepo.UpdateAssignmentPositions(orderedIds);
         return RedirectToAction("AssignmentOverview", new {traineeId});
     }
-
 }
