@@ -176,6 +176,11 @@ body {
 
 }
 
+.btn-user-create:hover {
+    background: #D9063A;
+    color: var(--white);
+}
+
 .btn-user-create-confirm {
     display: inline-block;
     padding: 5px 15px;
