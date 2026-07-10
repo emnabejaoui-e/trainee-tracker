@@ -1,0 +1,121 @@
+[33m00f5b65[m[33m ([m[1;31morigin/feat/navbar-dropdown-styling[m[33m, [m[1;32mfeat/navbar-dropdown-styling[m[33m)[m feat: style navbar dropdown buttons pink
+[33mc4f51b5[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m data: add new Initial-Data to AppDbContext and replace old migrations with new one
+[33m8d611c6[m Merge branch 'improve-feedback-permissions-optional' into 'main'
+[33m320f2a2[m Address feedback navigation and UI review
+[33m8946e71[m Merge branch 'feat/lesson-rejection' into 'main'
+[33m96f97b7[m fix: fix accept-button in AssignmentOverview view (new methode Accept in MentorController)
+[33m57ace18[m fix: rate button style in LessonBoard view
+[33m4cdb535[m fix: fix style for link to AssignmentOverview view
+[33m7ffc11a[m fix: fix rejection history list
+[33m9b73378[m feat: add RejectionHistroy to LessonBoard view
+[33m0e8ed8d[m feat: remove text link to AssignmentOverview
+[33m2287e55[m feat: add view AssignmentOverview for mentor
+[33m528633e[m feat: add new repos and add methode for direction to new view
+[33md8ff06a[m feat: add lessonAssignmentRepo and add required param for RedirectToAction
+[33m44a8bc1[m feat: add new methode findbyid
+[33md3dfb82[m feat: add new methodes
+[33m1538608[m feat: add new Migrations because add new properties to Model Rejection
+[33md04d04d[m feat: register interface and repository for Rejection
+[33m5642ba2[m feat: remove dead style code
+[33m6ef52c7[m feat: add link to new AssignmentOverview view
+[33m08cf83e[m info: add link for navigation to AssignmentOverview view (only to test !)
+[33mb23cfa2[m feat: add controller for Rejection
+[33m4500ec2[m feat: add new AssignmentOverview view for Mentor
+[33mbc054af[m fix: add connection between LessonAssignment and Rejection
+[33meacf357[m data: register new dbset for lessonrejections and add migrations
+[33m64dc427[m feat: add repository, controller and interface für Lesson-Rejections
+[33mc318a72[m Merge branch 'feat/weekplan_color_coding' into 'main'
+[33m1215745[m Merge branch 'feat/User_edit' into 'main'
+[33mc5920f3[m Merge branch 'feat/calculate_rough_dates_of_assignments' into 'main'
+[33md251dbc[m fix try parse string int into int
+[33m641578f[m match controller password to iew password from newPassword
+[33mf963b38[m fix typo usermanagement
+[33m3ca775c[m Merge remote-tracking branch 'origin/main' into improve-feedback-permissions-optional
+[33m4530f7f[m calculate dates of lesson assignemnts
+[33m0fc67ab[m remove unused methods and add email stays on error in forum
+[33m687e4f2[m Update Mentor and Admin View
+[33m73c7cc3[m edit button according to user role
+[33mdbc9640[m Add Update Admin and Mentor controller and service
+[33mf127f26[m update mentor and admin UserService Method
+[33mf016c97[m Password change for Trainee
+[33m374c366[m Merge branch 'feat/fortschrittskontrolle-update' into 'main'
+[33mdccc508[m Remove lesson list from progress view
+[33mccd9d2b[m change naming so it fits Design..Kl. Diagramm
+[33mb3ae1ee[m style adjustment to match page
+[33me78ac9f[m editTrainee in container
+[33m470467d[m Http Post Controller EditTrainee  imple.
+[33m0448b04[m button forwards to edit page
+[33meb10f9b[m edit controller with data
+[33m3462343[m Edit Trainee view
+[33mb380f82[m Add Admin extends Mentor
+[33ma2f55bd[m Merge branch 'feat/view-my-trainees' into 'main'
+[33m64a5c1e[m Merge branch 'main' into 'feat/view-my-trainees'
+[33m9764581[m Merge branch 'refactor/lesson-view' into 'main'
+[33m4c5dd9a[m Merge branch 'main' into 'refactor/lesson-view'
+[33m6e3ad9e[m refactor: Use user Id claim to get currently logged in mentor instead of relying on E-Mail search
+[33m9b43bc2[m Merge branch 'feat/weeklyplan_improve' into 'main'
+[33m874f7a0[m feat: change lessonboard view and combine it with lessonlist-view
+[33m0533885[m Merge branch 'main' into 'feat/weeklyplan_improve'
+[33m91d4009[m feat: improve admin/mentor view switching with navbar and routing
+[33mb66816d[m Merge branch 'main' into 'feat/weeklyplan_improve'
+[33mc3fdcfe[m Implement trainee feedback permissions and optional feedback fields
+[33m40e1ef3[m feat: add Switch to Mentor View and Back to Admin View buttons
+[33mbceee64[m feat: style Mentor View button with makandra pink color
+[33mf889ac9[m feat: add Mentor View button to Admin dashboard
+[33m1783950[m Merge branch 'main' of https://gitlab.isse.de/lehre/sopro/2026-sose/gruppen/team14
+[33mac4d688[m fix: allow Admin to access Mentor views
+[33macf0974[m change name from index to WeekPlan, so it is easer to understand
+[33me464242[m migrations
+[33maf3403b[m remove dead code
+[33mc60dea7[m Change the dates of lessonassignemt, so they fit to curent dates/ weeks
+[33m02db481[m User Real Data form Db in Weeklyplan
+[33mc3077ab[m Merge remote-tracking branch 'origin/main' into feat/weeklyplan_improve
+[33mf84174a[m Merge branch 'feat/individual-lesson-assignmnets' into 'main'
+[33md23d7c9[m fix: renew migrations for database fix
+[33m55908f7[m feat: add dynamic TraineeId in FeedbackController for individual feedback
+[33mcddf2be[m data: add new SeedData and renew migrations
+[33md59a5e6[m feat: filter LessonAssignments by logged-in Trainee in LessonBoard and LessonController
+[33m6d2a6f5[m feat: add claim for user id
+[33ma85aab2[m Show right user email in navbar
+[33m4cd90a9[m remove breaks
+[33maae941c[m Removed unnessecary categories
+[33me261834[m Merge branch 'feat/view-my-trainees' into 'main'
+[33mb8ea63c[m refactor: Adjust GetByEmail method to account for closed accounts
+[33m583177f[m feat(UI): Make mentor link in trainee list gray if the mentor is closed
+[33m5311f7d[m chore: Translated page title to Progress-Control-Data
+[33maaeadcc[m color coding accoording to lesson board
+[33medd4612[m Merge branch 'fix/delete-feedback-status' into 'main'
+[33m265f3a2[m Reset lesson assignment status after feedback deletion
+[33m1d54408[m fix: resolve merge conflict in UserService
+[33m222ddce[m fix: update CloseUser to int id in IUserService and UserRepository
+[33m14926d4[m Merge branch 'feat/feedback-success-message' into 'main'
+[33med44bfe[m fix: Remove storyboard section label from Fortschrittskontrolle.cshtml
+[33m2fc53e9[m feat: Add link from trainee list to fortschrittskontrolle
+[33m4cf1bc7[m feat: Show a message for no assigned trainees
+[33mee268cf[m feat: Load trainees assigned to the current user from Repo
+[33mca67433[m feat: Add GetByEmail method to Mentor Repo
+[33mc50566e[m feat: Remove Progress link from Mentor navbar
+[33m2fecf12[m doc: Add codeowner to View
+[33m72746b5[m feat: Show Trainee data from Controller in "My Trainee" view
+[33m2f2656c[m feat: Add mock data for "My Trainee" view
+[33m923be59[m feat(UI): Add trainee list for mentor with example data
+[33m7c119d1[m Add feedback success messages and delete confirmation
+[33maba0294[m Merge branch 'improve-feedback-actions' into 'main'
+[33m5f74745[m Weekly Plan anpassung an die Anforderung
+[33m10f8876[m Merge branch 'feat/unique_email' into 'main'
+[33me700a0d[m "breake" Kategorie
+[33m50ba1d7[m Update feedback feature and design class diagram
+[33md45ef30[m check if email in use
+[33m4ff4309[m fix: restore LoginController with full authentication logic
+[33m89276a2[m fix: restore UserService with BCrypt hashing and GetById
+[33made52b8[m merge: resolve conflict in MentorController
+[33m8040f02[m docs: add code ownership and XML documentation to all login-related files
+[33m2c17b00[m Merge branch 'feat/lesson-feedback' into 'main'
+[33mcdd3682[m Merge branch 'main' into 'feat/lesson-feedback'
+[33m87f439e[m[33m ([m[1;31morigin/feat/lesson-feedback[m[33m)[m Merge latest main
+[33m8cf06ad[m user nur am im AppDbContext erstellen, nicht mehr in program.cs
+[33m6d19848[m Add lesson feedback migration
+[33m5f44307[m Merge branch 'feat/view-mentor' into 'main'
+[33m61f7da6[m Merge branch 'feat/lesson-repository' into 'main'
+[33med4af9a[m Resolve Program.cs merge conflict
+[33mf65f96b[m Merge branch 'feat/lesson-repository' of https://gitlab.isse.de/lehre/sopro/2026-sos
