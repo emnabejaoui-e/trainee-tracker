@@ -453,7 +453,13 @@
     background: transparent;
 }
 
-
+.skip-dialog {
+    border: none;
+    border-radius: 8px;
+    padding: 1.5rem;
+    max-width: 420px;
+    width: 90%;
+}
 
 .sort-dialog {
     border: none;
@@ -481,6 +487,15 @@
     gap: 0.5rem;
     max-height: 350px;
     overflow-y: auto;
+}
+
+.skip-select-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .skip-select-item {
