@@ -1,4 +1,4 @@
-@* Controllernamen usw müssen noch angepasst werden *@
+﻿@* Controllernamen usw müssen noch angepasst werden *@
 @using System.Security.Claims
 <header class="page-header">
   <div style="display: flex; align-items: center; gap: 50px;">
@@ -18,24 +18,15 @@
     <span class="role">MENTOR</span>
     <span class="email">@User.FindFirst(ClaimTypes.Email)?.Value</span>
     <div class="user-dropdown">
-      <div style="display:flex;flex-direction:column;gap:6px;padding:8px;min-width:200px;">
-        <a asp-controller="Profile" asp-action="Index"
-           style="display:block;width:100%;padding:8px 16px;background:#FF0844;color:#fff;text-decoration:none;font-family:'League Spartan',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;border-radius:4px;text-align:center;box-sizing:border-box;">
-          My Profile
-        </a>
+      <div class="dropdown-btn-container">
+        <a asp-controller="Profile" asp-action="Index" class="dropdown-btn">My Profile</a>
         @if (User.IsInRole("Admin"))
         {
-            <a href="/Admin/Index"
-               style="display:block;width:100%;padding:8px 16px;background:#FF0844;color:#fff;text-decoration:none;font-family:'League Spartan',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;border-radius:4px;text-align:center;box-sizing:border-box;">
-              Switch to Admin View
-            </a>
+            <a href="/Admin/Index" class="dropdown-btn">Switch to Admin View</a>
         }
         <form method="post" asp-controller="Login" asp-action="Logout" style="margin:0;">
           @Html.AntiForgeryToken()
-          <button type="submit"
-                  style="width:100%;background:#FF0844;color:#fff;border:none;border-radius:4px;padding:8px 16px;font-family:'League Spartan',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;">
-            Log out
-          </button>
+          <button type="submit" class="dropdown-btn">Log out</button>
         </form>
       </div>
     </div>
