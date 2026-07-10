@@ -29,10 +29,11 @@ public class LoginE2ETest : IDisposable
     /// Tests that a valid Admin login redirects away from the login page
     /// </summary>
     [Fact]
-    public void Login_ValidAdminCredentials_RedirectsToAdminDashboard()
+    public async Task Login_ValidAdminCredentials_RedirectsToAdminDashboard()
     {
 
         _driver.Navigate().GoToUrl($"{BaseUrl}/Login");
+        await Task.Delay(5000);
 
         var emailField = _driver.FindElement(By.Id("email"));
         var passwordField = _driver.FindElement(By.Id("password"));
@@ -41,6 +42,8 @@ public class LoginE2ETest : IDisposable
         emailField.SendKeys("admin@makandra.de");
         passwordField.SendKeys("Admin1!");
         submitButton.Click();
+
+        await Task.Delay(3000);
 
         Assert.DoesNotContain("Login", _driver.Url);
     }
