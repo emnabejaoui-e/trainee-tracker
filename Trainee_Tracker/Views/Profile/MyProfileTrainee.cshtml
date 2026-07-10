@@ -8,39 +8,42 @@
     <div>
         <hr />
         <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Name)
+            <dt class="col-sm-5">
+                @Html.DisplayNameFor(model => model.Name):
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Name)
             </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Email)
+            <dt class="col-sm-5">
+                @Html.DisplayNameFor(model => model.Email):
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Email)
             </dd>
             @if (Model is Trainee_Tracker.Models.Trainee t)
             {
-            <dt class="col-sm-2">
+            <dt class="col-sm-5">
                 Role:
             </dt>
             <dd class="col-sm-10">Trainee</dd>
 
-            <dt class="col-sm-2">Starting Date</dt>
+            <dt class="col-sm-5">Starting Date: </dt>
             <dd class="col-sm-10">@t.StartingDate</dd>
             
-            <dt class="col-sm-2">End Date</dt>
+            <dt class="col-sm-5">End Date: </dt>
             <dd class="col-sm-10">@t.EndDate</dd>
 
-            <dt class="col-sm-2">Mentor(s)</dt>
+            <dt class="col-sm-5">Mentor(s): </dt>
             <dd class="col-sm-10">
                 @if (t.Mentors.Any())
                 {
                     @foreach (var mentor in t.Mentors)
                     {
-                        <div>
-                            <a href="mailto:@mentor.Email">@mentor.Name</a>
+                        <div class="card border-secondary mb-3">
+                            <div class="card-body">
+                                <h6 calss="card-title" >@mentor.Name</h6>
+                                <p class="card-text">@mentor.Email</p>
+                            </div>
                         </div>
                     }
                 }
