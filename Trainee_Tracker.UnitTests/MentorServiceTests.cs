@@ -51,6 +51,10 @@ public class FakeTraineeRepository : ITraineeRepository
     {
         return _trainees.FirstOrDefault(t => t.Id == id);
     }
+    public Trainee? FindByIdWithMentors(int id)
+        {
+            return _trainees.FirstOrDefault(t => t.Id == id);
+        }
 
     public IList<Trainee> GetAllTrainees()
     {
