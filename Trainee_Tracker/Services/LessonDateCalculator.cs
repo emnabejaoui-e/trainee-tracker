@@ -3,7 +3,6 @@ using Trainee_Tracker.Data.LessonAssignments;
 
 namespace Trainee_Tracker.Services;
 
-// Code Owner: Andrej Basara
 public class LessonDateCalculator : ILessonDateCalculator
 {
     private readonly ILessonAssignmentRepository _lessonAssignmentRepo;
@@ -22,6 +21,7 @@ public class LessonDateCalculator : ILessonDateCalculator
     /// </summary>
     /// <param name="trainee"></param>
     /// <returns> Liist of LessonAssignment of the trainee</returns>
+    // Code Owner: Andrej Basara
     public List<LessonAssignment> RecalculateRoughExpectedDates(Trainee trainee)
     {
         var assignments = _lessonAssignmentRepo.FindByTrainee(trainee).OrderBy(a => a.Position).ToList();
