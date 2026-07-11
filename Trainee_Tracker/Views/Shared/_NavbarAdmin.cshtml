@@ -16,7 +16,7 @@
     <span class="email">@User.FindFirst(ClaimTypes.Email)?.Value</span>
     <div class="user-dropdown">
       <div class="dropdown-btn-container">
-        <a asp-controller="Profile" asp-action="Index" class="dropdown-btn">My Profile</a>
+        <a asp-controller="Profile" asp-action="MentorProfile" class="dropdown-btn">My Profile</a>
         <a href="/Mentor/Index" class="dropdown-btn">Switch to Mentor View</a>
         <form method="post" asp-controller="Login" asp-action="Logout" style="margin:0;">
           @Html.AntiForgeryToken()
