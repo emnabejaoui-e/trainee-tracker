@@ -8,7 +8,7 @@ namespace Trainee_Tracker.UnitTests;
 
 public class CurriculumServiceMergeLessonsTest
 {
-    private readonly ICurriculumService _service = new CurriculumService(null, null);
+    private readonly ICurriculumService _service = new CurriculumService(null, null, null, null);
     
     /// <summary>
     /// Just a sanity check. An empty List of Lessons merged with another empty List should stay empty.
