@@ -44,6 +44,12 @@ public class AppDbContext : DbContext
             .HasForeignKey(m => m.CurriculumId)
             .OnDelete(DeleteBehavior.SetNull);
 
+        //Leon: Seed data for curriculums
+        modelBuilder.Entity<Curriculum>().HasData(
+            new Curriculum { Id = 1, Title = "makandra Curriculum" },
+            new Curriculum { Id = 2, Title = "makandra DevOps-Curriculum" }
+        );
+
         //Julia: Seed data for Lessons
         var lessons = new List<Lesson>()
         {
@@ -61,12 +67,6 @@ public class AppDbContext : DbContext
              new() {Id = 222, Title = "HTTP Protocoll and Webserver", URL ="https://makandracards.com/makandra-devops-curriculum/519412-http-protokoll-und-webserver-2-5-pt", Effort = 2.5, Inactive = false, Position = 11, CurriculumId = 1},
         };
         modelBuilder.Entity<Lesson>().HasData(lessons);
-        
-        //Leon: Seed data for curriculums
-        modelBuilder.Entity<Curriculum>().HasData(
-            new Curriculum { Id = 1, Title = "makandra Curriculum" },
-            new Curriculum { Id = 2, Title = "makandra DevOps-Curriculum" }
-        );
 
         //Julia: trainee for LessonAssignment SeedData
         modelBuilder.Entity<Trainee>().HasData(
