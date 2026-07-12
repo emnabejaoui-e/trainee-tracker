@@ -30,15 +30,19 @@ public class AppDbContext : DbContext
             .HasValue<Mentor>("Mentor")
             .HasValue<Admin>("Admin");
 
-        modelBuilder.Entity<Mentor>()
-            .Ignore(m => m.Curriculum);
-
         // Leon: Lesson belongs to a Curriculum (FK on Lesson.CurriculumId)
         modelBuilder.Entity<Lesson>()
             .HasOne(l => l.Curriculum)
             .WithMany()
             .HasForeignKey(l => l.CurriculumId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // Leon: Many Mentors can teach the same Curriculum (FK on Mentor.CurriculumId)
+        modelBuilder.Entity<Mentor>()
+            .HasOne(m => m.Curriculum)
+            .WithMany(c => c.Mentors)
+            .HasForeignKey(m => m.CurriculumId)
+            .OnDelete(DeleteBehavior.SetNull);
 
         //Julia: Seed data for Lessons
         var lessons = new List<Lesson>()
@@ -76,9 +80,9 @@ public class AppDbContext : DbContext
 
         //Code-Owner: Julia
         modelBuilder.Entity<Mentor>().HasData(
-            new Mentor  {Id = 4, Name = "Jelena2 Mentor",  Email = "jelenacosic2@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false, Curriculum = null! },
-            new Mentor  {Id = 7, Name = "Manfred Mental",  Email = "manfred.mental@makandra.de", HashedPassword = "$2a$11$kce.fXXVmBy2n0DaoYUcuujmpl.lXCCgZC7WSoFT94B98q5FS.gMa", Closed = false, Curriculum = null! },
-            new Mentor  {Id = 8, Name = "Hans Hilfreich",  Email = "hans.hilfreich@makandra.de", HashedPassword = "$2a$11$RirFsrHzwqEKO0Wr8sIiZuprcJ5Pz8y45bRGLltqSos0cePlhhLvC", Closed = false, Curriculum = null!}
+            new Mentor  {Id = 4, Name = "Jelena2 Mentor",  Email = "jelenacosic2@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false, CurriculumId = 1 },
+            new Mentor  {Id = 7, Name = "Manfred Mental",  Email = "manfred.mental@makandra.de", HashedPassword = "$2a$11$kce.fXXVmBy2n0DaoYUcuujmpl.lXCCgZC7WSoFT94B98q5FS.gMa", Closed = false, CurriculumId = 1 },
+            new Mentor  {Id = 8, Name = "Hans Hilfreich",  Email = "hans.hilfreich@makandra.de", HashedPassword = "$2a$11$RirFsrHzwqEKO0Wr8sIiZuprcJ5Pz8y45bRGLltqSos0cePlhhLvC", Closed = false, CurriculumId = 1}
         );
         //Code-Owner: Julia
         modelBuilder.Entity<Admin>().HasData(

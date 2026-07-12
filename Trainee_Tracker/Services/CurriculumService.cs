@@ -38,7 +38,6 @@ public class CurriculumService : ICurriculumService
                 var existingLesson = existingLessons[idx];
 
                 // Update values
-                Console.WriteLine(i);
                 existingLesson.Update(lessonUpdate);
                 
                 // Update position
