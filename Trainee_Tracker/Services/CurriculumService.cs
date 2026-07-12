@@ -37,13 +37,13 @@ public class CurriculumService : ICurriculumService
                 
                 // Update position
                 existingLessons.RemoveAt(idx);
-                existingLessons.Insert(i, existingLesson);
+                existingLessons.Insert(Math.Min(i, existingLessons.Count - 1), existingLesson);
             }
             else
             {
                 // Lesson does not already exist in Curriculum:
                 // Insert new Lesson at the correct position.
-                existingLessons.Insert(i, lessonUpdate);
+                existingLessons.Insert(Math.Min(i, existingLessons.Count - 1), lessonUpdate);
             }
         }
         
