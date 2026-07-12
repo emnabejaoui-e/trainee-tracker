@@ -30,13 +30,6 @@ public class AppDbContext : DbContext
             .HasValue<Mentor>("Mentor")
             .HasValue<Admin>("Admin");
 
-        // Leon: Lesson belongs to a Curriculum (FK on Lesson.CurriculumId)
-        modelBuilder.Entity<Lesson>()
-            .HasOne(l => l.Curriculum)
-            .WithMany()
-            .HasForeignKey(l => l.CurriculumId)
-            .OnDelete(DeleteBehavior.Cascade);
-
         // Leon: Many Mentors can teach the same Curriculum (FK on Mentor.CurriculumId)
         modelBuilder.Entity<Mentor>()
             .HasOne(m => m.Curriculum)

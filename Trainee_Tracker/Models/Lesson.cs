@@ -43,11 +43,6 @@ public class Lesson
     /// </summary>
     public int CurriculumId { get; set; }
 
-    /// <summary>
-    /// The Curriculum that this Lesson belongs to.
-    /// </summary>
-    public Curriculum? Curriculum { get; set; }
-
     public override bool Equals(object? obj)
     {
         if (obj is Lesson lesson)

@@ -11,7 +11,7 @@ using Trainee_Tracker.Data;
 namespace Trainee_Tracker.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260712220910_InitialCreate")]
+    [Migration("20260712224203_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -745,13 +745,11 @@ namespace Trainee_Tracker.Migrations
 
             modelBuilder.Entity("Trainee_Tracker.Models.Lesson", b =>
                 {
-                    b.HasOne("Trainee_Tracker.Models.Curriculum", "Curriculum")
-                        .WithMany()
+                    b.HasOne("Trainee_Tracker.Models.Curriculum", null)
+                        .WithMany("_Lessons")
                         .HasForeignKey("CurriculumId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Curriculum");
                 });
 
             modelBuilder.Entity("Trainee_Tracker.Models.LessonAssignment", b =>
@@ -824,6 +822,8 @@ namespace Trainee_Tracker.Migrations
             modelBuilder.Entity("Trainee_Tracker.Models.Curriculum", b =>
                 {
                     b.Navigation("Mentors");
+
+                    b.Navigation("_Lessons");
                 });
 
             modelBuilder.Entity("Trainee_Tracker.Models.Trainee", b =>

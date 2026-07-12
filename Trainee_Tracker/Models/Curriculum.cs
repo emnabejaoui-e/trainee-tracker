@@ -22,7 +22,7 @@ public class Curriculum
         _Lessons.OrderBy(l => l.Position).ToList().AsReadOnly();
 
     /// <summary>Back navigation for EF Core one-to-many.</summary>
-    internal IList<Lesson> _Lessons { get; set; } = new List<Lesson>();
+    public IList<Lesson> _Lessons { get; set; } = new List<Lesson>();
 
     /// <summary>All Mentors assigned to this curriculum (Many-to-One reverse navigation).</summary>
     public ICollection<Mentor> Mentors { get; set; } = new List<Mentor>();
