@@ -2,6 +2,7 @@
 
 using Trainee_Tracker.Data.Curriculums;
 using Trainee_Tracker.Data.Lessons;
+using Trainee_Tracker.Data.TraineeRepository;
 using Trainee_Tracker.Models;
 
 namespace Trainee_Tracker.Services;
@@ -10,11 +11,13 @@ public class CurriculumService : ICurriculumService
 {
     private readonly ILessonRepository _lessonRepo;
     private readonly ICurriculumRepository _curriculumRepo;
+    private readonly ITraineeRepository _traineeRepo;
 
-    public CurriculumService(ILessonRepository lessonRepo, ICurriculumRepository curriculumRepo)
+    public CurriculumService(ILessonRepository lessonRepo, ICurriculumRepository curriculumRepo, ITraineeRepository traineeRepo)
     {
         _lessonRepo = lessonRepo;
         _curriculumRepo = curriculumRepo;
+        _traineeRepo = traineeRepo;
     }
 
     public IList<Lesson> MergeLessons(IList<Lesson> existingLessons, IList<Lesson> importedLessons)
@@ -77,5 +80,19 @@ public class CurriculumService : ICurriculumService
         _curriculumRepo.Update(updatedCurriculum);
         
         // TODO: Create/update Lesson assignments for trainees.
+    }
+
+    public ICollection<Trainee> GetTraineesOfCurriculum(Curriculum curriculum)
+    {
+        var result = new HashSet<Trainee>();
+        foreach (var trainee in _traineeRepo.GetAllTrainees())
+        {
+            if(trainee.Mentors.Any(m => curriculum.Equals(m.Curriculum)))
+            {
+                result.Add(trainee);
+            }            
+        }
+
+        return result;
     }
 }

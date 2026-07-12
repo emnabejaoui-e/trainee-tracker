@@ -7,4 +7,6 @@ public interface ICurriculumService
     IList<Lesson> MergeLessons(IList<Lesson> existingLessons, IList<Lesson> importedLessons);
 
     void Update(Curriculum updatedCurriculum);
+
+    ICollection<Trainee> GetTraineesOfCurriculum(Curriculum curriculum);
 }
