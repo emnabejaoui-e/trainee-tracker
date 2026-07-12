@@ -14,6 +14,19 @@ namespace Trainee_Tracker.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Curricula",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Curricula", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Lessons",
                 columns: table => new
                 {
@@ -23,11 +36,18 @@ namespace Trainee_Tracker.Migrations
                     URL = table.Column<string>(type: "TEXT", nullable: false),
                     Effort = table.Column<double>(type: "REAL", nullable: false),
                     Inactive = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Position = table.Column<int>(type: "INTEGER", nullable: false)
+                    Position = table.Column<int>(type: "INTEGER", nullable: false),
+                    CurriculumId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Lessons", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Lessons_Curricula_CurriculumId",
+                        column: x => x.CurriculumId,
+                        principalTable: "Curricula",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -41,12 +61,19 @@ namespace Trainee_Tracker.Migrations
                     HashedPassword = table.Column<string>(type: "TEXT", nullable: false),
                     Closed = table.Column<bool>(type: "INTEGER", nullable: false),
                     Role = table.Column<string>(type: "TEXT", maxLength: 8, nullable: false),
+                    CurriculumId = table.Column<int>(type: "INTEGER", nullable: true),
                     StartingDate = table.Column<DateOnly>(type: "TEXT", nullable: true),
                     EndDate = table.Column<DateOnly>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Curricula_CurriculumId",
+                        column: x => x.CurriculumId,
+                        principalTable: "Curricula",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -163,22 +190,12 @@ namespace Trainee_Tracker.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Lessons",
-                columns: new[] { "Id", "Effort", "Inactive", "Position", "Title", "URL" },
+                table: "Curricula",
+                columns: new[] { "Id", "Title" },
                 values: new object[,]
                 {
-                    { 11, 3.5, false, 1, "Fundamentals of Web Development", "https://makandracards.com/makandra-devops-curriculum/509333-grundlagen-aus-der-web-entwicklung-3-5-pt" },
-                    { 22, 2.0, false, 3, "Virtualization", "https://makandracards.com/makandra-devops-curriculum/509340-virtualisierung-2-pt" },
-                    { 33, 2.0, false, 4, "Lxc/LXD", "https://makandracards.com/makandra-devops-curriculum/517382-lxc-lxd-2-pt" },
-                    { 44, 1.0, false, 5, "A Brief Introduction to Docker and Containers ", "https://makandracards.com/makandra-devops-curriculum/523491-kurze-einfuehrung-docker-und-container-1-pt" },
-                    { 55, 0.5, false, 6, "Firewalling with iptables", "https://makandracards.com/makandra-devops-curriculum/531475-firewalling-mit-iptables-0-5-pt" },
-                    { 66, 2.0, false, 2, "Linux", "https://makandracards.com/makandra-devops-curriculum/509339-linux-2-pt" },
-                    { 77, 1.0, false, 7, "Linux file system", "https://makandracards.com/makandra-devops-curriculum/511179-linux-filesystems-und-verschluesselung-2-pt" },
-                    { 88, 1.0, false, 8, "Resource use", "https://makandracards.com/makandra-devops-curriculum/509415-ressourcen-nutzung-1-pt" },
-                    { 99, 0.5, false, 9, "Linux Kernal parameter", "https://makandracards.com/makandra-devops-curriculum/511330-linux-kernel-parameter-0-5-pt" },
-                    { 100, 4.0, false, 10, "Network", "https://makandracards.com/makandra-devops-curriculum/509341-netzwerke-4-pt" },
-                    { 111, 0.5, false, 6, "SSH", "https://makandracards.com/makandra-devops-curriculum/511181-ssh-0-5-pt" },
-                    { 222, 2.5, false, 11, "HTTP Protocoll and Webserver", "https://makandracards.com/makandra-devops-curriculum/519412-http-protokoll-und-webserver-2-5-pt" }
+                    { 1, "makandra Curriculum" },
+                    { 2, "makandra DevOps-Curriculum" }
                 });
 
             migrationBuilder.InsertData(
@@ -193,14 +210,11 @@ namespace Trainee_Tracker.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Closed", "Email", "HashedPassword", "Name", "Role" },
+                columns: new[] { "Id", "Closed", "CurriculumId", "Email", "HashedPassword", "Name", "Role" },
                 values: new object[,]
                 {
-                    { 4, false, "jelenacosic2@makandra.de", "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", "Jelena2 Mentor", "Mentor" },
-                    { 5, false, "jelenacosic1@makandra.de", "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", "Jelena3 Admin", "Admin" },
-                    { 6, false, "admin@makandra.de", "$2a$11$NWoCmWYUtc4Kj0eDILuyxOjWj0GReHhxe2bh6Crx1QR4heeWH1EcO", "Admin", "Admin" },
-                    { 7, false, "manfred.mental@makandra.de", "$2a$11$kce.fXXVmBy2n0DaoYUcuujmpl.lXCCgZC7WSoFT94B98q5FS.gMa", "Manfred Mental", "Mentor" },
-                    { 8, false, "hans.hilfreich@makandra.de", "$2a$11$RirFsrHzwqEKO0Wr8sIiZuprcJ5Pz8y45bRGLltqSos0cePlhhLvC", "Hans Hilfreich", "Mentor" }
+                    { 5, false, null, "jelenacosic1@makandra.de", "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", "Jelena3 Admin", "Admin" },
+                    { 6, false, null, "admin@makandra.de", "$2a$11$NWoCmWYUtc4Kj0eDILuyxOjWj0GReHhxe2bh6Crx1QR4heeWH1EcO", "Admin", "Admin" }
                 });
 
             migrationBuilder.InsertData(
@@ -211,6 +225,44 @@ namespace Trainee_Tracker.Migrations
                     { 9, false, "vanessa.vital@makandra.de", new DateOnly(2027, 3, 31), "$2a$11$OvYPz8FkuxXJe7WyPIHpzOc1bi5beKtsB2WYXBJlVDqsNRCJatfzK", "Vanessa Vital", "Trainee", new DateOnly(2026, 7, 17) },
                     { 10, false, "stefan.schnupfen@makandra.de", new DateOnly(2026, 10, 31), "$2a$11$1YdXfUYVKPO7t0wmYKVirOq4mYR4k/sxxO6YlY7c2CdSO50yRSqGW", "Stefan Schnupfen", "Trainee", new DateOnly(2026, 5, 1) },
                     { 11, false, "ursula.urlaub@makandra.de", new DateOnly(2026, 7, 31), "$2a$11$aemTP4KrL44P1z23XD39u.7nnd3zoXeME0PFZzVkQPTEmmK/fVqRm", "Ursula Urlaub", "Trainee", new DateOnly(2026, 1, 1) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Lessons",
+                columns: new[] { "Id", "CurriculumId", "Effort", "Inactive", "Position", "Title", "URL" },
+                values: new object[,]
+                {
+                    { 11, 1, 3.5, false, 1, "Fundamentals of Web Development", "https://makandracards.com/makandra-devops-curriculum/509333-grundlagen-aus-der-web-entwicklung-3-5-pt" },
+                    { 22, 1, 2.0, false, 3, "Virtualization", "https://makandracards.com/makandra-devops-curriculum/509340-virtualisierung-2-pt" },
+                    { 33, 1, 2.0, false, 4, "Lxc/LXD", "https://makandracards.com/makandra-devops-curriculum/517382-lxc-lxd-2-pt" },
+                    { 44, 1, 1.0, false, 5, "A Brief Introduction to Docker and Containers ", "https://makandracards.com/makandra-devops-curriculum/523491-kurze-einfuehrung-docker-und-container-1-pt" },
+                    { 55, 1, 0.5, false, 6, "Firewalling with iptables", "https://makandracards.com/makandra-devops-curriculum/531475-firewalling-mit-iptables-0-5-pt" },
+                    { 66, 1, 2.0, false, 2, "Linux", "https://makandracards.com/makandra-devops-curriculum/509339-linux-2-pt" },
+                    { 77, 1, 1.0, false, 7, "Linux file system", "https://makandracards.com/makandra-devops-curriculum/511179-linux-filesystems-und-verschluesselung-2-pt" },
+                    { 88, 1, 1.0, false, 8, "Resource use", "https://makandracards.com/makandra-devops-curriculum/509415-ressourcen-nutzung-1-pt" },
+                    { 99, 1, 0.5, false, 9, "Linux Kernal parameter", "https://makandracards.com/makandra-devops-curriculum/511330-linux-kernel-parameter-0-5-pt" },
+                    { 100, 1, 4.0, false, 10, "Network", "https://makandracards.com/makandra-devops-curriculum/509341-netzwerke-4-pt" },
+                    { 111, 1, 0.5, false, 6, "SSH", "https://makandracards.com/makandra-devops-curriculum/511181-ssh-0-5-pt" },
+                    { 222, 1, 2.5, false, 11, "HTTP Protocoll and Webserver", "https://makandracards.com/makandra-devops-curriculum/519412-http-protokoll-und-webserver-2-5-pt" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "MentorTrainee",
+                columns: new[] { "AssignedTraineesId", "MentorsId" },
+                values: new object[,]
+                {
+                    { 1, 5 },
+                    { 3, 5 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Closed", "CurriculumId", "Email", "HashedPassword", "Name", "Role" },
+                values: new object[,]
+                {
+                    { 4, false, 1, "jelenacosic2@makandra.de", "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", "Jelena2 Mentor", "Mentor" },
+                    { 7, false, 1, "manfred.mental@makandra.de", "$2a$11$kce.fXXVmBy2n0DaoYUcuujmpl.lXCCgZC7WSoFT94B98q5FS.gMa", "Manfred Mental", "Mentor" },
+                    { 8, false, 1, "hans.hilfreich@makandra.de", "$2a$11$RirFsrHzwqEKO0Wr8sIiZuprcJ5Pz8y45bRGLltqSos0cePlhhLvC", "Hans Hilfreich", "Mentor" }
                 });
 
             migrationBuilder.InsertData(
@@ -248,8 +300,6 @@ namespace Trainee_Tracker.Migrations
                 values: new object[,]
                 {
                     { 1, 4 },
-                    { 1, 5 },
-                    { 3, 5 },
                     { 9, 7 },
                     { 10, 7 },
                     { 11, 7 },
@@ -282,6 +332,11 @@ namespace Trainee_Tracker.Migrations
                 column: "TraineeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Lessons_CurriculumId",
+                table: "Lessons",
+                column: "CurriculumId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MentorTrainee_MentorsId",
                 table: "MentorTrainee",
                 column: "MentorsId");
@@ -290,6 +345,11 @@ namespace Trainee_Tracker.Migrations
                 name: "IX_Rejections_AssignmentId",
                 table: "Rejections",
                 column: "AssignmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_CurriculumId",
+                table: "Users",
+                column: "CurriculumId");
         }
 
         /// <inheritdoc />
@@ -312,6 +372,9 @@ namespace Trainee_Tracker.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Curricula");
         }
     }
 }
