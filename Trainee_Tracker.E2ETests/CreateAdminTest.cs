@@ -11,16 +11,18 @@ using Tutorial_Project.E2ETests;
 namespace Trainee_Tracker.E2ETests;
 public class CreateAdminTest : IClassFixture<BrowserFixture>
 {
-    private IWebDriver _driver;
+    private readonly IWebDriver _driver;
+    private readonly Uri _serverAddress;
 
     public CreateAdminTest(BrowserFixture fixture)
     {
         _driver = fixture.driver;
+        _serverAddress = fixture.ServerAddress;
     }
 
     [Fact]
     public void Admin_Creation_Possible()
     {
-        
+        _driver.Navigate().GoToUrl(_serverAddress.ToString());
     }
 }
