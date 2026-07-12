@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Net.Mime;
 using System.Security.Claims;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Trainee_Tracker.Data.LessonAssignments;
@@ -136,6 +137,26 @@ public class MentorController : Controller
         }
         if (ModelState.IsValid)
         {
+            Stream readStream = file.OpenReadStream();
+            StreamReader reader = new StreamReader(readStream);
+            string fileContent = reader.ReadToEnd();
+            
+            reader.Close();
+            readStream.Close();
+
+            try
+            {
+                var lessons = JsonSerializer.Deserialize<List<Lesson>>(fileContent);
+                if (lessons == null)
+                    throw new JsonException("null is not a valid curriculum list.");
+            }
+            catch (JsonException e)
+            {
+                ModelState.AddModelError("FileName", "The JSON file you uploaded is not a curriculum file: " + e.Message);
+                ViewBag.curriculumNames = _curriculumRepo.GetAllCurriculums().Select(c => c.Title);
+                return View(file);
+            }
+            
             return RedirectToAction("Index", "Mentor");
         }
         ViewBag.curriculumNames = _curriculumRepo.GetAllCurriculums().Select(c => c.Title);

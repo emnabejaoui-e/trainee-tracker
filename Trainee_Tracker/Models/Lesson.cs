@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Trainee_Tracker.Models;
 
 /// <summary>
@@ -9,32 +11,37 @@ public class Lesson
     /// <summary>
     /// This Lesson's numeric, unique Id.
     /// </summary>
+    [JsonPropertyName("id"), JsonRequired]
     public int Id { get; init; }
     
     /// <summary>
     /// The Lesson's title, as given by makandracards 
     /// </summary>
+    [JsonPropertyName("title"), JsonRequired]
     public string Title { get; set; }
     
     /// <summary>
     /// The external URL of this Lesson's makandracard
     /// </summary>
+    [JsonPropertyName("url"), JsonRequired]
     public string URL { get; set; }
     
     /// <summary>
     /// The estimated time to complete this Lesson (in person-days).
     /// </summary>
+    [JsonPropertyName("estimate"), JsonRequired]
     public double Effort { get; set; }
     
     /// <summary>
     /// Whether this Lesson is Inactive (ie. should be skipped for all Trainees that haven't already begun this Lesson).
     /// </summary>
+    [JsonPropertyName("deprecated"), JsonRequired]
     public bool Inactive { get; set; }
-    
+
     /// <summary>
     /// Where in the order this lesson should be done (ordinal).
     /// </summary>
-    public int Position { get; set; }
+    public int Position { get; set; } = -1;
 
     public override bool Equals(object? obj)
     {
