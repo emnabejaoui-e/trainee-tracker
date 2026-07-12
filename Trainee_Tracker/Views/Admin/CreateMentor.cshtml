@@ -8,7 +8,7 @@
     <h1 class="mb-4">Create Mentor</h1>
     <div class="row">
         <div class="col-12">
-            <form asp-action="CreateMentor">
+            <form asp-action="CreateMentor" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-floating mb-3">
                     <input asp-for="Name" type="name" class="form-control" id="floatingInput" placeholder=" ">
