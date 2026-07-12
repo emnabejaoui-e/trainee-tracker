@@ -71,9 +71,9 @@ public class MentorControllerTests
         //Assert
         Assert.IsType<NotFoundResult>(result);
         _assignmentRepoMock.Verify(r => r.UpdateStatus(It.IsAny<int>(), It.IsAny<LessonAssignmentStatus>()), Times.Never);
- }
 
-
+    }
+    
     //Code-Owner: Julia Sandner
     //unit-test for Mentor skipping an assignment for a trainee (successful)
     [Fact]
