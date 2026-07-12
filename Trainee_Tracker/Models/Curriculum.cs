@@ -6,13 +6,9 @@ namespace Trainee_Tracker.Models;
 /// <author>Leon</author>
 public class Curriculum
 {
+    public int Id { get; set; }
     public string Title { get; set; }
     public IList<Lesson> Lessons { get; } = new List<Lesson>();
-
-    public Curriculum(string title)
-    {
-        Title = title;
-    }
 
     public void AddLesson(Lesson lesson)
     {
