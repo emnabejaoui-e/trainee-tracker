@@ -12,6 +12,7 @@ using Trainee_Tracker.Data.Rejections;
 using Trainee_Tracker.Data.TraineeRepository;
 using Trainee_Tracker.Models;
 using Trainee_Tracker.Repositories;
+using Trainee_Tracker.Services;
 
 namespace Trainee_Tracker.Controllers;
 
@@ -22,10 +23,11 @@ public class MentorController : Controller
     private IUserRepository _userRepo;
     private ILessonAssignmentRepository _assignmentRepo;
     private IRejectionRepository _rejectionRepo;
-    private ITraineeRepository _traineeRepo;
     private readonly ICurriculumRepository _curriculumRepo;
+    private readonly ITraineeRepository _traineeRepo;
+    private readonly ICurriculumService _curriculumService;
 
-    public MentorController(IMentorRepository mentorRepo, ICurriculumRepository curriculumRepo, IUserRepository userRepo, ILessonAssignmentRepository assignmentRepo, IRejectionRepository rejectionRepo, ITraineeRepository traineeRepo)
+    public MentorController(IMentorRepository mentorRepo, ICurriculumRepository curriculumRepo, IUserRepository userRepo, ILessonAssignmentRepository assignmentRepo, IRejectionRepository rejectionRepo, ITraineeRepository traineeRepo, ICurriculumService curriculumService)
     {
         _mentorRepo = mentorRepo;
         _curriculumRepo = curriculumRepo;
@@ -33,6 +35,8 @@ public class MentorController : Controller
         _assignmentRepo = assignmentRepo;
         _rejectionRepo = rejectionRepo;
         _traineeRepo = traineeRepo;
+        _curriculumRepo = curriculumRepo;
+        _curriculumService = curriculumService;
     }
 
     // Code-Owner: Jelena Cosic
@@ -146,18 +150,32 @@ public class MentorController : Controller
 
             try
             {
-                var lessons = JsonSerializer.Deserialize<List<Lesson>>(fileContent);
+                var lessons = JsonSerializer.Deserialize<List<Lesson.LessonDTO>>(fileContent);
                 if (lessons == null)
                     throw new JsonException("null is not a valid curriculum list.");
+
+                var curriculum = _curriculumRepo.GetByTitle(curriculumName);
+                if (curriculum == null)
+                    return NotFound();
+                
+                _curriculumService.MergeLessons(curriculum.Lessons, lessons.Select(dto => dto.Lesson()).ToList());
+                _curriculumService.Update(curriculum);
             }
             catch (JsonException e)
             {
-                ModelState.AddModelError("FileName", "The JSON file you uploaded is not a curriculum file: " + e.Message);
+                ModelState.AddModelError("FileName",
+                    "The JSON file you uploaded is not a curriculum file: " + e.Message);
+            }
+
+            if (!ModelState.IsValid)
+            {
                 ViewBag.curriculumNames = _curriculumRepo.GetAllCurriculums().Select(c => c.Title);
                 return View(file);
             }
-            
-            return RedirectToAction("Index", "Mentor");
+            else
+            {
+                return RedirectToAction("Index", "Mentor");                
+            }
         }
         ViewBag.curriculumNames = _curriculumRepo.GetAllCurriculums().Select(c => c.Title);
         return View(file);

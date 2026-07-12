@@ -33,6 +33,7 @@ builder.Services.AddScoped<LessonFeedbackService>();
 builder.Services.AddScoped<ILessonFeedbackRepository, LessonFeedbackRepository>();
 builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 builder.Services.AddScoped<IRejectionRepository, RejectionRepository>();
+builder.Services.AddScoped<ICurriculumService, CurriculumService>();
 
 builder.Services.AddScoped<ICurriculumRepository, StaticCurriculumRepository>();
 
