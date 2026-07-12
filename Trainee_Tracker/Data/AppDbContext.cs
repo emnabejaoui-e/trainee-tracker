@@ -33,6 +33,13 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Mentor>()
             .Ignore(m => m.Curriculum);
 
+        // Leon: Lesson belongs to a Curriculum (FK on Lesson.CurriculumId)
+        modelBuilder.Entity<Lesson>()
+            .HasOne(l => l.Curriculum)
+            .WithMany()
+            .HasForeignKey(l => l.CurriculumId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         //Julia: Seed data for Lessons
         var lessons = new List<Lesson>()
         {
