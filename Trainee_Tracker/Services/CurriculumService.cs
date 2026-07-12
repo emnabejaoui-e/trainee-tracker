@@ -1,9 +1,22 @@
+// Code Owner: Leon Paintner
+
+using Trainee_Tracker.Data.Curriculums;
+using Trainee_Tracker.Data.Lessons;
 using Trainee_Tracker.Models;
 
 namespace Trainee_Tracker.Services;
 
 public class CurriculumService : ICurriculumService
 {
+    private readonly ILessonRepository _lessonRepo;
+    private readonly ICurriculumRepository _curriculumRepo;
+
+    public CurriculumService(ILessonRepository lessonRepo, ICurriculumRepository curriculumRepo)
+    {
+        _lessonRepo = lessonRepo;
+        _curriculumRepo = curriculumRepo;
+    }
+
     public IList<Lesson> MergeLessons(IList<Lesson> existingLessons, IList<Lesson> importedLessons)
     {
         if (existingLessons == importedLessons)
@@ -19,6 +32,7 @@ public class CurriculumService : ICurriculumService
                 var existingLesson = existingLessons[idx];
 
                 // Update values
+                Console.WriteLine(i);
                 existingLesson.Update(lessonUpdate);
                 
                 // Update position
@@ -47,5 +61,21 @@ public class CurriculumService : ICurriculumService
         }
 
         return existingLessons;
+    }
+
+    public void Update(Curriculum updatedCurriculum)
+    {
+        for (int i = 0; i < updatedCurriculum.Lessons.Count; i++)
+        {
+            var lesson = updatedCurriculum.Lessons[i];
+
+            lesson.Position = i;
+            
+            _lessonRepo.Update(lesson);
+        }
+        
+        _curriculumRepo.Update(updatedCurriculum);
+        
+        // TODO: Create/update Lesson assignments for trainees.
     }
 }
