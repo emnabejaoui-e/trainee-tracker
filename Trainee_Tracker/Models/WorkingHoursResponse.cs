@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 
 namespace Trainee_Tracker.Models;
+// Code-Owner: Nazym Beisembin
 
 public class WorkingHoursResponse
 {

@@ -93,13 +93,14 @@ public class MentorController : Controller
             ViewBag.allTrainees = _traineeRepo.GetAllTrainees();            
         }
         
+
         return View(currentUser.AssignedTrainees);
     }
 
     // Code-Owner: Leon
     // GET: /Mentor/Fortschrittskontrolle
 
-   [HttpGet]
+    [HttpGet]
     public async Task<IActionResult> Fortschrittskontrolle(int traineeId)
     {
         ViewData["NavbarOverride"] = "Mentor";
@@ -144,37 +145,32 @@ public class MentorController : Controller
         return View(model);
     }
 
+    // Code-Owner: Leon
+    // GET: /Mentor/ImportCurriculum
     [HttpGet]
     public IActionResult ImportCurriculum()
     {
         ViewData["NavbarOverride"] = "Mentor";
-
-        var curriculumNames = new List<string>
-        {
-            "makandra Curriculum",
-            "makandra DevOps Curriculum"
-        };
-
+        var curriculumNames = new List<String>();
+        curriculumNames.Add("makandra Curriculum");
+        curriculumNames.Add("makandra DevOps Curriculum");
         ViewBag.curriculumNames = curriculumNames;
         return View(null);
     }
 
+    // Code-Owner: Leon
+    // POST: /Mentor/ImportCurriculum
     [HttpPost]
     public IActionResult ImportCurriculum(string curriculumName, IFormFile file)
     {
         ViewData["NavbarOverride"] = "Mentor";
-
         if (file == null)
-        {
             ModelState.AddModelError("FileName", "No file was selected.");
-        }
         else
         {
             ContentType fileContentType = new ContentType(file.ContentType);
             if (fileContentType.MediaType != "application/json")
-            {
                 ModelState.AddModelError("FileName", "This file is not a JSON file.");
-            }
         }
 
         if (curriculumName.IsWhiteSpace())
@@ -187,22 +183,18 @@ public class MentorController : Controller
             return RedirectToAction("Index", "Mentor");
         }
 
-        var curriculumNames = new List<string>
-        {
-            "makandra Curriculum",
-            "makandra DevOps Curriculum"
-        };
-
+        var curriculumNames = new List<String>();
+        curriculumNames.Add("makandra Curriculum");
+        curriculumNames.Add("makandra DevOps Curriculum");
         ViewBag.curriculumNames = curriculumNames;
         return View(file);
     }
-
 
     // Code-Owner: Julia
     // GET: /Mentor/AssignmentOverview
     [HttpGet]
     public IActionResult AssignmentOverview(int traineeId)
-    {        
+    {
         var trainee = _userRepo.GetById(traineeId) as Trainee;
 
         if (trainee == null)
@@ -214,21 +206,21 @@ public class MentorController : Controller
         var rejections = _rejectionRepo.GetRejectedByTrainee(trainee);
 
         var rejectionHistory = rejections
-        .GroupBy(r=> r.AssignmentId)
-        .ToDictionary(g => g.Key, g => g.OrderByDescending(r=>r.RejectedAt).ToList());
+        .GroupBy(r => r.AssignmentId)
+        .ToDictionary(g => g.Key, g => g.OrderByDescending(r => r.RejectedAt).ToList());
 
         var assignmentsWithHistory = assignments
         .Where(a => rejectionHistory.ContainsKey(a.Id))
-        .OrderByDescending(a => rejectionHistory[a.Id].Max(r =>r.RejectedAt))
+        .OrderByDescending(a => rejectionHistory[a.Id].Max(r => r.RejectedAt))
         .ToList();
 
         ViewBag.RejectionReasons = rejectionHistory;
         ViewBag.AssignmentsWithHistory = assignmentsWithHistory;
-        
-        return View("AssignmentOverview", assignments); 
+
+        return View("AssignmentOverview", assignments);
     }
 
-//Code-Owner: Julia 
+    //Code-Owner: Julia 
     [HttpPost]
     public IActionResult Accept(int assignmentId)
     {

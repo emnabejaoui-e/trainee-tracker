@@ -1,26 +1,17 @@
+@* Code-Owner: Nazym Beisembin *@
 @model Trainee_Tracker.Models.ProgressControlData
+
 @{
     ViewData["Title"] = "Fortschrittskontrolle";
     ViewData["NavbarOverride"] = "Mentor";
 }
 
-
 <div class="progress-page">
-    <h1 class="section-title">Progress-Control-Data</h1>
-
-
     <div class="screen">
         <div class="page-content">
             <div class="page-titlebar">
-                <h2>Progress of Trainee 1</h2>
+                <h2>Progress of @ViewBag.TraineeName</h2>
                 <span class="role-badge">DETAILS</span>
-            </div>
-
-            <div class="info-box">
-                <div class="info-label">System response</div>
-                <div class="info-value">
-                    The selected trainee's progress is displayed.
-                </div>
             </div>
 
             <div class="info-box">
@@ -34,11 +25,9 @@
                 <div>Predicted Buffer: <strong>@Model.PredictedBuffer</strong></div>
             </div>
 
-      
-
-           
-
-            <a class="btn-secondary-storyboard" asp-controller="Mentor" asp-action="Index">
+            <a class="btn-secondary-storyboard"
+               asp-controller="Mentor"
+               asp-action="MyTrainees">
                 Back to overview
             </a>
         </div>

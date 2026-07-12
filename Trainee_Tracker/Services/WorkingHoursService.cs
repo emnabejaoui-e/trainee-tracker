@@ -3,6 +3,7 @@ using Trainee_Tracker.Models;
 
 namespace Trainee_Tracker.Services;
 
+// Code-Owner: Nazym Beisembin
 public class WorkingHoursService
 {
     private readonly HttpClient _httpClient;
