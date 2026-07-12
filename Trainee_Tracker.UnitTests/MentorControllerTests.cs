@@ -65,7 +65,7 @@ public class MentorControllerTests
 
         //Assert
         Assert.IsType<NotFoundResult>(result);
-        _assignmentRepoMock.Verify(r => r.UpdateStatus(It.IsAny<int>(), It.IsAny<LessonAssignmentStatus>()), Times.Once);
+        _assignmentRepoMock.Verify(r => r.UpdateStatus(It.IsAny<int>(), It.IsAny<LessonAssignmentStatus>()), Times.Never);
     }
 
 
