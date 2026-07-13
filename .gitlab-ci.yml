@@ -35,6 +35,7 @@ e2e-tests:
   script:
     - cd Trainee_Tracker
     
+    
     - apt-get update -qq
     - apt-get install -y --no-install-recommends wget gnupg ca-certificates
     - wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -44,19 +45,19 @@ e2e-tests:
 
     #DB reset
     - dotnet tool install --global dotnet-ef
-    - export PATH="$PATH:/root/.dotnet/tools"
-
-    - dotnet restore
-    - dotnet build
-    - mkdir -p Persistence
-    - rm -f Persistence/trainee_tracker.db Persistence/trainee_tracker.db-wal Persistence/trainee_tracker.db-shm
+    - export PATH="PATH:/root/.dotnet/tools"
+    - rm -f trainee_tracker.db trainee_tracker.db-wal trainee_tracker.db-shm
     - dotnet ef database update
 
     - dotnet run --environment Development &
 
     # waiting
     - 
-      for i in $(seq 1 30); do curl -sf http://localhost:5089 > /dev/null && break; echo "App is not ready yet; waiting... ($i)"; sleep 2; done
+      for i in $(seq 1 30); do
+        curl -sf http://localhost:5089 > /dev/null && break
+        echo "App is not ready yet; waiting... ($i)"
+        sleep 2
+      done
 
 
     - cd ../Trainee_Tracker.E2ETests
