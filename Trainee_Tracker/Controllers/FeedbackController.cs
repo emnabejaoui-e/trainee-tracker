@@ -111,14 +111,11 @@ public class FeedbackController : Controller
         feedback.TraineeId = traineeId;
 
         // TODO: Replace hardcoded MentorId with assigned mentor once mentor assignment logic is available.
-        feedback.MentorId = 4;
         feedback.CreatedAt = DateTime.Now;
 
         ModelState.Remove(nameof(LessonFeedback.Trainee));
-        ModelState.Remove(nameof(LessonFeedback.Mentor));
         ModelState.Remove(nameof(LessonFeedback.Lesson));
         ModelState.Remove(nameof(LessonFeedback.TraineeId));
-        ModelState.Remove(nameof(LessonFeedback.MentorId));
 
         if (!ModelState.IsValid)
         {
@@ -167,7 +164,6 @@ public class FeedbackController : Controller
     public IActionResult Edit(LessonFeedback feedback)
     {
         ModelState.Remove(nameof(LessonFeedback.Trainee));
-        ModelState.Remove(nameof(LessonFeedback.Mentor));
         ModelState.Remove(nameof(LessonFeedback.Lesson));
 
         if (!ModelState.IsValid)
