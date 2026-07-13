@@ -1,5 +1,6 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using Trainee_Tracker.Models;
 using Xunit;
 
 namespace Trainee_Tracker.E2ETests;
@@ -27,7 +28,7 @@ public class MentorSkipAssignmentFeatureTest
     {   
         _driver.Navigate().Refresh();
         
-        //Arrage
+    //Arrage
         Console.WriteLine("Test : CanSKipAnAssignmnet");
         _driver.Navigate().GoToUrl($"{BaseUrl}/Mentor/AssignmentOverview?traineeId=1");
 
@@ -38,6 +39,9 @@ public class MentorSkipAssignmentFeatureTest
             "arguments[0].scrollIntoView({block: 'center'});", skipTriggerButton);
         System.Threading.Thread.Sleep(200);
         
+
+        _wait.Until(d => skipTriggerButton.Displayed);
+        _wait.Until(d => skipTriggerButton.Enabled);
             // open skip-dialog
         skipTriggerButton.Click(); 
 
@@ -46,11 +50,14 @@ public class MentorSkipAssignmentFeatureTest
         var firstSkipButton = dialog.FindElement(By.CssSelector(".action-btn-skip-confirm"));
         var lessonTitle = dialog.FindElement(By.CssSelector(".skip-select-title")).Text;
 
-        //Act
+    //Act
         firstSkipButton.Click();
 
-        //Assert
+    //Assert
         _wait.Until(d => d.Url.Contains("AssignmentOverview"));
+        
+        System.Threading.Thread.Sleep(200);
+
         var skippedColumn = _wait.Until(d => d.FindElement(By.Id("column-body-Skipped")));
         
         Assert.Contains(lessonTitle, skippedColumn.Text);
