@@ -16,11 +16,8 @@ public class LessonFeedbackRepository : ILessonFeedbackRepository
     {
         return _context.LessonFeedbacks
             .Include(f => f.Trainee)
-            .Include(f => f.Mentor)
             .Include(f => f.Lesson)
-            .Where(feedback => feedback.TraineeId == trainee.Id
-                               && feedback.CreatedAt >= from
-                               && feedback.CreatedAt <= until)
+            .Where(feedback => feedback.TraineeId == trainee.Id && feedback.CreatedAt >= from && feedback.CreatedAt <= until)
             .ToList();
     }
 
@@ -28,11 +25,8 @@ public class LessonFeedbackRepository : ILessonFeedbackRepository
     {
         return _context.LessonFeedbacks
             .Include(f => f.Trainee)
-            .Include(f => f.Mentor)
             .Include(f => f.Lesson)
-            .Where(feedback => feedback.MentorId == mentor.Id
-                               && feedback.CreatedAt >= from
-                               && feedback.CreatedAt <= until)
+            .Where(feedback => feedback.Trainee != null && feedback.Trainee.Mentors.Any(m => m.Id == mentor.Id) && feedback.CreatedAt >= from && feedback.CreatedAt <= until)
             .ToList();
     }
 
@@ -40,7 +34,6 @@ public class LessonFeedbackRepository : ILessonFeedbackRepository
     {
         return _context.LessonFeedbacks
             .Include(f => f.Trainee)
-            .Include(f => f.Mentor)
             .Include(f => f.Lesson)
             .Where(feedback => feedback.CreatedAt >= from
                                && feedback.CreatedAt <= until.AddDays(1))
@@ -51,7 +44,6 @@ public class LessonFeedbackRepository : ILessonFeedbackRepository
     {
         return _context.LessonFeedbacks
             .Include(f => f.Trainee)
-            .Include(f => f.Mentor)
             .Include(f => f.Lesson)
             .FirstOrDefault(f => f.Id == id);
     }

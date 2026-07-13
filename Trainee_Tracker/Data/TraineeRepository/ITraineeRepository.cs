@@ -9,6 +9,7 @@ namespace Trainee_Tracker.Data.TraineeRepository
     public interface ITraineeRepository
     {
         Trainee? FindById(int id);
+        Trainee? FindByIdWithMentors(int id);
         IList<Trainee> GetAllTrainees();
         void Save (Trainee trainee);
     }

@@ -18,6 +18,12 @@ namespace Trainee_Tracker.Data.TraineeRepository
             return _context.Trainees.FirstOrDefault(t => t.Id == id);
         }
 
+        // Code-Owner: Andrej Basara
+        public Trainee? FindByIdWithMentors(int id)
+        {
+            return _context.Trainees.Include(t => t.Mentors).FirstOrDefault(t => t.Id == id);
+        }
+
         public IList<Trainee> GetAllTrainees()
         {
             return _context.Trainees.ToList();
