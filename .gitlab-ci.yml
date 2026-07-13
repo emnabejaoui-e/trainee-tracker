@@ -56,11 +56,7 @@ e2e-tests:
 
     # waiting
     - 
-      for i in $(seq 1 30); do
-        curl -sf http://localhost:5089 > /dev/null && break
-        echo "App is not ready yet; waiting... ($i)"
-        sleep 2
-      done
+      for i in $(seq 1 30); do curl -sf http://localhost:5089 > /dev/null && break; echo "App is not ready yet; waiting... ($i)"; sleep 2; done
 
 
     - cd ../Trainee_Tracker.E2ETests
