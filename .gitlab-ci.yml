@@ -48,8 +48,8 @@ e2e-tests:
 
     - dotnet restore
     - dotnet build
-    
-    - rm -f trainee_tracker.db trainee_tracker.db-wal trainee_tracker.db-shm
+    - mkdir -p Persistence
+    - rm -f Persistence/trainee_tracker.db Persistence/trainee_tracker.db-wal Persistence/trainee_tracker.db-shm
     - dotnet ef database update
 
     - dotnet run --environment Development &
