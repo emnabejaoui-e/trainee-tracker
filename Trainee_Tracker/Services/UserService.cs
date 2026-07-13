@@ -10,12 +10,14 @@ namespace Trainee_Tracker.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IAssignmentService _assignmentSerivce;
 
 // Code Owner: Jelena Cosic
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IAssignmentService assignmentService)
         {
             _userRepository = userRepository;
+            _assignmentSerivce = assignmentService;
         }
 
 // Code Owner: Jelena Cosic
@@ -23,6 +25,7 @@ namespace Trainee_Tracker.Services
         public void CreateTrainee(Trainee trainee, string rawPassword)
         {
             var hashedPassword = HashPassword(rawPassword);
+            _assignmentSerivce.AssignLessonsToTrainee(trainee);
             _userRepository.CreateTrainee(trainee, hashedPassword);
         }
 
