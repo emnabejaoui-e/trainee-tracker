@@ -36,10 +36,12 @@ public class MentorAcceptAssignmentFeaturesTest
         var lessonTitle = finishedColumn.FindElement(By.CssSelector(".card-title")).Text;
 
         //Act
+        _wait.Until(d => acceptButton.Displayed);
+        _wait.Until(d => acceptButton.Enabled);
         acceptButton.Click();
 
         //Assert
-        
+
         _wait.Until(d => d.Url.Contains("AssignmentOverview"));
         
         var acceptedColumn = _driver.FindElement(By.Id("column-body-Accepted"));
