@@ -55,6 +55,11 @@ public class Lesson
         }
     }
 
+    public override int GetHashCode()
+    {
+        return Id.GetHashCode();
+    }
+
     /// <summary>
     /// Updates this lesson with the values from the previous lesson.
     /// </summary>
