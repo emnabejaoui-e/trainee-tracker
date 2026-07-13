@@ -27,11 +27,17 @@ public class MentorReorderAssignmentsFeatureTest
     {   
         _driver.Navigate().Refresh();
         Console.WriteLine("test: reorder test");
-        //Arrange
+
+    //Arrange
         _driver.Navigate().GoToUrl($"{BaseUrl}/Mentor/AssignmentOverview?traineeId=1");
 
        var reorderTriggerButton = _wait.Until(d => d.FindElement(By.CssSelector(".action-btn-primary"))); 
-       // open reorder-dialog
+       ((IJavaScriptExecutor)_driver).ExecuteScript(
+        "arguments[0].scrollIntoView({block: 'center'});", reorderTriggerButton );
+        System.Threading.Thread.Sleep(200);
+
+
+        //open reorder-dialog
         reorderTriggerButton.Click();
 
         var dialog = _wait.Until(d => d.FindElement(By.Id("sort-dialog")));
@@ -40,7 +46,7 @@ public class MentorReorderAssignmentsFeatureTest
         Assert.True(items.Count >= 2, "this test requires at leat 2 assignments");
         var firstItemTitle = items[0].FindElement(By.CssSelector(".sortable-title")).Text;
 
-        //Act: simulation of drag-and-drop via JavaScript and tigger submit
+    //Act: simulation of drag-and-drop via JavaScript and tigger submit
         var js = (IJavaScriptExecutor)_driver;
         js.ExecuteScript(@"
             const list = document.getElementById('sortable-list');
@@ -50,7 +56,7 @@ public class MentorReorderAssignmentsFeatureTest
 
         dialog.FindElement(By.CssSelector(".action-btn-accept")).Click();
 
-        //Assert
+    //Assert
         _wait.Until(d => d.Url.Contains("AssignmentOverview"));
         var board = _driver.FindElement(By.CssSelector(".board-columns"));
         //check: postion changed in card
