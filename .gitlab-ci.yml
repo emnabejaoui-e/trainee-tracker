@@ -45,6 +45,10 @@ e2e-tests:
     #DB reset
     - dotnet tool install --global dotnet-ef
     - export PATH="$PATH:/root/.dotnet/tools"
+
+    - dotnet restore
+    - dotnet build
+    
     - rm -f trainee_tracker.db trainee_tracker.db-wal trainee_tracker.db-shm
     - dotnet ef database update
 
