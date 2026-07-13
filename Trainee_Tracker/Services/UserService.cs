@@ -25,8 +25,8 @@ namespace Trainee_Tracker.Services
         public void CreateTrainee(Trainee trainee, string rawPassword)
         {
             var hashedPassword = HashPassword(rawPassword);
-            _assignmentSerivce.AssignLessonsToTrainee(trainee);
             _userRepository.CreateTrainee(trainee, hashedPassword);
+            _assignmentSerivce.AssignLessonsToTrainee(trainee);
         }
 
 // Code Owner: Jelena Cosic
