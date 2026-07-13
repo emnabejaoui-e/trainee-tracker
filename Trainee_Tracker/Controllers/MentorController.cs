@@ -5,6 +5,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Trainee_Tracker.Data.LessonAssignments;
+using Trainee_Tracker.Data.Curriculums;
 using Trainee_Tracker.Data.MentorRepository;
 using Trainee_Tracker.Data.Rejections;
 using Trainee_Tracker.Data.TraineeRepository;
@@ -21,10 +22,12 @@ public class MentorController : Controller
     private ILessonAssignmentRepository _assignmentRepo;
     private IRejectionRepository _rejectionRepo;
     private ITraineeRepository _traineeRepo;
+    private readonly ICurriculumRepository _curriculumRepo;
 
-    public MentorController(IMentorRepository mentorRepo, IUserRepository userRepo, ILessonAssignmentRepository assignmentRepo, IRejectionRepository rejectionRepo, ITraineeRepository traineeRepo)
+    public MentorController(IMentorRepository mentorRepo, ICurriculumRepository curriculumRepo, IUserRepository userRepo, ILessonAssignmentRepository assignmentRepo, IRejectionRepository rejectionRepo, ITraineeRepository traineeRepo)
     {
         _mentorRepo = mentorRepo;
+        _curriculumRepo = curriculumRepo;
         _userRepo = userRepo;
         _assignmentRepo = assignmentRepo;
         _rejectionRepo = rejectionRepo;
@@ -109,10 +112,7 @@ public class MentorController : Controller
     public IActionResult ImportCurriculum()
     {
         ViewData["NavbarOverride"] = "Mentor";
-        var curriculumNames = new List<String>();
-        curriculumNames.Add("makandra Curriculum");
-        curriculumNames.Add("makandra DevOps Curriculum");
-        ViewBag.curriculumNames = curriculumNames;
+        ViewBag.curriculumNames = _curriculumRepo.GetAllCurriculums().Select(c => c.Title);
         return View(null);
     }
 
@@ -138,10 +138,7 @@ public class MentorController : Controller
         {
             return RedirectToAction("Index", "Mentor");
         }
-        var curriculumNames = new List<String>();
-        curriculumNames.Add("makandra Curriculum");
-        curriculumNames.Add("makandra DevOps Curriculum");
-        ViewBag.curriculumNames = curriculumNames;
+        ViewBag.curriculumNames = _curriculumRepo.GetAllCurriculums().Select(c => c.Title);
         return View(file);
     }
 
