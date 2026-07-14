@@ -30,6 +30,7 @@ builder.Services.AddScoped<IProgressService, ProgressService>();
 builder.Services.AddScoped<IMentorService, MentorService>();
 builder.Services.AddScoped<ILessonAssignmentRepository, LessonAssignmentRepository>();
 builder.Services.AddScoped<ILessonDateCalculator, LessonDateCalculator>();
+builder.Services.AddScoped<IAssignmentService, AssignmentService>();
 
 builder.Services.AddScoped<LessonFeedbackService>();
 builder.Services.AddScoped<ILessonFeedbackRepository, LessonFeedbackRepository>();

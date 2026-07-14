@@ -90,11 +90,11 @@ public class MentorController : Controller
         ViewBag.isAdmin = "Admin".Equals(User.FindFirstValue(ClaimTypes.Role));
         if (ViewBag.isAdmin)
         {
-            ViewBag.allTrainees = _traineeRepo.GetAllTrainees();            
+            ViewBag.allTrainees = _traineeRepo.GetAllTrainees()
+                .Where(t => !t.Closed);
         }
         
-
-        return View(currentUser.AssignedTrainees);
+        return View(currentUser.AssignedTrainees.Where(t => !t.Closed));
     }
 
     // Code-Owner: Leon

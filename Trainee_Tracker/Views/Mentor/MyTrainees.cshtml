@@ -62,7 +62,7 @@ else
 {
     <h2>Overview over all Trainees</h2>
     <ul class="profile-list">
-        @foreach(Trainee trainee in Model)
+        @foreach(Trainee trainee in ViewBag.allTrainees)
         {
             <li class="profile-item">
                 <div class="profile-main">

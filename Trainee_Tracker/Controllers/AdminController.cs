@@ -98,6 +98,7 @@ public class AdminController : Controller
         return RedirectToAction("UserManagement");
     }
 
+    // Code Owner: Andrej Basara
     public IActionResult CreateAdmin()
     {
         return View();
@@ -210,6 +211,7 @@ public class AdminController : Controller
         return RedirectToAction("UserManagement");
     }
 
+    // Code Owner: Andrej Basara
     public IActionResult UpdateMentor(int? id)
     {
         if (id == null) return NotFound();
