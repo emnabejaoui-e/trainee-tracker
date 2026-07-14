@@ -12,7 +12,7 @@ using Trainee_Tracker.Models;
 using Trainee_Tracker.Repositories;
 
 namespace Trainee_Tracker.Controllers;
-
+// Code Owner: Jelena Cosic ([Authorize])
 [Authorize(Roles = "Mentor, Admin")]
 public class MentorController : Controller
 {

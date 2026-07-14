@@ -5,13 +5,14 @@ using OpenQA.Selenium.Chrome;
 namespace Trainee_Tracker.E2ETests;
 
 /// <summary>
-/// E2E test for the Admin login flow
+/// E2E test for the Admin login flow 
 /// </summary>
 public class LoginE2ETest : IDisposable
 {
     private readonly IWebDriver _driver;
     private const string BaseUrl = "http://localhost:5089";
 
+    // Code Owner: Jelena Cosic
     /// <summary>
     /// Initializes the Chrome WebDriver in headless mode for CI compatibility
     /// </summary>
@@ -24,7 +25,7 @@ public class LoginE2ETest : IDisposable
         _driver = new ChromeDriver(options);
     }
 
-
+    // Code Owner: Jelena Cosic
     /// <summary>
     /// Tests that a valid Admin login redirects away from the login page
     /// </summary>
@@ -42,12 +43,12 @@ public class LoginE2ETest : IDisposable
         emailField.SendKeys("admin@makandra.de");
         passwordField.SendKeys("Admin1!");
         submitButton.Click();
-
         await Task.Delay(3000);
 
         Assert.DoesNotContain("Login", _driver.Url);
     }
 
+    // Code Owner: Jelena Cosic
     /// <summary>
     /// Disposes the WebDriver after each test
     /// </summary>

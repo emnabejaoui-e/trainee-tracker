@@ -9,7 +9,7 @@ using Trainee_Tracker.Repositories;
 using Trainee_Tracker.Services;
 
 namespace Trainee_Tracker.Controllers;
-
+// Code Owner: Jelena Cosic ([Authorize])
 [Authorize(Roles = "Trainee")]
 public class TraineeController : Controller
 {
