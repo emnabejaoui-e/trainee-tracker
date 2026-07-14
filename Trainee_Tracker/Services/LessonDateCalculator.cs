@@ -52,6 +52,7 @@ public class LessonDateCalculator : ILessonDateCalculator
         return assignments;
     }
 
+    // Code Owner: Andrej Basara
     private static DateOnly SkipWeekend(DateOnly date)
     {
         if (date.DayOfWeek == DayOfWeek.Saturday)
