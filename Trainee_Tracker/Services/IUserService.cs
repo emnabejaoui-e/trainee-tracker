@@ -13,6 +13,7 @@ namespace Trainee_Tracker.Services
         void UpdateMentor(Mentor mentor, string? newPassword = null);
         IList<User> GetAllUsers();
         void CloseUser(int id);
+        // Code Owner: Jelena Cosic
         LoginResult ValidateUserCredentials(string email, string password); 
         User GetUserByEmail(string email);
 
