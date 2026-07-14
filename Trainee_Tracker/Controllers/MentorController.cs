@@ -142,6 +142,8 @@ public class MentorController : Controller
             daysWorked ?? 0
         );
 
+        ViewBag.TraineeName = trainee.Name;
+
         return View(model);
     }
 

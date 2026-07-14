@@ -65,15 +65,6 @@
         margin: 0;
     }
 
-    .role-badge {
-        background: #E6F1FB;
-        color: #0C447C;
-        font-size: 10px;
-        padding: 3px 7px;
-        border-radius: 4px;
-        font-weight: bold;
-    }
-
     .info-box {
         background: var(--gray-100);
         border: 1px solid var(--gray-200);
