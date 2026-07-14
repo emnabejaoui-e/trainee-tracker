@@ -44,6 +44,21 @@ public class CurriculumImportTest : IClassFixture<BrowserFixture>
         
         await Task.Delay(5000);
 
-        throw new NotImplementedException();
+        var curriculumRadioButton = _driver.FindElements(By.CssSelector("input[name='curriculumName']"))[0];
+        curriculumRadioButton.Click();
+
+        var path = Path.Combine(Directory.GetCurrentDirectory(), "curriculum.json");
+        await File.WriteAllTextAsync(path, _json);
+        
+        var curriculumFileSelector = _driver.FindElement(By.Id("curriculum-file"));
+        curriculumFileSelector.SendKeys(path);
+
+        var submitBtn = _driver.FindElement(By.Id("submit-import-form"));
+        submitBtn.Click();
+        
+        await Task.Delay(5000);
+        
+        Assert.DoesNotContain("Import", _driver.Url);
+        File.Delete(path);
     }
 }
