@@ -1,4 +1,4 @@
-// Code Owner: Andrej Basara
+﻿// Code Owner: Andrej Basara
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,7 @@ public class UserServiceTests
     {
         var user = new Mentor { Id = 12, Name = "Tom", Email = "tom@makandra.de", Closed = false };
         var userRepo = new FakeUserRepository();
-        var emailCheck = new UserService(userRepo);
+        var emailCheck = new UserService(userRepo, new FakeAssignmentService());
         userRepo.AddUser(user);
         bool result = emailCheck.IsEmailAvailable("tom@makandra.de");
         Assert.False(result, "Email shouldn't be available");
@@ -29,7 +29,7 @@ public class UserServiceTests
     public void CreateTrainee_HashesPassword()
     {
         var repo = new FakeUserRepository();
-        var service = new UserService(repo);
+        var service = new UserService(repo, new FakeAssignmentService());
 
         var newTrainee = new Trainee
         {

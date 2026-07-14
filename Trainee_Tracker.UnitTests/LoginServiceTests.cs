@@ -4,7 +4,7 @@ using Trainee_Tracker.Repositories;
 using Trainee_Tracker.Services;
 
 namespace Trainee_Tracker.UnitTests;
-// Code Owner: Jelena Cosic
+
 public class FakeUserRepository : IUserRepository
 {
     private readonly List<User> _users = new();
@@ -42,25 +42,32 @@ public class FakeUserRepository : IUserRepository
         => _users.FirstOrDefault(u => u.Id == id)!;
 }
 
+public class FakeAssignmentService : IAssignmentService
+{
+    public void AssignLessonsToTrainee(Trainee trainee) { }
+}
+
 // Code Owner: Jelena Cosic
 public class LoginServiceTests
 {
+    // Code Owner: Jelena Cosic
     [Fact]
     public void ValidateUserCredentials_UnknownEmail_ReturnsInvalidCredentials()
     {
         var repo = new FakeUserRepository();
-        var service = new UserService(repo);
+        var service = new UserService(repo, new FakeAssignmentService());
 
         var result = service.ValidateUserCredentials("unknown@makandra.de", "anyPassword");
 
         Assert.Equal(LoginResult.InvalidCredentials, result);
     }
-// Code Owner: Jelena Cosic
+
+    // Code Owner: Jelena Cosic
     [Fact]
     public void ValidateUserCredentials_ClosedAccount_ReturnsAccountClosed()
     {
         var repo = new FakeUserRepository();
-        var service = new UserService(repo);
+        var service = new UserService(repo, new FakeAssignmentService());
 
         var closedUser = new Trainee
         {
@@ -75,12 +82,13 @@ public class LoginServiceTests
 
         Assert.Equal(LoginResult.AccountClosed, result);
     }
-// Code Owner: Jelena Cosic
+
+    // Code Owner: Jelena Cosic
     [Fact]
     public void ValidateUserCredentials_WrongPassword_ReturnsInvalidCredentials()
     {
         var repo = new FakeUserRepository();
-        var service = new UserService(repo);
+        var service = new UserService(repo, new FakeAssignmentService());
 
         var user = new Trainee
         {
@@ -95,12 +103,13 @@ public class LoginServiceTests
 
         Assert.Equal(LoginResult.InvalidCredentials, result);
     }
-// Code Owner: Jelena Cosic
+
+    // Code Owner: Jelena Cosic
     [Fact]
     public void ValidateUserCredentials_ValidCredentials_ReturnsSuccess()
     {
         var repo = new FakeUserRepository();
-        var service = new UserService(repo);
+        var service = new UserService(repo, new FakeAssignmentService());
 
         var user = new Trainee
         {
@@ -115,12 +124,13 @@ public class LoginServiceTests
 
         Assert.Equal(LoginResult.Success, result);
     }
-// Code Owner: Jelena Cosic
+
+    // Code Owner: Jelena Cosic
     [Fact]
     public void GetUserByEmail_ReturnsNull_WhenUserNotFound()
     {
         var repo = new FakeUserRepository();
-        var service = new UserService(repo);
+        var service = new UserService(repo, new FakeAssignmentService());
 
         var result = service.GetUserByEmail("nonexistent@makandra.de");
 
