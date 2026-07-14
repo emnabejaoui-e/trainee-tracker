@@ -10,7 +10,7 @@
     <h1 class="mb-4">Create Trainee</h1>
     <div class="row">
         <div class="col-12">
-            <form asp-action="CreateTrainee">
+            <form asp-action="CreateTrainee" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-floating mb-3">
                     <input asp-for="Name" type="name" class="form-control" id="floatingInput" placeholder=" ">

@@ -9,10 +9,8 @@ using Trainee_Tracker.Repositories;
 using Trainee_Tracker.Services;
 
 namespace Trainee_Tracker.Controllers;
-
+// Code Owner: Jelena Cosic ([Authorize])
 [Authorize(Roles = "Trainee")]
-
-// Code Owner: Andrej Basara
 public class TraineeController : Controller
 {
     private readonly ILessonAssignmentRepository _lessonAssignmentRepo;
@@ -26,6 +24,7 @@ public class TraineeController : Controller
         _lessonDateCalculator = lessonDateCalculator;
     }
 
+    // Code Owner: Andrej Basara
     public IActionResult WeekPlan()
     {
         // get the trainee string id from login claim
@@ -65,6 +64,7 @@ public class TraineeController : Controller
         return View(weeklyAssignments);
     }
 
+    // Code Owner: Andrej Basara
     [HttpPost]
     public IActionResult UpdateStatus(int id, LessonAssignmentStatus newStatus)
     {

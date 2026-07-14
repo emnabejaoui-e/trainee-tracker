@@ -169,6 +169,7 @@
     </div>
 </div>
 
+@* JavaScript for serach *@
 <script>
     document.getElementById('boardSearch').addEventListener('input', function(e){
 
@@ -190,8 +191,32 @@
         });
 
     });
+</script>
 
-    
+@* JavaScript for saving position when scrolling *@
+<script>
+    (function () {
+        function persistScroll(elementId){
+            const el = document.getElementById(elementId);
+            if(!el) return;
+            const key = 'scrollPosition:' + window.location.pathname + ':' + elementId;
+            const saved = sessionStorage.getItem(key);
+            if(saved !== null){
+                el.scrollTop = parseInt(saved, 10);
+            }
+            let timeout;
+            el.addEventListener('scroll', () => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => sessionStorage.setItem(key, el.scrollTop), 100);
+            });
+        }
 
-    
+        persistScroll('column-body-Open');
+        persistScroll('column-body-Started');
+        persistScroll('column-body-Finished');
+        persistScroll('column-body-Rejected');
+        persistScroll('column-body-Accepted');
+        persistScroll('column-body-Rated');
+
+    })();
 </script>
