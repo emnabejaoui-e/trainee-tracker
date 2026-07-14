@@ -42,13 +42,13 @@ public class CurriculumService : ICurriculumService
                 
                 // Update position
                 existingLessons.RemoveAt(idx);
-                existingLessons.Insert(Math.Min(i, existingLessons.Count - 1), existingLesson);
+                existingLessons.Insert(Math.Min(i, existingLessons.Count), existingLesson);
             }
             else
             {
                 // Lesson does not already exist in Curriculum:
                 // Insert new Lesson at the correct position.
-                existingLessons.Insert(Math.Min(i, existingLessons.Count - 1), lessonUpdate);
+                existingLessons.Insert(Math.Min(i, existingLessons.Count), lessonUpdate);
             }
         }
         
@@ -60,7 +60,7 @@ public class CurriculumService : ICurriculumService
                 // All removed lessons are moved to the end and set to inactive
                 existingLessons.RemoveAt(i);
                 less.Inactive = true;
-                existingLessons.Insert(existingLessons.Count - 1, less);
+                existingLessons.Insert(existingLessons.Count, less);
                 i--;
             }
         }
