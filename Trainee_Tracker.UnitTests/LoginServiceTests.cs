@@ -22,7 +22,13 @@ public class FakeUserRepository : IUserRepository
     }
 
     public IList<User> GetAllUsers() => _users;
-    public void CreateTrainee(Trainee trainee, string hashedPassword) { }
+
+    public void CreateTrainee(Trainee trainee, string hashedPassword)
+    {
+        trainee.HashedPassword = hashedPassword;
+        _users.Add(trainee);
+    }
+
     public void CreateMentor(Mentor mentor, string hashedPassword) { }
     public void CreateAdmin(Admin admin, string hashedPassword) { }
     public void UpdateUser(User user) { }
@@ -41,13 +47,10 @@ public class LoginServiceTests
     [Fact]
     public void ValidateUserCredentials_UnknownEmail_ReturnsInvalidCredentials()
     {
-        
         var repo = new FakeUserRepository();
         var service = new UserService(repo);
 
-
         var result = service.ValidateUserCredentials("unknown@makandra.de", "anyPassword");
-
 
         Assert.Equal(LoginResult.InvalidCredentials, result);
     }
@@ -55,7 +58,6 @@ public class LoginServiceTests
     [Fact]
     public void ValidateUserCredentials_ClosedAccount_ReturnsAccountClosed()
     {
-
         var repo = new FakeUserRepository();
         var service = new UserService(repo);
 
@@ -68,10 +70,80 @@ public class LoginServiceTests
         };
         repo.AddUser(closedUser);
 
-
         var result = service.ValidateUserCredentials("closed@makandra.de", "Test1234!");
 
-
         Assert.Equal(LoginResult.AccountClosed, result);
+    }
+
+    [Fact]
+    public void ValidateUserCredentials_WrongPassword_ReturnsInvalidCredentials()
+    {
+        var repo = new FakeUserRepository();
+        var service = new UserService(repo);
+
+        var user = new Trainee
+        {
+            Name = "Test User",
+            Email = "test@makandra.de",
+            HashedPassword = BCrypt.Net.BCrypt.HashPassword("CorrectPassword!"),
+            Closed = false
+        };
+        repo.AddUser(user);
+
+        var result = service.ValidateUserCredentials("test@makandra.de", "WrongPassword!");
+
+        Assert.Equal(LoginResult.InvalidCredentials, result);
+    }
+
+    [Fact]
+    public void ValidateUserCredentials_ValidCredentials_ReturnsSuccess()
+    {
+        var repo = new FakeUserRepository();
+        var service = new UserService(repo);
+
+        var user = new Trainee
+        {
+            Name = "Valid User",
+            Email = "valid@makandra.de",
+            HashedPassword = BCrypt.Net.BCrypt.HashPassword("ValidPassword!"),
+            Closed = false
+        };
+        repo.AddUser(user);
+
+        var result = service.ValidateUserCredentials("valid@makandra.de", "ValidPassword!");
+
+        Assert.Equal(LoginResult.Success, result);
+    }
+
+    [Fact]
+    public void CreateTrainee_HashesPassword()
+    {
+        var repo = new FakeUserRepository();
+        var service = new UserService(repo);
+
+        var newTrainee = new Trainee
+        {
+            Name = "New Trainee",
+            Email = "newtrainee@makandra.de",
+            Closed = false
+        };
+
+        service.CreateTrainee(newTrainee, "RawPassword123!");
+
+        var savedUser = repo.GetUserByEmail("newtrainee@makandra.de");
+        Assert.NotNull(savedUser);
+        Assert.NotEqual("RawPassword123!", savedUser.HashedPassword);
+        Assert.True(BCrypt.Net.BCrypt.Verify("RawPassword123!", savedUser.HashedPassword));
+    }
+
+    [Fact]
+    public void GetUserByEmail_ReturnsNull_WhenUserNotFound()
+    {
+        var repo = new FakeUserRepository();
+        var service = new UserService(repo);
+
+        var result = service.GetUserByEmail("nonexistent@makandra.de");
+
+        Assert.Null(result);
     }
 }
