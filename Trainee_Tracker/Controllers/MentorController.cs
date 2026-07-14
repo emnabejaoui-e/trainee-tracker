@@ -111,14 +111,24 @@ public class MentorController : Controller
             return Unauthorized();
         }
 
-        Mentor? mentor = _mentorRepo.GetMentorById(int.Parse(mentorId));
-        if (mentor == null)
-        {
-            return Unauthorized();
-        }
+        Trainee? trainee;
 
-        Trainee? trainee = mentor.AssignedTrainees
-            .FirstOrDefault(t => t.Id == traineeId);
+        if (User.IsInRole("Admin"))
+        {
+            trainee = _userRepo.GetById(traineeId) as Trainee;
+        }
+        else
+        {
+            Mentor? mentor = _mentorRepo.GetMentorById(int.Parse(mentorId));
+
+            if (mentor == null)
+            {
+                return Unauthorized();
+            }
+
+            trainee = mentor.AssignedTrainees
+                .FirstOrDefault(t => t.Id == traineeId && !t.Closed);
+        }
 
         if (trainee == null)
         {
