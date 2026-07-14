@@ -20,7 +20,12 @@
     <span class="email">@email</span>
     <div class="user-dropdown">
       <div class="dropdown-btn-container">
+<<<<<<< Updated upstream
         <a asp-controller="Profile" asp-action="TraineeProfile" class="dropdown-btn">My Profile</a>
+=======
+        <a asp-controller="Profile" asp-action="Index" class="dropdown-btn">My Profile</a>
+        <a href="mailto:mentor@makandra.de" class="dropdown-btn">My Mentor</a>
+>>>>>>> Stashed changes
         <form method="post" asp-controller="Login" asp-action="Logout" style="margin:0;">
           @Html.AntiForgeryToken()
           <button type="submit" class="dropdown-btn">Log out</button>

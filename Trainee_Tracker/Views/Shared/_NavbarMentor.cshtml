@@ -19,7 +19,11 @@
     <span class="email">@User.FindFirst(ClaimTypes.Email)?.Value</span>
     <div class="user-dropdown">
       <div class="dropdown-btn-container">
+<<<<<<< Updated upstream
         <a asp-controller="Profile" asp-action="MentorProfile" class="dropdown-btn">My Profile</a>
+=======
+        <a asp-controller="Profile" asp-action="Index" class="dropdown-btn">My Profile</a>
+>>>>>>> Stashed changes
         @if (User.IsInRole("Admin"))
         {
             <a href="/Admin/Index" class="dropdown-btn">Switch to Admin View</a>
