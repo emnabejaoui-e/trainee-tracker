@@ -36,6 +36,11 @@ public class FakeUserRepository : IUserRepository
         => _users.FirstOrDefault(u => u.Id == id)!;
 }
 
+public class FakeAssignmentService : IAssignmentService
+{
+    public void AssignLessonsToTrainee(Trainee trainee) { }
+}
+
 public class LoginServiceTests
 {
     [Fact]
@@ -43,7 +48,8 @@ public class LoginServiceTests
     {
         
         var repo = new FakeUserRepository();
-        var service = new UserService(repo);
+        var assignmentService = new FakeAssignmentService();
+        var service = new UserService(repo, assignmentService);
 
 
         var result = service.ValidateUserCredentials("unknown@makandra.de", "anyPassword");
@@ -57,7 +63,8 @@ public class LoginServiceTests
     {
 
         var repo = new FakeUserRepository();
-        var service = new UserService(repo);
+        var assignmentService = new FakeAssignmentService();
+        var service = new UserService(repo, assignmentService);
 
         var closedUser = new Trainee
         {
