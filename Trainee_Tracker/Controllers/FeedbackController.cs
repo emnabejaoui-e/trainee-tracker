@@ -52,9 +52,14 @@ public class FeedbackController : Controller
                 else if (show == "assigned")
                 {
                     ViewData["NavbarOverride"] = "Mentor";
-                    // TODO: Show only feedback from trainees assigned to the current mentor.
-                    feedbacks = feedbacks.ToList();
-                }
+                    var mentor = _mentorRepo.GetMentorById(currentUserId);
+
+                    var assignedTraineeIds = mentor?.AssignedTrainees.Select(trainee => trainee.Id).ToHashSet() ?? new HashSet<int>();
+
+                    feedbacks = feedbacks
+                        .Where(feedback => assignedTraineeIds.Contains(feedback.TraineeId))
+                        .ToList();
+}
                 else
                 {
                     show = "all";
@@ -108,9 +113,8 @@ public class FeedbackController : Controller
     public IActionResult CreateFeedback(LessonFeedback feedback)
     {
         var traineeId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        
         feedback.TraineeId = traineeId;
-
-        // TODO: Replace hardcoded MentorId with assigned mentor once mentor assignment logic is available.
         feedback.CreatedAt = DateTime.Now;
 
         ModelState.Remove(nameof(LessonFeedback.Trainee));

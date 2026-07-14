@@ -149,17 +149,31 @@ else
 
                     @if (feedback.Difficulty.HasValue)
                     {
-                        <dd class="rating"
-                            aria-label="@feedback.Difficulty.Value out of 5 stars">
-                            @for (var i = 0; i < feedback.Difficulty.Value; i++)
-                            {
-                                <span aria-hidden="true">★</span>
-                            }
+                        <dd class="rating-details">
+                            <div class="rating"
+                                aria-label="@feedback.Difficulty.Value out of 5 stars">
+                                @for (var i = 0; i < feedback.Difficulty.Value; i++)
+                                {
+                                    <span aria-hidden="true">★</span>
+                                }
 
-                            @for (var i = feedback.Difficulty.Value; i < 5; i++)
-                            {
-                                <span aria-hidden="true">☆</span>
-                            }
+                                @for (var i = feedback.Difficulty.Value; i < 5; i++)
+                                {
+                                    <span aria-hidden="true">☆</span>
+                                }
+                            </div>
+
+                            <span class="rating-description">
+                                @(feedback.Difficulty.Value switch
+                                {
+                                    1 => "Very easy",
+                                    2 => "Easy",
+                                    3 => "Moderate",
+                                    4 => "Difficult",
+                                    5 => "Very difficult",
+                                    _ => ""
+                                })
+                            </span>
                         </dd>
                     }
                     else
@@ -177,7 +191,7 @@ else
                     <dt>Actual Effort</dt>
                     <dd>
                         @(feedback.ActualEffort.HasValue
-                            ? $"{feedback.ActualEffort} days"
+                            ? $"{feedback.ActualEffort} hours"
                             : "No information")
                     </dd>
 
