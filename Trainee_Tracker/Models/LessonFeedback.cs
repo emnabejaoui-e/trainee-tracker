@@ -22,9 +22,6 @@ public class LessonFeedback
     public int TraineeId { get; set; }
     public Trainee? Trainee { get; set; }
 
-    public int MentorId { get; set; }
-    public Mentor? Mentor { get; set; }
-
     public int LessonId { get; set; }
     public Lesson? Lesson { get; set; }
 
