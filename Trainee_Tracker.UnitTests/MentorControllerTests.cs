@@ -9,6 +9,7 @@ using Trainee_Tracker.Data.MentorRepository;
 using Trainee_Tracker.Models;
 using Microsoft.AspNetCore.Mvc;
 using Trainee_Tracker.Services;
+using Moq.Protected;
 
 
 namespace Trainee_Tracker.UnitTests;
@@ -21,7 +22,7 @@ public class MentorControllerTests
     private readonly Mock<ITraineeRepository> _traineeRepoMock;
     private readonly Mock<IMentorRepository> _mentorRepoMock;
     private readonly Mock<IProgressService> _progressServiceMock;
-    private readonly Mock<WorkingHoursService> _workingHoursServiceMock;
+    private readonly WorkingHoursService _workingHoursService;
     private readonly MentorController _controller;
 
     public MentorControllerTests()
@@ -32,9 +33,20 @@ public class MentorControllerTests
         _traineeRepoMock = new Mock<ITraineeRepository>();
         _mentorRepoMock = new Mock<IMentorRepository>();
         _progressServiceMock = new Mock<IProgressService>();
-        _workingHoursServiceMock = new Mock<WorkingHoursService>();
+        
+        var handlerMock = new Mock<HttpMessageHandler>();
+        handlerMock
+        .Protected()
+        .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+        .ReturnsAsync(new HttpResponseMessage{ StatusCode = System.Net.HttpStatusCode.OK, Content = new StringContent("""{"entries"}:[]}""")});
 
-        _controller = new MentorController(_mentorRepoMock.Object, _userRepoMock.Object, _assignmentRepoMock.Object, _rejectionRepoMock.Object, _traineeRepoMock.Object, _workingHoursServiceMock.Object, _progressServiceMock.Object);
+        var httpClient = new HttpClient(handlerMock.Object)
+        {
+            BaseAddress = new Uri("http://fake-api.local/")
+        };
+
+        _workingHoursService = new WorkingHoursService(httpClient);
+        _controller = new MentorController(_mentorRepoMock.Object, _userRepoMock.Object, _assignmentRepoMock.Object, _rejectionRepoMock.Object, _traineeRepoMock.Object, _workingHoursService, _progressServiceMock.Object);
     }
 
     //code-owner: Julia Sandner
