@@ -71,7 +71,7 @@
                         <div class="column-body" data-status="@status" id="column-body-@status">
                             @if(!cards.Any())
                             {
-                                <div class="column-empty">no crads</div>
+                                <div class="column-empty">no cards</div>
                             }
                             else
                             {
@@ -175,10 +175,10 @@
 
     <h2 class="section-title">Skip an Assignment</h2>
     <div>
-        <button type="button" class="action-btn action-btn-primary" onclick="document.getElementById('skip-select-dialog').showModal()">Choose a Assignment</button>
+        <button type="button" class="action-btn action-btn-primary" onclick="document.getElementById('skip-select-dialog').showModal()">Choose an Assignment</button>
 
         <dialog id="skip-select-dialog" class="skip-dialog">
-            <h3 class="rejection-dialog-title">Skip a Assignment for @traineeName</h3>
+            <h3 class="rejection-dialog-title">Skip an Assignment for @traineeName</h3>
             <ul class="skip-select-list">
                 @foreach(var assignment in Model.Where(a => a.Status != LessonAssignmentStatus.Skipped).OrderBy(a => a.Position)){
                     <li class="skip-select-item">
