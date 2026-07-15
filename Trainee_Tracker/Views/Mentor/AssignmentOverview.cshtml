@@ -161,7 +161,7 @@
     @foreach(var assignment in toReview)
     {
         <dialog id="reject-dialog-@assignment.Id" class="reject-dialog">
-            <form asp-controller="Rejection" asp-action="Reject" asp-route-assignmentId="@assignment.Id" method="post">
+            <form asp-controller="Mentor" asp-action="RejectAssignment" asp-route-assignmentId="@assignment.Id" method="post">
                 <p class="rejection-dialog-title">Reason for rejecting "@assignment.Lesson.Title":</p>
                 <textarea name="reason" required rows="3" placeholder="Reason..."></textarea>
                 <div class ="rejection-dialog-action">
