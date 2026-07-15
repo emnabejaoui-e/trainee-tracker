@@ -4,6 +4,7 @@
 
 @{
     ViewData["Title"] = "Lesson Assignments Overview";
+    ViewData["NavbarOverride"] = "Mentor";
     var traineeName = Model.FirstOrDefault()?.Trainee?.Name ?? "Trainee";
 
     var statusCounts = Model

@@ -1,5 +1,6 @@
 
-    :root {
+   /* Code-Owner: Nazym Beisembin */
+   :root {
         --licorice: #141210;
         --pink: #FF0844;
         --white: #FFFFFF;
@@ -64,15 +65,6 @@
         margin: 0;
     }
 
-    .role-badge {
-        background: #E6F1FB;
-        color: #0C447C;
-        font-size: 10px;
-        padding: 3px 7px;
-        border-radius: 4px;
-        font-weight: bold;
-    }
-
     .info-box {
         background: var(--gray-100);
         border: 1px solid var(--gray-200);
@@ -94,21 +86,21 @@
     }
 
 
-    .btn-secondary-storyboard {
-        margin-top: 12px;
-        padding: 8px 13px;
-        border-radius: 5px;
-        border: 1px solid var(--gray-200);
-        background: var(--gray-100);
-        color: var(--licorice);
-        cursor: pointer;
-        font-size: 13px;
-        text-decoration: none;
-        display: inline-block;
-    }
+.btn-secondary-storyboard {
+    margin-top: 12px;
+    padding: 8px 13px;
+    border-radius: 5px;
+    border: 1px solid var(--pink);
+    background: var(--pink);
+    color: var(--white);
+    cursor: pointer;
+    font-size: 13px;
+    text-decoration: none;
+    display: inline-block;
+}
 
-    .btn-secondary-storyboard:hover {
-        background: var(--pink);
-        color: var(--white);
-        text-decoration: none;
-    }
+.btn-secondary-storyboard:hover {
+    opacity: 0.85;
+    color: var(--white);
+    text-decoration: none;
+}

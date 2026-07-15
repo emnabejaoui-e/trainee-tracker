@@ -12,13 +12,17 @@
 @if (Model.Any())
 {
     <ul class="profile-list">
-        @foreach(Trainee trainee in Model)
+        @foreach (Trainee trainee in Model)
         {
             <li class="profile-item">
                 <div class="profile-main">
-                    <h1 class="name">@trainee.Name</h1>
-                    <br/>
-                    <a href="mailto:@trainee.Email" class="email">@trainee.Email</a>
+                    <h1 class="name">
+                        @trainee.Name
+                    </h1>
+
+                    <a href="mailto:@trainee.Email" class="email">
+                        @trainee.Email
+                    </a>
                 </div>
                 <div class="profile-meta">
                     <span class="meta-label">Mentor:</span>
@@ -34,11 +38,15 @@
                         }
                     }
                 </div>
-                
-@* Code-Owner: Julia *@
+
+                @* Code-Owner: Julia *@
                 <div class="profile-links">
-                    <a  href="/Mentor/Fortschrittskontrolle" class="profile-link">See Progress-Control-Data</a> 
-                    <a  asp-controller="Mentor" asp-action="AssignmentOverview" asp-route-traineeId="@trainee.Id" class="profile-link">See Lesson Assignments</a>
+                    <a asp-controller="Mentor" asp-action="Fortschrittskontrolle" asp-route-traineeId="@trainee.Id"
+                       class="profile-link">
+                        See Progress-Control-Data
+                    </a>
+                    <a asp-controller="Mentor" asp-action="AssignmentOverview" asp-route-traineeId="@trainee.Id"
+                       class="profile-link">See Lesson Assignments</a>
                 </div>
             </li>
         }
@@ -79,7 +87,10 @@ else
                 
                 @* Code-Owner: Julia *@
                 <div class="profile-links">
-                    <a  href="/Mentor/Fortschrittskontrolle" class="profile-link">See Progress-Control-Data</a> 
+                    <a asp-controller="Mentor" asp-action="Fortschrittskontrolle" asp-route-traineeId="@trainee.Id"
+                       class="profile-link">
+                        See Progress-Control-Data
+                    </a>
                     <a  asp-controller="Mentor" asp-action="AssignmentOverview" asp-route-traineeId="@trainee.Id" class="profile-link">See Lesson Assignments</a>
                 </div>
             </li>        
