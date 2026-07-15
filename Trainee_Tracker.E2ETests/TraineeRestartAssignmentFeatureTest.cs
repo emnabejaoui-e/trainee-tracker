@@ -44,7 +44,8 @@ public class TraineeRestartAssignmentFeatureTest
         var startedColumnBefore = _driver.FindElement(By.Id("column-body-Started"));
         var rejectedCards = rejectedColumn.FindElements(By.CssSelector(".board-card"));
         var matchingCard = rejectedCards.FirstOrDefault(item => item.FindElement(By.CssSelector(".card-title")).Text == rejectedCardTitle);
-         Assert.NotNull(matchingCard);
+        System.Threading.Thread.Sleep(200);
+        Assert.NotNull(matchingCard);
 
         var restartButton = matchingCard.FindElement(By.CssSelector(".action-btn-primary"));
 
