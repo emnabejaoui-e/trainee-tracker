@@ -60,6 +60,24 @@ e2e-tests:
       for i in $(seq 1 30); do curl -sf http://localhost:5089 > /dev/null && break; echo "App is not ready yet; waiting... ($i)"; sleep 2; done
 
 
+
+    #DB reset
+    - dotnet tool install --global dotnet-ef
+    - export PATH="$PATH:/root/.dotnet/tools"
+
+    - dotnet restore
+    - dotnet build
+    - mkdir -p Persistence
+    - rm -f Persistence/trainee_tracker.db Persistence/trainee_tracker.db-wal Persistence/trainee_tracker.db-shm
+    - dotnet ef database update
+
+    - dotnet run --environment Development &
+
+    # waiting
+    - 
+      for i in $(seq 1 30); do curl -sf http://localhost:5089 > /dev/null && break; echo "App is not ready yet; waiting... ($i)"; sleep 2; done
+
+
     - cd ../Trainee_Tracker.E2ETests
     - dotnet test
 
