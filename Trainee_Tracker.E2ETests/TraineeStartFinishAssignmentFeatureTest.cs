@@ -43,8 +43,9 @@ public class TraineeStartFinishAssignmentFeatureTest
 
         //Assert:
         var startedColumn = _wait.Until(d => d.FindElement(By.Id("column-body-Started")));
+        var startedColumnText = _wait.Until(d => d.FindElement(By.Id("column-body-Started")).Text);
 
-        Assert.Contains(cardTitle, startedColumn.Text);
+        Assert.Contains(cardTitle, startedColumnText);
         Console.WriteLine("test: start assignment finished");
 
         _driver.Navigate().Refresh();
