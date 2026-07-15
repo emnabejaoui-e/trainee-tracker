@@ -10,13 +10,15 @@ public class MentorFinishRejectAssignmentFeatureTest
 {
     private readonly IWebDriver _driver;
     private readonly WebDriverWait _wait;
+    private readonly MentorTestFixture _fixture;
     private const string BaseUrl = "http://localhost:5089";
 
     public MentorFinishRejectAssignmentFeatureTest(MentorTestFixture fixture)
     {
     
         _driver = fixture.Driver;
-        _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(20));
+        _wait = fixture.Wait;
+        _fixture = fixture;
     }
 
     //Code-Owner: Julia Sandner
@@ -35,9 +37,7 @@ public class MentorFinishRejectAssignmentFeatureTest
         var assignmentTitle = finishedColumn.FindElement(By.CssSelector(".card-title")).Text;
         
         //open Dialog
-        _wait.Until(d => rejectButton.Displayed);
-        _wait.Until(d => rejectButton.Enabled);
-        rejectButton.Click();
+        _fixture.SafeClick(rejectButton);
 
         //rejection
         var dialog = _wait.Until(d => d.FindElement(By.CssSelector(".reject-dialog")));
@@ -46,7 +46,8 @@ public class MentorFinishRejectAssignmentFeatureTest
         reasonInput.SendKeys(reason);
 
         var confirmButton = dialog.FindElement(By.CssSelector(".action-btn-reject"));
-        confirmButton.Click();
+        _fixture.SafeClick(confirmButton);
+
         System.Threading.Thread.Sleep(200);
 
         //Assert

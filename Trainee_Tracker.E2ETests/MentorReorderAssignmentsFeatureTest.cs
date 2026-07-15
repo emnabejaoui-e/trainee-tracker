@@ -9,13 +9,15 @@ public class MentorReorderAssignmentsFeatureTest
 {
     private readonly IWebDriver _driver;
     private readonly WebDriverWait _wait;
+    private readonly MentorTestFixture _fixture;
     private const string BaseUrl = "http://localhost:5089";
 
     public MentorReorderAssignmentsFeatureTest(MentorTestFixture fixture)
     {
     
         _driver = fixture.Driver;
-        _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(20));
+        _wait = fixture.Wait;
+        _fixture = fixture;
     }
 
     // //code-owner: Julia Sandner
@@ -32,13 +34,9 @@ public class MentorReorderAssignmentsFeatureTest
         _driver.Navigate().GoToUrl($"{BaseUrl}/Mentor/AssignmentOverview?traineeId=1");
 
        var reorderTriggerButton = _wait.Until(d => d.FindElement(By.CssSelector(".action-btn-primary"))); 
-       ((IJavaScriptExecutor)_driver).ExecuteScript(
-        "arguments[0].scrollIntoView({block: 'center'});", reorderTriggerButton );
-        System.Threading.Thread.Sleep(200);
-
-
+    
         //open reorder-dialog
-        reorderTriggerButton.Click();
+        _fixture.SafeClick(reorderTriggerButton);
 
         var dialog = _wait.Until(d => d.FindElement(By.Id("sort-dialog")));
         Assert.True(dialog.Displayed);
@@ -54,7 +52,8 @@ public class MentorReorderAssignmentsFeatureTest
             list.insertBefore(items[1], items[0]);
         ");
 
-        dialog.FindElement(By.CssSelector(".action-btn-accept")).Click();
+        var acceptButton = dialog.FindElement(By.CssSelector(".action-btn-accept"));
+        _fixture.SafeClick(acceptButton);
 
     //Assert
         _wait.Until(d => d.Url.Contains("AssignmentOverview"));

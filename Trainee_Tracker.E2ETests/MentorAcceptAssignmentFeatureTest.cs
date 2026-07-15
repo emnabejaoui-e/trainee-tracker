@@ -9,13 +9,15 @@ public class MentorAcceptAssignmentFeaturesTest
 {
     private readonly IWebDriver _driver;
     private readonly WebDriverWait _wait;
+    private readonly MentorTestFixture _fixture;   
     private const string BaseUrl = "http://localhost:5089";
 
     public MentorAcceptAssignmentFeaturesTest(MentorTestFixture fixture)
     {
     
         _driver = fixture.Driver;
-        _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(20));
+        _wait = fixture.Wait;
+        _fixture = fixture;   
     }
 
     ///Code-owner: Julia Sandner
@@ -37,9 +39,7 @@ public class MentorAcceptAssignmentFeaturesTest
         System.Threading.Thread.Sleep(200);
 
         //Act
-        _wait.Until(d => acceptButton.Displayed);
-        _wait.Until(d => acceptButton.Enabled);
-        acceptButton.Click();
+       _fixture.SafeClick(acceptButton);
 
         //Assert
 
