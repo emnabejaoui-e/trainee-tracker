@@ -45,6 +45,12 @@ public class FakeUserRepository : IUserRepository
 public class FakeAssignmentService : IAssignmentService
 {
     public void AssignLessonsToTrainee(Trainee trainee) { }
+
+    public AssignmentOverviewResult GetOverview(Trainee trainee) { return null;} //code-Owner: Julia Sandner
+
+    public void UpdateAssignmentOrder(List<int> orderedIds) { } //Code-Owner: Julia Sandner
+
+    public LessonAssignment? UpdateAssignmentStatus(int assignmentId, LessonAssignmentStatus newStatus){ return null;} //code-Owner: Julia Sandner
 }
 
 // Code Owner: Jelena Cosic
