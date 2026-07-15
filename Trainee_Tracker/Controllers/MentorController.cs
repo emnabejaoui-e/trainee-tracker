@@ -24,6 +24,7 @@ public class MentorController : Controller
     private readonly ITraineeRepository _traineeRepo;
     private readonly WorkingHoursService _workingHoursService;
     private readonly IProgressService _progressService;
+    private readonly IAssignmentService _assignmentService;
 
     public MentorController(
         IMentorRepository mentorRepo,
@@ -32,7 +33,9 @@ public class MentorController : Controller
         IRejectionRepository rejectionRepo,
         ITraineeRepository traineeRepo,
         WorkingHoursService workingHoursService,
-        IProgressService progressService)
+        IProgressService progressService,
+        IAssignmentService assignmentService
+        )
     {
         _mentorRepo = mentorRepo;
         _userRepo = userRepo;
@@ -41,6 +44,7 @@ public class MentorController : Controller
         _traineeRepo = traineeRepo;
         _workingHoursService = workingHoursService;
         _progressService = progressService;
+        _assignmentService = assignmentService;
     }
     // Code-Owner: Jelena Cosic
     // GET: /Mentor/Index
@@ -233,34 +237,63 @@ public class MentorController : Controller
     }
 
     //Code-Owner: Julia 
+    /// <summary>
+    /// Marks a lesson assignment as accepted
+    /// </summary>
+    /// <param name="assignmentId"> the numeric id of the assignment to accept</param>
+    /// <returns>a redirect to the ASsignmentOverview, 404 if not found or the overview with an error if the transition is invalid</returns>
     [HttpPost]
     public IActionResult Accept(int assignmentId)
     {
-        var assignment = _assignmentRepo.GetById(assignmentId);
-        if (assignment == null)
+        var currentAssignment = _assignmentRepo.GetById(assignmentId);
+        if (currentAssignment == null)
         {
             return NotFound();
         }
 
-        _assignmentRepo.UpdateStatus(assignmentId, LessonAssignmentStatus.Accepted);
-
-        return RedirectToAction("AssignmentOverview", new { traineeId = assignment.TraineeId });
+        try
+        {
+            var assignment = _assignmentService.UpdateAssignmentStatus(assignmentId, LessonAssignmentStatus.Accepted);
+            return RedirectToAction("AssignmentOverview", new {traineeId = assignment!.TraineeId});
+        }
+        catch(InvalidOperationException e)
+        {
+            TempData["Error"] = e.Message;
+            return RedirectToAction("AssignmentOverview", new { traineeId = currentAssignment.TraineeId });
+            
+        }
     }
 
 //Code-Owner: Julia
     [HttpPost]
     public IActionResult SkipAssignment(int assignmentId)
     {
-        var assignment =_assignmentRepo.GetById(assignmentId);
-        if(assignment == null)
+        var currentAssignment =_assignmentRepo.GetById(assignmentId);
+        if(currentAssignment == null)
         {
             return NotFound();
         }
-        _assignmentRepo.UpdateStatus(assignmentId, LessonAssignmentStatus.Skipped);
-        return RedirectToAction("AssignmentOverview", new {traineeId = assignment.TraineeId});
 
+        try
+        {
+            var assignment = _assignmentService.UpdateAssignmentStatus(assignmentId, LessonAssignmentStatus.Skipped);
+            return RedirectToAction("AssignmentOverview", new {traineeId = assignment!.TraineeId});
+        }
+        catch(InvalidOperationException e)
+        {
+            TempData["Error"] = e.Message;
+            return RedirectToAction("AssignmentOverview", new { traineeId = currentAssignment.TraineeId });
+            
+        }
     }    
 
+    //Code-Owner: Julia Sandner
+    /// <summary>
+    /// Persists a new display order for a trainee's assignments
+    /// </summary>
+    /// <param name="traineeId"> the numeric id of the trainee whose assignments were reordered</param>
+    /// <param name="orderedIds">the assignment ids in their new display order</param>
+    /// <returns> a redirect to the AssignmentOverview for the given trainee</returns>
     public IActionResult UpdateAssignmentOrder(int traineeId, [FromForm] List<int> orderedIds)
     {
         _assignmentRepo.UpdateAssignmentPositions(orderedIds);
