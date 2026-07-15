@@ -31,19 +31,13 @@ public class LessonRepository : ILessonRepository
 
     public void Update(Lesson lesson)
     {
-        if (_context.Lessons.Any(l => l.Id.Equals(lesson.Id)))
-        {
-            _context.Lessons.Update(lesson);            
-        }
-        else
-        {
-            _context.Lessons.Add(lesson);
-        }
+        _context.Lessons.Update(lesson);
         _context.SaveChanges();
     }
 
     public void Add(Lesson lesson)
     {
+        Console.WriteLine("add " + lesson.Id);
         _context.Lessons.Add(lesson);
         _context.SaveChanges();
     }

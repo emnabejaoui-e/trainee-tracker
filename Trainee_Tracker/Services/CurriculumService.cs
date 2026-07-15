@@ -77,8 +77,18 @@ public class CurriculumService : ICurriculumService
             var lesson = updatedCurriculum.Lessons[i];
 
             lesson.Position = i;
-            
-            _lessonRepo.Update(lesson);
+            lesson.CurriculumId = updatedCurriculum.Id;
+
+            var searchedInstance = _lessonRepo.FindById(lesson.Id);
+            if (searchedInstance == null)
+            {
+                _lessonRepo.Add(lesson);
+            }
+            else
+            {
+                searchedInstance.Update(lesson);
+                _lessonRepo.Update(searchedInstance);
+            }
             
             var assignments = _lessonAssignmentRepo.FindByLesson(lesson);
             foreach (var lessonAssignment in assignments)
