@@ -1,12 +1,16 @@
+using Microsoft.EntityFrameworkCore;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
+using Trainee_Tracker.Data;
+using Trainee_Tracker.Models;
 
 namespace Trainee_Tracker.E2ETests;
 
 public class TraineeTestFixture : IDisposable
 {
     public IWebDriver Driver {get;}
+    public WebDriverWait Wait {get;}
     private const string BaseUrl = "http://localhost:5089";
 
     //code-owner: Julia Sandner
@@ -18,6 +22,8 @@ public class TraineeTestFixture : IDisposable
         options.AddArgument("--disable-dev-shm-usage");
         options.AddArgument("--window-size=1920,1080");
         Driver = new ChromeDriver(ChromeDriverService.CreateDefaultService(), options, TimeSpan.FromSeconds(60));
+        Wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(20));
+        Wait.IgnoreExceptionTypes(typeof(NoSuchElementException), typeof(StaleElementReferenceException));
 
         TraineeLogin();
     }
@@ -46,5 +52,48 @@ public class TraineeTestFixture : IDisposable
     {
         Driver.Quit();
         Driver.Dispose();
+    }
+
+    public void SafeClick(IWebElement element)
+    {
+        try
+        {
+            ((IJavaScriptExecutor) Driver).ExecuteScript("arguments[0].scrollIntoView({block: 'center'});", element);
+            System.Threading.Thread.Sleep(100);
+            element.Click();
+        }catch (ElementClickInterceptedException)
+        {
+            ((IJavaScriptExecutor)Driver).ExecuteScript("arguments[0].click()", element);
+        }
+    }
+
+    public string GetTextSafely(By locator)
+    {
+        return Wait.Until(d => d.FindElement(locator).Text);
+    }
+
+    public string GetTextSafely(IWebElement parent, By locator)
+    {
+        return Wait.Until( _ => parent.FindElement(locator).Text);
+    }
+
+    public void SeedAssignmentAsRejected(int assignmentId, string reason)
+    {   
+        var dbPath = Path.Combine(
+            AppContext.BaseDirectory,
+            "..", "..", "..", "..",
+            "Trainee_Tracker", "Persistence", "trainee_tracker.db"
+        );
+        var options = new DbContextOptionsBuilder<AppDbContext>()
+        .UseSqlite($"Data Source={dbPath}")
+        .Options;
+
+        using var context = new AppDbContext(options);
+        var assignment = context.LessonAssignments.First(a => a.Id == assignmentId);
+        assignment.Status = Models.LessonAssignmentStatus.Rejected;
+
+        context.Rejections.Add(new Rejection{AssignmentId = assignmentId, Reason = reason, RejectedAt = DateTime.UtcNow});
+
+        context.SaveChanges();
     }
 }
