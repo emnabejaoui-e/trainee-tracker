@@ -52,9 +52,14 @@ public class FeedbackController : Controller
                 else if (show == "assigned")
                 {
                     ViewData["NavbarOverride"] = "Mentor";
-                    // TODO: Show only feedback from trainees assigned to the current mentor.
-                    feedbacks = feedbacks.ToList();
-                }
+                    var mentor = _mentorRepo.GetMentorById(currentUserId);
+
+                    var assignedTraineeIds = mentor?.AssignedTrainees.Select(trainee => trainee.Id).ToHashSet() ?? new HashSet<int>();
+
+                    feedbacks = feedbacks
+                        .Where(feedback => assignedTraineeIds.Contains(feedback.TraineeId))
+                        .ToList();
+}
                 else
                 {
                     show = "all";
@@ -108,9 +113,8 @@ public class FeedbackController : Controller
     public IActionResult CreateFeedback(LessonFeedback feedback)
     {
         var traineeId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        
         feedback.TraineeId = traineeId;
-
-        // TODO: Replace hardcoded MentorId with assigned mentor once mentor assignment logic is available.
         feedback.CreatedAt = DateTime.Now;
 
         ModelState.Remove(nameof(LessonFeedback.Trainee));
@@ -134,7 +138,7 @@ public class FeedbackController : Controller
 
         TempData["SuccessMessage"] = "Feedback has been submitted successfully.";
 
-        return RedirectToAction("RecentFeedback", "Feedback", new
+        return RedirectToAction(nameof(RecentFeedback), new
         {
             from = DateTime.Today.ToString("yyyy-MM-dd"),
             until = DateTime.Today.ToString("yyyy-MM-dd"),
@@ -155,7 +159,7 @@ public class FeedbackController : Controller
         if (!CanManageFeedback(feedback, currentUserId))
         {
             TempData["ErrorMessage"] = "You are not authorized to edit this feedback.";
-            return RedirectToAction("RecentFeedback", new { show = "all" });
+            return RedirectToAction(nameof(RecentFeedback), new { show = "all" });
         }
         return View(feedback);
     }
@@ -179,7 +183,7 @@ public class FeedbackController : Controller
         if (!CanManageFeedback(existingFeedback, currentUserId))
         {
             TempData["ErrorMessage"] = "You are not authorized to edit this feedback.";
-            return RedirectToAction("RecentFeedback", new { show = "all" });
+            return RedirectToAction(nameof(RecentFeedback), new { show = "all" });
         }
 
         existingFeedback.Difficulty = feedback.Difficulty;
@@ -191,10 +195,10 @@ public class FeedbackController : Controller
 
         TempData["SuccessMessage"] = "Feedback has been updated successfully.";
 
-        return RedirectToAction("RecentFeedback", "Feedback", new
+        return RedirectToAction(nameof(RecentFeedback), new
         {
-            from = DateTime.Today.ToString("yyyy-MM-dd"),
-            until = DateTime.Today.ToString("yyyy-MM-dd"),
+            from = existingFeedback.CreatedAt.Date.ToString("yyyy-MM-dd"),
+            until = existingFeedback.CreatedAt.Date.ToString("yyyy-MM-dd"),
             show = "all"
         });
     }
@@ -212,7 +216,7 @@ public class FeedbackController : Controller
         if (!CanManageFeedback(feedback, currentUserId))
         {
             TempData["ErrorMessage"] = "You are not authorized to delete this feedback.";
-            return RedirectToAction("RecentFeedback", new { show = "all" });
+            return RedirectToAction(nameof(RecentFeedback), new { show = "all" });
         }
 
         _lessonAssignmentRepository.UpdateStatus(
@@ -224,10 +228,10 @@ public class FeedbackController : Controller
 
         TempData["SuccessMessage"] = "Feedback has been deleted successfully.";
 
-        return RedirectToAction("RecentFeedback", "Feedback", new
+        return RedirectToAction(nameof(RecentFeedback), new
         {
-            from = DateTime.Today.ToString("yyyy-MM-dd"),
-            until = DateTime.Today.ToString("yyyy-MM-dd"),
+            from = feedback.CreatedAt.Date.ToString("yyyy-MM-dd"),
+            until = feedback.CreatedAt.Date.ToString("yyyy-MM-dd"),
             show = "all"
         });
     }

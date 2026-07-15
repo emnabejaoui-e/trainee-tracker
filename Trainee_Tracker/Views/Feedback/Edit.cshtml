@@ -4,6 +4,20 @@
 @{
     ViewData["Title"] = "Edit Feedback";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var fromValue = ViewBag.From != null
+        ? ((DateTime)ViewBag.From).ToString("yyyy-MM-dd")
+        : "";
+
+    var untilValue = ViewBag.Until != null
+        ? ((DateTime)ViewBag.Until).ToString("yyyy-MM-dd")
+        : "";
+
+    var showValue = ViewBag.Show as string ?? "all";
+
+    var lessonTitle = Model.Lesson?.Title
+        ?? (ViewBag.LessonTitle as string)
+        ?? "Lesson Feedback";
 }
 
 <link rel="stylesheet" href="~/css/feedback.css" />
@@ -12,31 +26,44 @@
     <h1 class="feedback-title">Edit Feedback</h1>
 
     <div class="feedback-card">
-        <h2 class="lesson-title">@(Model.Lesson?.Title ?? "Lesson Feedback")</h2>
+        <h2 class="lesson-title">@lessonTitle</h2>
 
         <form asp-action="Edit" asp-controller="Feedback" method="post">
             @Html.AntiForgeryToken()
 
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" name="from" value="@fromValue" />
+            <input type="hidden" name="until" value="@untilValue" />
+            <input type="hidden" name="show" value="@showValue" />
 
             <div class="feedback-box">
                 <label>Difficulty (optional)</label>
 
-                <div class="rating-input">
+                <div class="rating-input" aria-label="Difficulty rating">
                     <input asp-for="Difficulty" type="radio" id="star5" value="5" />
-                    <label for="star5">★</label>
+                    <label for="star5"
+                           data-tooltip="Very difficult"
+                           aria-label="5 stars: very difficult">★</label>
 
                     <input asp-for="Difficulty" type="radio" id="star4" value="4" />
-                    <label for="star4">★</label>
+                    <label for="star4"
+                           data-tooltip="Difficult"
+                           aria-label="4 stars: difficult">★</label>
 
                     <input asp-for="Difficulty" type="radio" id="star3" value="3" />
-                    <label for="star3">★</label>
+                    <label for="star3"
+                           data-tooltip="Moderate"
+                           aria-label="3 stars: moderate">★</label>
 
                     <input asp-for="Difficulty" type="radio" id="star2" value="2" />
-                    <label for="star2">★</label>
+                    <label for="star2"
+                           data-tooltip="Easy"
+                           aria-label="2 stars: easy">★</label>
 
                     <input asp-for="Difficulty" type="radio" id="star1" value="1" />
-                    <label for="star1">★</label>
+                    <label for="star1"
+                           data-tooltip="Very easy"
+                           aria-label="1 star: very easy">★</label>
                 </div>
 
                 <span asp-validation-for="Difficulty" class="text-danger"></span>
@@ -59,10 +86,14 @@
 
             <div class="feedback-box">
                 <label asp-for="ActualEffort">
-                    Actual Effort (optional)
+                    Actual Effort in hours (optional)
                 </label>
 
-                <input asp-for="ActualEffort" type="number" step="0.1" min="0.1" />
+                <input asp-for="ActualEffort"
+                       type="number"
+                       step="0.5"
+                       min="0.5"
+                       placeholder="e.g. 1.5" />
 
                 <span asp-validation-for="ActualEffort" class="text-danger"></span>
             </div>
@@ -75,13 +106,20 @@
                 <span asp-validation-for="Comment" class="text-danger"></span>
             </div>
 
-            <button class="btn-submit-feedback" type="submit">
-                Save Changes
-            </button>
+            <div class="feedback-form-actions">
+                <button class="btn-submit-feedback" type="submit">
+                    Save Changes
+                </button>
 
-            <a asp-action="RecentFeedback" asp-controller="Feedback" class="btn">
-                Cancel
-            </a>
+                <a asp-action="RecentFeedback"
+                   asp-controller="Feedback"
+                   asp-route-from="@fromValue"
+                   asp-route-until="@untilValue"
+                   asp-route-show="@showValue"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
+            </div>
 
             <div asp-validation-summary="All" class="text-danger"></div>
         </form>
