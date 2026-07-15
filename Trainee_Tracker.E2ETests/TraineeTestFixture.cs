@@ -84,6 +84,11 @@ public class TraineeTestFixture : IDisposable
             "..", "..", "..", "..",
             "Trainee_Tracker", "Persistence", "trainee_tracker.db"
         );
+        
+        Console.WriteLine($"[DEBUG] AppContext.BaseDirectory: {AppContext.BaseDirectory}");
+        Console.WriteLine($"[DEBUG] Berechneter DB-Pfad: {dbPath}");
+        Console.WriteLine($"[DEBUG] Datei existiert: {File.Exists(dbPath)}");
+
         var options = new DbContextOptionsBuilder<AppDbContext>()
         .UseSqlite($"Data Source={dbPath}")
         .Options;
