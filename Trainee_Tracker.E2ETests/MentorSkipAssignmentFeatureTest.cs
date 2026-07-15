@@ -10,13 +10,15 @@ public class MentorSkipAssignmentFeatureTest
 {
     private readonly IWebDriver _driver;
     private readonly WebDriverWait _wait;
+    private readonly MentorTestFixture _fixture;
     private const string BaseUrl = "http://localhost:5089";
 
     public MentorSkipAssignmentFeatureTest(MentorTestFixture fixture)
     {
     
         _driver = fixture.Driver;
-        _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(20));
+        _wait = fixture.Wait;
+        _fixture = fixture;
     }
 
 // code-owner: Julia Sandner
@@ -34,16 +36,8 @@ public class MentorSkipAssignmentFeatureTest
 
         var skipTriggerButton = _wait.Until(d => d.FindElement(By.CssSelector(".action-btn-skip"))); 
 
-            // Scroll the element into view before clicking it
-        ((IJavaScriptExecutor)_driver).ExecuteScript(
-            "arguments[0].scrollIntoView({block: 'center'});", skipTriggerButton);
-        System.Threading.Thread.Sleep(200);
-        
-
-        _wait.Until(d => skipTriggerButton.Displayed);
-        _wait.Until(d => skipTriggerButton.Enabled);
             // open skip-dialog
-        skipTriggerButton.Click(); 
+        _fixture.SafeClick(skipTriggerButton);
 
         var dialog = _wait.Until(d => d.FindElement(By.Id("skip-select-dialog")));
         Assert.True(dialog.Displayed);
@@ -51,7 +45,7 @@ public class MentorSkipAssignmentFeatureTest
         var lessonTitle = dialog.FindElement(By.CssSelector(".skip-select-title")).Text;
 
     //Act
-        firstSkipButton.Click();
+        _fixture.SafeClick(firstSkipButton);
 
     //Assert
         _wait.Until(d => d.Url.Contains("AssignmentOverview"));

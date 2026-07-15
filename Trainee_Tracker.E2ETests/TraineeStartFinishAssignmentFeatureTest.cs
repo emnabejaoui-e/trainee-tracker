@@ -10,13 +10,15 @@ public class TraineeStartFinishAssignmentFeatureTest
 {
     private readonly IWebDriver _driver;
     private readonly WebDriverWait _wait;
+    private readonly TraineeTestFixture _fixture;
     private const string BaseUrl = "http://localhost:5089";
 
     public TraineeStartFinishAssignmentFeatureTest(TraineeTestFixture fixture)
     {
     
         _driver = fixture.Driver;
-        _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(20));
+        _wait = fixture.Wait;
+        _fixture = fixture;
     }
 
     //code-owner: Julia Sandner
@@ -36,13 +38,12 @@ public class TraineeStartFinishAssignmentFeatureTest
         var cardTitle = openColumn.FindElement(By.CssSelector(".card-title")).Text;
 
         //Act
-        _wait.Until(d => startButton.Displayed);
-        _wait.Until(d => startButton.Enabled);
-        System.Threading.Thread.Sleep(200);
-        startButton.Click();
+        _fixture.SafeClick(startButton);
+
 
         //Assert:
         var startedColumn = _wait.Until(d => d.FindElement(By.Id("column-body-Started")));
+
         Assert.Contains(cardTitle, startedColumn.Text);
         Console.WriteLine("test: start assignment finished");
 
@@ -55,10 +56,7 @@ public class TraineeStartFinishAssignmentFeatureTest
         cardTitle = startedColumn.FindElement(By.CssSelector(".card-title")).Text;
 
         // Act
-        _wait.Until(d =>finishButton.Displayed);
-        _wait.Until(d => finishButton.Enabled);
-        System.Threading.Thread.Sleep(200);
-        finishButton.Click();
+        _fixture.SafeClick(finishButton);
 
         //Assert
         var finishedColumn = _wait.Until(d => d.FindElement(By.Id("column-body-Finished")));
