@@ -38,6 +38,12 @@
     .ToList();
 }
 
+@if(TempData["Error"] != null){
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
 <style> 
     .container {
         max-width: 100%;
@@ -179,22 +185,35 @@
 
         <dialog id="skip-select-dialog" class="skip-dialog">
             <h3 class="rejection-dialog-title">Skip a Assignment for @traineeName</h3>
-            <ul class="skip-select-list">
-                @foreach(var assignment in Model.Where(a => a.Status != LessonAssignmentStatus.Skipped).OrderBy(a => a.Position)){
-                    <li class="skip-select-item">
-                        <div class="skip-select-item-info">
-                            <span class="skip-select-postion">@assignment.Position -</span>
-                            <span class="skip-select-title">@assignment.Lesson.Title</span>
-                            <span class="skip-select-status">@assignment.Status</span>
-                        </div>
-
-                        <form asp-controller="Mentor" asp-action="SkipAssignment" asp-route-assignmentId="@assignment.Id" method="post">
-                            <button type="submit" class="action-btn action-btn-skip-confirm">skip</button>
-                        </form>
-                    </li>
+                @{
+                    var skippableAssignments = Model
+                    .Where(a => a.Status == LessonAssignmentStatus.Open)
+                    .OrderBy(a => a.Position)
+                    .ToList();
                 }
-            </ul>
 
+                @if(!skippableAssignments.Any())
+                {
+                    <p class="skip-select-empty">There is no assignment that can be skipped</p>
+                }
+                else
+                {
+                    <ul class="skip-select-list">
+                        @foreach(var assignment in skippableAssignments){
+                            <li class="skip-select-item">
+                                <div class="skip-select-item-info">
+                                    <span class="skip-select-postion">@assignment.Position -</span>
+                                    <span class="skip-select-title">@assignment.Lesson.Title</span>
+                                    <span class="skip-select-status">@assignment.Status</span>
+                                </div>
+
+                                <form asp-controller="Mentor" asp-action="SkipAssignment" asp-route-assignmentId="@assignment.Id" method="post">
+                                    <button type="submit" class="action-btn action-btn-skip-confirm">skip</button>
+                                </form>
+                            </li>
+                        }
+                    </ul>
+                }
             <div class="rejection-dialog-action">
                 <button type="button" class="action-btn action-btn-cancel" onclick="document.getElementById('skip-select-dialog').close()">cancel</button>
             </div>
