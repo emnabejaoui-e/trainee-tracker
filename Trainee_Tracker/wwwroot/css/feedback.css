@@ -468,6 +468,59 @@ textarea.input-validation-error {
     display: none;
 }
 
+.feedback-toast {
+    position: fixed;
+    top: 5rem;
+    left: 50%;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: min(460px, calc(100vw - 2rem));
+    margin: 0;
+    padding: 14px 16px;
+    color: var(--licorice);
+    background: #fff7fa;
+    border: 1px solid #ffd4e0;
+    border-left: 5px solid var(--pink);
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
+    transform: translateX(-50%);
+}
+
+.feedback-toast.alert-success,
+.feedback-toast.alert-danger {
+    color: var(--licorice);
+    background: #fff7fa;
+    border-top: 1px solid #dedee3;
+    border-right: 1px solid #dedee3;
+    border-bottom: 1px solid #dedee3;
+    border-left: 5px solid var(--pink);
+}
+
+.feedback-toast-close {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    color: var(--white);
+    background: var(--licorice);
+    border: none;
+    border-radius: 6px;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.feedback-toast-close:hover {
+    background: var(--pink);
+}
+
+
 .alert-success,
 .alert-danger {
     margin-bottom: 20px;
@@ -487,6 +540,15 @@ textarea.input-validation-error {
     background-color: #f8d7da;
     border: 1px solid #f5c6cb;
 }
+
+.activity-feed > article.feedback-highlight {
+    background: #fff3f7;
+    border-color: #ffc2d3;
+    border-left-color: var(--pink);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+}
+
+
 
 /* ===========================
    Responsive
