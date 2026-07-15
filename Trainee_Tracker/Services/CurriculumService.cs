@@ -27,54 +27,32 @@ public class CurriculumService : ICurriculumService
     {
         if (existingLessons == importedLessons)
             throw new ArgumentException("The existing and the imported List must not refer to the same object.");
-        
+
+        var result = new Lesson[importedLessons.Count];
+
         for (int i = 0; i < importedLessons.Count; i++)
         {
-            var lessonUpdate = importedLessons[i];
-            int idx = existingLessons.IndexOf(lessonUpdate);
-            if (idx != -1)
-            {
-                // Lesson already exists in Curriculum.
-                var existingLesson = existingLessons[idx];
-
-                // Update values
-                existingLesson.Update(lessonUpdate);
-                
-                // Update position
-                existingLessons.RemoveAt(idx);
-                existingLessons.Insert(Math.Min(i, existingLessons.Count), existingLesson);
-            }
-            else
-            {
-                // Lesson does not already exist in Curriculum:
-                // Insert new Lesson at the correct position.
-                existingLessons.Insert(Math.Min(i, existingLessons.Count), lessonUpdate);
-            }
+            result[i] = importedLessons[i];
+            importedLessons[i].Position = i;
         }
         
-        for(var i = 0; i < existingLessons.Count; i++)
+        foreach(var removedLesson in existingLessons.Where(l => !importedLessons.Contains(l)))
         {
-            var less = existingLessons[i];
-            if (!less.Inactive && !importedLessons.Contains(less))
-            {
-                // All removed lessons are moved to the end and set to inactive
-                existingLessons.RemoveAt(i);
-                less.Inactive = true;
-                existingLessons.Insert(existingLessons.Count, less);
-                i--;
-            }
+            removedLesson.Inactive = true;
+            removedLesson.Position = result.Length;
+            result = result.Append(removedLesson).ToArray();
         }
 
-        return existingLessons;
+        return result.ToList();
     }
 
     public void Update(Curriculum updatedCurriculum)
     {
         var trainees = GetTraineesOfCurriculum(updatedCurriculum);
         
-        for (int i = 0; i < updatedCurriculum.Lessons.Count; i++)
+        for (int i = 0; i < updatedCurriculum._Lessons.Count; i++)
         {
-            var lesson = updatedCurriculum.Lessons[i];
+            var lesson = updatedCurriculum._Lessons[i];
 
             lesson.Position = i;
             lesson.CurriculumId = updatedCurriculum.Id;
