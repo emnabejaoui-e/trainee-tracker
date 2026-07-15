@@ -30,8 +30,7 @@ namespace Trainee_Tracker.Migrations
                 name: "Lessons",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false),
                     Title = table.Column<string>(type: "TEXT", nullable: false),
                     URL = table.Column<string>(type: "TEXT", nullable: false),
                     Effort = table.Column<double>(type: "REAL", nullable: false),
@@ -117,7 +116,6 @@ namespace Trainee_Tracker.Migrations
                     Comment = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     TraineeId = table.Column<int>(type: "INTEGER", nullable: false),
-                    MentorId = table.Column<int>(type: "INTEGER", nullable: false),
                     LessonId = table.Column<int>(type: "INTEGER", nullable: false),
                     AssignmentId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -128,12 +126,6 @@ namespace Trainee_Tracker.Migrations
                         name: "FK_LessonFeedbacks_Lessons_LessonId",
                         column: x => x.LessonId,
                         principalTable: "Lessons",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_LessonFeedbacks_Users_MentorId",
-                        column: x => x.MentorId,
-                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -320,11 +312,6 @@ namespace Trainee_Tracker.Migrations
                 name: "IX_LessonFeedbacks_LessonId",
                 table: "LessonFeedbacks",
                 column: "LessonId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LessonFeedbacks_MentorId",
-                table: "LessonFeedbacks",
-                column: "MentorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LessonFeedbacks_TraineeId",

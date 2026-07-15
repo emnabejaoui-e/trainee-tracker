@@ -99,7 +99,6 @@ namespace Trainee_Tracker.Migrations
             modelBuilder.Entity("Trainee_Tracker.Models.Lesson", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("CurriculumId")

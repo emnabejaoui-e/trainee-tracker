@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace Trainee_Tracker.Models;
@@ -11,6 +12,7 @@ public class Lesson
     /// <summary>
     /// This Lesson's numeric, unique Id.
     /// </summary>
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public int Id { get; set; } = 0;
 
     /// <summary>
@@ -66,6 +68,7 @@ public class Lesson
     /// <param name="newValues">A Lesson object to take the new values from.</param>
     public void Update(LessonDTO newValues)
     {
+        Id = newValues.Id;
         Title = newValues.Title;
         URL = newValues.URL;
         if (newValues.Estimate is null)
