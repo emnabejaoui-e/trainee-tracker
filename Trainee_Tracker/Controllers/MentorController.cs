@@ -266,4 +266,21 @@ public class MentorController : Controller
         _assignmentRepo.UpdateAssignmentPositions(orderedIds);
         return RedirectToAction("AssignmentOverview", new {traineeId});
     }
+
+    public IActionResult RejectAssignment(int assignmentId, string reason)
+    {   var assignment = _assignmentRepo.GetById(assignmentId);
+        if(assignment == null)
+        {
+            return NotFound();
+        }
+
+        if (string.IsNullOrWhiteSpace(reason))
+        {
+            ModelState.AddModelError(string.Empty, "A reason is required.");
+            return RedirectToAction("AssignmentOverview", "Mentor", new {traineeId = assignment.TraineeId}); 
+        }
+
+        _rejectionRepo.Reject(assignmentId, reason);
+        return RedirectToAction("AssignmentOverview", "Mentor", new {traineeId = assignment.TraineeId}); 
+    }
 }

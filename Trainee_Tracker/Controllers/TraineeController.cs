@@ -17,12 +17,19 @@ public class TraineeController : Controller
     private readonly IUserRepository _userRepo;
     private readonly ILessonDateCalculator _lessonDateCalculator;
 
-    public TraineeController(ILessonAssignmentRepository lessonAssignmentRepo, IUserRepository userRepo, ILessonDateCalculator lessonDateCalculator)
-    {
-        _lessonAssignmentRepo = lessonAssignmentRepo;
-        _userRepo = userRepo;
-        _lessonDateCalculator = lessonDateCalculator;
-    }
+   // Code Owner: Nazym Beisembin
+    private readonly WorkingHoursService _workingHoursService;
+    private readonly IProgressService _progressService;
+
+    public TraineeController(
+    ILessonAssignmentRepository lessonAssignmentRepo,IUserRepository userRepo, ILessonDateCalculator lessonDateCalculator,WorkingHoursService workingHoursService, IProgressService progressService)
+{
+    _lessonAssignmentRepo = lessonAssignmentRepo;
+    _userRepo = userRepo;
+    _lessonDateCalculator = lessonDateCalculator;
+    _workingHoursService = workingHoursService;// Line Owner: Nazym Beisembin
+    _progressService = progressService; // Line Owner: Nazym Beisembin
+}
 
     // Code Owner: Andrej Basara
     public IActionResult WeekPlan()
@@ -73,4 +80,54 @@ public class TraineeController : Controller
     }
 
     public IActionResult Home() => RedirectToAction("Index");
+
+    // Code Owner: Nazym Beisembin
+
+    [HttpGet]
+    public async Task<IActionResult> MyProgress()
+    {
+        ViewData["NavbarOverride"] = "Trainee";
+
+        string? traineeIdString =
+            User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (!int.TryParse(traineeIdString, out int traineeId))
+        {
+            return Unauthorized();
+        }
+
+        Trainee? trainee =
+            _userRepo.GetById(traineeId) as Trainee;
+
+        if (trainee == null)
+        {
+            return Unauthorized();
+        }
+
+        DateOnly startDate = trainee.StartingDate;
+        DateOnly endDate = DateOnly.FromDateTime(DateTime.Today);
+
+        double? daysWorked =
+            await _workingHoursService.GetWorkedPersonDaysAsync(
+                trainee.Email,
+                startDate,
+                endDate
+            );
+
+        List<LessonAssignment> assignments =
+            _lessonAssignmentRepo.FindByTrainee(trainee);
+
+        ProgressControlData model =
+            _progressService.CalculateProgress(
+                assignments,
+                daysWorked ?? 0
+            );
+
+        ViewBag.TraineeName = trainee.Name;
+
+        return View(
+            "~/Views/Mentor/Fortschrittskontrolle.cshtml",
+            model
+        );
+    }
 }
