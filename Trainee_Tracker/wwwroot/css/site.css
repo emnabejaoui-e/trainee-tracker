@@ -73,9 +73,6 @@ body {
     text-transform: uppercase;
 }
 
-<<<<<<< HEAD
-.page-header .brand span { color: var(--white); }
-=======
 .page-header .brand span { color: var(--white); 
 
 }
@@ -88,16 +85,11 @@ body {
     display: inline-block;
     vertical-align: middle;
 }
->>>>>>> 468e20b (Align login and navbar fonts, center role label, adjust navbar sizing)
 
 .categories a, .categories span {
     color: #ffffff;
     font-family: 'League Spartan', monospace;
-<<<<<<< HEAD
-    font-size: 19px;
-=======
     font-size: 22px;
->>>>>>> 468e20b (Align login and navbar fonts, center role label, adjust navbar sizing)
     letter-spacing: 0.8px;
     text-decoration: none;
     padding-right: 30px;
@@ -142,12 +134,8 @@ body {
     font-family: 'IBM Plex Mono', monospace;
     letter-spacing: 0.08em;
     margin-bottom: 2px;
-<<<<<<< HEAD
-    align-self: center;
-=======
     width: 100%;
     text-align: center;
->>>>>>> 468e20b (Align login and navbar fonts, center role label, adjust navbar sizing)
 }
 
 .user-profile .email {
