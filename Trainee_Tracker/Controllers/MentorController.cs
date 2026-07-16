@@ -295,7 +295,7 @@ public class MentorController : Controller
     /// <returns> a redirect to the AssignmentOverview for the given trainee</returns>
     public IActionResult UpdateAssignmentOrder(int traineeId, [FromForm] List<int> orderedIds)
     {
-        _assignmentRepo.UpdateAssignmentPositions(orderedIds);
+        _assignmentService.UpdateAssignmentOrder(orderedIds);
         return RedirectToAction("AssignmentOverview", new {traineeId});
     }
 
