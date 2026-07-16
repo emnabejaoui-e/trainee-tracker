@@ -29,20 +29,24 @@ else
                     </div>
 
                     <div class="feedback-actions">
-                        <a asp-action="Edit"
-                           asp-route-id="@feedback.Id"
-                           class="btn">
+                        <a  asp-action="Edit"
+                            asp-route-id="@feedback.Id"
+                            data-save-feedback-scroll
+                            class="btn">
                             Edit
                         </a>
 
-                        <form asp-action="Delete"
-                              method="post"
-                              onsubmit="return confirm('Are you sure you want to delete this feedback?');">
+                        <form
+                            asp-action="Delete"
+                            method="post"
+                            data-save-feedback-scroll
+                            onsubmit="return confirm('Are you sure you want to delete this feedback?');">
                             @Html.AntiForgeryToken()
 
-                            <input type="hidden"
-                                   name="id"
-                                   value="@feedback.Id" />
+                            <input
+                                type="hidden"
+                                name="id"
+                                value="@feedback.Id" />
 
                             <button type="submit"
                                     class="btn btn-secondary">
@@ -59,7 +63,7 @@ else
                     {
                         <dd class="rating-details">
                             <div class="rating"
-                                 aria-label="@feedback.Difficulty.Value out of 5 stars">
+                                aria-label="@feedback.Difficulty.Value out of 5 stars">
                                 @for (var i = 0; i < feedback.Difficulty.Value; i++)
                                 {
                                     <span aria-hidden="true">★</span>
