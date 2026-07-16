@@ -309,7 +309,7 @@
 .feedback-title {
     margin-bottom: 24px;
     color: var(--licorice);
-    font-size: 46px;
+    font-size: 34px;
     font-weight: 700;
 }
 
@@ -619,7 +619,7 @@ textarea.input-validation-error {
     }
 
     .feedback-title {
-        font-size: 36px;
+        font-size: 34px;
     }
 
     .feedback-card {
