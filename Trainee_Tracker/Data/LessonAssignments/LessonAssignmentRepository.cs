@@ -44,6 +44,13 @@ public class LessonAssignmentRepository : ILessonAssignmentRepository
                 .ToList();
     }
 
+    public List<LessonAssignment> FindByLesson(Lesson lesson)
+    {
+        return _context.LessonAssignments
+            .Where(la => la.Lesson.Equals(lesson))
+            .ToList();
+    }
+
     public IEnumerable<LessonAssignment> GetAllLessonAssignments()
     {
         return _context.LessonAssignments

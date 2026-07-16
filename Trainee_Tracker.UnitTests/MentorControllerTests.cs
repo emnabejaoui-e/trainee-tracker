@@ -51,7 +51,10 @@ public class MentorControllerTests
         };
 
         _workingHoursService = new WorkingHoursService(httpClient);
-        _controller = new MentorController(_mentorRepoMock.Object, _userRepoMock.Object, _assignmentRepoMock.Object, _rejectionRepoMock.Object, _traineeRepoMock.Object, _workingHoursService, _progressServiceMock.Object, _assignmentServiceMock.Object);
+
+        // Curriculum Repo und Service sind null, da sie für die aktuellen Tests nicht benötigt werden
+        _controller = new MentorController(_mentorRepoMock.Object, _userRepoMock.Object, _assignmentRepoMock.Object, _rejectionRepoMock.Object, _traineeRepoMock.Object, _workingHoursService, _progressServiceMock.Object, null, null, _assignmentServiceMock.Object);
+
         _controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
     }
 
