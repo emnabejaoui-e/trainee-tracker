@@ -305,6 +305,16 @@ public class MentorController : Controller
     public IActionResult UpdateAssignmentOrder(int traineeId, [FromForm] List<int> orderedIds)
     {
         _assignmentRepo.UpdateAssignmentPositions(orderedIds);
+        
+        var trainee = _traineeRepo.FindById(traineeId);
+
+        if (trainee == null)
+        {
+            return NotFound();
+        }
+        trainee.IsAssignmentOrderCustomized = true;
+        _traineeRepo.Save(trainee);
+        
         return RedirectToAction("AssignmentOverview", new {traineeId});
     }
 

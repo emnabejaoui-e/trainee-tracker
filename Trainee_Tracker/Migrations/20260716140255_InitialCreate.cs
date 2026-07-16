@@ -62,7 +62,8 @@ namespace Trainee_Tracker.Migrations
                     Role = table.Column<string>(type: "TEXT", maxLength: 8, nullable: false),
                     CurriculumId = table.Column<int>(type: "INTEGER", nullable: true),
                     StartingDate = table.Column<DateOnly>(type: "TEXT", nullable: true),
-                    EndDate = table.Column<DateOnly>(type: "TEXT", nullable: true)
+                    EndDate = table.Column<DateOnly>(type: "TEXT", nullable: true),
+                    IsAssignmentOrderCustomized = table.Column<bool>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -192,12 +193,12 @@ namespace Trainee_Tracker.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Closed", "Email", "EndDate", "HashedPassword", "Name", "Role", "StartingDate" },
+                columns: new[] { "Id", "Closed", "Email", "EndDate", "HashedPassword", "IsAssignmentOrderCustomized", "Name", "Role", "StartingDate" },
                 values: new object[,]
                 {
-                    { 1, false, "torstentrainee@makandra.de", new DateOnly(2027, 1, 1), "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", "Torsten Trainee", "Trainee", new DateOnly(2026, 6, 30) },
-                    { 2, false, "jelenacosic3@makandra.de", new DateOnly(1, 1, 1), "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", "Jelena3 Trainee", "Trainee", new DateOnly(1, 1, 1) },
-                    { 3, false, "tildatrainee@makandra.de", new DateOnly(2027, 1, 1), "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", "Tilda Trainee", "Trainee", new DateOnly(2026, 7, 1) }
+                    { 1, false, "torstentrainee@makandra.de", new DateOnly(2027, 1, 1), "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", false, "Torsten Trainee", "Trainee", new DateOnly(2026, 6, 30) },
+                    { 2, false, "jelenacosic3@makandra.de", new DateOnly(1, 1, 1), "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", false, "Jelena3 Trainee", "Trainee", new DateOnly(1, 1, 1) },
+                    { 3, false, "tildatrainee@makandra.de", new DateOnly(2027, 1, 1), "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", false, "Tilda Trainee", "Trainee", new DateOnly(2026, 7, 1) }
                 });
 
             migrationBuilder.InsertData(
@@ -211,12 +212,12 @@ namespace Trainee_Tracker.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Closed", "Email", "EndDate", "HashedPassword", "Name", "Role", "StartingDate" },
+                columns: new[] { "Id", "Closed", "Email", "EndDate", "HashedPassword", "IsAssignmentOrderCustomized", "Name", "Role", "StartingDate" },
                 values: new object[,]
                 {
-                    { 9, false, "vanessa.vital@makandra.de", new DateOnly(2027, 3, 31), "$2a$11$OvYPz8FkuxXJe7WyPIHpzOc1bi5beKtsB2WYXBJlVDqsNRCJatfzK", "Vanessa Vital", "Trainee", new DateOnly(2026, 7, 17) },
-                    { 10, false, "stefan.schnupfen@makandra.de", new DateOnly(2026, 10, 31), "$2a$11$1YdXfUYVKPO7t0wmYKVirOq4mYR4k/sxxO6YlY7c2CdSO50yRSqGW", "Stefan Schnupfen", "Trainee", new DateOnly(2026, 5, 1) },
-                    { 11, false, "ursula.urlaub@makandra.de", new DateOnly(2026, 7, 31), "$2a$11$aemTP4KrL44P1z23XD39u.7nnd3zoXeME0PFZzVkQPTEmmK/fVqRm", "Ursula Urlaub", "Trainee", new DateOnly(2026, 1, 1) }
+                    { 9, false, "vanessa.vital@makandra.de", new DateOnly(2027, 3, 31), "$2a$11$OvYPz8FkuxXJe7WyPIHpzOc1bi5beKtsB2WYXBJlVDqsNRCJatfzK", false, "Vanessa Vital", "Trainee", new DateOnly(2026, 7, 17) },
+                    { 10, false, "stefan.schnupfen@makandra.de", new DateOnly(2026, 10, 31), "$2a$11$1YdXfUYVKPO7t0wmYKVirOq4mYR4k/sxxO6YlY7c2CdSO50yRSqGW", false, "Stefan Schnupfen", "Trainee", new DateOnly(2026, 5, 1) },
+                    { 11, false, "ursula.urlaub@makandra.de", new DateOnly(2026, 7, 31), "$2a$11$aemTP4KrL44P1z23XD39u.7nnd3zoXeME0PFZzVkQPTEmmK/fVqRm", false, "Ursula Urlaub", "Trainee", new DateOnly(2026, 1, 1) }
                 });
 
             migrationBuilder.InsertData(
