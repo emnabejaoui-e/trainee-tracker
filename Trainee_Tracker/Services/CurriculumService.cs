@@ -108,7 +108,7 @@ public class CurriculumService : ICurriculumService
         var result = new HashSet<Trainee>();
         foreach (var trainee in _traineeRepo.GetAllTrainees())
         {
-            if(trainee.Mentors.Any(m => curriculum.Equals(m.Curriculum)))
+            if(trainee.Mentors.Any(m => curriculum.Id.Equals(m.CurriculumId)))
             {
                 result.Add(trainee);
             }            
