@@ -1,3 +1,4 @@
+// Code Owner: Andrej Basara
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,6 @@ namespace Trainee_Tracker.Controllers
 
         [HttpGet("MentorProfile")]
         [Authorize(Roles = "Mentor, Admin")]
-        // Code Owner: Andrej Basara
         public IActionResult MentorProfile()
         {
             var mentorIdstring = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -40,7 +40,6 @@ namespace Trainee_Tracker.Controllers
 
         [HttpGet("TraineeProfile")]
         [Authorize(Roles = "Trainee")]
-        // Code Owner: Andrej Basara
         public IActionResult TraineeProfile()
         {
             var traineeIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
