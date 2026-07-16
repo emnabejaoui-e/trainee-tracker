@@ -18,5 +18,8 @@ public interface IAssignmentService
     //Code-Owner: Julia Sandner
     public void UpdateAssignmentOrder(List<int> orderedIds);
 
+    //Code-Owner: Julia Sandner
+    public Rejection? RejectAssignment(int assignmentId, string reason);
+
 
 }

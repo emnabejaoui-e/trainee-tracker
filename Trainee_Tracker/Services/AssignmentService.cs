@@ -119,4 +119,34 @@ public class AssignmentService : IAssignmentService
     {
         return AllowedTransitions.TryGetValue(currentStatus, out var allowed) && allowed.Contains(newStatus);
     }
+
+    //Code-Owner: Julia Sandner
+    /// <summary>
+    /// Rejects an assignment with a reason. Only valid if the assignments is currently finished and a non-empty reason is provided
+    /// </summary>
+    /// <param name="assignmentId"> numeric id of the assignmnet to reject</param>
+    /// <param name="reason"> reason for the rejcetion. Must not be null, empty or whitespace</param>
+    /// <returns> the created Rejection or null if no assignmnet with the given id exists</returns>
+    /// <exception cref="ArgumentException"> thrown when <paramref name="reason"/> is null, empty or whitespace</exception>
+    /// <exception cref="InvalidOperationException">thrown when the assignment is not currently in a status that allows rejection</exception>
+    public Rejection? RejectAssignment(int assignmentId, string reason)
+    {
+        var assignment = _lessonAssignmentRepo.GetById(assignmentId);
+        if(assignment == null)
+        {
+            return null;
+        }
+
+        if (string.IsNullOrWhiteSpace(reason))
+        {
+            throw new ArgumentException("A reason is required.",  nameof(reason));
+        }
+
+        if(!IsTransitionAllowed(assignment.Status, LessonAssignmentStatus.Rejected))
+        {
+            throw new InvalidOperationException($"Invalid status transition for assignment {assignmentId}: {assignment.Status} -> {LessonAssignmentStatus.Rejected}.");
+        }
+
+        return _rejectionRepo.Reject(assignmentId, reason);
+    }
 }
