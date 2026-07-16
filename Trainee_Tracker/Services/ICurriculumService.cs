@@ -9,4 +9,6 @@ public interface ICurriculumService
     void Update(Curriculum updatedCurriculum);
 
     ICollection<Trainee> GetTraineesOfCurriculum(Curriculum curriculum);
+
+    void UpdateLessonAssignments(Trainee trainee, Curriculum curriculum);
 }

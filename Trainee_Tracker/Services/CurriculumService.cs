@@ -48,8 +48,6 @@ public class CurriculumService : ICurriculumService
 
     public void Update(Curriculum updatedCurriculum)
     {
-        var trainees = GetTraineesOfCurriculum(updatedCurriculum);
-        
         for (int i = 0; i < updatedCurriculum._Lessons.Count; i++)
         {
             var lesson = updatedCurriculum._Lessons[i];
@@ -67,37 +65,10 @@ public class CurriculumService : ICurriculumService
                 searchedInstance.Update(lesson);
                 _lessonRepo.Update(searchedInstance);
             }
-            
-            var assignments = _lessonAssignmentRepo.FindByLesson(lesson);
-            foreach (var lessonAssignment in assignments)
-            {
-                if (lesson.Inactive && lessonAssignment.Status == LessonAssignmentStatus.Open)
-                {
-                    lessonAssignment.SkipAssignment();
-                    _lessonAssignmentRepo.Save(lessonAssignment);
-                }
-            }
-
-            var traineesWithMissingAssignments = trainees.Where(t => !assignments.Any(la => la.TraineeId == t.Id));
-            
-            foreach (var trainee in traineesWithMissingAssignments)
-            {
-                // TODO: Determine order of inserted LessonAssignments
-                // Current solution is to just append it at the end
-                
-                var highestPosition = _lessonAssignmentRepo.FindByTrainee(trainee)
-                    .Select(la => la.Position)
-                    .Append(0)
-                    .Max();
-                
-                var assignment = new LessonAssignment
-                {
-                    LessonId = lesson.Id,
-                    Position = highestPosition + 1,
-                    TraineeId = trainee.Id
-                };
-                _lessonAssignmentRepo.Save(assignment);
-            }
+        }
+        foreach (var trainee in GetTraineesOfCurriculum(updatedCurriculum))
+        {
+            UpdateLessonAssignments(trainee, updatedCurriculum);
         }
         
         _curriculumRepo.Update(updatedCurriculum);
@@ -115,5 +86,38 @@ public class CurriculumService : ICurriculumService
         }
 
         return result;
+    }
+
+    public void UpdateLessonAssignments(Trainee trainee, Curriculum curriculum)
+    {
+        var assignments = _lessonAssignmentRepo.FindByTrainee(trainee);
+
+        foreach (var lessonAssignment in assignments)
+        {
+            // Skip open assignments for inactive lessons
+            if (lessonAssignment.Lesson.Inactive && lessonAssignment.Status == LessonAssignmentStatus.Open)
+            {
+                lessonAssignment.SkipAssignment();
+                _lessonAssignmentRepo.Save(lessonAssignment);
+            }
+
+            // TODO Keep custom order
+            lessonAssignment.Position = lessonAssignment.Lesson.Position;
+        }
+
+        // Create missing assignments
+        var unassignedLessons = curriculum.Lessons
+            .Where(l => !assignments.Any(la => la.LessonId == l.Id))
+            .Where(l => !l.Inactive);
+        foreach (var lesson in unassignedLessons)
+        {
+            _lessonAssignmentRepo.Save(new LessonAssignment()
+            {
+                Position = lesson.Position,
+                LessonId = lesson.Id,
+                Status = LessonAssignmentStatus.Open,
+                TraineeId = trainee.Id
+            });
+        }
     }
 }
