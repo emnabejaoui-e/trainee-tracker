@@ -79,24 +79,24 @@ public class CurriculumService : ICurriculumService
             }
 
             var traineesWithMissingAssignments = trainees.Where(t => !assignments.Any(la => la.TraineeId == t.Id));
+            
             foreach (var trainee in traineesWithMissingAssignments)
             {
-                var assignmentsOfTrainee = _lessonAssignmentRepo.FindByTrainee(trainee)
-                    .Select(la => la.Id)
-                    .ToList();
+                // TODO: Determine order of inserted LessonAssignments
+                // Current solution is to just append it at the end
+                
+                var highestPosition = _lessonAssignmentRepo.FindByTrainee(trainee)
+                    .Select(la => la.Position)
+                    .Append(0)
+                    .Max();
                 
                 var assignment = new LessonAssignment
                 {
-                    Lesson = lesson,
                     LessonId = lesson.Id,
-                    Position = lesson.Position,
-                    Trainee = trainee,
+                    Position = highestPosition + 1,
                     TraineeId = trainee.Id
                 };
                 _lessonAssignmentRepo.Save(assignment);
-                
-                assignmentsOfTrainee.Insert(Math.Min(lesson.Position, assignmentsOfTrainee.Count - 1), assignment.Id);
-                _lessonAssignmentRepo.UpdateAssignmentPositions(assignmentsOfTrainee);
             }
         }
         
