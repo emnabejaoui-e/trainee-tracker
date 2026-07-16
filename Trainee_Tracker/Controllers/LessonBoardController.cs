@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+// Code-Owner: Julia Sandner
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Trainee_Tracker.Data.LessonAssignments;
@@ -14,7 +14,6 @@ public class LessonBoardController : Controller
     private readonly IUserRepository _userRepo;
     private readonly IRejectionRepository _rejectionRepo;
 
-    // Julia
     public LessonBoardController(ILessonAssignmentRepository lessonAssignmentRepo, IUserRepository userRepo, IRejectionRepository rejectionRepo)
     {
         _lessonAssignmentRepo = lessonAssignmentRepo;
@@ -22,7 +21,6 @@ public class LessonBoardController : Controller
         _rejectionRepo = rejectionRepo;
     }
 
-    // Julia
     public IActionResult LessonBoard()
     {
         var traineeIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -57,7 +55,6 @@ public class LessonBoardController : Controller
         return View(assignments);
     }
 
-    //Julia
     [HttpPost]
     public IActionResult UpdateStatus(int id, LessonAssignmentStatus newStatus)
     {
@@ -71,7 +68,6 @@ public class LessonBoardController : Controller
 
     }
 
-    //Julia
     [HttpPost]
     public IActionResult RateAssignment(int id)
     {
