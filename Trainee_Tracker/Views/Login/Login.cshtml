@@ -148,6 +148,8 @@
 
         .form-input:focus { border-color: var(--pink); }
 
+        .form-input.input-error { border-color: var(--danger); }
+
         .field-error {
             font-size: 11px;
             color: var(--danger);
@@ -156,6 +158,12 @@
         }
 
         .field-error.show { display: block; }
+
+        .field-error-server {
+            font-size: 11px;
+            color: var(--danger);
+            margin-top: 4px;
+        }
 
         .btn-login {
             background: var(--pink);
@@ -214,17 +222,25 @@
 
                     <div class="form-group">
                         <label class="form-label" for="email">Email Address</label>
-                        <input class="form-input" type="email" id="email" name="email"
+                        <input class="form-input @(ViewBag.EmailError == true ? "input-error" : "")" type="email" id="email" name="email"
                                placeholder="firstname.lastname@makandra.de"
                                autocomplete="email" required>
+                        @if (ViewBag.EmailError == true)
+                        {
+                            <div class="field-error-server">Please check your email address.</div>
+                        }
                     </div>
 
                     <div class="form-group">
                         <label class="form-label" for="password">Password</label>
-                        <input class="form-input" type="password" id="password" name="password"
+                        <input class="form-input @(ViewBag.PasswordError == true ? "input-error" : "")" type="password" id="password" name="password"
                                placeholder="••••••••"
                                autocomplete="current-password" required>
                         <div class="field-error" id="pw-empty-error">Please enter your password.</div>
+                        @if (ViewBag.PasswordError == true)
+                        {
+                            <div class="field-error-server">Please check your password.</div>
+                        }
                     </div>
 
                     <button type="submit" class="btn-login">Sign In</button>
