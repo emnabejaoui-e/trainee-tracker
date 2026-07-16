@@ -261,6 +261,20 @@ public class MentorController : Controller
         {
             return Unauthorized();
         }
+
+        var mentorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(mentorIdString == null)
+        {
+            return Unauthorized();
+        }
+        var mentorId = int.Parse(mentorIdString);
+        var mentor = _userRepo.GetById(mentorId) as Mentor;
+
+        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id))
+        {
+            return Forbid();
+        }
+
         var result = _assignmentService.GetOverview(trainee);
 
         ViewBag.RejectionReasons = result.RejectionHistory;
@@ -285,6 +299,19 @@ public class MentorController : Controller
         if (currentAssignment == null)
         {
             return NotFound();
+        }
+        var trainee = currentAssignment.Trainee;
+        var mentorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(mentorIdString == null)
+        {
+            return Unauthorized();
+        }
+        var mentorId = int.Parse(mentorIdString);
+        var mentor = _userRepo.GetById(mentorId) as Mentor;
+
+        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id))
+        {
+            return Forbid();
         }
 
         try
@@ -315,6 +342,20 @@ public class MentorController : Controller
             return NotFound();
         }
 
+        var trainee = currentAssignment.Trainee;
+        var mentorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(mentorIdString == null)
+        {
+            return Unauthorized();
+        }
+        var mentorId = int.Parse(mentorIdString);
+        var mentor = _userRepo.GetById(mentorId) as Mentor;
+
+        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id))
+        {
+            return Forbid();
+        }
+
         try
         {
             var assignment = _assignmentService.UpdateAssignmentStatus(assignmentId, LessonAssignmentStatus.Skipped);
@@ -336,7 +377,21 @@ public class MentorController : Controller
     /// <param name="orderedIds">the assignment ids in their new display order</param>
     /// <returns> a redirect to the AssignmentOverview for the given trainee</returns>
     public IActionResult UpdateAssignmentOrder(int traineeId, [FromForm] List<int> orderedIds)
-    {
+    {   
+        var trainee = _userRepo.GetById(traineeId);
+        var mentorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(mentorIdString == null)
+        {
+            return Unauthorized();
+        }
+        var mentorId = int.Parse(mentorIdString);
+        var mentor = _userRepo.GetById(mentorId) as Mentor;
+
+        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id))
+        {
+            return Forbid();
+        }
+
         _assignmentService.UpdateAssignmentOrder(orderedIds);
         return RedirectToAction("AssignmentOverview", new {traineeId});
     }
@@ -354,6 +409,20 @@ public class MentorController : Controller
         if(currentAssignment == null)
         {
             return NotFound();
+        }
+
+        var trainee = currentAssignment.Trainee;
+        var mentorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(mentorIdString == null)
+        {
+            return Unauthorized();
+        }
+        var mentorId = int.Parse(mentorIdString);
+        var mentor = _userRepo.GetById(mentorId) as Mentor;
+
+        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id))
+        {
+            return Forbid();
         }
 
         try
