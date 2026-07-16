@@ -19,15 +19,27 @@ namespace Trainee_Tracker.Controllers;
 [Authorize(Roles = "Mentor, Admin")]
 public class MentorController : Controller
 {
-    private IMentorRepository _mentorRepo;
-    private IUserRepository _userRepo;
-    private ILessonAssignmentRepository _assignmentRepo;
-    private IRejectionRepository _rejectionRepo;
     private readonly ICurriculumRepository _curriculumRepo;
-    private readonly ITraineeRepository _traineeRepo;
     private readonly ICurriculumService _curriculumService;
+    private readonly IMentorRepository _mentorRepo;
+    private readonly IUserRepository _userRepo;
+    private readonly ILessonAssignmentRepository _assignmentRepo;
+    private readonly IRejectionRepository _rejectionRepo;
+    private readonly ITraineeRepository _traineeRepo;
+    private readonly WorkingHoursService _workingHoursService;
+    private readonly IProgressService _progressService;
 
-    public MentorController(IMentorRepository mentorRepo, ICurriculumRepository curriculumRepo, IUserRepository userRepo, ILessonAssignmentRepository assignmentRepo, IRejectionRepository rejectionRepo, ITraineeRepository traineeRepo, ICurriculumService curriculumService)
+    public MentorController(
+        IMentorRepository mentorRepo,
+        IUserRepository userRepo,
+        ILessonAssignmentRepository assignmentRepo,
+        IRejectionRepository rejectionRepo,
+        ITraineeRepository traineeRepo,
+        WorkingHoursService workingHoursService,
+        IProgressService progressService,
+        ICurriculumRepository curriculumRepo,
+        ICurriculumService curriculumService 
+        )
     {
         _mentorRepo = mentorRepo;
         _curriculumRepo = curriculumRepo;
@@ -35,10 +47,12 @@ public class MentorController : Controller
         _assignmentRepo = assignmentRepo;
         _rejectionRepo = rejectionRepo;
         _traineeRepo = traineeRepo;
+        _workingHoursService = workingHoursService;
+        _progressService = progressService;
         _curriculumRepo = curriculumRepo;
         _curriculumService = curriculumService;
     }
-
+    
     // Code-Owner: Jelena Cosic
     // GET: /Mentor/Index
     /// <summary>
@@ -97,18 +111,59 @@ public class MentorController : Controller
     // Code-Owner: Leon
     // GET: /Mentor/Fortschrittskontrolle
     [HttpGet]
-    public IActionResult Fortschrittskontrolle()
+    public async Task<IActionResult> Fortschrittskontrolle(int traineeId)
     {
         ViewData["NavbarOverride"] = "Mentor";
-        var model = new ProgressControlData
+
+        string? mentorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (mentorId == null)
         {
-            DaysWorked = 15,
-            Finished = 12,
-            Open = 8,
-            Buffer = 2,
-            Speed = 110,
-            PredictedBuffer = 3
-        };
+            return Unauthorized();
+        }
+
+        Trainee? trainee;
+
+        if (User.IsInRole("Admin"))
+        {
+            trainee = _userRepo.GetById(traineeId) as Trainee;
+        }
+        else
+        {
+            Mentor? mentor = _mentorRepo.GetMentorById(int.Parse(mentorId));
+
+            if (mentor == null)
+            {
+                return Unauthorized();
+            }
+
+            trainee = mentor.AssignedTrainees
+                .FirstOrDefault(t => t.Id == traineeId && !t.Closed);
+        }
+
+        if (trainee == null)
+        {
+            return Unauthorized();
+        }
+
+        DateOnly startDate = trainee.StartingDate;
+        DateOnly endDate = DateOnly.FromDateTime(DateTime.Today);
+
+        double? daysWorked = await _workingHoursService.GetWorkedPersonDaysAsync(
+            trainee.Email,
+            startDate,
+            endDate
+        );
+
+        List<LessonAssignment> assignments =
+            _assignmentRepo.FindByTrainee(trainee);
+
+        ProgressControlData model = _progressService.CalculateProgress(
+            assignments,
+            daysWorked ?? 0
+        );
+
+        ViewBag.TraineeName = trainee.Name;
+
         return View(model);
     }
 
@@ -136,10 +191,12 @@ public class MentorController : Controller
             if (fileContentType.MediaType != "application/json")
                 ModelState.AddModelError("FileName", "This file is not a JSON file.");
         }
+
         if (curriculumName.IsWhiteSpace())
         {
             ModelState.AddModelError("FileName", "No curriculum was selected.");
         }
+
         if (ModelState.IsValid)
         {
             Stream readStream = file.OpenReadStream();
@@ -212,11 +269,11 @@ public class MentorController : Controller
 
         ViewBag.RejectionReasons = rejectionHistory;
         ViewBag.AssignmentsWithHistory = assignmentsWithHistory;
-        
-        return View("AssignmentOverview", assignments); 
+
+        return View("AssignmentOverview", assignments);
     }
 
-//Code-Owner: Julia 
+    //Code-Owner: Julia 
     [HttpPost]
     public IActionResult Accept(int assignmentId)
     {
@@ -249,5 +306,22 @@ public class MentorController : Controller
     {
         _assignmentRepo.UpdateAssignmentPositions(orderedIds);
         return RedirectToAction("AssignmentOverview", new {traineeId});
+    }
+
+    public IActionResult RejectAssignment(int assignmentId, string reason)
+    {   var assignment = _assignmentRepo.GetById(assignmentId);
+        if(assignment == null)
+        {
+            return NotFound();
+        }
+
+        if (string.IsNullOrWhiteSpace(reason))
+        {
+            ModelState.AddModelError(string.Empty, "A reason is required.");
+            return RedirectToAction("AssignmentOverview", "Mentor", new {traineeId = assignment.TraineeId}); 
+        }
+
+        _rejectionRepo.Reject(assignmentId, reason);
+        return RedirectToAction("AssignmentOverview", "Mentor", new {traineeId = assignment.TraineeId}); 
     }
 }

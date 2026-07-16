@@ -11,16 +11,16 @@ using Trainee_Tracker.Models;
 using Trainee_Tracker.Services;
 
 namespace Trainee_Tracker.Controllers;
-
+// Code Owner: Jelena Cosic
 [Authorize(Roles = "Admin")]
 public class AdminController : Controller
 {
-    private readonly IUserService _userService;
+    private readonly IUserService _userService; // Code Owner: Jelena Cosic
     private readonly IMentorService _mentorService;
 
     public AdminController(IUserService userService, IMentorService mentorService)
     {
-        _userService = userService;
+        _userService = userService; // Code Owner: Jelena Cosic
         _mentorService = mentorService;
     }
 

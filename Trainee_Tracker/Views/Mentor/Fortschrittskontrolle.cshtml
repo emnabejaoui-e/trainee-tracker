@@ -1,26 +1,15 @@
 @model Trainee_Tracker.Models.ProgressControlData
 @{
     ViewData["Title"] = "Fortschrittskontrolle";
-    ViewData["NavbarOverride"] = "Mentor";
 }
 
 
 <div class="progress-page">
-    <h1 class="section-title">Progress-Control-Data</h1>
-
 
     <div class="screen">
         <div class="page-content">
             <div class="page-titlebar">
-                <h2>Progress of Trainee 1</h2>
-                <span class="role-badge">DETAILS</span>
-            </div>
-
-            <div class="info-box">
-                <div class="info-label">System response</div>
-                <div class="info-value">
-                    The selected trainee's progress is displayed.
-                </div>
+                <h2>Progress of @ViewBag.TraineeName</h2>
             </div>
 
             <div class="info-box">
@@ -36,13 +25,34 @@
 
       
 
-            <p class="note">
-                This view helps the mentor quickly identify where a trainee may need support.
-            </p>
+           
 
-            <a class="btn-secondary-storyboard" asp-controller="Mentor" asp-action="Index">
-                Back to overview
-            </a>
+            @if (User.IsInRole("Trainee"))
+            {
+                <a asp-controller="Trainee" asp-action="WeekPlan" style="display:inline-block;
+                    margin-top:12px;
+                    padding:8px 13px;
+                    border:1px solid #FF0844 !important;
+                    border-radius:5px;
+                    background-color:#FF0844 !important;
+                    color:#FFFFFF !important;
+                    text-decoration:none !important;">
+                    Back to overview
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Mentor" asp-action="MyTrainees" style="display:inline-block;
+                    margin-top:12px;
+                    padding:8px 13px;
+                    border:1px solid #FF0844 !important;
+                    border-radius:5px;
+                    background-color:#FF0844 !important;
+                    color:#FFFFFF !important;
+                    text-decoration:none !important;">
+                    Back to overview
+                </a>
+            }
         </div>
     </div>
 </div>

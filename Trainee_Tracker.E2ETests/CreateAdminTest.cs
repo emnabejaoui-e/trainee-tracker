@@ -36,6 +36,8 @@ public class CreateAdminTest : IClassFixture<BrowserFixture>
         passwordField.SendKeys("Admin1!");
         submitButton.Click();
 
+        await Task.Delay(5000);
+
         var createAdminButton = _driver.FindElement(By.LinkText("Admin"));
         createAdminButton.Click();
 

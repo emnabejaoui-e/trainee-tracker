@@ -3,15 +3,19 @@ using Microsoft.EntityFrameworkCore;
 using Trainee_Tracker.Models;
 
 namespace Trainee_Tracker.Data;
-
+// Code Owner: Jelena Cosic
 public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-
+    // Code Owner: Jelena Cosic
     public DbSet<User> Users { get; set; }
+    // Code Owner: Jelena Cosic
     public DbSet<Trainee> Trainees { get; set; }
+    // Code Owner: Jelena Cosic
     public DbSet<Mentor> Mentors { get; set; }
+    // Code Owner: Jelena Cosic
     public DbSet<Admin> Admins { get; set; }
+    // Code Owner: Jelena Cosic
     public DbSet<LessonFeedback> LessonFeedbacks { get; set; }
 
     //Julia

@@ -1,194 +1,294 @@
 @* Code-Owner: Emna Bejaoui *@
 @model IEnumerable<Trainee_Tracker.Models.LessonFeedback>
-@using System.Security.Claims
+
 @{
     ViewData["Title"] = "Feedback";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var editableFeedbackIds = ViewBag.EditableFeedbackIds as HashSet<int> ?? new HashSet<int>();
-    var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+    var focusFeedbackId = TempData["FocusFeedbackId"]?.ToString();
+
+    var returnUrl =$"{Context.Request.Path }{ Context.Request.QueryString}";
+
+    var editableFeedbackIds =
+        ViewBag.EditableFeedbackIds as HashSet<int> ?? new HashSet<int>();
+
+    var fromValue = ViewBag.From != null
+        ? ((DateTime)ViewBag.From).ToString("yyyy-MM-dd")
+        : "";
+
+    var untilValue = ViewBag.Until != null
+        ? ((DateTime)ViewBag.Until).ToString("yyyy-MM-dd")
+        : "";
+
+    var showValue = ViewBag.Show as string ?? "all";
 }
 
 <link rel="stylesheet" href="~/css/feedback.css" />
 
-<h1 class="section-title">
-    <i class="bi bi-chat-square-text"></i>
-    Feedback
-</h1>
+<main class="feedback-overview-page">
+    <h1 class="section-title">
+        <i class="bi bi-chat-square-text"></i>
+        Feedback
+    </h1>
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success" role="alert">
-        @TempData["SuccessMessage"]
-    </div>
-}
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="feedback-toast alert-success" role="status">
+            <span>@TempData["SuccessMessage"]</span>
+            <button type="button"
+                    class="feedback-toast-close"
+                    aria-label="Close message" >
+                x
+            </button>
+        </div>
+    }
 
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger" role="alert">
-        @TempData["ErrorMessage"]
-    </div>
-}
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="feedback-toast alert-danger" role="alert">
+            <span>@TempData["ErrorMessage"]</span>
+            <button type="button"
+                    class="feedback-toast-close"
+                    aria-label="Close message" >
+                x
+            </button>
+        </div>
+    }
 
-<div class="feedback-show-filter">
-    <a  asp-action="RecentFeedback"
-        asp-route-show="all"
-        asp-route-from="@(ViewBag.From != null ? ((DateTime)ViewBag.From).ToString("yyyy-MM-dd") : "")"
-        asp-route-until="@(ViewBag.Until != null ? ((DateTime)ViewBag.Until).ToString("yyyy-MM-dd") : "")"
-        class="filter-tab @(ViewBag.Show == "all" ? "active" : "")">
+    <div class="feedback-show-filter">
+        <a asp-action="RecentFeedback"
+            asp-route-show="all"
+            asp-route-from="@fromValue"
+            asp-route-until="@untilValue"
+            class="filter-tab @(showValue == "all" ? "active" : "")">
             All Feedback
-    </a>
-
-    @if (User.IsInRole("Trainee"))
-    {
-        <a asp-action="RecentFeedback"
-            asp-route-show="mine"
-            asp-route-from="@(ViewBag.From != null ? ((DateTime)ViewBag.From).ToString("yyyy-MM-dd") : "")"
-            asp-route-until="@(ViewBag.Until != null ? ((DateTime)ViewBag.Until).ToString("yyyy-MM-dd") : "")"
-            class="filter-tab @(ViewBag.Show == "mine" ? "active" : "")">
-                My Feedback
         </a>
-    }
 
-    @if (User.IsInRole("Mentor") )
-    {
-        <a asp-action="RecentFeedback"
-            asp-route-show="assigned"
-            asp-route-from="@(ViewBag.From != null ? ((DateTime)ViewBag.From).ToString("yyyy-MM-dd") : "")"
-            asp-route-until="@(ViewBag.Until != null ? ((DateTime)ViewBag.Until).ToString("yyyy-MM-dd") : "")"
-            class="filter-tab @(ViewBag.Show == "assigned" ? "active" : "")">
-                My Trainees
-        </a>
-    }
-
-</div>
-
-
-<form asp-action="RecentFeedback" method="get" class="feedback-filter">
-    <input type="hidden" name="show" value="@ViewBag.Show" />
-    <div>
-        <label for="from">From</label>
-        <input  type="date"
-                id="from"
-                name="from"
-                value="@(ViewBag.From != null ? ((DateTime)ViewBag.From).ToString("yyyy-MM-dd") : "")" />
-    </div>
-
-    <div>
-        <label for="until">Until</label>
-        <input type="date"
-                id="until"
-                name="until"
-                value="@(ViewBag.Until != null ? ((DateTime)ViewBag.Until).ToString("yyyy-MM-dd") : "")" />
-    </div>
-
-    <button type="submit" class="btn">Show Feedback</button>
-</form>
-
-
-@if (ViewBag.DateError != null)
-{
-    <p class="text-danger">@ViewBag.DateError</p>
-}
-
-@if (Context.Request.Query.ContainsKey("from") &&
-    Context.Request.Query.ContainsKey("until") &&
-    !Model.Any() &&
-    ViewData.ModelState.IsValid)
-{
-    <p>No feedback found for the selected period.</p>
-}
-else
-{
-    <div class="activity-feed">
-        @foreach (var feedback in Model)
+        @if (User.IsInRole("Trainee"))
         {
-            <article>
-                <header class="feedback-card-header">
-                    <div class="feedback-card-title">
-                        <h2>@(feedback.Lesson?.Title ?? "Unknown Lesson")</h2>
+            <a asp-action="RecentFeedback"
+                asp-route-show="mine"
+                asp-route-from="@fromValue"
+                asp-route-until="@untilValue"
+                class="filter-tab @(showValue == "mine" ? "active" : "")">
+                My Feedback
+            </a>
+        }
 
-                        <p class="feedback-date">
-                            Submitted on @feedback.CreatedAt.ToString("dd.MM.yyyy 'at' HH:mm")
-                        </p>
-
-                        <p class="feedback-author">
-                            Rated by <i>@(feedback.Trainee?.Name ?? "Unknown Trainee")</i>
-                        </p>
-                    </div>
-
-                    <div class="feedback-actions">
-                        @if
-                            (editableFeedbackIds.Contains(feedback.Id))
-                        {
-                            <a asp-action="Edit"
-                                asp-route-id="@feedback.Id"
-                                class="btn">
-                                Edit
-                            </a>
-
-                            <form asp-action="Delete"
-                                method="post"
-                                onsubmit="return confirm('Are you sure you want to delete this feedback?');">
-                                @Html.AntiForgeryToken()
-
-                                <input type="hidden"
-                                        name="id"
-                                        value="@feedback.Id" />
-
-                                <button type="submit"
-                                        class="btn btn-secondary">
-                                    Delete
-                                </button>
-                            </form>
-                        }
-                    </div>
-                </header>
-
-                <dl>
-                    <dt>Difficulty</dt>
-
-                    @if (feedback.Difficulty.HasValue)
-                    {
-                        <dd class="rating"
-                            aria-label="@feedback.Difficulty.Value out of 5 stars">
-                            @for (var i = 0; i < feedback.Difficulty.Value; i++)
-                            {
-                                <span aria-hidden="true">★</span>
-                            }
-
-                            @for (var i = feedback.Difficulty.Value; i < 5; i++)
-                            {
-                                <span aria-hidden="true">☆</span>
-                            }
-                        </dd>
-                    }
-                    else
-                    {
-                        <dd class="empty-feedback-value">No rating</dd>
-                    }
-
-                    <dt>Previous Knowledge</dt>
-                    <dd>
-                        @(string.IsNullOrWhiteSpace(feedback.PriorKnowledge)
-                            ? "No information"
-                            : feedback.PriorKnowledge)
-                    </dd>
-
-                    <dt>Actual Effort</dt>
-                    <dd>
-                        @(feedback.ActualEffort.HasValue
-                            ? $"{feedback.ActualEffort} days"
-                            : "No information")
-                    </dd>
-
-                    <dt>Comment</dt>
-                    <dd>
-                        @(string.IsNullOrWhiteSpace(feedback.Comment)
-                            ? "No comment"
-                            : feedback.Comment)
-                    </dd>
-                </dl>
-            </article>
+        @if (User.IsInRole("Mentor") || User.IsInRole("Admin"))
+        {
+            <a asp-action="RecentFeedback"
+                asp-route-show="assigned"
+                asp-route-from="@fromValue"
+                asp-route-until="@untilValue"
+                class="filter-tab @(showValue == "assigned" ? "active" : "")">
+                My Trainees
+            </a>
         }
     </div>
+
+    <form asp-action="RecentFeedback" method="get" class="feedback-filter">
+        <input type="hidden" name="show" value="@showValue" />
+
+        <div>
+            <label for="from">From</label>
+            <input  type="date"
+                    id="from"
+                    action name="from"
+                    value="@fromValue" />
+        </div>
+
+        <div>
+            <label for="until">Until</label>
+            <input  type="date"
+                    id="until"
+                    name="until"
+                    value="@untilValue" />
+        </div>
+
+        <button type="submit" class="btn">
+            Show Feedback
+        </button>
+    </form>
+
+    @if (ViewBag.DateError != null)
+    {
+        <p class="text-danger">@ViewBag.DateError</p>
+    }
+    else if (Context.Request.Query.ContainsKey("from") &&
+            Context.Request.Query.ContainsKey("until") &&
+            !Model.Any() &&
+            ViewData.ModelState.IsValid)
+    {
+        <div class="feedback-empty">
+            No feedback found for the selected period.
+        </div>
+    }
+    else if (Model.Any())
+    {
+        <div class="activity-feed">
+            @foreach (var feedback in Model)
+            {
+                <article id= "feedback-@feedback.Id"
+                        class="@(focusFeedbackId == feedback.Id.ToString() ? "feedback-highlight" : "")" >
+                    <header class="feedback-card-header">
+                        <div class="feedback-card-title">
+                            <h2>@(feedback.Lesson?.Title ?? "Unknown Lesson")</h2>
+
+                            <p class="feedback-date">
+                                Submitted on @feedback.CreatedAt.ToString("dd.MM.yyyy 'at' HH:mm")
+                            </p>
+
+                            <p class="feedback-author">
+                                Rated by <i>@(feedback.Trainee?.Name ?? "Unknown Trainee")</i>
+                            </p>
+                        </div>
+
+                        @if (editableFeedbackIds.Contains(feedback.Id))
+                        {
+                            <div class="feedback-actions">
+                                <a asp-action="Edit"
+                                    asp-route-id="@feedback.Id"
+                                    asp-route-from="@fromValue"
+                                    asp-route-until="@untilValue"
+                                    asp-route-show="@showValue"
+                                    class="btn"
+                                    data-save-feedback-scroll>
+                                    Edit
+                                </a>
+
+                                <form  asp-action="Delete"
+                                        method="post"
+                                        data-save-feedback-scroll
+                                        onsubmit="return confirm('Are you sure you want to delete this feedback?');">
+                                        @Html.AntiForgeryToken()
+
+                                    <input type="hidden" name="id" value="@feedback.Id" />
+                                    <input type="hidden" name="from" value="@fromValue" />
+                                    <input type="hidden" name="until" value="@untilValue" />
+                                    <input type="hidden" name="show" value="@showValue" />
+
+                                    <button type="submit"
+                                            class="btn btn-secondary">
+                                            Delete
+                                    </button>
+                                </form>
+                            </div>
+                        }
+                    </header>
+
+                    <dl>
+                        <dt>Difficulty</dt>
+
+                        @if (feedback.Difficulty.HasValue)
+                        {
+                            <dd class="rating-details">
+                                <div class="rating"
+                                    aria-label="@feedback.Difficulty.Value out of 5 stars">
+                                    @for (var i = 0; i < feedback.Difficulty.Value; i++)
+                                    {
+                                        <span aria-hidden="true">★</span>
+                                    }
+
+                                    @for (var i = feedback.Difficulty.Value; i < 5; i++)
+                                    {
+                                        <span aria-hidden="true">☆</span>
+                                    }
+                                </div>
+
+                                <span class="rating-description">
+                                    @(feedback.Difficulty.Value switch
+                                    {
+                                        1 => "Very easy",
+                                        2 => "Easy",
+                                        3 => "Moderate",
+                                        4 => "Difficult",
+                                        5 => "Very difficult",
+                                        _ => ""
+                                    })
+                                </span>
+                            </dd>
+                        }
+                        else
+                        {
+                            <dd class="empty-feedback-value">No rating</dd>
+                        }
+
+                        <dt>Previous Knowledge</dt>
+                        <dd>
+                            @(string.IsNullOrWhiteSpace(feedback.PriorKnowledge)
+                                ? "No information"
+                                : feedback.PriorKnowledge)
+                        </dd>
+
+                        <dt>Actual Effort</dt>
+                        <dd>
+                            @(feedback.ActualEffort.HasValue
+                                ? $"{feedback.ActualEffort.Value:0.##} hours"
+                                : "No information")
+                        </dd>
+
+                        <dt>Comment</dt>
+                        <dd>
+                            @(string.IsNullOrWhiteSpace(feedback.Comment)
+                                ? "No comment"
+                                : feedback.Comment)
+                        </dd>
+                    </dl>
+                </article>
+            }
+        </div>
+    }
+</main>
+
+@section Scripts {
+    <script>
+        /**
+         * Saves the current scroll position before Edit or Delete.
+         * The position is temporarily stored in the browser session.
+         * Code-Owner: Emna Bejaoui
+         */
+        const savedScrollPosition = sessionStorage.getItem("feedback-scroll-position");
+        if (savedScrollPosition !== null ) {
+            window.scrollTo(0, Number(savedScrollPosition));
+            sessionStorage.removeItem("feedback-scroll-position");
+        }
+        document.querySelectorAll("[data-save-feedback-scroll]").forEach(element => {
+            element.addEventListener("click", () => {
+                sessionStorage.setItem(
+                    "feedback-scroll-position",
+                    String(window.scrollY)
+                );
+            });
+        });
+
+        /**
+         * Displays a fixed feedback notification after a create, update or delete action.
+         * The user can close the message manually, and it is removed automatically after three seconds.
+         * Code-Owner: Emna Bejaoui
+         */
+        const toast = document.querySelector(".feedback-toast");
+        if (toast) {
+            toast.querySelector(".feedback-toast-close")
+                .addEventListener("click", () => { toast.remove(); });
+            
+            window.setTimeout(() => {
+                toast.remove();
+            }, 3200);
+        }
+
+        /**
+         * Scrolls to the feedback that was just created or updated.
+         * The feedback ID is passed from the controller to the view using TempData.
+         * The feedback is highlighted for better visibility.
+         *Code-Owner: Emna Bejaoui
+         */
+        const feedbackHighlight = document.querySelector(".feedback-highlight");
+        if (feedbackHighlight && savedScrollPosition === null) {
+            feedbackHighlight.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        }
+    </script>
 }
