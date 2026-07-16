@@ -35,7 +35,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Mentor>()
             .Ignore(m => m.Curriculum);
 
-        //Julia: Seed data for Lessons
+        // Julia Sandner: Seed data for Lessons
         modelBuilder.Entity<Lesson>().HasData(
              new Lesson {Id = 11, Title = "Fundamentals of Web Development", URL ="https://makandracards.com/makandra-devops-curriculum/509333-grundlagen-aus-der-web-entwicklung-3-5-pt", Effort = 3.5, Inactive = false, Position = 1},
              new Lesson {Id = 111, Title = "SSH", URL ="https://makandracards.com/makandra-devops-curriculum/511181-ssh-0-5-pt", Effort = 0.5, Inactive = false, Position = 6},
@@ -51,7 +51,7 @@ public class AppDbContext : DbContext
              new Lesson {Id = 222, Title = "HTTP Protocoll and Webserver", URL ="https://makandracards.com/makandra-devops-curriculum/519412-http-protokoll-und-webserver-2-5-pt", Effort = 2.5, Inactive = false, Position = 11}
         );
 
-        //Julia: trainee for LessonAssignment SeedData
+        // Julia Sandner: trainee for LessonAssignment SeedData
         modelBuilder.Entity<Trainee>().HasData(
             new Trainee {Id = 2, Name = "Jelena3 Trainee", Email = "jelenacosic3@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false },
             new Trainee {Id = 1, Name="Torsten Trainee", Email="torstentrainee@makandra.de", HashedPassword="$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed=false, StartingDate = new DateOnly(2026, 6, 30), EndDate = new DateOnly(2027, 1,1)},
@@ -61,19 +61,19 @@ public class AppDbContext : DbContext
             new Trainee {Id = 11, Name="Ursula Urlaub", Email="ursula.urlaub@makandra.de", HashedPassword="$2a$11$aemTP4KrL44P1z23XD39u.7nnd3zoXeME0PFZzVkQPTEmmK/fVqRm", Closed=false, StartingDate = new DateOnly(2026, 1, 01), EndDate = new DateOnly(2026, 7,31)}
         );
 
-        //Code-Owner: Julia
+        //Code-Owner: Julia Sandner
         modelBuilder.Entity<Mentor>().HasData(
             new Mentor  {Id = 4, Name = "Jelena2 Mentor",  Email = "jelenacosic2@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false, Curriculum = null! },
             new Mentor  {Id = 7, Name = "Manfred Mental",  Email = "manfred.mental@makandra.de", HashedPassword = "$2a$11$kce.fXXVmBy2n0DaoYUcuujmpl.lXCCgZC7WSoFT94B98q5FS.gMa", Closed = false, Curriculum = null! },
             new Mentor  {Id = 8, Name = "Hans Hilfreich",  Email = "hans.hilfreich@makandra.de", HashedPassword = "$2a$11$RirFsrHzwqEKO0Wr8sIiZuprcJ5Pz8y45bRGLltqSos0cePlhhLvC", Closed = false, Curriculum = null!}
         );
-        //Code-Owner: Julia
+        //Code-Owner: Julia Sandner
         modelBuilder.Entity<Admin>().HasData(
             new Admin   {Id = 5, Name = "Jelena3 Admin",   Email = "jelenacosic1@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false },
             new Admin {Id = 6, Name = "Admin", Email ="admin@makandra.de", HashedPassword = "$2a$11$NWoCmWYUtc4Kj0eDILuyxOjWj0GReHhxe2bh6Crx1QR4heeWH1EcO", Closed = false}
         );
 
-        //Code-Owner: Julia 
+        //Code-Owner: Julia Sandner
         modelBuilder.Entity("MentorTrainee").HasData(
             new {MentorsId = 7, AssignedTraineesId = 9},
             new {MentorsId = 7, AssignedTraineesId = 10},
@@ -84,7 +84,7 @@ public class AppDbContext : DbContext
             new {MentorsId = 4, AssignedTraineesId = 1}
         );
 
-        //Julia: Seed Data for LessonAssignment
+        //Julia Sandner: Seed Data for LessonAssignment
         modelBuilder.Entity<LessonAssignment>().HasData(
             new LessonAssignment{Id = 1, LessonId = 11, TraineeId = 1, Position = 2, ExpectedProcessingDate = new DateOnly(2026, 6, 29), Status = LessonAssignmentStatus.Accepted},
             new LessonAssignment{Id = 2, LessonId = 22, TraineeId = 1, Position = 3, ExpectedProcessingDate = new DateOnly(2026, 6, 29), Status = LessonAssignmentStatus.Accepted},
