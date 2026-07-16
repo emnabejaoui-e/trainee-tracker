@@ -55,6 +55,8 @@ public class LoginController : Controller
 
             case LoginResult.InvalidCredentials:
                 ViewBag.ErrorMessage = "Invalid email address or password.";
+                ViewBag.EmailError = true;
+                ViewBag.PasswordError = true;
                 return View();
 
             default:
