@@ -3,6 +3,7 @@ using System.Linq;
 using Trainee_Tracker.Data.MentorRepository;
 using Trainee_Tracker.Data.TraineeRepository;
 
+// Code-Owner: Andrej Basara
 namespace Trainee_Tracker.Services
 {
     public class MentorService : IMentorService
@@ -15,7 +16,6 @@ namespace Trainee_Tracker.Services
             _traineeRepository = traineeRepository;
         }
 
-        // Code Owner: Andrej Basara
         public void AssignTraineeToMentor(int mentorId, int traineeId)
         {
             var mentor = _mentorRepository.GetMentorById(mentorId);

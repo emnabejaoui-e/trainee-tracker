@@ -7,6 +7,8 @@ using Trainee_Tracker.Data.Lessons;
 using Trainee_Tracker.Models;
 
 namespace Trainee_Tracker.Services;
+
+// Code-Owner: Andrej Basara
 public class AssignmentService : IAssignmentService
 {
     private readonly ILessonRepository _lessonRepo;
@@ -18,7 +20,6 @@ public class AssignmentService : IAssignmentService
         _lessonAssignmentRepo = lessonAssignmentRepo;
     }
 
-    // Code Owner: Andrej Basara
     public void AssignLessonsToTrainee(Trainee trainee)
     {
         var lessons = _lessonRepo.GetAllLessons()

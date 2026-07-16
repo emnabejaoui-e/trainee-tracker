@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Trainee_Tracker.Models;
 
+// Code-Owner: Andrej Basara
+
 namespace Trainee_Tracker.Data.TraineeRepository
 {
     public class TraineeRepository : ITraineeRepository
@@ -12,13 +14,11 @@ namespace Trainee_Tracker.Data.TraineeRepository
             _context = context;
         }
 
-        // Code-Owner: Andrej Basara
         public Trainee? FindById(int id)
         {
             return _context.Trainees.FirstOrDefault(t => t.Id == id);
         }
 
-        // Code-Owner: Andrej Basara
         public Trainee? FindByIdWithMentors(int id)
         {
             return _context.Trainees.Include(t => t.Mentors).FirstOrDefault(t => t.Id == id);

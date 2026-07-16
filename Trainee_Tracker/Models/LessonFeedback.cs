@@ -2,6 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Trainee_Tracker.Models;
 
+// Code-Owner: Emna Bejaoui
+
 public class LessonFeedback
 {
     public int Id { get; set; }

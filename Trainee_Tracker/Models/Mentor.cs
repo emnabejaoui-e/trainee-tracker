@@ -2,8 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Trainee_Tracker.Models;
-
-/// <author>Leon</author>
+// Code-Owner: Leon Paintner
 public class Mentor : User
 {
     public IList<Trainee> AssignedTrainees { get; set; } = new List<Trainee>();

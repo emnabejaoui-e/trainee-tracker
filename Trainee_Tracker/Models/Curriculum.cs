@@ -1,9 +1,10 @@
 namespace Trainee_Tracker.Models;
 
+// Code-Owner: Leon Paintner
+
 /// <summary>
 /// A named collection of Lessons.
 /// </summary>
-/// <author>Leon</author>
 public class Curriculum
 {
     public string Title { get; set; }

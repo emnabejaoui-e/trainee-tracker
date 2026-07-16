@@ -1,4 +1,3 @@
-// Code Owner: Jelena Cosic
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Trainee_Tracker.Data;

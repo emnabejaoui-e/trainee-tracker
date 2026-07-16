@@ -3,6 +3,8 @@ using Trainee_Tracker.Models;
 
 namespace Trainee_Tracker.Services;
 
+// Code-Owner: Emna Bejaoui
+
 public class LessonFeedbackService
 {
     private readonly ILessonFeedbackRepository _feedbackRepository;

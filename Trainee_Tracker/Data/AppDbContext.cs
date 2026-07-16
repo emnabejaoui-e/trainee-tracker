@@ -1,4 +1,3 @@
-// Code Owner: Jelena Cosic
 using Microsoft.EntityFrameworkCore;
 using Trainee_Tracker.Models;
 
