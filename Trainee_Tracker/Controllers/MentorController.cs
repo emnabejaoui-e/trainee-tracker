@@ -378,7 +378,11 @@ public class MentorController : Controller
     /// <returns> a redirect to the AssignmentOverview for the given trainee</returns>
     public IActionResult UpdateAssignmentOrder(int traineeId, [FromForm] List<int> orderedIds)
     {   
-        var trainee = _userRepo.GetById(traineeId);
+        var trainee = _traineeRepo.FindById(traineeId);
+        if(trainee == null)
+        {
+            return NotFound();
+        }
         var mentorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if(mentorIdString == null)
         {
