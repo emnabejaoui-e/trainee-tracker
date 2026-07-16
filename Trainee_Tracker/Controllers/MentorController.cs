@@ -1,4 +1,3 @@
-// Code Owner: Jelena Cosic ([Authorize])
 using System.Diagnostics.Contracts;
 using System.Net.Mime;
 using System.Security.Claims;
