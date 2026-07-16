@@ -51,30 +51,6 @@ public class MentorController : Controller
     public IActionResult Index() => RedirectToAction("MyTrainees");
 
     // Code-Owner: Leon Paintner
-    /// <summary>
-    /// Assigns a Mentor to a trainee.
-    /// </summary>
-    /// <param name="mentorId">The numeric id of the Mentor to assign.</param>
-    /// <param name="traineeId">The numeric id of the Trainee to assign.</param>
-    /// <returns>501 Not Implemented status.</returns>
-    public IActionResult AssignTrainee(int mentorId, int traineeId)
-    {
-        return StatusCode(501, "Not implemented!");
-    }
-
-    // Code-Owner: Leon Paintner
-    /// <summary>
-    /// Changes the order of lessons for a particular trainee.
-    /// </summary>
-    /// <param name="traineeId">The numeric id of the Trainee to change the order for.</param>
-    /// <param name="order">A list with the numeric ids of Lessons in the order they should appear for trainees.</param>
-    /// <returns>501 Not Implemented status.</returns>
-    public IActionResult UpdateLessonOrder(int traineeId, IList<int> order)
-    {
-        return StatusCode(501, "Not implemented!");
-    }
-
-    // Code-Owner: Leon Paintner
     public IActionResult MyTrainees()
     {
         string? mentorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
