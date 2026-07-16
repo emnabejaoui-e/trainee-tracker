@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Trainee_Tracker.Models;
 
@@ -7,9 +6,12 @@ namespace Trainee_Tracker.Models;
 public class Mentor : User
 {
     public IList<Trainee> AssignedTrainees { get; set; } = new List<Trainee>();
+
+    /// <summary>FK: The Curriculum that this Mentor teaches.</summary>
+    public int? CurriculumId { get; set; }
+
     /// <summary>
     /// The Curriculum that this Mentor teaches.
     /// </summary>
-    [NotMapped]
     public Curriculum? Curriculum { get; set; }
 }
