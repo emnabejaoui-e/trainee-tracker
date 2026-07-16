@@ -28,6 +28,7 @@ public class MentorController : Controller
     private readonly ITraineeRepository _traineeRepo;
     private readonly WorkingHoursService _workingHoursService;
     private readonly IProgressService _progressService;
+    private readonly IAssignmentService _assignmentService;
 
     public MentorController(
         IMentorRepository mentorRepo,
@@ -38,7 +39,8 @@ public class MentorController : Controller
         WorkingHoursService workingHoursService,
         IProgressService progressService,
         ICurriculumRepository curriculumRepo,
-        ICurriculumService curriculumService 
+        ICurriculumService curriculumService,
+        IAssignmentService assignmentService
         )
     {
         _mentorRepo = mentorRepo;
@@ -49,8 +51,9 @@ public class MentorController : Controller
         _traineeRepo = traineeRepo;
         _workingHoursService = workingHoursService;
         _progressService = progressService;
-        _curriculumRepo = curriculumRepo;
+         _curriculumRepo = curriculumRepo;
         _curriculumService = curriculumService;
+        _assignmentService = assignmentService;
     }
     
     // Code-Owner: Jelena Cosic
@@ -244,7 +247,11 @@ public class MentorController : Controller
 
 
     // Code-Owner: Julia
-    // GET: /Mentor/AssignmentOverview
+    /// <summary>
+    /// Displays an overview of the assignments of a given trainee for a mentor, including any rejection history for their assignments
+    /// </summary>
+    /// <param name="traineeId">numeric id of the trainee whose assignments should be shown</param>
+    /// <returns>AssignmentOverview view or Unauthorized if the trainee does not exist</returns>
     [HttpGet]
     public IActionResult AssignmentOverview(int traineeId)
     {        
@@ -254,74 +261,114 @@ public class MentorController : Controller
         {
             return Unauthorized();
         }
+        var result = _assignmentService.GetOverview(trainee);
 
-        var assignments = _assignmentRepo.FindByTrainee(trainee);
-        var rejections = _rejectionRepo.GetRejectedByTrainee(trainee);
+        ViewBag.RejectionReasons = result.RejectionHistory;
+        ViewBag.AssignmentsWithHistory = result.AssignmentsWithHistory;
 
-        var rejectionHistory = rejections
-        .GroupBy(r=> r.AssignmentId)
-        .ToDictionary(g => g.Key, g => g.OrderByDescending(r=>r.RejectedAt).ToList());
-
-        var assignmentsWithHistory = assignments
-        .Where(a => rejectionHistory.ContainsKey(a.Id))
-        .OrderByDescending(a => rejectionHistory[a.Id].Max(r =>r.RejectedAt))
-        .ToList();
-
-        ViewBag.RejectionReasons = rejectionHistory;
-        ViewBag.AssignmentsWithHistory = assignmentsWithHistory;
-
-        return View("AssignmentOverview", assignments);
+        return View("AssignmentOverview", result.Assignments);
     }
 
-    //Code-Owner: Julia 
+
+
+
+    //Code-Owner: Julia Sandner
+    /// <summary>
+    /// Marks a lesson assignment as accepted
+    /// </summary>
+    /// <param name="assignmentId"> the numeric id of the assignment to accept</param>
+    /// <returns>a redirect to the ASsignmentOverview, 404 if not found or the overview with an error if the transition is invalid</returns>
     [HttpPost]
     public IActionResult Accept(int assignmentId)
     {
-        var assignment = _assignmentRepo.GetById(assignmentId);
-        if (assignment == null)
+        var currentAssignment = _assignmentRepo.GetById(assignmentId);
+        if (currentAssignment == null)
         {
             return NotFound();
         }
 
-        _assignmentRepo.UpdateStatus(assignmentId, LessonAssignmentStatus.Accepted);
-
-        return RedirectToAction("AssignmentOverview", new { traineeId = assignment.TraineeId });
+        try
+        {
+            var assignment = _assignmentService.UpdateAssignmentStatus(assignmentId, LessonAssignmentStatus.Accepted);
+            return RedirectToAction("AssignmentOverview", new {traineeId = assignment!.TraineeId});
+        }
+        catch(InvalidOperationException e)
+        {
+            TempData["Error"] = e.Message;
+            return RedirectToAction("AssignmentOverview", new { traineeId = currentAssignment.TraineeId });
+            
+        }
     }
 
-//Code-Owner: Julia
+    //Code-Owner: Julia Sandner
+    /// <summary>
+    /// Marks a lesson assignment as skipped
+    /// </summary>
+    /// <param name="assignmentId"> the numeric id of the assignment to skip</param>
+    /// <returns>a redirect to the ASsignmentOverview, 404 if not found or the overview with an error if the transition is invalid</returns>
     [HttpPost]
     public IActionResult SkipAssignment(int assignmentId)
     {
-        var assignment =_assignmentRepo.GetById(assignmentId);
-        if(assignment == null)
+        var currentAssignment =_assignmentRepo.GetById(assignmentId);
+        if(currentAssignment == null)
         {
             return NotFound();
         }
-        _assignmentRepo.UpdateStatus(assignmentId, LessonAssignmentStatus.Skipped);
-        return RedirectToAction("AssignmentOverview", new {traineeId = assignment.TraineeId});
 
+        try
+        {
+            var assignment = _assignmentService.UpdateAssignmentStatus(assignmentId, LessonAssignmentStatus.Skipped);
+            return RedirectToAction("AssignmentOverview", new {traineeId = assignment!.TraineeId});
+        }
+        catch(InvalidOperationException e)
+        {
+            TempData["Error"] = e.Message;
+            return RedirectToAction("AssignmentOverview", new { traineeId = currentAssignment.TraineeId });
+            
+        }
     }    
 
+    //Code-Owner: Julia Sandner
+    /// <summary>
+    /// Persists a new display order for a trainee's assignments
+    /// </summary>
+    /// <param name="traineeId"> the numeric id of the trainee whose assignments were reordered</param>
+    /// <param name="orderedIds">the assignment ids in their new display order</param>
+    /// <returns> a redirect to the AssignmentOverview for the given trainee</returns>
     public IActionResult UpdateAssignmentOrder(int traineeId, [FromForm] List<int> orderedIds)
     {
-        _assignmentRepo.UpdateAssignmentPositions(orderedIds);
+        _assignmentService.UpdateAssignmentOrder(orderedIds);
         return RedirectToAction("AssignmentOverview", new {traineeId});
     }
 
+
+    //Code-Owner: Julia Sandner
+    /// <summary>
+    /// REjects an assignment with a reason
+    /// </summary>
+    /// <param name="assignmentId">numeric id of the assignment to reject</param>
+    /// <param name="reason">reason for the rejection</param>
+    /// <returns>redirect to the AssignmentOverview or Not-Found or the Overview with an error</returns>
     public IActionResult RejectAssignment(int assignmentId, string reason)
-    {   var assignment = _assignmentRepo.GetById(assignmentId);
-        if(assignment == null)
+    {   var currentAssignment = _assignmentRepo.GetById(assignmentId);
+        if(currentAssignment == null)
         {
             return NotFound();
         }
 
-        if (string.IsNullOrWhiteSpace(reason))
+        try
         {
-            ModelState.AddModelError(string.Empty, "A reason is required.");
-            return RedirectToAction("AssignmentOverview", "Mentor", new {traineeId = assignment.TraineeId}); 
+            _assignmentService.RejectAssignment(assignmentId, reason);
+        }
+        catch(ArgumentException e)
+        {
+            TempData["Error"] = e.Message;
+        }
+        catch(InvalidOperationException ex)
+        {
+            TempData["Error"] = ex.Message;   
         }
 
-        _rejectionRepo.Reject(assignmentId, reason);
-        return RedirectToAction("AssignmentOverview", "Mentor", new {traineeId = assignment.TraineeId}); 
+        return RedirectToAction("AssignmentOverview", "Mentor", new {traineeId = currentAssignment.TraineeId}); 
     }
 }

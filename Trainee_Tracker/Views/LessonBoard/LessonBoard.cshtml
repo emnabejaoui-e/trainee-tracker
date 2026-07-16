@@ -27,6 +27,12 @@
     var assignmentsWithHistory = ViewBag.AssignmentsWithHistory as List<LessonAssignment>;
 }
 
+@if(TempData["Error"] != null){
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
 <style> 
     .container {
         max-width: 100%;

@@ -494,6 +494,11 @@
     overflow-y: auto;
 }
 
+.skip-select-empty{
+    font-size: 0.9rem;
+    color: var(--licorice);
+}
+
 .skip-select-list {
     list-style: none;
     padding: 0;
