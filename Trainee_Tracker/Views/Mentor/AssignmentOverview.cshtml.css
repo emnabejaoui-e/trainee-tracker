@@ -461,6 +461,11 @@
     width: 90%;
 }
 
+.action-btn-skip{
+  background-color: var(--state-color, #378ADD);
+  color: var(--white);
+}
+
 .sort-dialog {
     border: none;
     border-radius: 8px;

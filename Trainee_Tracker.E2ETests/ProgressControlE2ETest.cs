@@ -1,4 +1,5 @@
 // Code Owner: Nazym Beisembin
+
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
@@ -6,7 +7,6 @@ namespace Trainee_Tracker.E2ETests;
 
 /// <summary>
 /// E2E test for the mentor progress-control flow.
-/// The application must already be running on http://localhost:5089.
 /// </summary>
 public class ProgressControlE2ETest : IDisposable
 {
@@ -16,6 +16,7 @@ public class ProgressControlE2ETest : IDisposable
     public ProgressControlE2ETest()
     {
         var options = new ChromeOptions();
+
         options.AddArgument("--headless");
         options.AddArgument("--no-sandbox");
         options.AddArgument("--disable-dev-shm-usage");
@@ -32,14 +33,12 @@ public class ProgressControlE2ETest : IDisposable
         _driver.Navigate().GoToUrl($"{BaseUrl}/Mentor/MyTrainees");
         await Task.Delay(2000);
 
-
-
-        IReadOnlyCollection<IWebElement> progressLinks = _driver.FindElements(
-            By.XPath(
-                "//a[contains(@class,'profile-link') " +
-                "and contains(normalize-space(.), 'See Progress-Control-Data')]"
-            )
-        );
+        IReadOnlyCollection<IWebElement> progressLinks =
+            _driver.FindElements(
+                By.CssSelector(
+                    "a.profile-link[href*='Fortschrittskontrolle']"
+                )
+            );
 
         Assert.NotEmpty(progressLinks);
 
@@ -49,7 +48,8 @@ public class ProgressControlE2ETest : IDisposable
                 IWebElement traineeCard = link.FindElement(
                     By.XPath(
                         "./ancestor::li[" +
-                        "contains(concat(' ', normalize-space(@class), ' '), ' profile-item ')" +
+                        "contains(concat(' ', normalize-space(@class), ' '), " +
+                        "' profile-item ')" +
                         "]"
                     )
                 );
@@ -57,7 +57,10 @@ public class ProgressControlE2ETest : IDisposable
                 return new
                 {
                     Url = link.GetAttribute("href") ?? string.Empty,
-                    Name = traineeCard.FindElement(By.CssSelector("h1.name")).Text.Trim()
+                    Name = traineeCard
+                        .FindElement(By.CssSelector("h1.name"))
+                        .Text
+                        .Trim()
                 };
             })
             .Where(candidate =>
@@ -75,9 +78,10 @@ public class ProgressControlE2ETest : IDisposable
             _driver.Navigate().GoToUrl(candidate.Url);
             await Task.Delay(1500);
 
-            IReadOnlyCollection<IWebElement> headings = _driver.FindElements(
-                By.CssSelector(".page-titlebar h2")
-            );
+            IReadOnlyCollection<IWebElement> headings =
+                _driver.FindElements(
+                    By.CssSelector(".page-titlebar h2")
+                );
 
             if (headings.Count > 0)
             {
@@ -88,57 +92,83 @@ public class ProgressControlE2ETest : IDisposable
 
         Assert.False(
             string.IsNullOrWhiteSpace(traineeName),
-            "No accessible progress-control page was found for the logged-in user."
+            "No accessible progress-control page was found."
         );
 
-        string pageText = _driver.FindElement(By.TagName("body")).Text;
+        string pageText = _driver
+            .FindElement(By.TagName("body"))
+            .Text;
+
         string heading = _driver
             .FindElement(By.CssSelector(".page-titlebar h2"))
             .Text
             .Trim();
 
-        Assert.Equal($"Progress of {traineeName}", heading);
+        Assert.Equal(
+            $"Progress of {traineeName}",
+            heading
+        );
+
         IReadOnlyCollection<IWebElement> infoBoxes =
-       _driver.FindElements(By.CssSelector(".info-box"));
+            _driver.FindElements(
+                By.CssSelector(".info-box")
+            );
 
         Assert.NotEmpty(infoBoxes);
 
+        Assert.DoesNotContain(
+            "DETAILS",
+            pageText,
+            StringComparison.OrdinalIgnoreCase
+        );
 
-        Assert.False(
-            pageText.Contains("DETAILS", StringComparison.OrdinalIgnoreCase)
+        Assert.DoesNotContain(
+            "System response",
+            pageText,
+            StringComparison.OrdinalIgnoreCase
         );
-        Assert.False(
-            pageText.Contains("System response", StringComparison.OrdinalIgnoreCase)
+
+        Assert.DoesNotContain(
+            "The selected trainee's progress is displayed.",
+            pageText,
+            StringComparison.OrdinalIgnoreCase
         );
-        Assert.False(
-            pageText.Contains(
-                "The selected trainee's progress is displayed.",
-                StringComparison.OrdinalIgnoreCase
+
+        IWebElement backLink = _driver.FindElement(
+            By.XPath(
+                "//a[normalize-space(.)='Back to overview']"
             )
         );
 
-
-
-        IWebElement backLink = _driver.FindElement(
-            By.CssSelector("a.btn-secondary-storyboard")
+        Assert.Equal(
+            "Back to overview",
+            backLink.Text.Trim(),
+            ignoreCase: true
         );
 
-        Assert.Equal(
-      "Back to overview",
-      backLink.Text.Trim(),
-     ignoreCase: true
-       );
+        string backgroundColor =
+            backLink.GetCssValue("background-color");
+
+        Assert.Contains(
+            "255, 8, 68",
+            backgroundColor
+        );
     }
 
     private void LoginAsAdmin()
     {
         _driver.Navigate().GoToUrl($"{BaseUrl}/Login");
 
-        IWebElement emailField = _driver.FindElement(By.Id("email"));
-        IWebElement passwordField = _driver.FindElement(By.Id("password"));
-        IWebElement submitButton = _driver.FindElement(
-            By.CssSelector("button[type='submit']")
-        );
+        IWebElement emailField =
+            _driver.FindElement(By.Id("email"));
+
+        IWebElement passwordField =
+            _driver.FindElement(By.Id("password"));
+
+        IWebElement submitButton =
+            _driver.FindElement(
+                By.CssSelector("button[type='submit']")
+            );
 
         emailField.SendKeys("admin@makandra.de");
         passwordField.SendKeys("Admin1!");
