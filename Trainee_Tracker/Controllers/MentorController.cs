@@ -2,9 +2,11 @@
 using System.Diagnostics.Contracts;
 using System.Net.Mime;
 using System.Security.Claims;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Trainee_Tracker.Data.LessonAssignments;
+using Trainee_Tracker.Data.Curriculums;
 using Trainee_Tracker.Data.MentorRepository;
 using Trainee_Tracker.Data.Rejections;
 using Trainee_Tracker.Data.TraineeRepository;
@@ -17,6 +19,8 @@ namespace Trainee_Tracker.Controllers;
 [Authorize(Roles = "Mentor, Admin")]
 public class MentorController : Controller
 {
+    private readonly ICurriculumRepository _curriculumRepo;
+    private readonly ICurriculumService _curriculumService;
     private readonly IMentorRepository _mentorRepo;
     private readonly IUserRepository _userRepo;
     private readonly ILessonAssignmentRepository _assignmentRepo;
@@ -32,16 +36,23 @@ public class MentorController : Controller
         IRejectionRepository rejectionRepo,
         ITraineeRepository traineeRepo,
         WorkingHoursService workingHoursService,
-        IProgressService progressService)
+        IProgressService progressService,
+        ICurriculumRepository curriculumRepo,
+        ICurriculumService curriculumService 
+        )
     {
         _mentorRepo = mentorRepo;
+        _curriculumRepo = curriculumRepo;
         _userRepo = userRepo;
         _assignmentRepo = assignmentRepo;
         _rejectionRepo = rejectionRepo;
         _traineeRepo = traineeRepo;
         _workingHoursService = workingHoursService;
         _progressService = progressService;
+        _curriculumRepo = curriculumRepo;
+        _curriculumService = curriculumService;
     }
+    
     // Code-Owner: Jelena Cosic
     // GET: /Mentor/Index
     /// <summary>
@@ -99,7 +110,6 @@ public class MentorController : Controller
 
     // Code-Owner: Leon
     // GET: /Mentor/Fortschrittskontrolle
-
     [HttpGet]
     public async Task<IActionResult> Fortschrittskontrolle(int traineeId)
     {
@@ -163,10 +173,7 @@ public class MentorController : Controller
     public IActionResult ImportCurriculum()
     {
         ViewData["NavbarOverride"] = "Mentor";
-        var curriculumNames = new List<String>();
-        curriculumNames.Add("makandra Curriculum");
-        curriculumNames.Add("makandra DevOps Curriculum");
-        ViewBag.curriculumNames = curriculumNames;
+        ViewBag.curriculumNames = _curriculumRepo.GetAllCurriculums().Select(c => c.Title);
         return View(null);
     }
 
@@ -192,21 +199,55 @@ public class MentorController : Controller
 
         if (ModelState.IsValid)
         {
-            return RedirectToAction("Index", "Mentor");
-        }
+            Stream readStream = file.OpenReadStream();
+            StreamReader reader = new StreamReader(readStream);
+            string fileContent = reader.ReadToEnd();
+            
+            reader.Close();
+            readStream.Close();
 
-        var curriculumNames = new List<String>();
-        curriculumNames.Add("makandra Curriculum");
-        curriculumNames.Add("makandra DevOps Curriculum");
-        ViewBag.curriculumNames = curriculumNames;
+            try
+            {
+                var lessons = JsonSerializer.Deserialize<List<Lesson.LessonDTO>>(fileContent);
+                if (lessons == null)
+                    throw new JsonException("null is not a valid curriculum list.");
+
+                var curriculum = _curriculumRepo.GetByTitle(curriculumName);
+                if (curriculum == null)
+                    return NotFound();
+                
+                var result = _curriculumService.MergeLessons(curriculum._Lessons, lessons.Select(dto => dto.Lesson()).ToList());
+
+                curriculum._Lessons = result;
+                
+                _curriculumService.Update(curriculum);
+            }
+            catch (JsonException e)
+            {
+                ModelState.AddModelError("FileName",
+                    "The JSON file you uploaded is not a curriculum file: " + e.Message);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.curriculumNames = _curriculumRepo.GetAllCurriculums().Select(c => c.Title);
+                return View(file);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Mentor");                
+            }
+        }
+        ViewBag.curriculumNames = _curriculumRepo.GetAllCurriculums().Select(c => c.Title);
         return View(file);
     }
+
 
     // Code-Owner: Julia
     // GET: /Mentor/AssignmentOverview
     [HttpGet]
     public IActionResult AssignmentOverview(int traineeId)
-    {
+    {        
         var trainee = _userRepo.GetById(traineeId) as Trainee;
 
         if (trainee == null)
@@ -218,12 +259,12 @@ public class MentorController : Controller
         var rejections = _rejectionRepo.GetRejectedByTrainee(trainee);
 
         var rejectionHistory = rejections
-        .GroupBy(r => r.AssignmentId)
-        .ToDictionary(g => g.Key, g => g.OrderByDescending(r => r.RejectedAt).ToList());
+        .GroupBy(r=> r.AssignmentId)
+        .ToDictionary(g => g.Key, g => g.OrderByDescending(r=>r.RejectedAt).ToList());
 
         var assignmentsWithHistory = assignments
         .Where(a => rejectionHistory.ContainsKey(a.Id))
-        .OrderByDescending(a => rejectionHistory[a.Id].Max(r => r.RejectedAt))
+        .OrderByDescending(a => rejectionHistory[a.Id].Max(r =>r.RejectedAt))
         .ToList();
 
         ViewBag.RejectionReasons = rejectionHistory;

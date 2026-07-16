@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Trainee_Tracker.Data;
+using Trainee_Tracker.Data.Curriculums;
 using Trainee_Tracker.Data.LessonAssignments;
 using Trainee_Tracker.Data.MentorRepository;
 using Trainee_Tracker.Data.TraineeRepository;
@@ -36,7 +37,9 @@ builder.Services.AddScoped<LessonFeedbackService>();
 builder.Services.AddScoped<ILessonFeedbackRepository, LessonFeedbackRepository>();
 builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 builder.Services.AddScoped<IRejectionRepository, RejectionRepository>();
+builder.Services.AddScoped<ICurriculumService, CurriculumService>();
 
+builder.Services.AddScoped<ICurriculumRepository, StaticCurriculumRepository>();
 
 builder.Services.AddHttpClient<WorkingHoursService>(client =>
 {

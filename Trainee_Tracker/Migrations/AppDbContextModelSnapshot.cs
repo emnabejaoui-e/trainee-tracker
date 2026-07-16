@@ -69,10 +69,39 @@ namespace Trainee_Tracker.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Trainee_Tracker.Models.Lesson", b =>
+            modelBuilder.Entity("Trainee_Tracker.Models.Curriculum", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Curricula");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Title = "makandra Curriculum"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Title = "makandra DevOps-Curriculum"
+                        });
+                });
+
+            modelBuilder.Entity("Trainee_Tracker.Models.Lesson", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CurriculumId")
                         .HasColumnType("INTEGER");
 
                     b.Property<double>("Effort")
@@ -94,12 +123,15 @@ namespace Trainee_Tracker.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CurriculumId");
+
                     b.ToTable("Lessons");
 
                     b.HasData(
                         new
                         {
                             Id = 11,
+                            CurriculumId = 1,
                             Effort = 3.5,
                             Inactive = false,
                             Position = 1,
@@ -109,6 +141,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 111,
+                            CurriculumId = 1,
                             Effort = 0.5,
                             Inactive = false,
                             Position = 6,
@@ -118,6 +151,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 22,
+                            CurriculumId = 1,
                             Effort = 2.0,
                             Inactive = false,
                             Position = 3,
@@ -127,6 +161,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 33,
+                            CurriculumId = 1,
                             Effort = 2.0,
                             Inactive = false,
                             Position = 4,
@@ -136,6 +171,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 44,
+                            CurriculumId = 1,
                             Effort = 1.0,
                             Inactive = false,
                             Position = 5,
@@ -145,6 +181,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 55,
+                            CurriculumId = 1,
                             Effort = 0.5,
                             Inactive = false,
                             Position = 6,
@@ -154,6 +191,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 66,
+                            CurriculumId = 1,
                             Effort = 2.0,
                             Inactive = false,
                             Position = 2,
@@ -163,6 +201,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 77,
+                            CurriculumId = 1,
                             Effort = 1.0,
                             Inactive = false,
                             Position = 7,
@@ -172,6 +211,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 88,
+                            CurriculumId = 1,
                             Effort = 1.0,
                             Inactive = false,
                             Position = 8,
@@ -181,6 +221,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 99,
+                            CurriculumId = 1,
                             Effort = 0.5,
                             Inactive = false,
                             Position = 9,
@@ -190,6 +231,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 100,
+                            CurriculumId = 1,
                             Effort = 4.0,
                             Inactive = false,
                             Position = 10,
@@ -199,6 +241,7 @@ namespace Trainee_Tracker.Migrations
                         new
                         {
                             Id = 222,
+                            CurriculumId = 1,
                             Effort = 2.5,
                             Inactive = false,
                             Position = 11,
@@ -539,6 +582,11 @@ namespace Trainee_Tracker.Migrations
                 {
                     b.HasBaseType("Trainee_Tracker.Models.User");
 
+                    b.Property<int?>("CurriculumId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasIndex("CurriculumId");
+
                     b.HasDiscriminator().HasValue("Mentor");
 
                     b.HasData(
@@ -548,7 +596,8 @@ namespace Trainee_Tracker.Migrations
                             Closed = false,
                             Email = "jelenacosic2@makandra.de",
                             HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
-                            Name = "Jelena2 Mentor"
+                            Name = "Jelena2 Mentor",
+                            CurriculumId = 1
                         },
                         new
                         {
@@ -556,7 +605,8 @@ namespace Trainee_Tracker.Migrations
                             Closed = false,
                             Email = "manfred.mental@makandra.de",
                             HashedPassword = "$2a$11$kce.fXXVmBy2n0DaoYUcuujmpl.lXCCgZC7WSoFT94B98q5FS.gMa",
-                            Name = "Manfred Mental"
+                            Name = "Manfred Mental",
+                            CurriculumId = 1
                         },
                         new
                         {
@@ -564,7 +614,8 @@ namespace Trainee_Tracker.Migrations
                             Closed = false,
                             Email = "hans.hilfreich@makandra.de",
                             HashedPassword = "$2a$11$RirFsrHzwqEKO0Wr8sIiZuprcJ5Pz8y45bRGLltqSos0cePlhhLvC",
-                            Name = "Hans Hilfreich"
+                            Name = "Hans Hilfreich",
+                            CurriculumId = 1
                         });
                 });
 
@@ -683,6 +734,15 @@ namespace Trainee_Tracker.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Trainee_Tracker.Models.Lesson", b =>
+                {
+                    b.HasOne("Trainee_Tracker.Models.Curriculum", null)
+                        .WithMany("_Lessons")
+                        .HasForeignKey("CurriculumId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Trainee_Tracker.Models.LessonAssignment", b =>
                 {
                     b.HasOne("Trainee_Tracker.Models.Lesson", "Lesson")
@@ -730,6 +790,23 @@ namespace Trainee_Tracker.Migrations
                         .IsRequired();
 
                     b.Navigation("Assignment");
+                });
+
+            modelBuilder.Entity("Trainee_Tracker.Models.Mentor", b =>
+                {
+                    b.HasOne("Trainee_Tracker.Models.Curriculum", "Curriculum")
+                        .WithMany("Mentors")
+                        .HasForeignKey("CurriculumId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Curriculum");
+                });
+
+            modelBuilder.Entity("Trainee_Tracker.Models.Curriculum", b =>
+                {
+                    b.Navigation("Mentors");
+
+                    b.Navigation("_Lessons");
                 });
 
             modelBuilder.Entity("Trainee_Tracker.Models.Trainee", b =>

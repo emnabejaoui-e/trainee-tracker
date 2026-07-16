@@ -10,7 +10,7 @@ public class StaticCurriculumRepository : ICurriculumRepository
 
     public StaticCurriculumRepository()
     {
-        var curriculum1 = new Curriculum("makandra Curriculum");
+        var curriculum1 = new Curriculum { Id = 1, Title = "makandra Curriculum" };
         curriculum1.AddLesson(new Lesson {Id = 11, Title = "Introduction to HTML", URL ="#", Effort = 1.0, Inactive = false, Position = 2});
         curriculum1.AddLesson(new Lesson {Id = 22, Title = "CSS Basics", URL ="#", Effort = 0.5, Inactive = false, Position = 3});
         curriculum1.AddLesson(new Lesson {Id = 33, Title = "Ruby: What extend and include do", Effort = 2.0, Inactive = false, Position = 4});
@@ -21,8 +21,8 @@ public class StaticCurriculumRepository : ICurriculumRepository
         curriculum1.AddLesson(new Lesson {Id = 88, Title = "Resource use", URL ="#", Effort = 1.0, Inactive = false, Position = 8});
         curriculum1.AddLesson(new Lesson {Id = 99, Title = "Linux Kernal parameter", URL ="#", Effort = 0.5, Inactive = false, Position = 9});
         curriculum1.AddLesson(new Lesson {Id = 100, Title = "Network", URL ="#", Effort = 4.0, Inactive = false, Position = 10});
-        
-        var curriculum2 = new Curriculum("makandra DevOps-Curriculum");
+
+        var curriculum2 = new Curriculum { Id = 2, Title = "makandra DevOps-Curriculum" };
         curriculum2.AddLesson(new Lesson {Id = 1, Title = "How to exit Vim", URL ="#", Effort = 1.0, Inactive = false, Position = 1});
         
         _data = new()
