@@ -96,7 +96,7 @@ public class MentorController : Controller
         return View(currentUser.AssignedTrainees.Where(t => !t.Closed));
     }
 
-    // Code-Owner: Leon
+    // Code-Owner: Nazym Beisembin
     // GET: /Mentor/Fortschrittskontrolle
 
     [HttpGet]
