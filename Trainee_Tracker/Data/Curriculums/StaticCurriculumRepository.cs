@@ -1,9 +1,9 @@
+// Code-Owner: Leon Paintner
 using System.Data;
 using Trainee_Tracker.Models;
 
 namespace Trainee_Tracker.Data.Curriculums;
 
-/// <author>Leon</author>
 public class StaticCurriculumRepository : ICurriculumRepository
 {
     private readonly List<Curriculum> _data;

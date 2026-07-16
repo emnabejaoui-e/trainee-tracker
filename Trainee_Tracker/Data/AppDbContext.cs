@@ -18,11 +18,11 @@ public class AppDbContext : DbContext
     // Code Owner: Jelena Cosic
     public DbSet<LessonFeedback> LessonFeedbacks { get; set; }
 
-    //Julia
+    // Code Owner: Julia Sandner
     public DbSet<Rejection> Rejections {get; set;}
-    //Julia
+    // Code Owner: Julia Sandner
     public DbSet<LessonAssignment> LessonAssignments {get; set;}
-    //Julia
+    // Code Owner: Julia Sandner
     public DbSet<Lesson> Lessons {get; set;}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

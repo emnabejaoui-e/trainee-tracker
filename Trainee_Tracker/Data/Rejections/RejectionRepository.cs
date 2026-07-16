@@ -3,7 +3,7 @@ using SQLitePCL;
 using Trainee_Tracker.Models;
 
 namespace Trainee_Tracker.Data.Rejections;
-// Hauptverantwortlich: Julia
+// Code-Owner: Julia Sandner
 
 public class RejectionRepository : IRejectionRepository
 {
