@@ -184,7 +184,7 @@
         <button type="button" class="action-btn action-btn-primary" onclick="document.getElementById('skip-select-dialog').showModal()">Choose an Assignment</button>
 
         <dialog id="skip-select-dialog" class="skip-dialog">
-            <h3 class="rejection-dialog-title">Skip an Assignment for @traineeName</h3>
+            <h3 class="rejection-dialog-title">Skip a Assignment for @traineeName</h3>
                 @{
                     var skippableAssignments = Model
                     .Where(a => a.Status == LessonAssignmentStatus.Open)
