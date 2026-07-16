@@ -8,6 +8,7 @@ public interface ILessonAssignmentRepository
 {
     public List<LessonAssignment> FindByTrainee(Trainee trainee);
     public List<LessonAssignment> FindByStatus(Trainee trainee, LessonAssignmentStatus status);
+    public List<LessonAssignment> FindByLesson(Lesson lesson);
     public void Save(LessonAssignment assignment);
     public void Delete(LessonAssignment assignment);
     public IEnumerable<LessonAssignment> GetAllLessonAssignments();
