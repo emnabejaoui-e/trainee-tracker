@@ -50,7 +50,7 @@ public class MentorController : Controller
     /// <returns>The Mentor index view.</returns>
     public IActionResult Index() => RedirectToAction("MyTrainees");
 
-    // Code-Owner: Leon
+    // Code-Owner: Leon Paintner
     /// <summary>
     /// Assigns a Mentor to a trainee.
     /// </summary>
@@ -62,7 +62,7 @@ public class MentorController : Controller
         return StatusCode(501, "Not implemented!");
     }
 
-    // Code-Owner: Leon
+    // Code-Owner: Leon Paintner
     /// <summary>
     /// Changes the order of lessons for a particular trainee.
     /// </summary>
@@ -74,7 +74,7 @@ public class MentorController : Controller
         return StatusCode(501, "Not implemented!");
     }
 
-    // Code-Owner: Leon
+    // Code-Owner: Leon Paintner
     public IActionResult MyTrainees()
     {
         string? mentorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -156,7 +156,7 @@ public class MentorController : Controller
         return View(model);
     }
 
-    // Code-Owner: Leon
+    // Code-Owner: Leon Paintner
     // GET: /Mentor/ImportCurriculum
     [HttpGet]
     public IActionResult ImportCurriculum()
@@ -169,7 +169,7 @@ public class MentorController : Controller
         return View(null);
     }
 
-    // Code-Owner: Leon
+    // Code-Owner: Leon Paintner
     // POST: /Mentor/ImportCurriculum
     [HttpPost]
     public IActionResult ImportCurriculum(string curriculumName, IFormFile file)
@@ -201,7 +201,7 @@ public class MentorController : Controller
         return View(file);
     }
 
-    // Code-Owner: Julia
+    // Code-Owner: Julia Sandner
     // GET: /Mentor/AssignmentOverview
     [HttpGet]
     public IActionResult AssignmentOverview(int traineeId)
@@ -231,7 +231,7 @@ public class MentorController : Controller
         return View("AssignmentOverview", assignments);
     }
 
-    //Code-Owner: Julia 
+    //Code-Owner: Julia Sandner
     [HttpPost]
     public IActionResult Accept(int assignmentId)
     {
@@ -246,7 +246,7 @@ public class MentorController : Controller
         return RedirectToAction("AssignmentOverview", new { traineeId = assignment.TraineeId });
     }
 
-//Code-Owner: Julia
+    // Code-Owner: Julia Sandner
     [HttpPost]
     public IActionResult SkipAssignment(int assignmentId)
     {
@@ -260,12 +260,14 @@ public class MentorController : Controller
 
     }    
 
+    // Code-Owner: Julia Sandner
     public IActionResult UpdateAssignmentOrder(int traineeId, [FromForm] List<int> orderedIds)
     {
         _assignmentRepo.UpdateAssignmentPositions(orderedIds);
         return RedirectToAction("AssignmentOverview", new {traineeId});
     }
 
+    // Code-Owner: Julia Sandner
     public IActionResult RejectAssignment(int assignmentId, string reason)
     {   var assignment = _assignmentRepo.GetById(assignmentId);
         if(assignment == null)
