@@ -37,7 +37,6 @@ public class LessonRepository : ILessonRepository
 
     public void Add(Lesson lesson)
     {
-        Console.WriteLine("add " + lesson.Id);
         _context.Lessons.Add(lesson);
         _context.SaveChanges();
     }
