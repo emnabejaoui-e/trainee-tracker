@@ -76,7 +76,7 @@ public class MentorControllerTests
     private Mentor SetupResponsibleMentor(int mentorID, Trainee trainee)
     {
         var mentor = new Mentor{Id = mentorID, AssignedTrainees = new List<Trainee>{trainee}};
-        _userRepoMock.Setup(r => r.GetById(mentorID)).Returns(mentor);
+        _mentorRepoMock.Setup(r => r.GetMentorById(mentorID)).Returns(mentor);
         return mentor;
     }
 

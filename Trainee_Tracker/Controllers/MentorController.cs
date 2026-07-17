@@ -268,7 +268,7 @@ public class MentorController : Controller
             return Unauthorized();
         }
         var mentorId = int.Parse(mentorIdString);
-        var mentor = _userRepo.GetById(mentorId) as Mentor;
+        var mentor = _mentorRepo.GetMentorById(mentorId);
 
         if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id))
         {
@@ -307,7 +307,7 @@ public class MentorController : Controller
             return Unauthorized();
         }
         var mentorId = int.Parse(mentorIdString);
-        var mentor = _userRepo.GetById(mentorId) as Mentor;
+        var mentor = _mentorRepo.GetMentorById(mentorId);
 
         if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id))
         {
@@ -349,7 +349,7 @@ public class MentorController : Controller
             return Unauthorized();
         }
         var mentorId = int.Parse(mentorIdString);
-        var mentor = _userRepo.GetById(mentorId) as Mentor;
+        var mentor = _mentorRepo.GetMentorById(mentorId);
 
         if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id))
         {
@@ -389,7 +389,7 @@ public class MentorController : Controller
             return Unauthorized();
         }
         var mentorId = int.Parse(mentorIdString);
-        var mentor = _userRepo.GetById(mentorId) as Mentor;
+        var mentor = _mentorRepo.GetMentorById(mentorId);
 
         if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id))
         {
@@ -422,7 +422,7 @@ public class MentorController : Controller
             return Unauthorized();
         }
         var mentorId = int.Parse(mentorIdString);
-        var mentor = _userRepo.GetById(mentorId) as Mentor;
+        var mentor = _mentorRepo.GetMentorById(mentorId);
 
         if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id))
         {
