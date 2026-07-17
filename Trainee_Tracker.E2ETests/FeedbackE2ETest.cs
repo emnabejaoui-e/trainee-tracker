@@ -19,7 +19,7 @@ public class FeedbackE2ETest : IDisposable
     public FeedbackE2ETest()
     {
         var options = new ChromeOptions();
-        //options.AddArgument("--headless");
+        options.AddArgument("--headless");
         options.AddArgument("--window-size=1920,1080");
         options.AddArgument("--no-sandbox");
         options.AddArgument("--disable-dev-shm-usage");
