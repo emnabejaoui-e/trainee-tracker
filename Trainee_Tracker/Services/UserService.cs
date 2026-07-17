@@ -21,10 +21,8 @@ namespace Trainee_Tracker.Services
             _assignmentSerivce = assignmentService;
         }
 
-// Code Owner: Jelena Cosic
 
         // Code-Owner: Andrej Basara
-        // Validation and Trainee construction moved here so the controller only has to catch.
         public void CreateTrainee(string name, string email, string rawPassword, DateOnly startingDate, DateOnly endDate)
         {
             if (string.IsNullOrEmpty(rawPassword))
@@ -49,7 +47,6 @@ namespace Trainee_Tracker.Services
             _assignmentSerivce.AssignLessonsToTrainee(trainee);
         }
 
-// Code Owner: Jelena Cosic
 
         public void CreateMentor(Mentor mentor, string rawPassword)
         {
@@ -57,7 +54,6 @@ namespace Trainee_Tracker.Services
             _userRepository.CreateMentor(mentor, hashedPassword);
         }
 
-// Code Owner: Jelena Cosic
 
         public void CreateAdmin(Admin admin, string rawPassword)
         {
