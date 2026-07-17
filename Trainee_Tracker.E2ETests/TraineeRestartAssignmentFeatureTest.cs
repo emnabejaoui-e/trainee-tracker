@@ -1,6 +1,3 @@
-//INFO: KEINE PASSENDE SEEDDATA IN DB VORHANDEN; KANN ALSO NICHT LAUFEN OHNE MANUELLE REJECTION_ERSTELLUNG
-
-
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using Trainee_Tracker.Models;
