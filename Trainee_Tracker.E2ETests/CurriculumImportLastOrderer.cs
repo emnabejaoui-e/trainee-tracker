@@ -2,7 +2,7 @@ using Xunit.Abstractions;
 
 namespace Trainee_Tracker.E2ETests;
 
-public class CurricumlumImportLastOrderer : ITestCollectionOrderer
+public class CurriculumImportLastOrderer : ITestCollectionOrderer
 {
     public IEnumerable<ITestCollection> OrderTestCollections(IEnumerable<ITestCollection> testCollections)
     {
