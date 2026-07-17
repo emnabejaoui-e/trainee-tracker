@@ -54,25 +54,21 @@ public class AdminController : Controller
     [HttpPost]
     public IActionResult CreateTrainee(string name, string email, string password, DateOnly startingDate, DateOnly endDate)
     {
-        if (string.IsNullOrEmpty(password))
+        try
+        {
+            _userService.CreateTrainee(name, email, password, startingDate, endDate);
+            return RedirectToAction("UserManagement");
+        }
+        catch (ArgumentException)
         {
             ModelState.AddModelError("password", "Password is required");
             return View();
         }
-        if(!_userService.IsEmailAvailable(email))
+        catch (InvalidOperationException)
         {
             ModelState.AddModelError("Email", "Email already in user");
             return View();
         }
-        var trainee = new Trainee
-        {
-            Name = name,
-            Email = email,
-            StartingDate = startingDate,
-            EndDate = endDate
-        };
-        _userService.CreateTrainee(trainee, password);
-        return RedirectToAction("UserManagement");
     }
 
     // Code-Owner: Andrej Basara

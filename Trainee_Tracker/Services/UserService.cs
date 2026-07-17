@@ -1,4 +1,5 @@
 // Code Owner: Jelena Cosic
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Trainee_Tracker.Models;
@@ -22,8 +23,27 @@ namespace Trainee_Tracker.Services
 
 // Code Owner: Jelena Cosic
 
-        public void CreateTrainee(Trainee trainee, string rawPassword)
+        // Code-Owner: Andrej Basara
+        // Validation and Trainee construction moved here so the controller only has to catch.
+        public void CreateTrainee(string name, string email, string rawPassword, DateOnly startingDate, DateOnly endDate)
         {
+            if (string.IsNullOrEmpty(rawPassword))
+            {
+                throw new ArgumentException("Password is required");
+            }
+            if (!IsEmailAvailable(email))
+            {
+                throw new InvalidOperationException("Email already in use");
+            }
+
+            var trainee = new Trainee
+            {
+                Name = name,
+                Email = email,
+                StartingDate = startingDate,
+                EndDate = endDate
+            };
+
             var hashedPassword = HashPassword(rawPassword);
             _userRepository.CreateTrainee(trainee, hashedPassword);
             _assignmentSerivce.AssignLessonsToTrainee(trainee);
