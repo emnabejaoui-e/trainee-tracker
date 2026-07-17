@@ -1,16 +1,24 @@
-/* Code Owner: Leon */ 
+/* Code Owner: Leon */
+
+h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1.75rem;
+}
+
 .profile-list {
     width: 100%;
     max-width: 1040px;
     list-style: none;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
 }
 .profile-item {
     background: var(--white);
     border-radius: 8px;
-    padding: 1.25rem;
+    padding: 1.75rem;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -20,11 +28,11 @@
 }
 
 .profile-main {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 h1.name {
-    font-size: 1.5rem;
+    font-size: 1.9rem;
     font-weight: 700;
     margin: 0 0 0.25rem 0;
     line-height: 1.2;
@@ -32,7 +40,7 @@ h1.name {
 }
 
 .email {
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     color: var(--gray-600);
     text-decoration: none;
     transition: color 0.2s;
@@ -43,7 +51,7 @@ h1.name {
 }
 
 .profile-meta {
-    font-size: 0.85rem;
+    font-size: 1.05rem;
     color: var(--gray-400);
     display: flex;
     align-items: center;
@@ -55,6 +63,7 @@ h1.name {
 }
 
 .mentor-link {
+    font-size: 1.05rem;
     color: var(--pink);
     text-decoration: none;
     border-bottom: 1px solid transparent;
@@ -63,9 +72,15 @@ h1.name {
 }
 
 .mentor-link-closed {
+    font-size: 1.05rem;
     color: var(--gray-600);
 }
 
 .mentor-link:hover {
     border-bottom-color: var(--pink);
+}
+
+.profile-links {
+    margin-top: 0.75rem;
+    font-size: 1rem;
 }

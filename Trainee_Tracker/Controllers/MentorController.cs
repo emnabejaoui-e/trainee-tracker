@@ -56,13 +56,9 @@ public class MentorController : Controller
         _assignmentService = assignmentService;
     }
     
-    // Code-Owner: Jelena Cosic
-    // GET: /Mentor/Index
+    // Code Owner: Jelena Cosic
     /// <summary>
     /// Displays the Mentor dashboard.
-    /// Only accessible by users with the Mentor or Admin role.
-    /// </summary>
-    /// <returns>The Mentor index view.</returns>
     public IActionResult Index() => RedirectToAction("MyTrainees");
 
     // Code-Owner: Leon
