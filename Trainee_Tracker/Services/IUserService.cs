@@ -7,13 +7,15 @@ namespace Trainee_Tracker.Services
 {
     public interface IUserService
     {
-        // Code-Owner: Andrej Basara
-        // Throws ArgumentException (missing password) / InvalidOperationException (email taken) on invalid input.
         void CreateTrainee(string name, string email, string rawPassword, DateOnly startingDate, DateOnly endDate);
-        void CreateMentor(Mentor mentor, string rawPassword);
-        void CreateAdmin(Admin admin, string rawPassword);
-        void UpdateTrainee(Trainee trainee, string? newPassword = null);
-        void UpdateMentor(Mentor mentor, string? newPassword = null);
+        void CreateMentor(string name, string email, string rawPassword);
+        void CreateAdmin(string name, string email, string rawPassword);
+        // Code-Owner: Andrej Basara
+        // Throws KeyNotFoundException if the trainee doesn't exist, InvalidOperationException if the email is taken.
+        void UpdateTrainee(int id, string name, string email, DateOnly startingDate, DateOnly endDate, string? newPassword = null);
+        // Code-Owner: Andrej Basara
+        // Throws KeyNotFoundException if the mentor doesn't exist, InvalidOperationException if the email is taken.
+        void UpdateMentor(int id, string name, string email, string? newPassword = null);
         IList<User> GetAllUsers();
         void CloseUser(int id);
         // Code Owner: Jelena Cosic

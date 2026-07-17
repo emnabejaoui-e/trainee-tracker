@@ -48,29 +48,90 @@ namespace Trainee_Tracker.Services
         }
 
 
-        public void CreateMentor(Mentor mentor, string rawPassword)
+        // Code-Owner: Andrej Basara
+        public void CreateMentor(string name, string email, string rawPassword)
         {
+            if (string.IsNullOrEmpty(rawPassword))
+            {
+                throw new ArgumentException("Password is required");
+            }
+            if (!IsEmailAvailable(email))
+            {
+                throw new InvalidOperationException("Email already in use");
+            }
+
+            var mentor = new Mentor
+            {
+                Name = name,
+                Email = email,
+            };
+
             var hashedPassword = HashPassword(rawPassword);
             _userRepository.CreateMentor(mentor, hashedPassword);
         }
 
-
-        public void CreateAdmin(Admin admin, string rawPassword)
+        // Code-Owner: Andrej Basara
+        public void CreateAdmin(string name, string email, string rawPassword)
         {
+            if (string.IsNullOrEmpty(rawPassword))
+            {
+                throw new ArgumentException("Password is required");
+            }
+            if (!IsEmailAvailable(email))
+            {
+                throw new InvalidOperationException("Email already in use");
+            }
+
+            var admin = new Admin
+            {
+                Name = name,
+                Email = email,
+            };
+
             var hashedPassword = HashPassword(rawPassword);
             _userRepository.CreateAdmin(admin, hashedPassword);
         }
 
-        // Code Owner: Andrej Basara
-        public void UpdateTrainee(Trainee trainee, string? newPassword = null)
+        // Code-Owner: Andrej Basara
+        public void UpdateTrainee(int id, string name, string email, DateOnly startingDate, DateOnly endDate, string? newPassword = null)
         {
+            if (GetById(id) is not Trainee trainee)
+            {
+                throw new KeyNotFoundException("Trainee not found");
+            }
+
+            var emailChanged = !string.Equals(trainee.Email, email, StringComparison.OrdinalIgnoreCase);
+            if (emailChanged && !IsEmailAvailable(email))
+            {
+                throw new InvalidOperationException("Email already in use");
+            }
+
+            trainee.Name = name;
+            trainee.Email = email;
+            trainee.StartingDate = startingDate;
+            trainee.EndDate = endDate;
+
             var hashedPassword = string.IsNullOrEmpty(newPassword) ? null : HashPassword(newPassword);
             _userRepository.UpdateUser(trainee, hashedPassword);
         }
 
-        // Code Owner: Andrej Basara 
-        public void UpdateMentor(Mentor mentor, string? newPassword = null)
+        // Code-Owner: Andrej Basara
+        public void UpdateMentor(int id, string name, string email, string? newPassword = null)
         {
+            if (GetById(id) is not Mentor mentor)
+            {
+                throw new KeyNotFoundException("Mentor not found");
+            }
+
+            var emailChanged = !string.Equals(mentor.Email, email, StringComparison.OrdinalIgnoreCase);
+            if (emailChanged && !IsEmailAvailable(email))
+            {
+                throw new InvalidOperationException("Email already in use");
+            }
+
+            mentor.Name = name;
+            mentor.Email = email;
+
             var hashedPassword = string.IsNullOrEmpty(newPassword) ? null : HashPassword(newPassword);
             _userRepository.UpdateUser(mentor, hashedPassword);
         }
