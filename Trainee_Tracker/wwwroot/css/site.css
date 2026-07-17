@@ -174,11 +174,15 @@ body {
     background: #ffffff;
     border-radius: 16px;
     padding: 40px;
-    width: 500px;
+    width: 600px;
     max-width: calc(100% - 40px);
     box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     margin: 60px auto 0 auto;
     display: block;
+}
+
+.user-create-forum-container dl.row {
+    margin-bottom: 0;
 }
 
 
