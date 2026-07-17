@@ -203,7 +203,6 @@ public class AdminController : Controller
         catch (InvalidOperationException)
         {
             ModelState.AddModelError("Email", "Email already in use");
-            // asp-for pulls the entered values back out of ModelState; only Id is needed here
             return View(new Trainee { Id = id });
         }
     }
@@ -232,7 +231,6 @@ public class AdminController : Controller
         catch (InvalidOperationException)
         {
             ModelState.AddModelError("Email", "email already in use");
-            // asp-for pulls the entered values back out of ModelState; only Id is needed here
             return View(new Mentor { Id = id });
         }
     }
