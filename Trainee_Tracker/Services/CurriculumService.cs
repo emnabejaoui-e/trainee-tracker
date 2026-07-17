@@ -23,6 +23,37 @@ public class CurriculumService : ICurriculumService
         _lessonAssignmentRepo = lessonAssignmentRepo;
     }
 
+    public void ImportCurriculum(Curriculum curriculum, IList<Lesson> importedLessons)
+    {
+        var lessons = MergeLessons(curriculum._Lessons, importedLessons);
+        
+        for (int i = 0; i < lessons.Count; i++)
+        {
+            var lesson = lessons[i];
+
+            lesson.Position = i;
+            lesson.CurriculumId = curriculum.Id;
+
+            var searchedInstance = _lessonRepo.FindById(lesson.Id);
+            if (searchedInstance == null)
+            {
+                _lessonRepo.Add(lesson);
+            }
+            else
+            {
+                searchedInstance.Update(lesson);
+                _lessonRepo.Update(searchedInstance);
+            }
+        }
+        
+        foreach (var trainee in GetTraineesOfCurriculum(curriculum))
+        {
+            UpdateLessonAssignments(trainee, curriculum);
+        }
+        
+        _curriculumRepo.Update(curriculum);
+    }
+
     public IList<Lesson> MergeLessons(IList<Lesson> existingLessons, IList<Lesson> importedLessons)
     {
         if (existingLessons == importedLessons)
@@ -46,35 +77,7 @@ public class CurriculumService : ICurriculumService
         return result.ToList();
     }
 
-    public void Update(Curriculum updatedCurriculum)
-    {
-        for (int i = 0; i < updatedCurriculum._Lessons.Count; i++)
-        {
-            var lesson = updatedCurriculum._Lessons[i];
-
-            lesson.Position = i;
-            lesson.CurriculumId = updatedCurriculum.Id;
-
-            var searchedInstance = _lessonRepo.FindById(lesson.Id);
-            if (searchedInstance == null)
-            {
-                _lessonRepo.Add(lesson);
-            }
-            else
-            {
-                searchedInstance.Update(lesson);
-                _lessonRepo.Update(searchedInstance);
-            }
-        }
-        foreach (var trainee in GetTraineesOfCurriculum(updatedCurriculum))
-        {
-            UpdateLessonAssignments(trainee, updatedCurriculum);
-        }
-        
-        _curriculumRepo.Update(updatedCurriculum);
-    }
-
-    public ICollection<Trainee> GetTraineesOfCurriculum(Curriculum curriculum)
+    private ICollection<Trainee> GetTraineesOfCurriculum(Curriculum curriculum)
     {
         var result = new HashSet<Trainee>();
         foreach (var trainee in _traineeRepo.GetAllTrainees())
