@@ -45,6 +45,13 @@ public class FakeUserRepository : IUserRepository
 public class FakeAssignmentService : IAssignmentService
 {
     public void AssignLessonsToTrainee(Trainee trainee) { }
+
+    public AssignmentOverviewResult GetOverview(Trainee trainee) { return null;} //code-Owner: Julia Sandner
+
+    public void UpdateAssignmentOrder(List<int> orderedIds) { } //Code-Owner: Julia Sandner
+
+    public LessonAssignment? UpdateAssignmentStatus(int assignmentId, LessonAssignmentStatus newStatus){ return null;} //code-Owner: Julia Sandner
+    public Rejection? RejectAssignment(int assignmentId, string reason){return null;} //Code-Owner: Julia Sandner 
 }
 
 // Code Owner: Jelena Cosic
@@ -57,9 +64,10 @@ public class LoginServiceTests
         var repo = new FakeUserRepository();
         var service = new UserService(repo, new FakeAssignmentService());
 
-        var result = service.ValidateUserCredentials("unknown@makandra.de", "anyPassword");
+        var (result, user) = service.ValidateUserCredentials("unknown@makandra.de", "anyPassword");
 
         Assert.Equal(LoginResult.InvalidCredentials, result);
+        Assert.Null(user);
     }
 
     // Code Owner: Jelena Cosic
@@ -78,9 +86,10 @@ public class LoginServiceTests
         };
         repo.AddUser(closedUser);
 
-        var result = service.ValidateUserCredentials("closed@makandra.de", "Test1234!");
+        var (result, user) = service.ValidateUserCredentials("closed@makandra.de", "Test1234!");
 
         Assert.Equal(LoginResult.AccountClosed, result);
+        Assert.Null(user);
     }
 
     // Code Owner: Jelena Cosic
@@ -99,9 +108,10 @@ public class LoginServiceTests
         };
         repo.AddUser(user);
 
-        var result = service.ValidateUserCredentials("test@makandra.de", "WrongPassword!");
+        var (result, resultUser) = service.ValidateUserCredentials("test@makandra.de", "WrongPassword!");
 
         Assert.Equal(LoginResult.InvalidCredentials, result);
+        Assert.Null(resultUser);
     }
 
     // Code Owner: Jelena Cosic
@@ -120,9 +130,11 @@ public class LoginServiceTests
         };
         repo.AddUser(user);
 
-        var result = service.ValidateUserCredentials("valid@makandra.de", "ValidPassword!");
+        var (result, resultUser) = service.ValidateUserCredentials("valid@makandra.de", "ValidPassword!");
 
         Assert.Equal(LoginResult.Success, result);
+        Assert.NotNull(resultUser);
+        Assert.Equal("valid@makandra.de", resultUser!.Email);
     }
 
     // Code Owner: Jelena Cosic

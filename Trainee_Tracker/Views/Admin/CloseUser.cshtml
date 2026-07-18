@@ -8,23 +8,23 @@
     <div>
         <hr />
         <dl class="row">
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.Name)
+            <dt class = "col-sm-4">
+                @Html.DisplayNameFor(model => model.Name):
             </dt>
-            <dd class = "col-sm-10">
+            <dd class = "col-sm-8">
                 @Html.DisplayFor(model => model.Name)
             </dd>
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.Email)
+            <dt class = "col-sm-4">
+                @Html.DisplayNameFor(model => model.Email):
             </dt>
-            <dd class = "col-sm-10">
+            <dd class = "col-sm-8">
                 @Html.DisplayFor(model => model.Email)
             </dd>
             @if (Model is Trainee t) {
-            <dt class = "col-sm-2">
+            <dt class = "col-sm-4">
                 Role:
             </dt>
-            <dd class = "col-sm-10">
+            <dd class = "col-sm-8">
                 Trainee
             </dd>
             }
@@ -32,7 +32,9 @@
         
         <form asp-action="CloseUser">
             <input type="hidden" asp-for="Id" />
-            <input type="submit" value="Close User" class="btn btn-danger" /> |
+            <div class="mb-2" style="margin-top: 16px;">
+                <input type="submit" value="Close User" class="btn btn-danger" />
+            </div>
             <a asp-action="UserManagement">Back to List</a>
         </form>
     </div>

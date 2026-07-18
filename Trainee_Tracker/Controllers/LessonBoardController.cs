@@ -5,22 +5,28 @@ using Trainee_Tracker.Data.LessonAssignments;
 using Trainee_Tracker.Data.Rejections;
 using Trainee_Tracker.Models;
 using Trainee_Tracker.Repositories;
+using Trainee_Tracker.Services;
 
 namespace Trainee_Tracker.Controllers;
 
 public class LessonBoardController : Controller
 {
-    private readonly ILessonAssignmentRepository _lessonAssignmentRepo;
     private readonly IUserRepository _userRepo;
-    private readonly IRejectionRepository _rejectionRepo;
+    private readonly ILessonAssignmentRepository _assignmentRepo;
+    private readonly IAssignmentService _assignmentService;
 
-    public LessonBoardController(ILessonAssignmentRepository lessonAssignmentRepo, IUserRepository userRepo, IRejectionRepository rejectionRepo)
+    public LessonBoardController(IUserRepository userRepo, ILessonAssignmentRepository lessonAssignmentRepo, ILessonAssignmentRepository assignmentRepo, IAssignmentService assignmentService)
     {
-        _lessonAssignmentRepo = lessonAssignmentRepo;
-        _userRepo = userRepo;
-        _rejectionRepo = rejectionRepo;
+       _userRepo = userRepo;
+       _assignmentRepo = assignmentRepo;
+        _assignmentService = assignmentService;
     }
 
+    //Code-Owner: Julia Sandner
+    /// <summary>
+    /// Displays the lessonBoard for the currently logged-in trainee including any rejection history for their assignments
+    /// </summary>
+    /// <returns>the LessonBoard view or Unauthorized if no valid trainee is logged in</returns>
     public IActionResult LessonBoard()
     {
         var traineeIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -36,38 +42,48 @@ public class LessonBoardController : Controller
             return Unauthorized();
         }
 
-        var assignments = _lessonAssignmentRepo.FindByTrainee(trainee);
-        var rejections = _rejectionRepo.GetRejectedByTrainee(trainee);
+        var result = _assignmentService.GetOverview(trainee);
 
-        var rejectionHistory = rejections
-        .GroupBy(r=> r.AssignmentId)
-        .ToDictionary(g => g.Key, g => g.OrderByDescending(r=>r.RejectedAt).ToList());
+        ViewBag.RejectionReasons = result.RejectionHistory;
+        ViewBag.AssignmentsWithHistory = result.AssignmentsWithHistory;
 
-        var assignmentsWithHistory = assignments
-        .Where(a => rejectionHistory.ContainsKey(a.Id))
-        .OrderByDescending(a => rejectionHistory[a.Id].Max(r =>r.RejectedAt))
-        .ToList();
-
-        ViewBag.RejectionReasons = rejectionHistory;
-        ViewBag.AssignmentsWithHistory = assignmentsWithHistory;
-
-        
-        return View(assignments);
+        return View(result.Assignments);
     }
 
+    //Code-Owner: Julia Sandner
+    /// <summary>
+    /// Updates the status of a lesson assignment
+    /// </summary>
+    /// <param name="id"> numeric id of the assignment to update</param>
+    /// <param name="newStatus"> the new status to set on the assignment</param>
+    /// <returns> a redirect to the LessonBoard or Not-Found if the assignment does not exist</returns>
     [HttpPost]
     public IActionResult UpdateStatus(int id, LessonAssignmentStatus newStatus)
     {
-        var assignment = _lessonAssignmentRepo.GetById(id);
-        if(assignment == null)
+        var currentAssignment = _assignmentRepo.GetById(id);
+        if(currentAssignment == null)
         {
             return NotFound();
         }
-        _lessonAssignmentRepo.UpdateStatus(id, newStatus);
-        return RedirectToAction("LessonBoard", new {traineeId = assignment.TraineeId});
 
+        try
+        {
+            var assignment = _assignmentService.UpdateAssignmentStatus(id, newStatus);
+            return RedirectToAction("LessonBoard", new {traineeId = assignment!.TraineeId});
+        }
+        catch(InvalidOperationException e)
+        {
+            TempData["Error"] = e.Message;
+            return RedirectToAction("LessonBoard", new {traineeId = currentAssignment.TraineeId});
+        }
     }
 
+    //Code-Owner: Julia Sandner
+    /// <summary>
+    /// Redirects to the feedback-creation fo a given assignment
+    /// </summary>
+    /// <param name="id"> numeric id of the assignment to rate</param>
+    /// <returns> a redirect to the Feedback controller's CreateFeedback action</returns>
     [HttpPost]
     public IActionResult RateAssignment(int id)
     {
