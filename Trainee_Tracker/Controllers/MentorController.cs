@@ -394,12 +394,6 @@ public class MentorController : Controller
 
         _assignmentService.UpdateAssignmentOrder(orderedIds);
         
-        var trainee = _traineeRepo.FindById(traineeId);
-
-        if (trainee == null)
-        {
-            return NotFound();
-        }
         trainee.IsAssignmentOrderCustomized = true;
         _traineeRepo.Save(trainee);
         
