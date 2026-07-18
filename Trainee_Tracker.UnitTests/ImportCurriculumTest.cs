@@ -25,7 +25,7 @@ struct CurriculumServiceInitializerServices
         {
             Id = 1,
             _Lessons = existingLessons,
-            Mentors = new List<Mentor>(),
+            Trainees = new List<Trainee>(),
             Title = "Test Curriculum"
         };
         CurriculumRepository.Create(Curriculum);
