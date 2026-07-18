@@ -22,20 +22,6 @@ public class LessonAssignmentRepository : ILessonAssignmentRepository
         _context.LessonAssignments.Remove(assignment);
     }
 
-    /// <summary>
-    /// Returns a list of all assignments for a specific trainee that are in the state status
-    /// </summary>
-    /// <param name="trainee"></param>
-    /// <param name="status"></param>
-    /// <returns></returns>
-    public List<LessonAssignment> FindByStatus(Trainee trainee, LessonAssignmentStatus status)
-    {
-        return _context.LessonAssignments
-                .Include(la => la.Lesson)
-                .Where(la => la.TraineeId == trainee.Id && la.Status == status)
-                .ToList();
-    }
-
     public List<LessonAssignment> FindByTrainee(Trainee trainee)
     {
         return _context.LessonAssignments
@@ -44,12 +30,6 @@ public class LessonAssignmentRepository : ILessonAssignmentRepository
                 .ToList();
     }
 
-    public List<LessonAssignment> FindByLesson(Lesson lesson)
-    {
-        return _context.LessonAssignments
-            .Where(la => la.Lesson.Equals(lesson))
-            .ToList();
-    }
 
     public IEnumerable<LessonAssignment> GetAllLessonAssignments()
     {

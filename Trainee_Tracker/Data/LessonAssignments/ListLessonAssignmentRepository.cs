@@ -17,19 +17,6 @@ public class ListLessonAssignmentRepository : ILessonAssignmentRepository
             .ToList();
     }
 
-    public List<LessonAssignment> FindByStatus(Trainee trainee, LessonAssignmentStatus status)
-    {
-        return _data.Where(la => la.TraineeId == trainee.Id)
-            .Where(la => la.Status == status)
-            .ToList();
-    }
-
-    public List<LessonAssignment> FindByLesson(Lesson lesson)
-    {
-        return _data.Where(la => la.LessonId == lesson.Id)
-            .ToList();
-    }
-
     public void Save(LessonAssignment assignment)
     {
         _data.Remove(assignment);

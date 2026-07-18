@@ -15,7 +15,7 @@ namespace Trainee_Tracker.Controllers;
 ///
 public class FeedbackController : Controller
 {
-    private readonly LessonFeedbackService _lessonFeedbackService;
+    private readonly LessonFeedbackService _lessonFeedbackService; //warum direkt über den Service und nicht über ein Interface ? 
     private readonly ILessonRepository _lessonRepository;
     private readonly IAssignmentService _assignmentService;
     private readonly IMentorRepository _mentorRepo;

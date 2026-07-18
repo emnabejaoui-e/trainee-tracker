@@ -1,6 +1,6 @@
 namespace Trainee_Tracker.Models;
 
-// Code-Owner: Julia Sandner
+// Code-Owner: Julia Sandner (total class)
 
 public class LessonAssignment
 {
@@ -27,31 +27,6 @@ public class LessonAssignment
         TraineeId = trainee.Id;
     }
 
-    public void StartAssignment()
-    {
-        this.Status = LessonAssignmentStatus.Started;
-    }
-
-    public void FinishAssignment()
-    {
-        this.Status = LessonAssignmentStatus.Finished;
-    }
-
-    public void AcceptAssignment()
-    {
-        this.Status = LessonAssignmentStatus.Accepted;
-    }
-
-    public void SkipAssignment()
-    {
-        this.Status = LessonAssignmentStatus.Skipped;
-    }
-
-     public void RateAssignemnt()
-    {
-        this.Status = LessonAssignmentStatus.Rated;
-    }
-
     public Rejection RejectAssignment(string reason)
     {
         this.Status = LessonAssignmentStatus.Rejected;
@@ -62,4 +37,6 @@ public class LessonAssignment
         };
         return rejection;
     }
+
+
 }
