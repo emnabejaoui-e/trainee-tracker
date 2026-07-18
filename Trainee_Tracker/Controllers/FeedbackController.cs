@@ -41,9 +41,14 @@ public class FeedbackController : Controller
     /// <param name="show">Specifies which feedback should be displayed.</param>
     /// <returns>The view with the list of feedback.</returns>
 
-    [HttpGet]
+[HttpGet]
     public IActionResult RecentFeedback(DateTime? from, DateTime? until, string show = "all")
     {
+        if (User.IsInRole("Admin"))
+        {
+            ViewData["NavbarOverride"] = "Mentor";
+        }
+
         var feedbacks = new List<LessonFeedback>();
         var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
@@ -65,8 +70,6 @@ public class FeedbackController : Controller
                 }
                 else if (show == "assigned")
                 {
-                    ViewData["NavbarOverride"] = "Mentor";
-
                     var mentor = _mentorRepo.GetMentorById(currentUserId);
 
                     var assignedTraineeIds = mentor?.AssignedTrainees.Select(trainee => trainee.Id).ToHashSet() ?? new HashSet<int>();
@@ -74,7 +77,7 @@ public class FeedbackController : Controller
                     feedbacks = feedbacks
                         .Where(feedback => assignedTraineeIds.Contains(feedback.TraineeId))
                         .ToList();
-}
+                }
                 else
                 {
                     show = "all";
