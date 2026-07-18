@@ -68,7 +68,7 @@
                     <div class="column-body" data-status="@status" id="column-body-@status">
                         @if(!cards.Any())
                         {
-                            <div class="column-empty">no crads</div>
+                            <div class="column-empty">no cards</div>
                         }
                         else
                         {
@@ -94,18 +94,18 @@
                                             @switch(status)
                                             {
                                                 case "Open":
-                                                    <form asp-action="UpdateStatus" asp-controller="LessonBoard" asp-route-id="@card.Id" method="post">
-                                                        <input type="hidden" name="id" value="@card.Id"/>
-                                                        <input type="hidden" name="newStatus" value="@LessonAssignmentStatus.Started"/>
+                                                    <form asp-action="StartAssignment" asp-controller="LessonBoard" asp-route-assignmentId="@card.Id" method="post">
+                                                        <input type="hidden" name="assignmentId" value="@card.Id"/>
+                                                        @* <input type="hidden" name="newStatus" value="@LessonAssignmentStatus.Started"/> *@
 
                                                         <button type="submit" class="action-btn action-btn-primary">start</button>
                                                     </form>
                                                     break;
 
                                                 case "Started":
-                                                    <form asp-action="UpdateStatus" asp-controller="LessonBoard" asp-route-id="@card.Id" method="post">
-                                                        <input type="hidden" name="id" value="@card.Id"/>
-                                                        <input type="hidden" name="newStatus" value="@LessonAssignmentStatus.Finished"/>
+                                                    <form asp-action="FinishAssignment" asp-controller="LessonBoard" asp-route-assignmentId="@card.Id" method="post">
+                                                        <input type="hidden" name="assignmentId" value="@card.Id"/>
+                                                        @* <input type="hidden" name="newStatus" value="@LessonAssignmentStatus.Finished"/> *@
 
                                                         <button type="submit" class="action-btn action-btn-primary">finish</button>
                                                     </form>
@@ -116,9 +116,9 @@
                                                     break;
 
                                                 case "Rejected":
-                                                    <form asp-action="UpdateStatus" asp-controller="LessonBoard" asp-route-id="@card.Id" method="post">
-                                                        <input type="hidden" name="id" value="@card.Id"/>
-                                                        <input type="hidden" name="newStatus" value="@LessonAssignmentStatus.Started"/>
+                                                    <form asp-action="StartAssignment" asp-controller="LessonBoard" asp-route-asssignmentId="@card.Id" method="post">
+                                                        <input type="hidden" name="assignmentId" value="@card.Id"/>
+                                                        @* <input type="hidden" name="newStatus" value="@LessonAssignmentStatus.Started"/> *@
 
                                                         <button type="submit" class="action-btn action-btn-primary">restart</button>
                                                     </form>
