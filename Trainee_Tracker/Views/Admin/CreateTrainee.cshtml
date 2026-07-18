@@ -1,5 +1,6 @@
 @* Code-Owner: Andrej Basara *@
 @model Trainee_Tracker.Models.Trainee
+@using Microsoft.AspNetCore.Mvc.Rendering
 
 @{
     ViewData["Title"] = "CreateTrainee";
@@ -37,6 +38,13 @@
                     <label asp-for="EndDate" class="control-label">End Date</label>
                     <input asp-for="EndDate" type="date" class="form-control" />
                     <span asp-validation-for="EndDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CurriculumId" class="control-label">Curriculum</label>
+                    <select asp-for="CurriculumId" class="form-control" asp-items="@(new SelectList(ViewBag.Curricula, "Id", "Title"))">
+                        <option value="">-- Select Curriculum --</option>
+                    </select>
+                    <span asp-validation-for="CurriculumId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn-user-create-confirm" />

@@ -11,7 +11,7 @@ using Trainee_Tracker.Data;
 namespace Trainee_Tracker.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260718183146_InitialCreate")]
+    [Migration("20260718185311_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

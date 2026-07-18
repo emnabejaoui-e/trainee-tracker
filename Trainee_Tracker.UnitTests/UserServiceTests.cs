@@ -16,7 +16,7 @@ public class UserServiceTests
     [Fact]
     public void TestIsEmailAvailable()
     {
-        var user = new Mentor { Id = 12, Name = "Tom", Email = "tom@makandra.de", Closed = false };
+        var user = new Mentor { Id = 12, Name = "Tom", Email = "tom@makandra.de", Closed = false};
         var userRepo = new FakeUserRepository();
         var emailCheck = new UserService(userRepo, new FakeAssignmentService());
         userRepo.AddUser(user);
@@ -31,7 +31,7 @@ public class UserServiceTests
         var repo = new FakeUserRepository();
         var service = new UserService(repo, new FakeAssignmentService());
 
-        service.CreateTrainee("New Trainee", "newtrainee@makandra.de", "RawPassword123!", new DateOnly(2026, 1, 1), new DateOnly(2026, 12, 31));
+        service.CreateTrainee("New Trainee", "newtrainee@makandra.de", "RawPassword123!", new DateOnly(2026, 1, 1), new DateOnly(2026, 12, 31), 1);
 
         var savedUser = repo.GetUserByEmail("newtrainee@makandra.de");
         Assert.NotNull(savedUser);

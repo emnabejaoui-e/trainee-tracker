@@ -33,6 +33,7 @@ public class AssignmentService : IAssignmentService
         _rejectionRepo = rejectionRepo;
     }
 
+    // Code Owner: Andrej Basara
     public void AssignLessonsToTrainee(Trainee trainee)
     {
         var lessons = _lessonRepo.GetAllLessons()
