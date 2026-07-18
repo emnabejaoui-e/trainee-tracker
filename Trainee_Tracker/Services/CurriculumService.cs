@@ -81,16 +81,7 @@ public class CurriculumService : ICurriculumService
 
     private ICollection<Trainee> GetTraineesOfCurriculum(Curriculum curriculum)
     {
-        var result = new HashSet<Trainee>();
-        foreach (var trainee in _traineeRepo.GetAllTrainees())
-        {
-            if(trainee.Mentors.Any(m => curriculum.Id.Equals(m.CurriculumId)))
-            {
-                result.Add(trainee);
-            }            
-        }
-
-        return result;
+        return _traineeRepo.GetAllTrainees().Where(t => t.CurriculumId == curriculum.Id).ToList();
     }
 
     public void UpdateLessonAssignments(Trainee trainee, Curriculum curriculum)

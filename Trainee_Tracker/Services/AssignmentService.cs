@@ -37,6 +37,7 @@ public class AssignmentService : IAssignmentService
     {
         var lessons = _lessonRepo.GetAllLessons()
         .Where(lesson => !lesson.Inactive)
+        .Where(lesson => lesson.CurriculumId == trainee.CurriculumId)
         .OrderBy(lesson => lesson.Position)
         .ToList();
 

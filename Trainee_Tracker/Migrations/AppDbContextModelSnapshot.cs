@@ -608,11 +608,6 @@ namespace Trainee_Tracker.Migrations
                 {
                     b.HasBaseType("Trainee_Tracker.Models.User");
 
-                    b.Property<int?>("CurriculumId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasIndex("CurriculumId");
-
                     b.HasDiscriminator().HasValue("Mentor");
 
                     b.HasData(
@@ -622,8 +617,7 @@ namespace Trainee_Tracker.Migrations
                             Closed = false,
                             Email = "jelenacosic2@makandra.de",
                             HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
-                            Name = "Jelena2 Mentor",
-                            CurriculumId = 1
+                            Name = "Jelena2 Mentor"
                         },
                         new
                         {
@@ -631,8 +625,7 @@ namespace Trainee_Tracker.Migrations
                             Closed = false,
                             Email = "manfred.mental@makandra.de",
                             HashedPassword = "$2a$11$kce.fXXVmBy2n0DaoYUcuujmpl.lXCCgZC7WSoFT94B98q5FS.gMa",
-                            Name = "Manfred Mental",
-                            CurriculumId = 1
+                            Name = "Manfred Mental"
                         },
                         new
                         {
@@ -640,14 +633,16 @@ namespace Trainee_Tracker.Migrations
                             Closed = false,
                             Email = "hans.hilfreich@makandra.de",
                             HashedPassword = "$2a$11$RirFsrHzwqEKO0Wr8sIiZuprcJ5Pz8y45bRGLltqSos0cePlhhLvC",
-                            Name = "Hans Hilfreich",
-                            CurriculumId = 1
+                            Name = "Hans Hilfreich"
                         });
                 });
 
             modelBuilder.Entity("Trainee_Tracker.Models.Trainee", b =>
                 {
                     b.HasBaseType("Trainee_Tracker.Models.User");
+
+                    b.Property<int?>("CurriculumId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("TEXT");
@@ -657,6 +652,8 @@ namespace Trainee_Tracker.Migrations
 
                     b.Property<DateOnly>("StartingDate")
                         .HasColumnType("TEXT");
+
+                    b.HasIndex("CurriculumId");
 
                     b.HasDiscriminator().HasValue("Trainee");
 
@@ -668,6 +665,7 @@ namespace Trainee_Tracker.Migrations
                             Email = "jelenacosic3@makandra.de",
                             HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
                             Name = "Jelena3 Trainee",
+                            CurriculumId = 1,
                             EndDate = new DateOnly(1, 1, 1),
                             IsAssignmentOrderCustomized = false,
                             StartingDate = new DateOnly(1, 1, 1)
@@ -679,6 +677,7 @@ namespace Trainee_Tracker.Migrations
                             Email = "torstentrainee@makandra.de",
                             HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
                             Name = "Torsten Trainee",
+                            CurriculumId = 1,
                             EndDate = new DateOnly(2027, 1, 1),
                             IsAssignmentOrderCustomized = false,
                             StartingDate = new DateOnly(2026, 6, 30)
@@ -690,6 +689,7 @@ namespace Trainee_Tracker.Migrations
                             Email = "tildatrainee@makandra.de",
                             HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
                             Name = "Tilda Trainee",
+                            CurriculumId = 1,
                             EndDate = new DateOnly(2027, 1, 1),
                             IsAssignmentOrderCustomized = false,
                             StartingDate = new DateOnly(2026, 7, 1)
@@ -838,10 +838,10 @@ namespace Trainee_Tracker.Migrations
                     b.Navigation("Trainee");
                 });
 
-            modelBuilder.Entity("Trainee_Tracker.Models.Mentor", b =>
+            modelBuilder.Entity("Trainee_Tracker.Models.Trainee", b =>
                 {
                     b.HasOne("Trainee_Tracker.Models.Curriculum", "Curriculum")
-                        .WithMany("Mentors")
+                        .WithMany("Trainees")
                         .HasForeignKey("CurriculumId")
                         .OnDelete(DeleteBehavior.SetNull);
 
@@ -850,7 +850,7 @@ namespace Trainee_Tracker.Migrations
 
             modelBuilder.Entity("Trainee_Tracker.Models.Curriculum", b =>
                 {
-                    b.Navigation("Mentors");
+                    b.Navigation("Trainees");
 
                     b.Navigation("_Lessons");
                 });
