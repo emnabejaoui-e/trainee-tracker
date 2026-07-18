@@ -57,9 +57,9 @@ public class MentorReorderAssignmentsFeatureTest
 
     //Assert
         _wait.Until(d => d.Url.Contains("AssignmentOverview"));
-        var board = _driver.FindElement(By.CssSelector(".board-columns"));
+        var boardText = _fixture.GetTextSafely(By.CssSelector(".board-columns"));
         //check: postion changed in card
-        Assert.Contains(firstItemTitle, board.Text);    
+        Assert.Contains(firstItemTitle, boardText);    
         Console.WriteLine("finished reorder-test");
 
     }

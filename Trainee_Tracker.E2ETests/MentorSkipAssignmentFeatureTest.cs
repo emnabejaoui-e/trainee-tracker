@@ -52,9 +52,9 @@ public class MentorSkipAssignmentFeatureTest
         
         System.Threading.Thread.Sleep(200);
 
-        var skippedColumn = _wait.Until(d => d.FindElement(By.Id("column-body-Skipped")));
+        var skippedColumnText = _fixture.GetTextSafely(By.Id("column-body-Skipped"));
         
-        Assert.Contains(lessonTitle, skippedColumn.Text);
+        Assert.Contains(lessonTitle, skippedColumnText);
         Console.WriteLine("skiped assignment found and end test");
 
     }

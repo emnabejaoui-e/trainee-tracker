@@ -34,7 +34,7 @@ public class MentorFinishRejectAssignmentFeatureTest
         // Arrange
         var finishedColumn = _wait.Until(d => d.FindElement(By.Id("column-body-Finished"))); 
         var rejectButton = finishedColumn.FindElement(By.CssSelector(".action-btn-reject")); 
-        var assignmentTitle = finishedColumn.FindElement(By.CssSelector(".card-title")).Text;
+        var assignmentTitleText = _fixture.GetTextSafely(By.Id("column-body-Finished"), By.CssSelector(".card-title"));
         
         //open Dialog
         _fixture.SafeClick(rejectButton);
@@ -52,7 +52,7 @@ public class MentorFinishRejectAssignmentFeatureTest
 
         //Assert
         var rejectedItems = _driver.FindElements(By.CssSelector(".rejected-item"));
-        var matchingItem = rejectedItems.FirstOrDefault(item => item.FindElement(By.CssSelector(".rejected-item-title")).Text == assignmentTitle);
+        var matchingItem = rejectedItems.FirstOrDefault(item => item.FindElement(By.CssSelector(".rejected-item-title")).Text == assignmentTitleText);
 
         Assert.NotNull(matchingItem);
         Assert.Contains(reason, matchingItem. Text);
