@@ -123,8 +123,7 @@ public class DbIntializer(IUserService userService, IMentorService mentorService
         
         // Stefan is about 30% finished
         // Re-fetch stefan so the assignments are in the object
-        // stefan = trainees.GetAllTrainees().First(t => t.Email.Equals("stefan.schnupfen@makandra.de"));
-        stefan = trainees.GetAllTrainees().First(t => t.Email.Equals("tildatrainee@makandra.de"));
+        stefan = trainees.GetAllTrainees().First(t => t.Email.Equals("stefan.schnupfen@makandra.de"));
         var stefanControlData = progressService.CalculateProgress(stefan.Assignments, 0);
         foreach (LessonAssignment assignment in stefan.Assignments)
         {
@@ -141,8 +140,7 @@ public class DbIntializer(IUserService userService, IMentorService mentorService
         
         // Ursula is about 90% rated
         // Re-fetch ursula so the assignments are in the object
-        // ursula = trainees.GetAllTrainees().First(t => t.Email.Equals("ursula.urlaub@makandra.de"));
-        ursula = trainees.GetAllTrainees().First(t => t.Email.Equals("torstentrainee@makandra.de"));
+        ursula = trainees.GetAllTrainees().First(t => t.Email.Equals("ursula.urlaub@makandra.de"));
         var ursulaControlData = progressService.CalculateProgress(ursula.Assignments, 0);
         foreach (LessonAssignment assignment in stefan.Assignments)
         {
