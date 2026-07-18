@@ -14,7 +14,7 @@ namespace Trainee_Tracker.Services
         IList<User> GetAllUsers();
         void CloseUser(int id);
         // Code Owner: Jelena Cosic
-        LoginResult ValidateUserCredentials(string email, string password); 
+        (LoginResult Result, User? User) ValidateUserCredentials(string email, string password);
         User GetUserByEmail(string email);
 
         // Code-Owner: Andrej Basara

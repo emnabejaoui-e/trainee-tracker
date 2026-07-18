@@ -78,16 +78,16 @@ namespace Trainee_Tracker.Services
 
 // Code Owner: Jelena Cosic
 
-        public LoginResult ValidateUserCredentials(string email, string password)
-        {
+        public (LoginResult Result, User? User) ValidateUserCredentials(string email, string password)
+{
             var user = _userRepository.GetUserByEmail(email);
-            if (user == null)
-                return LoginResult.InvalidCredentials;
-            if (user.Closed)
-                return LoginResult.AccountClosed;
+              if (user == null)
+            return (LoginResult.InvalidCredentials, null);
+              if (user.Closed)
+            return (LoginResult.AccountClosed, null);
             var credentialsValid = _userRepository.ValidateUserCredentials(email, password);
-            return credentialsValid ? LoginResult.Success : LoginResult.InvalidCredentials;
-        }
+            return credentialsValid ? (LoginResult.Success, user) : (LoginResult.InvalidCredentials, null);
+}
 
 // Code Owner: Jelena Cosic
 
