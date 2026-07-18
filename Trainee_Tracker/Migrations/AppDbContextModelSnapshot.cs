@@ -34,36 +34,6 @@ namespace Trainee_Tracker.Migrations
                     b.HasData(
                         new
                         {
-                            AssignedTraineesId = 9,
-                            MentorsId = 7
-                        },
-                        new
-                        {
-                            AssignedTraineesId = 10,
-                            MentorsId = 7
-                        },
-                        new
-                        {
-                            AssignedTraineesId = 11,
-                            MentorsId = 7
-                        },
-                        new
-                        {
-                            AssignedTraineesId = 11,
-                            MentorsId = 8
-                        },
-                        new
-                        {
-                            AssignedTraineesId = 3,
-                            MentorsId = 5
-                        },
-                        new
-                        {
-                            AssignedTraineesId = 1,
-                            MentorsId = 5
-                        },
-                        new
-                        {
                             AssignedTraineesId = 1,
                             MentorsId = 4
                         });
@@ -598,24 +568,6 @@ namespace Trainee_Tracker.Migrations
                             HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
                             Name = "Jelena2 Mentor",
                             CurriculumId = 1
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Closed = false,
-                            Email = "manfred.mental@makandra.de",
-                            HashedPassword = "$2a$11$kce.fXXVmBy2n0DaoYUcuujmpl.lXCCgZC7WSoFT94B98q5FS.gMa",
-                            Name = "Manfred Mental",
-                            CurriculumId = 1
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Closed = false,
-                            Email = "hans.hilfreich@makandra.de",
-                            HashedPassword = "$2a$11$RirFsrHzwqEKO0Wr8sIiZuprcJ5Pz8y45bRGLltqSos0cePlhhLvC",
-                            Name = "Hans Hilfreich",
-                            CurriculumId = 1
                         });
                 });
 
@@ -667,39 +619,6 @@ namespace Trainee_Tracker.Migrations
                             EndDate = new DateOnly(2027, 1, 1),
                             IsAssignmentOrderCustomized = false,
                             StartingDate = new DateOnly(2026, 7, 1)
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Closed = false,
-                            Email = "vanessa.vital@makandra.de",
-                            HashedPassword = "$2a$11$OvYPz8FkuxXJe7WyPIHpzOc1bi5beKtsB2WYXBJlVDqsNRCJatfzK",
-                            Name = "Vanessa Vital",
-                            EndDate = new DateOnly(2027, 3, 31),
-                            IsAssignmentOrderCustomized = false,
-                            StartingDate = new DateOnly(2026, 7, 17)
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Closed = false,
-                            Email = "stefan.schnupfen@makandra.de",
-                            HashedPassword = "$2a$11$1YdXfUYVKPO7t0wmYKVirOq4mYR4k/sxxO6YlY7c2CdSO50yRSqGW",
-                            Name = "Stefan Schnupfen",
-                            EndDate = new DateOnly(2026, 10, 31),
-                            IsAssignmentOrderCustomized = false,
-                            StartingDate = new DateOnly(2026, 5, 1)
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Closed = false,
-                            Email = "ursula.urlaub@makandra.de",
-                            HashedPassword = "$2a$11$aemTP4KrL44P1z23XD39u.7nnd3zoXeME0PFZzVkQPTEmmK/fVqRm",
-                            Name = "Ursula Urlaub",
-                            EndDate = new DateOnly(2026, 7, 31),
-                            IsAssignmentOrderCustomized = false,
-                            StartingDate = new DateOnly(2026, 1, 1)
                         });
                 });
 
@@ -716,15 +635,8 @@ namespace Trainee_Tracker.Migrations
                             Closed = false,
                             Email = "jelenacosic1@makandra.de",
                             HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
-                            Name = "Jelena3 Admin"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Closed = false,
-                            Email = "admin@makandra.de",
-                            HashedPassword = "$2a$11$NWoCmWYUtc4Kj0eDILuyxOjWj0GReHhxe2bh6Crx1QR4heeWH1EcO",
-                            Name = "Admin"
+                            Name = "Jelena3 Admin",
+                            CurriculumId = 1
                         });
                 });
 
