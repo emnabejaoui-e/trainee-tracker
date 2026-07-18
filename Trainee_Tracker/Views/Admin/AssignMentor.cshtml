@@ -3,12 +3,18 @@
     ViewData["Title"] = "AssignMentor";
 }
 
-@Html.ValidationSummary()
-
 <form method="post">
     @Html.AntiForgeryToken()
-    <div class="user-create-forum-container"> 
-        <h1>Assign Mentor to Trainee</h1>
+    <div class="user-create-forum-container">
+        <h1 style="margin-bottom: 24px;">Assign Mentor to Trainee</h1>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div style="color: #c0392b; margin-bottom: 16px;">
+                @Html.ValidationSummary()
+            </div>
+        }
+
         <p>Mentor:
         <select name="mentorId">
         @foreach (var m in ViewBag.Mentors)
@@ -17,7 +23,7 @@
         }
         </select>
         </p>
-    
+
         <p> Trainee:
         <select name="traineeId">
             @foreach (var t in ViewBag.Trainees)
@@ -27,6 +33,6 @@
         </select>
         </p>
         <p> </p>
-        <button type="submit">Assign</button>
+        <button type="submit" class="btn-user-create-confirm">Assign</button>
     </div>
 </form>
