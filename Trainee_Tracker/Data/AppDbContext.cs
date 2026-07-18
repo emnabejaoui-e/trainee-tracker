@@ -45,10 +45,9 @@ public class AppDbContext : DbContext
             new Curriculum { Id = 1, Title = "makandra Curriculum" },
             new Curriculum { Id = 2, Title = "makandra DevOps-Curriculum" }
         );
-
-        //Julia: Seed data for Lessons
-        var lessons = new List<Lesson>()
-        {
+        
+        // Julia Sandner: Seed data for Lessons
+        modelBuilder.Entity<Lesson>().HasData(
              new() {Id = 11, Title = "Fundamentals of Web Development", URL ="https://makandracards.com/makandra-devops-curriculum/509333-grundlagen-aus-der-web-entwicklung-3-5-pt", Effort = 3.5, Inactive = false, Position = 1, CurriculumId = 1},
              new() {Id = 111, Title = "SSH", URL ="https://makandracards.com/makandra-devops-curriculum/511181-ssh-0-5-pt", Effort = 0.5, Inactive = false, Position = 6, CurriculumId = 1},
              new() {Id = 22, Title = "Virtualization", URL ="https://makandracards.com/makandra-devops-curriculum/509340-virtualisierung-2-pt", Effort = 2.0, Inactive = false, Position = 3, CurriculumId = 1},
@@ -60,23 +59,7 @@ public class AppDbContext : DbContext
              new() {Id = 88, Title = "Resource use", URL ="https://makandracards.com/makandra-devops-curriculum/509415-ressourcen-nutzung-1-pt", Effort = 1.0, Inactive = false, Position = 8, CurriculumId = 1}, 
              new() {Id = 99, Title = "Linux Kernal parameter", URL ="https://makandracards.com/makandra-devops-curriculum/511330-linux-kernel-parameter-0-5-pt", Effort = 0.5, Inactive = false, Position = 9, CurriculumId = 1}, 
              new() {Id = 100, Title = "Network", URL ="https://makandracards.com/makandra-devops-curriculum/509341-netzwerke-4-pt", Effort = 4.0, Inactive = false, Position = 10, CurriculumId = 1},
-             new() {Id = 222, Title = "HTTP Protocoll and Webserver", URL ="https://makandracards.com/makandra-devops-curriculum/519412-http-protokoll-und-webserver-2-5-pt", Effort = 2.5, Inactive = false, Position = 11, CurriculumId = 1},
-        };
-        modelBuilder.Entity<Lesson>().HasData(lessons);
-        // Julia Sandner: Seed data for Lessons
-        modelBuilder.Entity<Lesson>().HasData(
-             new Lesson {Id = 11, Title = "Fundamentals of Web Development", URL ="https://makandracards.com/makandra-devops-curriculum/509333-grundlagen-aus-der-web-entwicklung-3-5-pt", Effort = 3.5, Inactive = false, Position = 1},
-             new Lesson {Id = 111, Title = "SSH", URL ="https://makandracards.com/makandra-devops-curriculum/511181-ssh-0-5-pt", Effort = 0.5, Inactive = false, Position = 6},
-             new Lesson {Id = 22, Title = "Virtualization", URL ="https://makandracards.com/makandra-devops-curriculum/509340-virtualisierung-2-pt", Effort = 2.0, Inactive = false, Position = 3},
-             new Lesson {Id = 33, Title = "Lxc/LXD", URL ="https://makandracards.com/makandra-devops-curriculum/517382-lxc-lxd-2-pt", Effort = 2.0, Inactive = false, Position = 4},
-             new Lesson {Id = 44, Title = "A Brief Introduction to Docker and Containers ", URL ="https://makandracards.com/makandra-devops-curriculum/523491-kurze-einfuehrung-docker-und-container-1-pt", Effort = 1.0, Inactive = false, Position = 5}, 
-             new Lesson {Id = 55, Title = "Firewalling with iptables", URL ="https://makandracards.com/makandra-devops-curriculum/531475-firewalling-mit-iptables-0-5-pt", Effort = 0.5, Inactive = false, Position = 6}, 
-             new Lesson {Id = 66, Title = "Linux", URL ="https://makandracards.com/makandra-devops-curriculum/509339-linux-2-pt", Effort = 2.0, Inactive = false, Position = 2}, 
-             new Lesson {Id = 77, Title = "Linux file system", URL ="https://makandracards.com/makandra-devops-curriculum/511179-linux-filesystems-und-verschluesselung-2-pt", Effort = 1.0, Inactive = false, Position = 7}, 
-             new Lesson {Id = 88, Title = "Resource use", URL ="https://makandracards.com/makandra-devops-curriculum/509415-ressourcen-nutzung-1-pt", Effort = 1.0, Inactive = false, Position = 8}, 
-             new Lesson {Id = 99, Title = "Linux Kernal parameter", URL ="https://makandracards.com/makandra-devops-curriculum/511330-linux-kernel-parameter-0-5-pt", Effort = 0.5, Inactive = false, Position = 9}, 
-             new Lesson {Id = 100, Title = "Network", URL ="https://makandracards.com/makandra-devops-curriculum/509341-netzwerke-4-pt", Effort = 4.0, Inactive = false, Position = 10},
-             new Lesson {Id = 222, Title = "HTTP Protocoll and Webserver", URL ="https://makandracards.com/makandra-devops-curriculum/519412-http-protokoll-und-webserver-2-5-pt", Effort = 2.5, Inactive = false, Position = 11}
+             new() {Id = 222, Title = "HTTP Protocoll and Webserver", URL ="https://makandracards.com/makandra-devops-curriculum/519412-http-protokoll-und-webserver-2-5-pt", Effort = 2.5, Inactive = false, Position = 11, CurriculumId = 1}
         );
 
         // Julia Sandner: trainee for LessonAssignment SeedData
