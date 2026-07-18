@@ -15,7 +15,7 @@ public class LessonBoardController : Controller
     private readonly ILessonAssignmentRepository _assignmentRepo;
     private readonly IAssignmentService _assignmentService;
 
-    public LessonBoardController(IUserRepository userRepo, ILessonAssignmentRepository lessonAssignmentRepo, ILessonAssignmentRepository assignmentRepo, IAssignmentService assignmentService)
+    public LessonBoardController(IUserRepository userRepo, ILessonAssignmentRepository assignmentRepo, IAssignmentService assignmentService)
     {
        _userRepo = userRepo;
        _assignmentRepo = assignmentRepo;
