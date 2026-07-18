@@ -45,6 +45,8 @@ public class CurriculumService : ICurriculumService
                 _lessonRepo.Update(searchedInstance);
             }
         }
+
+        curriculum._Lessons = lessons;
         
         foreach (var trainee in GetTraineesOfCurriculum(curriculum))
         {
