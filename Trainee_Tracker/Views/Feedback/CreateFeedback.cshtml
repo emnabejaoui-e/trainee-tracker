@@ -78,10 +78,14 @@
                 </label>
 
                 <input asp-for="ActualEffort"
-                       type="number"
-                       step="0.5"
-                       min="0.5"
-                       placeholder="e.g. 1.5" />
+                        type="number"
+                        step="0.5"
+                        min="0.5"
+                        placeholder="e.g. 1.5" />
+                        
+                <small class="form-text">
+                    Use 0.5-hour steps, e.g. 0.5 = 30 minutes and 1.5 = 1 hour 30 minutes.
+                </small>
 
                 <span asp-validation-for="ActualEffort" class="text-danger"></span>
             </div>
@@ -107,6 +111,7 @@
     </div>
 </div>
 
+@* Enables client-side validation for the create feedback form. *@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
