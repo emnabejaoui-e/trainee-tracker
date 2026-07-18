@@ -40,14 +40,13 @@ public class LoginController : Controller
             return View();
         }
 
-        var result = _userService.ValidateUserCredentials(email, password);
+        var (result, user) = _userService.ValidateUserCredentials(email, password);
 
         switch (result)
-        {
+{
             case LoginResult.Success:
-                var user = _userService.GetUserByEmail(email);
-                await SignInUser(user);
-                return RedirectByRole();
+               await SignInUser(user!);
+               return RedirectByRole();
 
             case LoginResult.AccountClosed:
                 ViewBag.ErrorMessage = "Your account has been closed.";
