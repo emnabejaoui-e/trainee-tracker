@@ -5,6 +5,8 @@
     ViewData["Title"] = "Edit Feedback";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
+
+
     var fromValue = ViewBag.From != null
         ? ((DateTime)ViewBag.From).ToString("yyyy-MM-dd")
         : "";
@@ -95,6 +97,11 @@
                         min="0.5"
                         placeholder="e.g. 1.5" />
 
+            
+                <small class="form-text">
+                    Use 0.5-hour steps, e.g. 0.5 = 30 minutes and 1.5 = 1 hour 30 minutes.
+                </small>
+
                 <span asp-validation-for="ActualEffort" class="text-danger"></span>
             </div>
 
@@ -126,6 +133,7 @@
     </div>
 </div>
 
+@* Enables client-side validation for the edit feedback form. *@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

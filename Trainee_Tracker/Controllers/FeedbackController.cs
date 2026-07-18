@@ -17,18 +17,18 @@ public class FeedbackController : Controller
 {
     private readonly LessonFeedbackService _lessonFeedbackService;
     private readonly ILessonRepository _lessonRepository;
-    private readonly ILessonAssignmentRepository _lessonAssignmentRepository;
+    private readonly IAssignmentService _assignmentService;
     private readonly IMentorRepository _mentorRepo;
 
     public FeedbackController(
         LessonFeedbackService lessonFeedbackService,
         ILessonRepository lessonRepository,
-        ILessonAssignmentRepository lessonAssignmentRepository,
+        IAssignmentService assignmentService,
         IMentorRepository mentorRepo)
     {
         _lessonFeedbackService = lessonFeedbackService;
         _lessonRepository = lessonRepository;
-        _lessonAssignmentRepository = lessonAssignmentRepository;
+        _assignmentService = assignmentService;
         _mentorRepo = mentorRepo;
     }
 
@@ -172,7 +172,7 @@ public class FeedbackController : Controller
 
         TempData["FocusFeedbackId"] = feedback.Id;
 
-        _lessonAssignmentRepository.UpdateStatus(
+        _assignmentService.UpdateAssignmentStatus(
             feedback.AssignmentId,
             LessonAssignmentStatus.Rated
         );
@@ -293,7 +293,7 @@ public class FeedbackController : Controller
             return RedirectToAction(nameof(RecentFeedback), new { from ,until, show });
         }
 
-        _lessonAssignmentRepository.UpdateStatus(
+        _assignmentService.UpdateAssignmentStatus(
             feedback.AssignmentId,
             LessonAssignmentStatus.Accepted
         );
