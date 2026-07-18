@@ -93,4 +93,9 @@ using (var scope = app.Services.CreateScope())
     
 }
 
+foreach(IInitializer init in app.Services.GetServices<IInitializer>())
+{
+    init.Initialize();
+}
+
 app.Run();
