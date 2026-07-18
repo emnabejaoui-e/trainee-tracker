@@ -18,7 +18,7 @@ public class Curriculum
     /// The lessons belonging to this curriculum, ordered by Position.
     /// </summary>
     [NotMapped]
-    public IReadOnlyList<Lesson> Lessons =>
+    public IList<Lesson> Lessons =>
         _Lessons.OrderBy(l => l.Position).ToList().AsReadOnly();
 
     /// <summary>Back navigation for EF Core one-to-many.</summary>

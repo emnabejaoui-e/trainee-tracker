@@ -393,6 +393,10 @@ public class MentorController : Controller
         }
 
         _assignmentService.UpdateAssignmentOrder(orderedIds);
+        
+        trainee.IsAssignmentOrderCustomized = true;
+        _traineeRepo.Save(trainee);
+        
         return RedirectToAction("AssignmentOverview", new {traineeId});
     }
 

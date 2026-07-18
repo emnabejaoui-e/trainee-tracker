@@ -11,7 +11,7 @@ using Trainee_Tracker.Data;
 namespace Trainee_Tracker.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260715190256_InitialCreate")]
+    [Migration("20260716140255_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -629,6 +629,9 @@ namespace Trainee_Tracker.Migrations
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsAssignmentOrderCustomized")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateOnly>("StartingDate")
                         .HasColumnType("TEXT");
 
@@ -643,6 +646,7 @@ namespace Trainee_Tracker.Migrations
                             HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
                             Name = "Jelena3 Trainee",
                             EndDate = new DateOnly(1, 1, 1),
+                            IsAssignmentOrderCustomized = false,
                             StartingDate = new DateOnly(1, 1, 1)
                         },
                         new
@@ -653,6 +657,7 @@ namespace Trainee_Tracker.Migrations
                             HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
                             Name = "Torsten Trainee",
                             EndDate = new DateOnly(2027, 1, 1),
+                            IsAssignmentOrderCustomized = false,
                             StartingDate = new DateOnly(2026, 6, 30)
                         },
                         new
@@ -663,6 +668,7 @@ namespace Trainee_Tracker.Migrations
                             HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C",
                             Name = "Tilda Trainee",
                             EndDate = new DateOnly(2027, 1, 1),
+                            IsAssignmentOrderCustomized = false,
                             StartingDate = new DateOnly(2026, 7, 1)
                         },
                         new
@@ -673,6 +679,7 @@ namespace Trainee_Tracker.Migrations
                             HashedPassword = "$2a$11$OvYPz8FkuxXJe7WyPIHpzOc1bi5beKtsB2WYXBJlVDqsNRCJatfzK",
                             Name = "Vanessa Vital",
                             EndDate = new DateOnly(2027, 3, 31),
+                            IsAssignmentOrderCustomized = false,
                             StartingDate = new DateOnly(2026, 7, 17)
                         },
                         new
@@ -683,6 +690,7 @@ namespace Trainee_Tracker.Migrations
                             HashedPassword = "$2a$11$1YdXfUYVKPO7t0wmYKVirOq4mYR4k/sxxO6YlY7c2CdSO50yRSqGW",
                             Name = "Stefan Schnupfen",
                             EndDate = new DateOnly(2026, 10, 31),
+                            IsAssignmentOrderCustomized = false,
                             StartingDate = new DateOnly(2026, 5, 1)
                         },
                         new
@@ -693,6 +701,7 @@ namespace Trainee_Tracker.Migrations
                             HashedPassword = "$2a$11$aemTP4KrL44P1z23XD39u.7nnd3zoXeME0PFZzVkQPTEmmK/fVqRm",
                             Name = "Ursula Urlaub",
                             EndDate = new DateOnly(2026, 7, 31),
+                            IsAssignmentOrderCustomized = false,
                             StartingDate = new DateOnly(2026, 1, 1)
                         });
                 });
