@@ -190,11 +190,7 @@ public class MentorController : Controller
                 if (curriculum == null)
                     return NotFound();
                 
-                var result = _curriculumService.MergeLessons(curriculum._Lessons, lessons.Select(dto => dto.Lesson()).ToList());
-
-                curriculum._Lessons = result;
-                
-                _curriculumService.Update(curriculum);
+                _curriculumService.ImportCurriculum(curriculum, lessons.Select(dto => dto.Lesson()).ToList());
             }
             catch (JsonException e)
             {
