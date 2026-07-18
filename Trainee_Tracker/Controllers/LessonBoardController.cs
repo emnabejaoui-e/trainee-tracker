@@ -52,29 +52,77 @@ public class LessonBoardController : Controller
 
     //Code-Owner: Julia Sandner
     /// <summary>
-    /// Updates the status of a lesson assignment
+    /// Marks an assignment as started
     /// </summary>
-    /// <param name="id"> numeric id of the assignment to update</param>
-    /// <param name="newStatus"> the new status to set on the assignment</param>
-    /// <returns> a redirect to the LessonBoard or Not-Found if the assignment does not exist</returns>
-    [HttpPost]
-    public IActionResult UpdateStatus(int id, LessonAssignmentStatus newStatus)
+    /// <param name="assignmentId">numeric id of the assignment to start</param>
+    /// <returns>redirects to LessonBoard or NotFound or LessonBoard with an error or Unauthorized</returns>
+    public IActionResult StartAssignment(int assignmentId)
     {
-        var currentAssignment = _assignmentRepo.GetById(id);
-        if(currentAssignment == null)
+        var currentAssignment = _assignmentRepo.GetById(assignmentId);
+        if (currentAssignment == null)
         {
             return NotFound();
         }
-
+        var traineeIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(traineeIdString == null)
+        {
+            return Unauthorized();
+        }
+        var traineeId = int.Parse(traineeIdString);
+        
+        if( currentAssignment.TraineeId != traineeId)
+        {
+            return Forbid();
+        }
+        
         try
         {
-            var assignment = _assignmentService.UpdateAssignmentStatus(id, newStatus);
+            var assignment = _assignmentService.UpdateAssignmentStatus(assignmentId, LessonAssignmentStatus.Started);
             return RedirectToAction("LessonBoard", new {traineeId = assignment!.TraineeId});
         }
         catch(InvalidOperationException e)
         {
             TempData["Error"] = e.Message;
-            return RedirectToAction("LessonBoard", new {traineeId = currentAssignment.TraineeId});
+            return RedirectToAction("LessonBoard", new { traineeId = currentAssignment.TraineeId });
+            
+        }
+    }
+
+    //Code-Owner: Julia Sandner
+    /// <summary>
+    /// makrs an assignmned as finished
+    /// </summary>
+    /// <param name="assignmentId">numeric id of the assignment to finish</param>
+    /// <returns>redirects to LessonBoard, NotFound or the LessonBoard with an error or Unauthorized</returns>
+    public IActionResult FinishAssignment(int assignmentId)
+    {
+        var currentAssignment = _assignmentRepo.GetById(assignmentId);
+        if (currentAssignment == null)
+        {
+            return NotFound();
+        }
+        var traineeIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(traineeIdString == null)
+        {
+            return Unauthorized();
+        }
+        var traineeId = int.Parse(traineeIdString);
+        
+        if( currentAssignment.TraineeId != traineeId)
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var assignment = _assignmentService.UpdateAssignmentStatus(assignmentId, LessonAssignmentStatus.Finished);
+            return RedirectToAction("LessonBoard", new {traineeId = assignment!.TraineeId});
+        }
+        catch(InvalidOperationException e)
+        {
+            TempData["Error"] = e.Message;
+            return RedirectToAction("LessonBoard", new { traineeId = currentAssignment.TraineeId });
+            
         }
     }
 
