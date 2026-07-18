@@ -31,7 +31,7 @@ public class CurriculumService : ICurriculumService
         {
             var lesson = lessons[i];
 
-            lesson.Position = i;
+            lesson.Position = i + 1;
             lesson.CurriculumId = curriculum.Id;
 
             var searchedInstance = _lessonRepo.FindById(lesson.Id);
