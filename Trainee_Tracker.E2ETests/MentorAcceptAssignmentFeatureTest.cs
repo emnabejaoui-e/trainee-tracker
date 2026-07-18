@@ -45,8 +45,8 @@ public class MentorAcceptAssignmentFeaturesTest
 
         _wait.Until(d => d.Url.Contains("AssignmentOverview"));
         
-        var acceptedColumn = _driver.FindElement(By.Id("column-body-Accepted"));
-        Assert.Contains(lessonTitle, acceptedColumn.Text);
+        var acceptedColumnText = _fixture.GetTextSafely(By.Id("column-body-Accepted"));
+        Assert.Contains(lessonTitle, acceptedColumnText);
         Console.WriteLine("test finished");
     }
 
