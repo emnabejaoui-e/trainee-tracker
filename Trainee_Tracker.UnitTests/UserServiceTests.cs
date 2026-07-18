@@ -31,14 +31,7 @@ public class UserServiceTests
         var repo = new FakeUserRepository();
         var service = new UserService(repo, new FakeAssignmentService());
 
-        var newTrainee = new Trainee
-        {
-            Name = "New Trainee",
-            Email = "newtrainee@makandra.de",
-            Closed = false
-        };
-
-        service.CreateTrainee(newTrainee, "RawPassword123!");
+        service.CreateTrainee("New Trainee", "newtrainee@makandra.de", "RawPassword123!", new DateOnly(2026, 1, 1), new DateOnly(2026, 12, 31));
 
         var savedUser = repo.GetUserByEmail("newtrainee@makandra.de");
         Assert.NotNull(savedUser);

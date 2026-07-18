@@ -54,25 +54,21 @@ public class AdminController : Controller
     [HttpPost]
     public IActionResult CreateTrainee(string name, string email, string password, DateOnly startingDate, DateOnly endDate)
     {
-        if (string.IsNullOrEmpty(password))
+        try
+        {
+            _userService.CreateTrainee(name, email, password, startingDate, endDate);
+            return RedirectToAction("UserManagement");
+        }
+        catch (ArgumentException)
         {
             ModelState.AddModelError("password", "Password is required");
             return View();
         }
-        if(!_userService.IsEmailAvailable(email))
+        catch (InvalidOperationException)
         {
             ModelState.AddModelError("Email", "Email already in user");
             return View();
         }
-        var trainee = new Trainee
-        {
-            Name = name,
-            Email = email,
-            StartingDate = startingDate,
-            EndDate = endDate
-        };
-        _userService.CreateTrainee(trainee, password);
-        return RedirectToAction("UserManagement");
     }
 
     // Code-Owner: Andrej Basara
@@ -84,18 +80,21 @@ public class AdminController : Controller
     [HttpPost]
     public IActionResult CreateMentor(string name, string email, string password)
     {
-        if(!_userService.IsEmailAvailable(email))
+        try
+        {
+            _userService.CreateMentor(name, email, password);
+            return RedirectToAction("UserManagement");
+        }
+        catch (ArgumentException)
+        {
+            ModelState.AddModelError("password", "Password is required");
+            return View();
+        }
+        catch (InvalidOperationException)
         {
             ModelState.AddModelError("Email", "Email already in use");
             return View();
         }
-        var mentor = new Mentor
-        {
-            Name = name,
-            Email = email,
-        };
-        _userService.CreateMentor(mentor, password);
-        return RedirectToAction("UserManagement");
     }
 
     // Code Owner: Andrej Basara
@@ -107,18 +106,21 @@ public class AdminController : Controller
     [HttpPost]
     public IActionResult CreateAdmin(string name, string email, string password)
     {
-        if(!_userService.IsEmailAvailable(email))
+        try
+        {
+            _userService.CreateAdmin(name, email, password);
+            return RedirectToAction("UserManagement");
+        }
+        catch (ArgumentException)
+        {
+            ModelState.AddModelError("password", "Password is required");
+            return View();
+        }
+        catch (InvalidOperationException)
         {
             ModelState.AddModelError("Email", "Email already in use");
             return View();
         }
-        var admin = new Admin
-        {
-            Name = name,
-            Email = email,
-        };
-        _userService.CreateAdmin(admin, password);
-        return RedirectToAction("UserManagement");
     }
 
     // Code Owner: Andrej Basara
@@ -189,26 +191,20 @@ public class AdminController : Controller
     [HttpPost]
     public IActionResult UpdateTrainee(int id, string name, string email, string? password, DateOnly startingDate, DateOnly endDate)
     {
-        if (_userService.GetById(id) is not Trainee trainee) return NotFound();
-
-        var emailChanged = !string.Equals(trainee.Email, email, StringComparison.OrdinalIgnoreCase);
-        if (emailChanged && !_userService.IsEmailAvailable(email))
+        try
+        {
+            _userService.UpdateTrainee(id, name, email, startingDate, endDate, password);
+            return RedirectToAction("UserManagement");
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
+        catch (InvalidOperationException)
         {
             ModelState.AddModelError("Email", "Email already in use");
-            trainee.Name = name;
-            trainee.Email = email;
-            trainee.StartingDate = startingDate;
-            trainee.EndDate = endDate;
-            // doesn't delete already changed/ entered data on error in forum
-            return View(trainee);
+            return View(new Trainee { Id = id });
         }
-
-        trainee.Name = name;
-        trainee.Email = email;
-        trainee.StartingDate = startingDate;
-        trainee.EndDate = endDate;
-        _userService.UpdateTrainee(trainee, password);
-        return RedirectToAction("UserManagement");
     }
 
     // Code Owner: Andrej Basara
@@ -223,22 +219,20 @@ public class AdminController : Controller
     [HttpPost]
     public IActionResult UpdateMentor(int id, string name, string email, string? password)
     {
-        if(_userService.GetById(id) is not Mentor mentor) {
+        try
+        {
+            _userService.UpdateMentor(id, name, email, password);
+            return RedirectToAction("UserManagement");
+        }
+        catch (KeyNotFoundException)
+        {
             return NotFound();
         }
-        var emailChanged = !string.Equals(mentor.Email, email, StringComparison.OrdinalIgnoreCase);
-        if (!_userService.IsEmailAvailable(email) && emailChanged)
+        catch (InvalidOperationException)
         {
             ModelState.AddModelError("Email", "email already in use");
-            mentor.Name = name;
-            mentor.Email = email;
-            return View(mentor);
+            return View(new Mentor { Id = id });
         }
-
-        mentor.Name = name;
-        mentor.Email = email;
-        _userService.UpdateMentor(mentor, password);
-        return RedirectToAction("UserManagement");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

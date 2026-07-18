@@ -32,14 +32,12 @@ public class TraineeController : Controller
     // Code Owner: Andrej Basara
     public IActionResult WeekPlan()
     {
-        // get the trainee string id from login claim
         var traineeIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (traineeIdString == null)
         {
             return Unauthorized();
         }
 
-        // convert the string id in int and fetch it from db hcek if possible
         if (!int.TryParse(traineeIdString, out var traineeId))
         {
             return BadRequest();
@@ -49,21 +47,8 @@ public class TraineeController : Controller
         {
             return Unauthorized();
         }
-        
-        // user service to calculate rough dates of the lesson assignment
-        var allAssignments = _lessonDateCalculator.RecalculateRoughExpectedDates(trainee);
 
-        var today = DateOnly.FromDateTime(DateTime.Today);
-        // Because .Net sees sunday as 0 and Monday as 1 and Saturday is 6
-        var daysSinceMonday = ((int)today.DayOfWeek + 6) % 7;
-        var weekStart = today.AddDays(-daysSinceMonday);
-        var weekEnd = weekStart.AddDays(6);
-
-        // only assignemnts in current week
-        var weeklyAssignments = allAssignments
-            .Where(a => a.ExpectedProcessingDate >= weekStart && a.ExpectedProcessingDate <= weekEnd)
-            .OrderBy(a => a.Position)
-            .ToList();
+        var weeklyAssignments = _lessonDateCalculator.GetAssignmentsForCurrentWeek(trainee, out var weekStart);
 
         ViewData["WeekStart"] = weekStart;
         return View(weeklyAssignments);

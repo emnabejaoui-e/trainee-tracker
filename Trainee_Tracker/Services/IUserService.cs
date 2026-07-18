@@ -1,4 +1,5 @@
 // Code Owner: Jelena Cosic
+using System;
 using System.Collections.Generic;
 using Trainee_Tracker.Models;
 
@@ -6,11 +7,11 @@ namespace Trainee_Tracker.Services
 {
     public interface IUserService
     {
-        void CreateTrainee(Trainee trainee, string rawPassword);
-        void CreateMentor(Mentor mentor, string rawPassword);
-        void CreateAdmin(Admin admin, string rawPassword);
-        void UpdateTrainee(Trainee trainee, string? newPassword = null);
-        void UpdateMentor(Mentor mentor, string? newPassword = null);
+        void CreateTrainee(string name, string email, string rawPassword, DateOnly startingDate, DateOnly endDate);
+        void CreateMentor(string name, string email, string rawPassword);
+        void CreateAdmin(string name, string email, string rawPassword);
+        void UpdateTrainee(int id, string name, string email, DateOnly startingDate, DateOnly endDate, string? newPassword = null);
+        void UpdateMentor(int id, string name, string email, string? newPassword = null);
         IList<User> GetAllUsers();
         void CloseUser(int id);
         // Code Owner: Jelena Cosic

@@ -67,4 +67,22 @@ public class LessonDateCalculator : ILessonDateCalculator
         }
         return date;
     }
+
+    // Code-Owner: Andrej Basara
+    public List<LessonAssignment> GetAssignmentsForCurrentWeek(Trainee trainee, out DateOnly weekStart)
+    {
+        var allAssignments = RecalculateRoughExpectedDates(trainee);
+
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        // Because .Net sees sunday as 0 and Monday as 1 and Saturday is 6
+        var daysSinceMonday = ((int)today.DayOfWeek + 6) % 7;
+        weekStart = today.AddDays(-daysSinceMonday);
+        var weekStartLocal = weekStart;
+        var weekEnd = weekStart.AddDays(6);
+
+        return allAssignments
+            .Where(a => a.ExpectedProcessingDate >= weekStartLocal && a.ExpectedProcessingDate <= weekEnd)
+            .OrderBy(a => a.Position)
+            .ToList();
+    }
 }
