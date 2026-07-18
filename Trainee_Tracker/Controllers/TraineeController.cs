@@ -16,17 +16,17 @@ public class TraineeController : Controller
     private readonly ILessonDateCalculator _lessonDateCalculator;
 
    // Code Owner: Nazym Beisembin
-    private readonly WorkingHoursService _workingHoursService;
     private readonly IProgressService _progressService;
+    private readonly IWorkingHoursSyncService _workingHoursSyncService;
 
     public TraineeController(
-    ILessonAssignmentRepository lessonAssignmentRepo,IUserRepository userRepo, ILessonDateCalculator lessonDateCalculator,WorkingHoursService workingHoursService, IProgressService progressService)
+    ILessonAssignmentRepository lessonAssignmentRepo,IUserRepository userRepo, ILessonDateCalculator lessonDateCalculator, IProgressService progressService, IWorkingHoursSyncService workingHoursSyncService)
 {
     _lessonAssignmentRepo = lessonAssignmentRepo;
     _userRepo = userRepo;
     _lessonDateCalculator = lessonDateCalculator;
-    _workingHoursService = workingHoursService;// Line Owner: Nazym Beisembin
     _progressService = progressService; // Line Owner: Nazym Beisembin
+    _workingHoursSyncService = workingHoursSyncService;// Line Owner: Nazym Beisembin
 }
 
     // Code Owner: Andrej Basara
@@ -91,11 +91,7 @@ public class TraineeController : Controller
         DateOnly endDate = DateOnly.FromDateTime(DateTime.Today);
 
         double? daysWorked =
-            await _workingHoursService.GetWorkedPersonDaysAsync(
-                trainee.Email,
-                startDate,
-                endDate
-            );
+        await _workingHoursSyncService.GetStoredPersonDaysAsync(trainee.Id, startDate, endDate);
 
         List<LessonAssignment> assignments =
             _lessonAssignmentRepo.FindByTrainee(trainee);

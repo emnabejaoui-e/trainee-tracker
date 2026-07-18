@@ -42,7 +42,7 @@ public class ProgressService : IProgressService
 
         return new ProgressControlData
         {
-            DaysWorked = (int)Math.Round(daysWorked),
+            DaysWorked = daysWorked,
             Finished = (int)Math.Round(finishedEffort),
             Open = (int)Math.Round(openEffort),
             Buffer = (int)Math.Round(buffer),

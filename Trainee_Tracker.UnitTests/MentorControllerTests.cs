@@ -27,8 +27,7 @@ public class MentorControllerTests
     private readonly Mock<IMentorRepository> _mentorRepoMock;
     private readonly Mock<IProgressService> _progressServiceMock;
     private readonly Mock<IAssignmentService> _assignmentServiceMock;
-    private readonly WorkingHoursService _workingHoursService;
-    private readonly MentorController _controller;
+    private readonly Mock<IWorkingHoursSyncService> _workingHoursSyncServiceMock;    private readonly MentorController _controller;
 
     public MentorControllerTests()
     {
@@ -39,6 +38,7 @@ public class MentorControllerTests
         _mentorRepoMock = new Mock<IMentorRepository>();
         _progressServiceMock = new Mock<IProgressService>();
         _assignmentServiceMock = new Mock<IAssignmentService>();
+        _workingHoursSyncServiceMock = new Mock<IWorkingHoursSyncService>();
         
         var handlerMock = new Mock<HttpMessageHandler>();
         handlerMock
@@ -51,10 +51,9 @@ public class MentorControllerTests
             BaseAddress = new Uri("http://fake-api.local/")
         };
 
-        _workingHoursService = new WorkingHoursService(httpClient);
 
         // Curriculum Repo und Service sind null, da sie für die aktuellen Tests nicht benötigt werden
-        _controller = new MentorController(_mentorRepoMock.Object, _userRepoMock.Object, _assignmentRepoMock.Object, _rejectionRepoMock.Object, _traineeRepoMock.Object, _workingHoursService, _progressServiceMock.Object, null, null, _assignmentServiceMock.Object);
+        _controller = new MentorController(_mentorRepoMock.Object, _userRepoMock.Object, _assignmentRepoMock.Object, _rejectionRepoMock.Object, _traineeRepoMock.Object, _progressServiceMock.Object, null, null, _assignmentServiceMock.Object, _workingHoursSyncServiceMock.Object);
 
         _controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
         SetUser(1);

@@ -25,6 +25,8 @@ public class AppDbContext : DbContext
     public DbSet<Lesson> Lessons {get; set;}
     // Code-Owner: Leon Paintner
     public DbSet<Curriculum> Curricula { get; set; }
+    // Code Owner: Nazym Beisembin
+    public DbSet<WorkingHourRecord> WorkingHourRecords { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -121,5 +123,19 @@ public class AppDbContext : DbContext
             new LessonAssignment{Id = 22, LessonId = 222, TraineeId = 3, Position = 13, ExpectedProcessingDate = new DateOnly(2026, 7, 3), Status = LessonAssignmentStatus.Open}
         );
 
+        // Code Owner: Nazym Beisembin
+        modelBuilder.Entity<WorkingHourRecord>()
+            .HasIndex(record => new
+            {
+                record.TraineeId,
+                record.Date
+            })
+            .IsUnique();
+
+        modelBuilder.Entity<WorkingHourRecord>()
+            .HasOne(record => record.Trainee)
+            .WithMany()
+            .HasForeignKey(record => record.TraineeId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

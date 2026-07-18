@@ -17,7 +17,7 @@
             <div class="info-box">
                 <div class="info-label">Progress Statistics</div>
 
-                <div>Days worked: <strong>@Model.DaysWorked</strong></div>
+                <div>Days worked: <strong>@Model.DaysWorked.ToString("0.##")</strong></div>
                 <div>Finished estimate: <strong>@Model.Finished</strong></div>
                 <div>Open estimate: <strong>@Model.Open</strong></div>
                 <div>Buffer: <strong>@Model.Buffer</strong></div>
