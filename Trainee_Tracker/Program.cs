@@ -91,11 +91,10 @@ using (var scope = app.Services.CreateScope())
 
     db.Database.Migrate();
     
-}
-
-foreach(IInitializer init in app.Services.GetServices<IInitializer>())
-{
-    init.Initialize();
+    foreach (var initializer in scope.ServiceProvider.GetServices<IInitializer>())
+    {
+        initializer.Initialize();
+    }
 }
 
 app.Run();
