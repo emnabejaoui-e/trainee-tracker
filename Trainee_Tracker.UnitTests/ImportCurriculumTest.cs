@@ -112,13 +112,26 @@ public class ImportCurriculumTest
         Assert.All(importedLessons, l => Assert.Contains(l, services.Curriculum.Lessons));
     }
     
-    /*[Theory]
+    [Theory]
     [ClassData(typeof(CurriculumImportTestDataGenerator))]
     void CurriculumImport_GivenLessonsAndCurriculumHaveMatchingLessonOrder(IList<Lesson> existingLessons, IList<Lesson> importedLessons)
     {
+        var services = new CurriculumServiceInitializerServices(existingLessons);
         
+        services.Service.ImportCurriculum(services.Curriculum, importedLessons);
+        
+        Assert.All(services.Curriculum.Lessons, l =>
+        {
+            if (importedLessons.Contains(l))
+            {
+                var position = importedLessons.IndexOf(l) + 1;
+                
+                Assert.Equal(position, l.Position);
+            }
+        });
     }
     
+    /*
     [Theory]
     [ClassData(typeof(CurriculumImportTestDataGenerator))]
     void CurriculumImport_RemovedLessonsAreMarkedAsInactive(IList<Lesson> existingLessons, IList<Lesson> importedLessons)
