@@ -14,8 +14,10 @@ namespace Trainee_Tracker.Models
     {
         public ICollection<Mentor> Mentors { get; set; } = new List<Mentor>();
 
+        [Display(Name = "Starting Date")]
         public DateOnly StartingDate { get; set; }
 
+        [Display(Name = "End Date")]
         public DateOnly EndDate {get; set; }
         
         [DefaultValue(false)]

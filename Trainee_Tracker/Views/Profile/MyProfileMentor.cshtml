@@ -4,35 +4,33 @@
     ViewData["Title"] = "MyProfileMentor";
 }
 
-<body>
 <div class="user-create-forum-container">
     <h3>My Profile:</h3>
     <div>
         <hr />
         <dl class="row">
-            <dt class="col-sm-5">
+            <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.Name):
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.Name)
             </dd>
-            <dt class="col-sm-5">
+            <dt class="col-sm-4">
                 E-Mail:
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.Email)
             </dd>
             @if (Model is Trainee_Tracker.Models.Mentor m)
             {
-            <dt class="col-sm-5">
+            <dt class="col-sm-4">
                 Role:
             </dt>
-            <dd class="col-sm-10">Mentor @if (Model is Trainee_Tracker.Models.Admin a) {
-                <p>(Admin)</p>
+            <dd class="col-sm-8">Mentor @if (Model is Trainee_Tracker.Models.Admin a) {
+                <span>(Admin)</span>
             }
             </dd>
             }
         </dl>
     </div>
 </div>
-</body>

@@ -56,13 +56,9 @@ public class MentorController : Controller
         _assignmentService = assignmentService;
     }
     
-    // Code-Owner: Jelena Cosic
-    // GET: /Mentor/Index
+    // Code Owner: Jelena Cosic
     /// <summary>
     /// Displays the Mentor dashboard.
-    /// Only accessible by users with the Mentor or Admin role.
-    /// </summary>
-    /// <returns>The Mentor index view.</returns>
     public IActionResult Index() => RedirectToAction("MyTrainees");
 
     // Code-Owner: Leon
@@ -261,6 +257,20 @@ public class MentorController : Controller
         {
             return Unauthorized();
         }
+
+        var mentorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(mentorIdString == null)
+        {
+            return Unauthorized();
+        }
+        var mentorId = int.Parse(mentorIdString);
+        var mentor = _mentorRepo.GetMentorById(mentorId);
+
+        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id))
+        {
+            return Forbid();
+        }
+
         var result = _assignmentService.GetOverview(trainee);
 
         ViewBag.RejectionReasons = result.RejectionHistory;
@@ -285,6 +295,19 @@ public class MentorController : Controller
         if (currentAssignment == null)
         {
             return NotFound();
+        }
+        var trainee = currentAssignment.Trainee;
+        var mentorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(mentorIdString == null)
+        {
+            return Unauthorized();
+        }
+        var mentorId = int.Parse(mentorIdString);
+        var mentor = _mentorRepo.GetMentorById(mentorId);
+
+        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id))
+        {
+            return Forbid();
         }
 
         try
@@ -315,6 +338,20 @@ public class MentorController : Controller
             return NotFound();
         }
 
+        var trainee = currentAssignment.Trainee;
+        var mentorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(mentorIdString == null)
+        {
+            return Unauthorized();
+        }
+        var mentorId = int.Parse(mentorIdString);
+        var mentor = _mentorRepo.GetMentorById(mentorId);
+
+        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id))
+        {
+            return Forbid();
+        }
+
         try
         {
             var assignment = _assignmentService.UpdateAssignmentStatus(assignmentId, LessonAssignmentStatus.Skipped);
@@ -336,7 +373,25 @@ public class MentorController : Controller
     /// <param name="orderedIds">the assignment ids in their new display order</param>
     /// <returns> a redirect to the AssignmentOverview for the given trainee</returns>
     public IActionResult UpdateAssignmentOrder(int traineeId, [FromForm] List<int> orderedIds)
-    {
+    {   
+        var trainee = _traineeRepo.FindById(traineeId);
+        if(trainee == null)
+        {
+            return NotFound();
+        }
+        var mentorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(mentorIdString == null)
+        {
+            return Unauthorized();
+        }
+        var mentorId = int.Parse(mentorIdString);
+        var mentor = _mentorRepo.GetMentorById(mentorId);
+
+        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id))
+        {
+            return Forbid();
+        }
+
         _assignmentService.UpdateAssignmentOrder(orderedIds);
         
         var trainee = _traineeRepo.FindById(traineeId);
@@ -364,6 +419,20 @@ public class MentorController : Controller
         if(currentAssignment == null)
         {
             return NotFound();
+        }
+
+        var trainee = currentAssignment.Trainee;
+        var mentorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(mentorIdString == null)
+        {
+            return Unauthorized();
+        }
+        var mentorId = int.Parse(mentorIdString);
+        var mentor = _mentorRepo.GetMentorById(mentorId);
+
+        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id))
+        {
+            return Forbid();
         }
 
         try

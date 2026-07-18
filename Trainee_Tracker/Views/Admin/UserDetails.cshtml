@@ -8,30 +8,30 @@
     <div>
         <hr />
         <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Name)
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Name):
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.Name)
             </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Email)
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Email):
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.Email)
             </dd>
             @if (Model is Trainee_Tracker.Models.Trainee t)
             {
-            <dt class="col-sm-2">
+            <dt class="col-sm-4">
                 Role:
             </dt>
-            <dd class="col-sm-10">Trainee</dd>
+            <dd class="col-sm-8">Trainee</dd>
 
-            <dt class="col-sm-2">Starting Date</dt>
-            <dd class="col-sm-10">@t.StartingDate</dd>
+            <dt class="col-sm-4">Starting Date:</dt>
+            <dd class="col-sm-8">@t.StartingDate</dd>
             
-            <dt class="col-sm-2">End Date</dt>
-            <dd class="col-sm-10">@t.EndDate</dd>
+            <dt class="col-sm-4">End Date:</dt>
+            <dd class="col-sm-8">@t.EndDate</dd>
             }
         </dl>
     </div>

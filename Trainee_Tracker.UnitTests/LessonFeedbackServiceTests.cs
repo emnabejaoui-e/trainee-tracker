@@ -1,7 +1,4 @@
 // Code-Owner: Emna Bejaoui
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Trainee_Tracker.Data.LessonFeedbacks;
 using Trainee_Tracker.Models;
 using Trainee_Tracker.Services;

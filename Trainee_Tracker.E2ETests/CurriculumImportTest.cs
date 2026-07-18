@@ -3,6 +3,7 @@ using Tutorial_Project.E2ETests;
 
 namespace Trainee_Tracker.E2ETests;
 
+[Collection("Curriculum Import Tests")]
 public class CurriculumImportTest : IClassFixture<BrowserFixture>
 {
     private readonly IWebDriver _driver;
