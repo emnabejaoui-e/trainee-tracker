@@ -49,46 +49,52 @@ public class DbIntializer(IUserService userService, IMentorService mentorService
     {
         // === Create Users ===
         // Admin
-        userService.CreateAdmin(
-            "Admin",
-            "admin@makandra.de",
-            "Admin1!"
-        );
+        if(userService.IsEmailAvailable("admin@makandra.de"))
+            userService.CreateAdmin(
+                "Admin",
+                "admin@makandra.de",
+                "Admin1!"
+            );
         
         // Trainees
-        userService.CreateTrainee(
-            "Vanessa Vital",
-            "vanessa.vital@makandra.de",
-            "VVital13!",
-            new DateOnly(2026, 07, 17),
-            new DateOnly(2027, 03, 31)
-        );
-        userService.CreateTrainee(
-            "Stefan Schnupfen",
-            "stefan.schnupfen@makandra.de",
-            "Stefan1!",
-            new DateOnly(2026, 05, 01),
-            new DateOnly(2026, 10, 31)
-        );
-        userService.CreateTrainee(
-            "Ursula Urlaub",
-            "ursula.urlaub@makandra.de",
-            "U1laub!",
-            new DateOnly(2026, 01, 01),
-            new DateOnly(2026, 07, 31)
-        );
+        if(userService.IsEmailAvailable("vanessa.vital@makandra.de"))
+            userService.CreateTrainee(
+                "Vanessa Vital",
+                "vanessa.vital@makandra.de",
+                "VVital13!",
+                new DateOnly(2026, 07, 17),
+                new DateOnly(2027, 03, 31)
+            );
+        if(userService.IsEmailAvailable("stefan.schnupfen@makandra.de"))
+            userService.CreateTrainee(
+                "Stefan Schnupfen",
+                "stefan.schnupfen@makandra.de",
+                "Stefan1!",
+                new DateOnly(2026, 05, 01),
+                new DateOnly(2026, 10, 31)
+            );
+        if(userService.IsEmailAvailable("ursula.urlaub@makandra.de"))
+            userService.CreateTrainee(
+                "Ursula Urlaub",
+                "ursula.urlaub@makandra.de",
+                "U1laub!",
+                new DateOnly(2026, 01, 01),
+                new DateOnly(2026, 07, 31)
+            );
         
         // Mentors
-        userService.CreateMentor(
-            "Manfred Mental",
-            "manfred.mental@makandra.de",
-            "Pssssst1!"
-        );
-        userService.CreateMentor(
-            "Hans Hilfreich",
-            "hans.hilfreich@makandra.de",
-            "Hilfe123!"
-        );
+        if(userService.IsEmailAvailable("manfred.mental@makandra.de"))
+            userService.CreateMentor(
+                "Manfred Mental",
+                "manfred.mental@makandra.de",
+                "Pssssst1!"
+            );
+        if(userService.IsEmailAvailable("hans.hilfreich@makandra.de"))
+            userService.CreateMentor(
+                "Hans Hilfreich",
+                "hans.hilfreich@makandra.de",
+                "Hilfe123!"
+            );
         
         var manfred = mentors.GetMentorByEMail("manfred.mental@makandra.de")!;
         var hans = mentors.GetMentorByEMail("hans.hilfreich@makandra.de")!;
@@ -99,11 +105,15 @@ public class DbIntializer(IUserService userService, IMentorService mentorService
         
         // Assign trainees to mentors
         
-        mentorService.AssignTraineeToMentor(manfred.Id, vanessa.Id);
-        mentorService.AssignTraineeToMentor(manfred.Id, stefan.Id);
-        mentorService.AssignTraineeToMentor(manfred.Id, ursula.Id);
+        if(!vanessa.Mentors.Contains(manfred))
+            mentorService.AssignTraineeToMentor(manfred.Id, vanessa.Id);
+        if(!stefan.Mentors.Contains(manfred))
+            mentorService.AssignTraineeToMentor(manfred.Id, stefan.Id);
+        if(!ursula.Mentors.Contains(manfred))
+            mentorService.AssignTraineeToMentor(manfred.Id, ursula.Id);
         
-        mentorService.AssignTraineeToMentor(hans.Id, ursula.Id);
+        if(!ursula.Mentors.Contains(hans))
+            mentorService.AssignTraineeToMentor(hans.Id, ursula.Id);
         
         var lessons = JsonSerializer.Deserialize<List<Lesson.LessonDTO>>(_webDevCurriculumJson)
             .Select(dto => dto.Lesson())
