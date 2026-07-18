@@ -1,3 +1,4 @@
+// Code-Owner: Emna Bejaoui
 using Microsoft.EntityFrameworkCore;
 using Trainee_Tracker.Models;
 

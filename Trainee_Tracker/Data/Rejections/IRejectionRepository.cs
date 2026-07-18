@@ -2,7 +2,7 @@ using Trainee_Tracker.Models;
 
 namespace Trainee_Tracker.Data.Rejections;
 
-// Code-Owner: Julia
+// Code-Owner: Julia Sandner
 public interface IRejectionRepository
 {
     /// <summary>

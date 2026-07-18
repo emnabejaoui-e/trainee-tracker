@@ -1,4 +1,4 @@
-//Hauptverantwortlich: Julia
+// Code-Owner: Julia Sandner
 
 using Trainee_Tracker.Models;
 

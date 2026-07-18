@@ -3,6 +3,8 @@ using Trainee_Tracker.Data.LessonAssignments;
 
 namespace Trainee_Tracker.Services;
 
+// Code-Owner: Andrej Basara
+
 public class LessonDateCalculator : ILessonDateCalculator
 {
     private readonly ILessonAssignmentRepository _lessonAssignmentRepo;

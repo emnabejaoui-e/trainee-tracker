@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+// Code-Owner: Julia Sandner
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Trainee_Tracker.Data.LessonAssignments;
@@ -15,8 +15,7 @@ public class LessonBoardController : Controller
     private readonly ILessonAssignmentRepository _assignmentRepo;
     private readonly IAssignmentService _assignmentService;
 
-    //Code-Owner: Julia Sandner
-    public LessonBoardController(IUserRepository userRepo, ILessonAssignmentRepository assignmentRepo, IAssignmentService assignmentService)
+    public LessonBoardController(IUserRepository userRepo, ILessonAssignmentRepository lessonAssignmentRepo, ILessonAssignmentRepository assignmentRepo, IAssignmentService assignmentService)
     {
        _userRepo = userRepo;
        _assignmentRepo = assignmentRepo;

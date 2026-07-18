@@ -1,5 +1,7 @@
 namespace Trainee_Tracker.Models;
 
+// Code-Owner: Julia Sandner
+
 public class LessonAssignment
 {
     public int Id {get; init;}

@@ -1,6 +1,8 @@
 using System;
 using System.Text.Json.Serialization;
 
+// Code-Owner: Nazym Beisembin
+
 namespace Trainee_Tracker.Models
 {
     public class WorkingHoursEntry

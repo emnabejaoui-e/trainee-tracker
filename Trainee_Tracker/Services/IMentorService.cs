@@ -2,7 +2,7 @@ using Trainee_Tracker.Models;
 
 namespace Trainee_Tracker.Services;
 
-/// <author>Leon</author>
+// Code-Owner: Leon Paintner
 public interface IMentorService
 {
     /// <summary>

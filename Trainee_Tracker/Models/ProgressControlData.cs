@@ -1,6 +1,6 @@
+// Code-Owner: Leon Paintner
 namespace Trainee_Tracker.Models;
 
-/// <author>Leon</author>
 public class ProgressControlData
 {
     /// <summary>

@@ -1,4 +1,3 @@
-// Code Owner: Jelena Cosic ([Authorize])
 using System.Diagnostics.Contracts;
 using System.Net.Mime;
 using System.Security.Claims;
@@ -56,36 +55,11 @@ public class MentorController : Controller
         _assignmentService = assignmentService;
     }
     
-    // Code Owner: Jelena Cosic
     /// <summary>
     /// Displays the Mentor dashboard.
     public IActionResult Index() => RedirectToAction("MyTrainees");
 
-    // Code-Owner: Leon
-    /// <summary>
-    /// Assigns a Mentor to a trainee.
-    /// </summary>
-    /// <param name="mentorId">The numeric id of the Mentor to assign.</param>
-    /// <param name="traineeId">The numeric id of the Trainee to assign.</param>
-    /// <returns>501 Not Implemented status.</returns>
-    public IActionResult AssignTrainee(int mentorId, int traineeId)
-    {
-        return StatusCode(501, "Not implemented!");
-    }
-
-    // Code-Owner: Leon
-    /// <summary>
-    /// Changes the order of lessons for a particular trainee.
-    /// </summary>
-    /// <param name="traineeId">The numeric id of the Trainee to change the order for.</param>
-    /// <param name="order">A list with the numeric ids of Lessons in the order they should appear for trainees.</param>
-    /// <returns>501 Not Implemented status.</returns>
-    public IActionResult UpdateLessonOrder(int traineeId, IList<int> order)
-    {
-        return StatusCode(501, "Not implemented!");
-    }
-
-    // Code-Owner: Leon
+    // Code-Owner: Leon Paintner
     public IActionResult MyTrainees()
     {
         string? mentorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -107,7 +81,7 @@ public class MentorController : Controller
         return View(currentUser.AssignedTrainees.Where(t => !t.Closed));
     }
 
-    // Code-Owner: Leon
+    // Code-Owner: Nazym Beisembin
     // GET: /Mentor/Fortschrittskontrolle
     [HttpGet]
     public async Task<IActionResult> Fortschrittskontrolle(int traineeId)
@@ -166,7 +140,7 @@ public class MentorController : Controller
         return View(model);
     }
 
-    // Code-Owner: Leon
+    // Code-Owner: Leon Paintner
     // GET: /Mentor/ImportCurriculum
     [HttpGet]
     public IActionResult ImportCurriculum()
@@ -176,7 +150,7 @@ public class MentorController : Controller
         return View(null);
     }
 
-    // Code-Owner: Leon
+    // Code-Owner: Leon Paintner
     // POST: /Mentor/ImportCurriculum
     [HttpPost]
     public IActionResult ImportCurriculum(string curriculumName, IFormFile file)
@@ -240,9 +214,9 @@ public class MentorController : Controller
         ViewBag.curriculumNames = _curriculumRepo.GetAllCurriculums().Select(c => c.Title);
         return View(file);
     }
-
-
-    // Code-Owner: Julia
+    
+    // Code-Owner: Julia Sandner
+    // GET: /Mentor/AssignmentOverview
     /// <summary>
     /// Displays an overview of the assignments of a given trainee for a mentor, including any rejection history for their assignments
     /// </summary>
@@ -278,9 +252,6 @@ public class MentorController : Controller
 
         return View("AssignmentOverview", result.Assignments);
     }
-
-
-
 
     //Code-Owner: Julia Sandner
     /// <summary>
@@ -323,7 +294,7 @@ public class MentorController : Controller
         }
     }
 
-    //Code-Owner: Julia Sandner
+    // Code-Owner: Julia Sandner
     /// <summary>
     /// Marks a lesson assignment as skipped
     /// </summary>
@@ -365,7 +336,7 @@ public class MentorController : Controller
         }
     }    
 
-    //Code-Owner: Julia Sandner
+    // Code-Owner: Julia Sandner
     /// <summary>
     /// Persists a new display order for a trainee's assignments
     /// </summary>
@@ -400,8 +371,7 @@ public class MentorController : Controller
         return RedirectToAction("AssignmentOverview", new {traineeId});
     }
 
-
-    //Code-Owner: Julia Sandner
+    // Code-Owner: Julia Sandner
     /// <summary>
     /// REjects an assignment with a reason
     /// </summary>

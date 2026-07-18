@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Trainee_Tracker.Models;
 
+// Code-Owner: Andrej Basara
+
 namespace Trainee_Tracker.Data.TraineeRepository
 {
     public interface ITraineeRepository

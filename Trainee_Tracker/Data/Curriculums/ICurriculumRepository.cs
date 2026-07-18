@@ -1,8 +1,8 @@
+// Code-Owner: Leon Paintner
 using Trainee_Tracker.Models;
 
 namespace Trainee_Tracker.Data.Curriculums;
 
-/// <author>Leon</author>
 public interface ICurriculumRepository
 {
     IEnumerable<Curriculum> GetAllCurriculums();
