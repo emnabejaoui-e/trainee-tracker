@@ -266,7 +266,7 @@ public class MentorController : Controller
         var mentorId = int.Parse(mentorIdString);
         var mentor = _mentorRepo.GetMentorById(mentorId);
 
-        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id))
+        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id)  && !(mentor is Admin))
         {
             return Forbid();
         }
@@ -305,7 +305,7 @@ public class MentorController : Controller
         var mentorId = int.Parse(mentorIdString);
         var mentor = _mentorRepo.GetMentorById(mentorId);
 
-        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id))
+        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id) && !(mentor is Admin))
         {
             return Forbid();
         }
@@ -347,7 +347,7 @@ public class MentorController : Controller
         var mentorId = int.Parse(mentorIdString);
         var mentor = _mentorRepo.GetMentorById(mentorId);
 
-        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id))
+        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id) && !(mentor is Admin))
         {
             return Forbid();
         }
@@ -387,7 +387,7 @@ public class MentorController : Controller
         var mentorId = int.Parse(mentorIdString);
         var mentor = _mentorRepo.GetMentorById(mentorId);
 
-        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id))
+        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id) && !(mentor is Admin))
         {
             return Forbid();
         }
@@ -420,7 +420,7 @@ public class MentorController : Controller
         var mentorId = int.Parse(mentorIdString);
         var mentor = _mentorRepo.GetMentorById(mentorId);
 
-        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id))
+        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id) && !(mentor is Admin))
         {
             return Forbid();
         }
