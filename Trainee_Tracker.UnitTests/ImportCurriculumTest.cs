@@ -131,11 +131,20 @@ public class ImportCurriculumTest
         });
     }
     
-    /*
     [Theory]
     [ClassData(typeof(CurriculumImportTestDataGenerator))]
     void CurriculumImport_RemovedLessonsAreMarkedAsInactive(IList<Lesson> existingLessons, IList<Lesson> importedLessons)
     {
+        var services = new CurriculumServiceInitializerServices(existingLessons);
         
-    }*/
+        services.Service.ImportCurriculum(services.Curriculum, importedLessons);
+
+        Assert.All(services.Curriculum.Lessons, l =>
+        {
+            if (existingLessons.Contains(l) && !importedLessons.Contains(l))
+            {
+                Assert.True(l.Inactive);
+            }
+        });
+    }
 }
