@@ -20,7 +20,7 @@ public class AssignmentServiceTests
         _rejectionRepoMock = new Mock<IRejectionRepository>();
         _assignmentRepoMock = new Mock<ILessonAssignmentRepository>();
 
-        _service = new AssignmentService(_lessonRepoMock.Object, _assignmentRepoMock.Object, _rejectionRepoMock.Object);
+        _service = new AssignmentService(_lessonRepoMock.Object, _assignmentRepoMock.Object, _rejectionRepoMock.Object, null);
 
     }
 

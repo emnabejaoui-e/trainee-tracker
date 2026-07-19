@@ -33,6 +33,7 @@ public class TraineeRestartAssignmentFeatureTest
         System.Threading.Thread.Sleep(200);
 
         _driver.Navigate().GoToUrl($"{BaseUrl}/LessonBoard/LessonBoard");
+        _fixture.DismissFeedbackReminderIfPresent();
 
         //Arragne: assignment restart
         var rejectedColumn = _wait.Until(d => d.FindElement(By.Id("column-body-Rejected")));

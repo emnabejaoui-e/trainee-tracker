@@ -85,10 +85,6 @@ public class TraineeTestFixture : IDisposable
             "Trainee_Tracker", "Persistence", "trainee_tracker.db"
         );
         
-        Console.WriteLine($"[DEBUG] AppContext.BaseDirectory: {AppContext.BaseDirectory}");
-        Console.WriteLine($"[DEBUG] Berechneter DB-Pfad: {dbPath}");
-        Console.WriteLine($"[DEBUG] Datei existiert: {File.Exists(dbPath)}");
-
         var options = new DbContextOptionsBuilder<AppDbContext>()
         .UseSqlite($"Data Source={dbPath}")
         .Options;
@@ -100,5 +96,21 @@ public class TraineeTestFixture : IDisposable
         context.Rejections.Add(new Rejection{AssignmentId = assignmentId, Reason = reason, RejectedAt = DateTime.UtcNow});
 
         context.SaveChanges();
+    }
+
+    public void DismissFeedbackReminderIfPresent()
+    {
+        try
+        {
+            var closeButton = Driver.FindElement(By.Id("feedback-dialog-close"));
+            if (closeButton.Displayed)
+            {
+                SafeClick(closeButton);
+            }
+        }
+        catch (NoSuchElementException)
+        {
+            
+        }
     }
 }
