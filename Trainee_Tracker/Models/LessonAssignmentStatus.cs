@@ -1,6 +1,6 @@
 namespace Trainee_Tracker.Models;
 
-// Code-Owner: Julia Sandner
+// Code-Owner: Julia Sandner (total class)
 
 public enum LessonAssignmentStatus
 {

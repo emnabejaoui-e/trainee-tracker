@@ -27,8 +27,6 @@ public class TraineeRestartAssignmentFeatureTest
     [Fact]
     public void Trainee_CanRestartAndFinishAssignment()
     {
-        Console.WriteLine("test: Trainee restarts an assignment");
-
         //Seed Assignment as rejected
         _fixture.SeedAssignmentAsRejected(12, "incorrect exercises");
         var rejectedCardTitle = "Virtualization";
@@ -54,8 +52,6 @@ public class TraineeRestartAssignmentFeatureTest
         //Assert:
         var startedColumnText = _fixture.GetTextSafely(By.Id("column-body-Started"));
         Assert.Contains(rejectedCardTitle, startedColumnText);
-        Console.WriteLine("test: restart assignment finished");
 
-        
     }
 }

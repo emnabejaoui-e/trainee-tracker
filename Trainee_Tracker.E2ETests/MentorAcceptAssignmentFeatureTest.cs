@@ -30,7 +30,6 @@ public class MentorAcceptAssignmentFeaturesTest
         //Arrange
         _driver.Navigate().Refresh();
     
-        Console.WriteLine("test: assignment accept");
         _driver.Navigate().GoToUrl($"{BaseUrl}/Mentor/AssignmentOverview?traineeId=1");
         
         var finishedColumn = _wait.Until(d => d.FindElement(By.Id("column-body-Finished"))); 
@@ -47,7 +46,6 @@ public class MentorAcceptAssignmentFeaturesTest
         
         var acceptedColumnText = _fixture.GetTextSafely(By.Id("column-body-Accepted"));
         Assert.Contains(lessonTitle, acceptedColumnText);
-        Console.WriteLine("test finished");
     }
 
 }

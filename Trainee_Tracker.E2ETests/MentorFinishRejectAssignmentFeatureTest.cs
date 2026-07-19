@@ -28,7 +28,6 @@ public class MentorFinishRejectAssignmentFeatureTest
     [Fact]
     public void Mentor_CanRejectAnAssignment()
     {
-        Console.WriteLine("Test: reject assignment start");
         _driver.Navigate().GoToUrl($"{BaseUrl}/Mentor/AssignmentOverview?traineeId=1");
 
         // Arrange

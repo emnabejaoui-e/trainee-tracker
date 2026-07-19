@@ -28,14 +28,14 @@ public class TraineeStartFinishAssignmentFeatureTest
     [Fact]
     public void Trainee_CanStartAndFinishAssignment()
     {
-        Console.WriteLine("test: Trainee start and finish assignment");
-
         _driver.Navigate().GoToUrl($"{BaseUrl}/LessonBoard/LessonBoard");
 
         //Arragne: assignment start
         var openColumn = _wait.Until(d => d.FindElement(By.Id("column-body-Open")));
-        var startButton = openColumn.FindElement(By.CssSelector(".action-btn-primary"));
-        var cardTitleText = _fixture.GetTextSafely(By.Id("column-body-Open"), By.CssSelector(".card-title"));
+        var firstCard = openColumn.FindElement(By.CssSelector(".board-card"));
+
+        var startButton = firstCard.FindElement(By.CssSelector(".action-btn-primary"));
+        var cardTitleText = firstCard.FindElement( By.CssSelector(".card-title")).Text;
 
         //Act
         _fixture.SafeClick(startButton);
@@ -45,10 +45,8 @@ public class TraineeStartFinishAssignmentFeatureTest
         var startedColumnText = _fixture.GetTextSafely(By.Id("column-body-Started"));
 
         Assert.Contains(cardTitleText, startedColumnText);
-        Console.WriteLine("test: start assignment finished");
 
         _driver.Navigate().Refresh();
-        Console.WriteLine("Test: finish-assignment starting");
 
         //arrange
          var startedColumn = _wait.Until(d => d.FindElement(By.Id("column-body-Started")));
@@ -60,6 +58,6 @@ public class TraineeStartFinishAssignmentFeatureTest
         //Assert
         var finishedColumnText = _fixture.GetTextSafely(By.Id("column-body-Finished"));
         Assert.Contains(cardTitleText, finishedColumnText);
-        Console.WriteLine("Test: finish-assignmnet ended");
+      
     }
 }
