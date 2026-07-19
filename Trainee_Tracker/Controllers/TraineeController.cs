@@ -105,7 +105,7 @@ public class TraineeController : Controller
         ViewBag.TraineeName = trainee.Name;
 
         return View(
-            "~/Views/Mentor/Fortschrittskontrolle.cshtml",
+            "~/Views/Mentor/ProgressControl.cshtml",
             model
         );
     }

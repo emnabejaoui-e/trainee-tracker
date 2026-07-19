@@ -83,9 +83,9 @@ public class MentorController : Controller
     }
 
     // Code-Owner: Nazym Beisembin
-    // GET: /Mentor/Fortschrittskontrolle
+    // GET: /Mentor/ProgressControl
     [HttpGet]
-    public async Task<IActionResult> Fortschrittskontrolle(int traineeId) 
+    public async Task<IActionResult> ProgressControl(int traineeId)
     {
         ViewData["NavbarOverride"] = "Mentor";
 

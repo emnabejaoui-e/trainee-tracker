@@ -36,7 +36,7 @@ public class ProgressControlE2ETest : IDisposable
         IReadOnlyCollection<IWebElement> progressLinks =
             _driver.FindElements(
                 By.CssSelector(
-                    "a.profile-link[href*='Fortschrittskontrolle']"
+                    "a.profile-link[href*='ProgressControl']"
                 )
             );
 
