@@ -31,7 +31,6 @@ public class MentorSkipAssignmentFeatureTest
         _driver.Navigate().Refresh();
         
     //Arrage
-        Console.WriteLine("Test : CanSKipAnAssignmnet");
         _driver.Navigate().GoToUrl($"{BaseUrl}/Mentor/AssignmentOverview?traineeId=1");
 
         var skipTriggerButton = _wait.Until(d => d.FindElement(By.CssSelector(".action-btn-skip"))); 
@@ -41,7 +40,7 @@ public class MentorSkipAssignmentFeatureTest
 
         var dialog = _wait.Until(d => d.FindElement(By.Id("skip-select-dialog")));
         Assert.True(dialog.Displayed);
-        var firstSkipButton = dialog.FindElement(By.CssSelector(".action-btn-skip-confirm"));
+        var firstSkipButton = _wait.Until(d => dialog.FindElement(By.CssSelector(".action-btn-skip-confirm")));
         var lessonTitle = dialog.FindElement(By.CssSelector(".skip-select-title")).Text;
 
     //Act
@@ -55,7 +54,6 @@ public class MentorSkipAssignmentFeatureTest
         var skippedColumnText = _fixture.GetTextSafely(By.Id("column-body-Skipped"));
         
         Assert.Contains(lessonTitle, skippedColumnText);
-        Console.WriteLine("skiped assignment found and end test");
 
     }
 }

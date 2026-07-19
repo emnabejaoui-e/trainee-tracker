@@ -28,8 +28,7 @@ public class MentorReorderAssignmentsFeatureTest
     public void Mentor_CanReorderAssignmentsViaDialog()
     {   
         _driver.Navigate().Refresh();
-        Console.WriteLine("test: reorder test");
-
+        
     //Arrange
         _driver.Navigate().GoToUrl($"{BaseUrl}/Mentor/AssignmentOverview?traineeId=1");
 
@@ -58,9 +57,7 @@ public class MentorReorderAssignmentsFeatureTest
     //Assert
         _wait.Until(d => d.Url.Contains("AssignmentOverview"));
         var boardText = _fixture.GetTextSafely(By.CssSelector(".board-columns"));
-        //check: postion changed in card
         Assert.Contains(firstItemTitle, boardText);    
-        Console.WriteLine("finished reorder-test");
-
+       
     }
 }
