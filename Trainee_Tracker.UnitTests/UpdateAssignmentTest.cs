@@ -60,4 +60,20 @@ public class UpdateAssignmentTest
                 Assert.Contains(newAssignments, la => la.LessonId == l.Id);
         });
     }
+    
+    [Theory]
+    [ClassData(typeof(UpdateAssignmentTestDataGenerator))]
+    void UpdateAssignment_NoOpenAssignmentsForInactiveLessons(IList<Lesson> lessons, IList<LessonAssignment> assignments)
+    {
+        var services = new CurriculumServiceInitializerServices(lessons, assignments);
+        
+        services.Service.UpdateLessonAssignments(services.Trainee, services.Curriculum);
+        
+        var newAssignments = services.LessonAssignmentRepository.GetAllLessonAssignments();
+        Assert.All(lessons, l =>
+        {
+            if (l.Inactive)
+                Assert.DoesNotContain(newAssignments, la => la.LessonId == l.Id && la.Status == LessonAssignmentStatus.Open);
+        });
+    }
 }
