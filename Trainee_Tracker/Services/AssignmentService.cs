@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Trainee_Tracker.Data.LessonAssignments;
 using Trainee_Tracker.Data.Lessons;
@@ -15,6 +16,7 @@ public class AssignmentService : IAssignmentService
     private readonly ILessonRepository _lessonRepo;
     private readonly ILessonAssignmentRepository _lessonAssignmentRepo;
     private readonly IRejectionRepository _rejectionRepo; //Code-Owner: Julia Sandner
+    private readonly ILessonFeedbackService _feedbackService;
     //Code-Owner: Julia Sandner
     private static readonly Dictionary<LessonAssignmentStatus, LessonAssignmentStatus[]> AllowedTransitions = new()
     {
@@ -26,11 +28,12 @@ public class AssignmentService : IAssignmentService
         [LessonAssignmentStatus.Rated] = new[] {LessonAssignmentStatus.Accepted}
     };
 
-    public AssignmentService(ILessonRepository lessonRepo, ILessonAssignmentRepository lessonAssignmentRepo, IRejectionRepository rejectionRepo)
+    public AssignmentService(ILessonRepository lessonRepo, ILessonAssignmentRepository lessonAssignmentRepo, IRejectionRepository rejectionRepo, ILessonFeedbackService feedbackService)
     {
         _lessonRepo = lessonRepo;
         _lessonAssignmentRepo = lessonAssignmentRepo;
         _rejectionRepo = rejectionRepo;
+        _feedbackService = feedbackService;
     }
 
     // Code Owner: Andrej Basara
@@ -151,5 +154,24 @@ public class AssignmentService : IAssignmentService
         }
 
         return _rejectionRepo.Reject(assignmentId, reason);
+    }
+
+    //Code-Owner: Julia Sandner
+    public LessonAssignment? GetAcceptedAssignmentWithoutFeedback(Trainee trainee)
+    {
+        var overview = GetOverview(trainee);
+        var existingFeedback = _feedbackService.GetFeedback(trainee);
+
+        return overview.Assignments
+        .Where(a => a.Status == LessonAssignmentStatus.Accepted)
+        .Where(a => !a.FeedbackReminderShowen)
+        .FirstOrDefault(a => !existingFeedback.Any( f => f.AssignmentId == a.Id));
+    }
+
+    //Code-Owner: Julia Sandner
+    public void MarkFeedbackReminerAsShown(LessonAssignment assignment)
+    {
+        assignment.FeedbackReminderShowen = true;
+        _lessonAssignmentRepo.Save(assignment);
     }
 }

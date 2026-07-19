@@ -12,6 +12,7 @@ public class LessonAssignment
     public DateOnly ExpectedProcessingDate {get; set;}
     public int TraineeId {get; set;}
     public Trainee? Trainee {get; set;}
+    public bool FeedbackReminderShowen {get; set;} = false;
 
     public LessonAssignment(){}
 
