@@ -9,6 +9,8 @@
 
 <link rel="stylesheet" href="~/css/feedback.css" />
 
+@* Displays feedback submitted by the currently logged-in trainee. *@
+
 <h1 class="section-title">My Feedback</h1>
 
 @if (!Model.Any())
@@ -119,4 +121,27 @@ else
             </article>
         }
     </div>
+}
+@section Scripts {
+    <script>
+        /**
+         * Saves the current scroll position before editing or deleting feedback
+         * and restores it after returning to this page.
+         */
+        const savedScrollPosition = sessionStorage.getItem("feedback-scroll-position");
+
+        if (savedScrollPosition !== null) {
+            window.scrollTo(0, Number(savedScrollPosition));
+            sessionStorage.removeItem("feedback-scroll-position");
+        }
+
+        document.querySelectorAll("[data-save-feedback-scroll]").forEach(element => {
+            element.addEventListener("click", () => {
+                sessionStorage.setItem(
+                    "feedback-scroll-position",
+                    String(window.scrollY)
+                );
+            });
+        });
+    </script>
 }

@@ -52,6 +52,9 @@ builder.Services.AddHttpClient<WorkingHoursService>(client =>
         new AuthenticationHeaderValue("Basic", credentials);
 });
 
+builder.Services.AddScoped<IWorkingHoursSyncService,WorkingHoursSyncService>();
+builder.Services.AddHostedService< WorkingHoursSyncBackgroundService>();
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {

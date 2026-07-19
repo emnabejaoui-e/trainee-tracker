@@ -52,8 +52,8 @@ public class TraineeRestartAssignmentFeatureTest
         System.Threading.Thread.Sleep(500); 
         
         //Assert:
-        var startedColumn = _wait.Until(d => d.FindElement(By.Id("column-body-Started")));
-        Assert.Contains(rejectedCardTitle, startedColumn.Text);
+        var startedColumnText = _fixture.GetTextSafely(By.Id("column-body-Started"));
+        Assert.Contains(rejectedCardTitle, startedColumnText);
         Console.WriteLine("test: restart assignment finished");
 
         

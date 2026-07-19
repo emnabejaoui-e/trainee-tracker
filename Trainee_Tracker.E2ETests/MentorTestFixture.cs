@@ -66,8 +66,8 @@ public class MentorTestFixture : IDisposable
         return Wait.Until(d => d.FindElement(locator).Text);
     }
 
-    public string GetTextSafely(IWebElement parent, By locator)
+    public string GetTextSafely(By parentLocator, By childlocator)
     {
-        return Wait.Until( _ => parent.FindElement(locator).Text);
+        return Wait.Until( d => d.FindElement(parentLocator).FindElement(childlocator).Text);
     }
 }

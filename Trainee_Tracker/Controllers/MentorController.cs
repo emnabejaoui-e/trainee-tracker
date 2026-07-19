@@ -25,9 +25,10 @@ public class MentorController : Controller
     private readonly ILessonAssignmentRepository _assignmentRepo;
     private readonly IRejectionRepository _rejectionRepo;
     private readonly ITraineeRepository _traineeRepo;
-    private readonly WorkingHoursService _workingHoursService;
     private readonly IProgressService _progressService;
     private readonly IAssignmentService _assignmentService;
+    private readonly IWorkingHoursSyncService _workingHoursSyncService;
+
 
     public MentorController(
         IMentorRepository mentorRepo,
@@ -35,11 +36,11 @@ public class MentorController : Controller
         ILessonAssignmentRepository assignmentRepo,
         IRejectionRepository rejectionRepo,
         ITraineeRepository traineeRepo,
-        WorkingHoursService workingHoursService,
         IProgressService progressService,
         ICurriculumRepository curriculumRepo,
         ICurriculumService curriculumService,
-        IAssignmentService assignmentService
+        IAssignmentService assignmentService,
+        IWorkingHoursSyncService workingHoursSyncService
         )
     {
         _mentorRepo = mentorRepo;
@@ -48,11 +49,11 @@ public class MentorController : Controller
         _assignmentRepo = assignmentRepo;
         _rejectionRepo = rejectionRepo;
         _traineeRepo = traineeRepo;
-        _workingHoursService = workingHoursService;
         _progressService = progressService;
-         _curriculumRepo = curriculumRepo;
+        _curriculumRepo = curriculumRepo;
         _curriculumService = curriculumService;
         _assignmentService = assignmentService;
+        _workingHoursSyncService = workingHoursSyncService;
     }
     
     /// <summary>
@@ -121,11 +122,11 @@ public class MentorController : Controller
         DateOnly startDate = trainee.StartingDate;
         DateOnly endDate = DateOnly.FromDateTime(DateTime.Today);
 
-        double? daysWorked = await _workingHoursService.GetWorkedPersonDaysAsync(
-            trainee.Email,
-            startDate,
-            endDate
-        );
+        double? daysWorked =
+         await _workingHoursSyncService.GetStoredPersonDaysAsync(
+        trainee.Id,
+        startDate,
+        endDate);
 
         List<LessonAssignment> assignments =
             _assignmentRepo.FindByTrainee(trainee);
@@ -189,11 +190,7 @@ public class MentorController : Controller
                 if (curriculum == null)
                     return NotFound();
                 
-                var result = _curriculumService.MergeLessons(curriculum._Lessons, lessons.Select(dto => dto.Lesson()).ToList());
-
-                curriculum._Lessons = result;
-                
-                _curriculumService.Update(curriculum);
+                _curriculumService.ImportCurriculum(curriculum, lessons.Select(dto => dto.Lesson()).ToList());
             }
             catch (JsonException e)
             {

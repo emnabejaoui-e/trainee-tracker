@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Trainee_Tracker.Data.Curriculums;
 using Trainee_Tracker.Models;
 using Trainee_Tracker.Services;
 
@@ -17,11 +18,13 @@ public class AdminController : Controller
 {
     private readonly IUserService _userService; // Code Owner: Jelena Cosic
     private readonly IMentorService _mentorService;
+    private readonly ICurriculumRepository _curriculumRepo;
 
-    public AdminController(IUserService userService, IMentorService mentorService)
+    public AdminController(IUserService userService, IMentorService mentorService, ICurriculumRepository curriculumRepo)
     {
         _userService = userService; // Code Owner: Jelena Cosic
         _mentorService = mentorService;
+        _curriculumRepo = curriculumRepo;
     }
 
     // Code Owner: Jelena Cosic
@@ -47,26 +50,29 @@ public class AdminController : Controller
     // GET
     public IActionResult CreateTrainee()
     {
+        ViewBag.Curricula = _curriculumRepo.GetAllCurriculums();
         return View();
     }
 
     // POST
     [HttpPost]
-    public IActionResult CreateTrainee(string name, string email, string password, DateOnly startingDate, DateOnly endDate)
+    public IActionResult CreateTrainee(string name, string email, string password, DateOnly startingDate, DateOnly endDate, int curriculumId)
     {
         try
         {
-            _userService.CreateTrainee(name, email, password, startingDate, endDate);
+            _userService.CreateTrainee(name, email, password, startingDate, endDate, curriculumId);
             return RedirectToAction("UserManagement");
         }
         catch (ArgumentException)
         {
             ModelState.AddModelError("password", "Password is required");
+            ViewBag.Curricula = _curriculumRepo.GetAllCurriculums();
             return View();
         }
         catch (InvalidOperationException)
         {
             ModelState.AddModelError("Email", "Email already in user");
+            ViewBag.Curricula = _curriculumRepo.GetAllCurriculums();
             return View();
         }
     }

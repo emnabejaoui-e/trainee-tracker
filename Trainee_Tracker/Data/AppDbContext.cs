@@ -25,6 +25,8 @@ public class AppDbContext : DbContext
     public DbSet<Lesson> Lessons {get; set;}
     // Code-Owner: Leon Paintner
     public DbSet<Curriculum> Curricula { get; set; }
+    // Code Owner: Nazym Beisembin
+    public DbSet<WorkingHourRecord> WorkingHourRecords { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -34,10 +36,10 @@ public class AppDbContext : DbContext
             .HasValue<Admin>("Admin");
 
         // Leon Paintner: Many Mentors can teach the same Curriculum (FK on Mentor.CurriculumId)
-        modelBuilder.Entity<Mentor>()
-            .HasOne(m => m.Curriculum)
-            .WithMany(c => c.Mentors)
-            .HasForeignKey(m => m.CurriculumId)
+        modelBuilder.Entity<Trainee>()
+            .HasOne(t => t.Curriculum)
+            .WithMany(c => c.Trainees)
+            .HasForeignKey(t => t.CurriculumId)
             .OnDelete(DeleteBehavior.SetNull);
 
         //Leon: Seed data for curriculums
@@ -64,14 +66,14 @@ public class AppDbContext : DbContext
 
         // Julia Sandner: trainee for LessonAssignment SeedData
         modelBuilder.Entity<Trainee>().HasData(
-            new Trainee {Id = 2, Name = "Jelena3 Trainee", Email = "jelenacosic3@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false },
-            new Trainee {Id = 1, Name="Torsten Trainee", Email="torstentrainee@makandra.de", HashedPassword="$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed=false, StartingDate = new DateOnly(2026, 6, 30), EndDate = new DateOnly(2027, 1,1)},
-            new Trainee {Id = 3, Name="Tilda Trainee", Email="tildatrainee@makandra.de", HashedPassword="$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed=false, StartingDate = new DateOnly(2026, 7, 01), EndDate = new DateOnly(2027, 1,1)}
+            new Trainee {Id = 2, Name = "Jelena3 Trainee", CurriculumId = 1, Email = "jelenacosic3@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false },
+            new Trainee {Id = 1, Name="Torsten Trainee", CurriculumId = 1, Email="torstentrainee@makandra.de", HashedPassword="$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed=false, StartingDate = new DateOnly(2026, 6, 30), EndDate = new DateOnly(2027, 1,1)},
+            new Trainee {Id = 3, Name="Tilda Trainee", CurriculumId = 1, Email="tildatrainee@makandra.de", HashedPassword="$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed=false, StartingDate = new DateOnly(2026, 7, 01), EndDate = new DateOnly(2027, 1,1)}
         );
 
         //Code-Owner: Julia Sandner
         modelBuilder.Entity<Mentor>().HasData(
-            new Mentor  {Id = 4, Name = "Jelena2 Mentor",  Email = "jelenacosic2@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false, CurriculumId = 1 }
+            new Mentor  {Id = 4, Name = "Jelena2 Mentor",  Email = "jelenacosic2@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false }
         );
         //Code-Owner: Julia Sandner
         modelBuilder.Entity<Admin>().HasData(
@@ -109,5 +111,19 @@ public class AppDbContext : DbContext
             new LessonAssignment{Id = 22, LessonId = 222, TraineeId = 3, Position = 13, ExpectedProcessingDate = new DateOnly(2026, 7, 3), Status = LessonAssignmentStatus.Open}
         );
 
+        // Code Owner: Nazym Beisembin
+        modelBuilder.Entity<WorkingHourRecord>()
+            .HasIndex(record => new
+            {
+                record.TraineeId,
+                record.Date
+            })
+            .IsUnique();
+
+        modelBuilder.Entity<WorkingHourRecord>()
+            .HasOne(record => record.Trainee)
+            .WithMany()
+            .HasForeignKey(record => record.TraineeId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

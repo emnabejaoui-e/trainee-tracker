@@ -1,6 +1,5 @@
 // Code Owner: Leon Paintner
 
-using Trainee_Tracker.Data.Lessons;
 using Trainee_Tracker.Models;
 using Trainee_Tracker.Services;
 
@@ -8,7 +7,7 @@ namespace Trainee_Tracker.UnitTests;
 
 public class CurriculumServiceMergeLessonsTest
 {
-    private readonly ICurriculumService _service = new CurriculumService(null, null, null, null);
+    private readonly CurriculumService _service = new CurriculumService(null, null, null, null);
     
     /// <summary>
     /// Just a sanity check. An empty List of Lessons merged with another empty List should stay empty.

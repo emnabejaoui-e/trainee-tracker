@@ -17,18 +17,18 @@ public class FeedbackController : Controller
 {
     private readonly LessonFeedbackService _lessonFeedbackService;
     private readonly ILessonRepository _lessonRepository;
-    private readonly ILessonAssignmentRepository _lessonAssignmentRepository;
+    private readonly IAssignmentService _assignmentService;
     private readonly IMentorRepository _mentorRepo;
 
     public FeedbackController(
         LessonFeedbackService lessonFeedbackService,
         ILessonRepository lessonRepository,
-        ILessonAssignmentRepository lessonAssignmentRepository,
+        IAssignmentService assignmentService,
         IMentorRepository mentorRepo)
     {
         _lessonFeedbackService = lessonFeedbackService;
         _lessonRepository = lessonRepository;
-        _lessonAssignmentRepository = lessonAssignmentRepository;
+        _assignmentService = assignmentService;
         _mentorRepo = mentorRepo;
     }
 
@@ -41,9 +41,14 @@ public class FeedbackController : Controller
     /// <param name="show">Specifies which feedback should be displayed.</param>
     /// <returns>The view with the list of feedback.</returns>
 
-    [HttpGet]
+[HttpGet]
     public IActionResult RecentFeedback(DateTime? from, DateTime? until, string show = "all")
     {
+        if (User.IsInRole("Admin"))
+        {
+            ViewData["NavbarOverride"] = "Mentor";
+        }
+
         var feedbacks = new List<LessonFeedback>();
         var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
@@ -65,8 +70,6 @@ public class FeedbackController : Controller
                 }
                 else if (show == "assigned")
                 {
-                    ViewData["NavbarOverride"] = "Mentor";
-
                     var mentor = _mentorRepo.GetMentorById(currentUserId);
 
                     var assignedTraineeIds = mentor?.AssignedTrainees.Select(trainee => trainee.Id).ToHashSet() ?? new HashSet<int>();
@@ -74,7 +77,7 @@ public class FeedbackController : Controller
                     feedbacks = feedbacks
                         .Where(feedback => assignedTraineeIds.Contains(feedback.TraineeId))
                         .ToList();
-}
+                }
                 else
                 {
                     show = "all";
@@ -169,7 +172,7 @@ public class FeedbackController : Controller
 
         TempData["FocusFeedbackId"] = feedback.Id;
 
-        _lessonAssignmentRepository.UpdateStatus(
+        _assignmentService.UpdateAssignmentStatus(
             feedback.AssignmentId,
             LessonAssignmentStatus.Rated
         );
@@ -290,7 +293,7 @@ public class FeedbackController : Controller
             return RedirectToAction(nameof(RecentFeedback), new { from ,until, show });
         }
 
-        _lessonAssignmentRepository.UpdateStatus(
+        _assignmentService.UpdateAssignmentStatus(
             feedback.AssignmentId,
             LessonAssignmentStatus.Accepted
         );

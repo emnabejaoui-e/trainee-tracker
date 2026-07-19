@@ -14,9 +14,10 @@ public class WorkingHoursService
     }
 
     public async Task<List<WorkingHoursEntry>?> GetWorkingHoursAsync(
-        string email,
-        DateOnly startDate,
-        DateOnly endDate)
+    string email,
+    DateOnly startDate,
+    DateOnly endDate,
+    CancellationToken cancellationToken = default)
     {
         var url =
             $"api/v2/working_hours?email={Uri.EscapeDataString(email)}" +
@@ -25,14 +26,17 @@ public class WorkingHoursService
 
         try
         {
-            var response = await _httpClient.GetAsync(url);
+            var response = await _httpClient.GetAsync(
+             url,
+             cancellationToken);
 
             if (!response.IsSuccessStatusCode)
             {
                 return null;
             }
 
-            var json = await response.Content.ReadAsStringAsync();
+            var json = await response.Content.ReadAsStringAsync(
+             cancellationToken);
 
             var result = JsonSerializer.Deserialize<WorkingHoursResponse>(
                 json,
@@ -50,11 +54,12 @@ public class WorkingHoursService
     }
 
     public async Task<double?> GetWorkedPersonDaysAsync(
-        string email,
-        DateOnly startDate,
-        DateOnly endDate)
+    string email,
+    DateOnly startDate,
+    DateOnly endDate,
+    CancellationToken cancellationToken = default)
     {
-        var entries = await GetWorkingHoursAsync(email, startDate, endDate);
+        var entries = await GetWorkingHoursAsync(email, startDate, endDate, cancellationToken);
 
         if (entries == null)
         {
