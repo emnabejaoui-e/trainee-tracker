@@ -11,7 +11,7 @@ namespace Trainee_Tracker.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IAssignmentService _assignmentSerivce; //FRAGE: Wofür wird der assignmentService gebraucht? der kommt nie wieder aus im konstruktor vor...
+        private readonly IAssignmentService _assignmentSerivce;
 
 // Code Owner: Jelena Cosic
 
