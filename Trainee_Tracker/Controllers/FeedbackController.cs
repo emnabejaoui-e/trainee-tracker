@@ -15,13 +15,13 @@ namespace Trainee_Tracker.Controllers;
 ///
 public class FeedbackController : Controller
 {
-    private readonly LessonFeedbackService _lessonFeedbackService;
+    private readonly ILessonFeedbackService _lessonFeedbackService;
     private readonly ILessonRepository _lessonRepository;
     private readonly IAssignmentService _assignmentService;
     private readonly IMentorRepository _mentorRepo;
 
     public FeedbackController(
-        LessonFeedbackService lessonFeedbackService,
+        ILessonFeedbackService lessonFeedbackService,
         ILessonRepository lessonRepository,
         IAssignmentService assignmentService,
         IMentorRepository mentorRepo)
@@ -41,7 +41,7 @@ public class FeedbackController : Controller
     /// <param name="show">Specifies which feedback should be displayed.</param>
     /// <returns>The view with the list of feedback.</returns>
 
-[HttpGet]
+    [HttpGet]
     public IActionResult RecentFeedback(DateTime? from, DateTime? until, string show = "all")
     {
         if (User.IsInRole("Admin"))
