@@ -15,10 +15,11 @@ struct CurriculumServiceInitializerServices
     public ICurriculumRepository CurriculumRepository { get; } = new StaticCurriculumRepository();
     public ITraineeRepository TraineeRepository { get; } = new FakeTraineeRepository();
     public ILessonAssignmentRepository LessonAssignmentRepository { get; } = new FakeLessonAssignmentRepository();
+    public Trainee Trainee { get; }
     public CurriculumService Service { get; }
     public Curriculum Curriculum { get; }
-
-    public CurriculumServiceInitializerServices(IList<Lesson> existingLessons)
+    
+    public CurriculumServiceInitializerServices(IList<Lesson> existingLessons, IList<LessonAssignment> lessonAssignments)
     {
         Service = new CurriculumService(LessonRepository, CurriculumRepository, TraineeRepository, LessonAssignmentRepository);
         Curriculum = new Curriculum()
@@ -29,6 +30,23 @@ struct CurriculumServiceInitializerServices
             Title = "Test Curriculum"
         };
         CurriculumRepository.Create(Curriculum);
+        foreach (var assignment in lessonAssignments)
+        {
+            assignment.Lesson = existingLessons.First(l => l.Id == assignment.LessonId);
+            LessonAssignmentRepository.Save(assignment);
+        }
+
+        Trainee = new Trainee()
+        {
+            Id = 1,
+            CurriculumId = Curriculum.Id,
+            Curriculum = Curriculum,
+            Mentors = new List<Mentor>(),
+            StartingDate = DateOnly.MinValue,
+            EndDate = DateOnly.MaxValue,
+            IsAssignmentOrderCustomized = false
+        };
+        TraineeRepository.Save(Trainee);
     }
 }
 
@@ -105,7 +123,7 @@ public class ImportCurriculumTest
     [ClassData(typeof(CurriculumImportTestDataGenerator))]
     void CurriculumImport_ContainsAllGivenLessons(IList<Lesson> existingLessons, IList<Lesson> importedLessons)
     {
-        var services = new CurriculumServiceInitializerServices(existingLessons);
+        var services = new CurriculumServiceInitializerServices(existingLessons, new List<LessonAssignment>());
         
         services.Service.ImportCurriculum(services.Curriculum, importedLessons);
         
@@ -116,7 +134,7 @@ public class ImportCurriculumTest
     [ClassData(typeof(CurriculumImportTestDataGenerator))]
     void CurriculumImport_GivenLessonsAndCurriculumHaveMatchingLessonOrder(IList<Lesson> existingLessons, IList<Lesson> importedLessons)
     {
-        var services = new CurriculumServiceInitializerServices(existingLessons);
+        var services = new CurriculumServiceInitializerServices(existingLessons, new List<LessonAssignment>());
         
         services.Service.ImportCurriculum(services.Curriculum, importedLessons);
         
@@ -135,7 +153,7 @@ public class ImportCurriculumTest
     [ClassData(typeof(CurriculumImportTestDataGenerator))]
     void CurriculumImport_RemovedLessonsAreMarkedAsInactive(IList<Lesson> existingLessons, IList<Lesson> importedLessons)
     {
-        var services = new CurriculumServiceInitializerServices(existingLessons);
+        var services = new CurriculumServiceInitializerServices(existingLessons, new List<LessonAssignment>());
         
         services.Service.ImportCurriculum(services.Curriculum, importedLessons);
 
