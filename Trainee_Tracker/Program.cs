@@ -39,7 +39,7 @@ builder.Services.AddScoped<IRejectionRepository, RejectionRepository>();
 builder.Services.AddScoped<ICurriculumService, CurriculumService>();
 builder.Services.AddScoped<IInitializer, DbIntializer>();
 
-builder.Services.AddScoped<ICurriculumRepository, StaticCurriculumRepository>();
+builder.Services.AddScoped<ICurriculumRepository, CurriculumRepository>();
 
 builder.Services.AddHttpClient<WorkingHoursService>(client =>
 {
