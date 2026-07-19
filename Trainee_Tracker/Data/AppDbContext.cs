@@ -77,7 +77,7 @@ public class AppDbContext : DbContext
         );
         //Code-Owner: Julia Sandner
         modelBuilder.Entity<Admin>().HasData(
-            new Admin   {Id = 5, Name = "Jelena3 Admin",   Email = "jelenacosic1@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false, CurriculumId = 1 }
+            new Admin   {Id = 5, Name = "Jelena3 Admin",   Email = "jelenacosic1@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false }
         );
 
         //Code-Owner: Julia Sandner
