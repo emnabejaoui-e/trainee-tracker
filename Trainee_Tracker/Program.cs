@@ -32,13 +32,14 @@ builder.Services.AddScoped<ILessonAssignmentRepository, LessonAssignmentReposito
 builder.Services.AddScoped<ILessonDateCalculator, LessonDateCalculator>();
 builder.Services.AddScoped<IAssignmentService, AssignmentService>();
 
-builder.Services.AddScoped<LessonFeedbackService>();
+builder.Services.AddScoped<ILessonFeedbackService, LessonFeedbackService>();
 builder.Services.AddScoped<ILessonFeedbackRepository, LessonFeedbackRepository>();
 builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 builder.Services.AddScoped<IRejectionRepository, RejectionRepository>();
 builder.Services.AddScoped<ICurriculumService, CurriculumService>();
+builder.Services.AddScoped<IInitializer, DbIntializer>();
 
-builder.Services.AddScoped<ICurriculumRepository, StaticCurriculumRepository>();
+builder.Services.AddScoped<ICurriculumRepository, CurriculumRepository>();
 
 builder.Services.AddHttpClient<WorkingHoursService>(client =>
 {
@@ -94,6 +95,10 @@ using (var scope = app.Services.CreateScope())
 
     db.Database.Migrate();
     
+    foreach (var initializer in scope.ServiceProvider.GetServices<IInitializer>())
+    {
+        initializer.Initialize();
+    }
 }
 
 app.Run();

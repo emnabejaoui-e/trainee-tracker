@@ -33,10 +33,12 @@ public class AssignmentService : IAssignmentService
         _rejectionRepo = rejectionRepo;
     }
 
+    // Code Owner: Andrej Basara
     public void AssignLessonsToTrainee(Trainee trainee)
     {
         var lessons = _lessonRepo.GetAllLessons()
         .Where(lesson => !lesson.Inactive)
+        .Where(lesson => lesson.CurriculumId == trainee.CurriculumId)
         .OrderBy(lesson => lesson.Position)
         .ToList();
 

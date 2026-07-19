@@ -7,7 +7,7 @@ namespace Trainee_Tracker.Services
 {
     public interface IUserService
     {
-        void CreateTrainee(string name, string email, string rawPassword, DateOnly startingDate, DateOnly endDate);
+        void CreateTrainee(string name, string email, string rawPassword, DateOnly startingDate, DateOnly endDate, int curriculumId);
         void CreateMentor(string name, string email, string rawPassword);
         void CreateAdmin(string name, string email, string rawPassword);
         void UpdateTrainee(int id, string name, string email, DateOnly startingDate, DateOnly endDate, string? newPassword = null);

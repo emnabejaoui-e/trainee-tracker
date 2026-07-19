@@ -17,10 +17,5 @@ namespace Trainee_Tracker.Models
 
         public string HashedPassword { get; set; } = string.Empty; 
         public bool Closed { get; set; }
-
-        public void UpdatePassword(string newPassword)
-        {
-            HashedPassword = newPassword;
-        }
     }
 }
