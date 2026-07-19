@@ -138,31 +138,27 @@ public class DbIntializer(
             mentorService.AssignTraineeToMentor(hans.Id, ursula.Id);
         
         // Stefan is about 30% finished
-        // Re-fetch stefan so the assignments are in the object
-        stefan = trainees.GetAllTrainees().First(t => t.Email.Equals("stefan.schnupfen@makandra.de"));
-        var stefanControlData = progressService.CalculateProgress(stefan.Assignments, 0);
         foreach (LessonAssignment assignment in stefan.Assignments)
         {
-            var progress = stefanControlData.Finished / (stefanControlData.Finished + stefanControlData.Open);
+            var controlData = progressService.CalculateProgress(assignments.FindByTrainee(stefan), 0);
+            var progress = controlData.Finished / (controlData.Finished + controlData.Open);
+            if (progress >= 0.3)
+                break;
 
             // We bypass the validation so we can just set the assignments to finished
             assignment.Status = LessonAssignmentStatus.Finished;
             assignments.Save(assignment);
-
-            if (progress >= 0.3)
-                break;
-            stefanControlData = progressService.CalculateProgress(stefan.Assignments, 0);
         }
         
         // Ursula is about 90% rated
-        // Re-fetch ursula so the assignments are in the object
-        ursula = trainees.GetAllTrainees().First(t => t.Email.Equals("ursula.urlaub@makandra.de"));
-        var ursulaControlData = progressService.CalculateProgress(ursula.Assignments, 0);
-        foreach (LessonAssignment assignment in stefan.Assignments)
+        foreach (LessonAssignment assignment in ursula.Assignments)
         {
-            var progress = ursulaControlData.Finished / (ursulaControlData.Finished + ursulaControlData.Open);
+            var controlData = progressService.CalculateProgress(assignments.FindByTrainee(ursula), 0);
+            var progress = controlData.Finished / (controlData.Finished + controlData.Open);
+            if (progress >= 0.9)
+                break;
 
-            // We bypass the validation so we can just set the assignments to finished
+            // We bypass the validation so we can just set the assignments to rated
             assignment.Status = LessonAssignmentStatus.Rated;
             assignments.Save(assignment);
             
@@ -177,10 +173,6 @@ public class DbIntializer(
                 Comment = commentTexts[Random.Shared.Next(commentTexts.Count)],
                 CreatedAt = DateTime.Today,
             });
-
-            if (progress >= 0.9)
-                break;
-            ursulaControlData = progressService.CalculateProgress(ursula.Assignments, 0);
         }
     }
 }
