@@ -35,7 +35,7 @@ public class AppDbContext : DbContext
             .HasValue<Mentor>("Mentor")
             .HasValue<Admin>("Admin");
 
-        // Leon Paintner: Many Mentors can teach the same Curriculum (FK on Mentor.CurriculumId)
+        // Leon Paintner: Many Trainees can take the same Curriculum (FK on Trainee.CurriculumId)
         modelBuilder.Entity<Trainee>()
             .HasOne(t => t.Curriculum)
             .WithMany(c => c.Trainees)
