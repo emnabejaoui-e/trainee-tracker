@@ -318,3 +318,47 @@ body {
     background: #D9063A;
     color: var(--white);
 }
+
+.feedback-reminder-dialog {
+    border: none;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.feedback-reminder-dialog::backdrop {
+    background: rgba(0,0,0,0.4);
+}
+
+.feedback-reminder-dialog-title {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0 0 10px 0;
+}
+
+.feedback-reminder-dialog-actions {
+    margin-top: 12px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.action-btn-giveFeedback{
+  background-color: var(--pink);
+  color: var(--white);
+}
+
+.action-btn-cancel {
+  background-color: #e2e0d8;
+  color: #333;
+}
+
+.action-btn-giveFeedback:hover{
+  opacity: 0.9;
+}
+
+.action-btn-cancel:hover{
+  opacity: 0.9;
+}

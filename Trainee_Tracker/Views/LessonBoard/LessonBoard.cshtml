@@ -173,6 +173,20 @@
         
     }
     </div>
+
+    @if(ViewBag.HasAcceptedAssignmentWithoutFeedback)
+    {   
+        <dialog id="feedback-reminder-dialog" class="feedback-reminder-dialog">
+            <p class="feedback-reminder-dialog-title">Your assignment "@ViewBag.AcceptedAssignmentTitle" has been accepted!
+                Would you like to provide feedback on this now?
+            </p>
+            <div class="feedback-reminder-dialog-actions">
+                <button type="button" id="feedback-dialog-close" class="action-btn-cancel">Not now</button>
+                <a asp-controller="Feedback" asp-action="CreateFeedback" asp-route-assignmentId="@ViewBag.AcceptedAssignmentId" asp-route-lessonId="@ViewBag.AcceptedAssignmentLessonId" class="action-btn action-btn-giveFeedback">rate</a>
+            </div>
+        </dialog>
+
+    }
 </div>
 
 @* JavaScript for serach *@
@@ -225,4 +239,14 @@
         persistScroll('column-body-Rated');
 
     })();
+</script>
+
+@* JavaScript for Rate-Reminder-Dialog *@
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const dialog = document.getElementById("feedback-reminder-dialog");
+        dialog.showModal();
+        document.getElementById("feedback-dialog-close").addEventListener("click", () => {dialog.close(); });
+
+    });
 </script>

@@ -29,6 +29,7 @@ public class TraineeStartFinishAssignmentFeatureTest
     public void Trainee_CanStartAndFinishAssignment()
     {
         _driver.Navigate().GoToUrl($"{BaseUrl}/LessonBoard/LessonBoard");
+        _fixture.DismissFeedbackReminderIfPresent();
 
         //Arragne: assignment start
         var openColumn = _wait.Until(d => d.FindElement(By.Id("column-body-Open")));
@@ -47,6 +48,7 @@ public class TraineeStartFinishAssignmentFeatureTest
         Assert.Contains(cardTitleText, startedColumnText);
 
         _driver.Navigate().Refresh();
+        _fixture.DismissFeedbackReminderIfPresent();
 
         //arrange
          var startedColumn = _wait.Until(d => d.FindElement(By.Id("column-body-Started")));

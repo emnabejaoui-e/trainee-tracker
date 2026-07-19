@@ -47,6 +47,18 @@ public class LessonBoardController : Controller
         ViewBag.RejectionReasons = result.RejectionHistory;
         ViewBag.AssignmentsWithHistory = result.AssignmentsWithHistory;
 
+        var acceptedWithoutFeedback = _assignmentService.GetAcceptedAssignmentWithoutFeedback(trainee);
+
+        ViewBag.HasAcceptedAssignmentWithoutFeedback = acceptedWithoutFeedback != null;
+        ViewBag.AcceptedAssignmentId = acceptedWithoutFeedback?.Id;
+        ViewBag.AcceptedAssignmentTitle = acceptedWithoutFeedback?.Lesson.Title;
+        ViewBag.AcceptedAssignmentLessonId = acceptedWithoutFeedback?.LessonId;
+
+        if(acceptedWithoutFeedback != null)
+        {
+            _assignmentService.MarkFeedbackReminerAsShown(acceptedWithoutFeedback);
+        }
+
         return View(result.Assignments);
     }
 
