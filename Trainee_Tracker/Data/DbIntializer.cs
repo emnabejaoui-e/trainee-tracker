@@ -18,7 +18,7 @@ public class DbIntializer(
     IMentorRepository mentors,
     ILessonAssignmentRepository assignments,
     IProgressService progressService,
-    LessonFeedbackService feedbackService,
+    ILessonFeedbackService feedbackService,
     ICurriculumService curriculumService,
     ICurriculumRepository curricula
 ) : IInitializer
