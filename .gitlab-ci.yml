@@ -74,8 +74,7 @@ deploy:
       --dockerfile "${CI_PROJECT_DIR}/Trainee_Tracker/Dockerfile"
       --destination "gitlab.isse.de:5050/lehre/sopro/2026-sose/gruppen/team14/main:trainee_tracker"
   needs:
-    - unit-tests
-    - e2e-tests
+    - build
   tags:
     - sopro
   only:
