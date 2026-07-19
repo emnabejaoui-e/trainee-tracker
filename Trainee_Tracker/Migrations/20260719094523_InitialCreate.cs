@@ -219,20 +219,7 @@ namespace Trainee_Tracker.Migrations
                 values: new object[,]
                 {
                     { 4, false, "jelenacosic2@makandra.de", "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", "Jelena2 Mentor", "Mentor" },
-                    { 5, false, "jelenacosic1@makandra.de", "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", "Jelena3 Admin", "Admin" },
-                    { 6, false, "admin@makandra.de", "$2a$11$NWoCmWYUtc4Kj0eDILuyxOjWj0GReHhxe2bh6Crx1QR4heeWH1EcO", "Admin", "Admin" },
-                    { 7, false, "manfred.mental@makandra.de", "$2a$11$kce.fXXVmBy2n0DaoYUcuujmpl.lXCCgZC7WSoFT94B98q5FS.gMa", "Manfred Mental", "Mentor" },
-                    { 8, false, "hans.hilfreich@makandra.de", "$2a$11$RirFsrHzwqEKO0Wr8sIiZuprcJ5Pz8y45bRGLltqSos0cePlhhLvC", "Hans Hilfreich", "Mentor" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "Closed", "CurriculumId", "Email", "EndDate", "HashedPassword", "IsAssignmentOrderCustomized", "Name", "Role", "StartingDate" },
-                values: new object[,]
-                {
-                    { 9, false, null, "vanessa.vital@makandra.de", new DateOnly(2027, 3, 31), "$2a$11$OvYPz8FkuxXJe7WyPIHpzOc1bi5beKtsB2WYXBJlVDqsNRCJatfzK", false, "Vanessa Vital", "Trainee", new DateOnly(2026, 7, 17) },
-                    { 10, false, null, "stefan.schnupfen@makandra.de", new DateOnly(2026, 10, 31), "$2a$11$1YdXfUYVKPO7t0wmYKVirOq4mYR4k/sxxO6YlY7c2CdSO50yRSqGW", false, "Stefan Schnupfen", "Trainee", new DateOnly(2026, 5, 1) },
-                    { 11, false, null, "ursula.urlaub@makandra.de", new DateOnly(2026, 7, 31), "$2a$11$aemTP4KrL44P1z23XD39u.7nnd3zoXeME0PFZzVkQPTEmmK/fVqRm", false, "Ursula Urlaub", "Trainee", new DateOnly(2026, 1, 1) }
+                    { 5, false, "jelenacosic1@makandra.de", "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", "Jelena3 Admin", "Admin" }
                 });
 
             migrationBuilder.InsertData(
@@ -252,17 +239,6 @@ namespace Trainee_Tracker.Migrations
                     { 100, 1, 4.0, false, 10, "Network", "https://makandracards.com/makandra-devops-curriculum/509341-netzwerke-4-pt" },
                     { 111, 1, 0.5, false, 6, "SSH", "https://makandracards.com/makandra-devops-curriculum/511181-ssh-0-5-pt" },
                     { 222, 1, 2.5, false, 11, "HTTP Protocoll and Webserver", "https://makandracards.com/makandra-devops-curriculum/519412-http-protokoll-und-webserver-2-5-pt" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "MentorTrainee",
-                columns: new[] { "AssignedTraineesId", "MentorsId" },
-                values: new object[,]
-                {
-                    { 9, 7 },
-                    { 10, 7 },
-                    { 11, 7 },
-                    { 11, 8 }
                 });
 
             migrationBuilder.InsertData(
@@ -307,12 +283,7 @@ namespace Trainee_Tracker.Migrations
             migrationBuilder.InsertData(
                 table: "MentorTrainee",
                 columns: new[] { "AssignedTraineesId", "MentorsId" },
-                values: new object[,]
-                {
-                    { 1, 4 },
-                    { 1, 5 },
-                    { 3, 5 }
-                });
+                values: new object[] { 1, 4 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_LessonAssignments_LessonId",

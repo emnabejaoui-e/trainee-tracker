@@ -26,7 +26,7 @@ namespace Trainee_Tracker.Data.TraineeRepository
 
         public IList<Trainee> GetAllTrainees()
         {
-            return _context.Trainees.Include(t => t.Mentors).ToList();
+            return _context.Trainees.Include(t => t.Mentors).Include(t => t.Assignments).ToList();
         }
 
         public void Save(Trainee trainee)
