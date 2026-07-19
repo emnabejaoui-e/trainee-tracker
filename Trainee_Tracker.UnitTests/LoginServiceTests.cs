@@ -148,4 +148,26 @@ public class LoginServiceTests
 
         Assert.Null(result);
     }
+
+    // Code Owner: Jelena Cosic
+    [Fact]
+    public void GetUserByEmail_ReturnsUser_WhenUserFound()
+    {
+        var repo = new FakeUserRepository();
+        var service = new UserService(repo, new FakeAssignmentService());
+
+        var user = new Trainee
+        {
+            Name = "Found User",
+            Email = "found@makandra.de",
+            HashedPassword = BCrypt.Net.BCrypt.HashPassword("SomePassword!"),
+            Closed = false
+        };
+        repo.AddUser(user);
+
+        var result = service.GetUserByEmail("found@makandra.de");
+
+        Assert.NotNull(result);
+        Assert.Equal("found@makandra.de", result.Email);
+    }
 }
