@@ -52,6 +52,8 @@ public class FakeAssignmentService : IAssignmentService
 
     public LessonAssignment? UpdateAssignmentStatus(int assignmentId, LessonAssignmentStatus newStatus){ return null;} //code-Owner: Julia Sandner
     public Rejection? RejectAssignment(int assignmentId, string reason){return null;} //Code-Owner: Julia Sandner 
+    public LessonAssignment? GetAccepedAssignmentWithoutFeedback(Trainee trainee){return null; }
+    public void MarkFeedbackReminerAsShown(LessonAssignment assignment) {}
 }
 
 // Code Owner: Jelena Cosic
