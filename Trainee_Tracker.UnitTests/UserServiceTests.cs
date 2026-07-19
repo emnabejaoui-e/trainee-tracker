@@ -38,4 +38,24 @@ public class UserServiceTests
         Assert.NotEqual("RawPassword123!", savedUser.HashedPassword);
         Assert.True(BCrypt.Net.BCrypt.Verify("RawPassword123!", savedUser.HashedPassword));
     }
+
+    // Code Owner: Andrej Basara
+    [Fact]
+    public void TestUpdateTrainee()
+    {
+        var userRepo = new FakeUserRepository();
+        var service = new UserService(userRepo, new FakeAssignmentService());
+
+        service.CreateTrainee("New Trainee", "newtrainee@makandra.de", "RawPassword123!", new DateOnly(2026, 1, 1), new DateOnly(2026, 12, 31), 1);
+        var createdUser = userRepo.GetUserByEmail("newtrainee@makandra.de");
+
+        service.UpdateTrainee(createdUser.Id, "Updated Trainee", "updatedtrainee@makandra.de", new DateOnly(2026, 2, 1), new DateOnly(2026, 11, 30));
+
+        var savedUser = userRepo.GetUserByEmail("updatedtrainee@makandra.de") as Trainee;
+
+        Assert.NotNull(savedUser);
+        Assert.Equal("Updated Trainee", savedUser.Name);
+        Assert.Equal(new DateOnly(2026, 2, 1), savedUser.StartingDate);
+        Assert.Equal(new DateOnly(2026, 11, 30), savedUser.EndDate);
+    }
 }
