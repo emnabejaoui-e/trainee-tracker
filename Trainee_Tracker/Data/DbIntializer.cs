@@ -63,7 +63,8 @@ public class DbIntializer(IUserService userService, IMentorService mentorService
                 "vanessa.vital@makandra.de",
                 "VVital13!",
                 new DateOnly(2026, 07, 17),
-                new DateOnly(2027, 03, 31)
+                new DateOnly(2027, 03, 31),
+                1
             );
         if(userService.IsEmailAvailable("stefan.schnupfen@makandra.de"))
             userService.CreateTrainee(
@@ -71,7 +72,8 @@ public class DbIntializer(IUserService userService, IMentorService mentorService
                 "stefan.schnupfen@makandra.de",
                 "Stefan1!",
                 new DateOnly(2026, 05, 01),
-                new DateOnly(2026, 10, 31)
+                new DateOnly(2026, 10, 31),
+                1
             );
         if(userService.IsEmailAvailable("ursula.urlaub@makandra.de"))
             userService.CreateTrainee(
@@ -79,7 +81,8 @@ public class DbIntializer(IUserService userService, IMentorService mentorService
                 "ursula.urlaub@makandra.de",
                 "U1laub!",
                 new DateOnly(2026, 01, 01),
-                new DateOnly(2026, 07, 31)
+                new DateOnly(2026, 07, 31),
+                1
             );
         
         // Mentors
