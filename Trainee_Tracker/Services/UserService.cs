@@ -23,7 +23,7 @@ namespace Trainee_Tracker.Services
 
 
         // Code-Owner: Andrej Basara
-        public void CreateTrainee(string name, string email, string rawPassword, DateOnly startingDate, DateOnly endDate)
+        public void CreateTrainee(string name, string email, string rawPassword, DateOnly startingDate, DateOnly endDate, int curriculumId)
         {
             if (string.IsNullOrEmpty(rawPassword))
             {
@@ -39,7 +39,8 @@ namespace Trainee_Tracker.Services
                 Name = name,
                 Email = email,
                 StartingDate = startingDate,
-                EndDate = endDate
+                EndDate = endDate,
+                CurriculumId = curriculumId
             };
 
             var hashedPassword = HashPassword(rawPassword);

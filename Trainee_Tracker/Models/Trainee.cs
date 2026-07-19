@@ -23,6 +23,10 @@ namespace Trainee_Tracker.Models
         [DefaultValue(false)]
         public bool IsAssignmentOrderCustomized { get; set; }
         
+        public int? CurriculumId { get; set; }
+
+        public Curriculum? Curriculum { get; set; }
+        
         //ergänzt von Julia aus designklassendiagramm und wichtig für EFCore
         public ICollection<LessonAssignment> Assignments {get; set;}
 

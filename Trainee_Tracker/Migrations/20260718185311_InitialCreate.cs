@@ -60,10 +60,10 @@ namespace Trainee_Tracker.Migrations
                     HashedPassword = table.Column<string>(type: "TEXT", nullable: false),
                     Closed = table.Column<bool>(type: "INTEGER", nullable: false),
                     Role = table.Column<string>(type: "TEXT", maxLength: 8, nullable: false),
-                    CurriculumId = table.Column<int>(type: "INTEGER", nullable: true),
                     StartingDate = table.Column<DateOnly>(type: "TEXT", nullable: true),
                     EndDate = table.Column<DateOnly>(type: "TEXT", nullable: true),
-                    IsAssignmentOrderCustomized = table.Column<bool>(type: "INTEGER", nullable: true)
+                    IsAssignmentOrderCustomized = table.Column<bool>(type: "INTEGER", nullable: true),
+                    CurriculumId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -162,6 +162,28 @@ namespace Trainee_Tracker.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "WorkingHourRecords",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TraineeId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Date = table.Column<DateOnly>(type: "TEXT", nullable: false),
+                    WorkingHours = table.Column<double>(type: "REAL", nullable: false),
+                    LastSyncedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkingHourRecords", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkingHourRecords_Users_TraineeId",
+                        column: x => x.TraineeId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Rejections",
                 columns: table => new
                 {
@@ -193,31 +215,24 @@ namespace Trainee_Tracker.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Closed", "Email", "EndDate", "HashedPassword", "IsAssignmentOrderCustomized", "Name", "Role", "StartingDate" },
+                columns: new[] { "Id", "Closed", "Email", "HashedPassword", "Name", "Role" },
                 values: new object[,]
                 {
-                    { 1, false, "torstentrainee@makandra.de", new DateOnly(2027, 1, 1), "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", false, "Torsten Trainee", "Trainee", new DateOnly(2026, 6, 30) },
-                    { 2, false, "jelenacosic3@makandra.de", new DateOnly(1, 1, 1), "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", false, "Jelena3 Trainee", "Trainee", new DateOnly(1, 1, 1) },
-                    { 3, false, "tildatrainee@makandra.de", new DateOnly(2027, 1, 1), "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", false, "Tilda Trainee", "Trainee", new DateOnly(2026, 7, 1) }
+                    { 4, false, "jelenacosic2@makandra.de", "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", "Jelena2 Mentor", "Mentor" },
+                    { 5, false, "jelenacosic1@makandra.de", "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", "Jelena3 Admin", "Admin" },
+                    { 6, false, "admin@makandra.de", "$2a$11$NWoCmWYUtc4Kj0eDILuyxOjWj0GReHhxe2bh6Crx1QR4heeWH1EcO", "Admin", "Admin" },
+                    { 7, false, "manfred.mental@makandra.de", "$2a$11$kce.fXXVmBy2n0DaoYUcuujmpl.lXCCgZC7WSoFT94B98q5FS.gMa", "Manfred Mental", "Mentor" },
+                    { 8, false, "hans.hilfreich@makandra.de", "$2a$11$RirFsrHzwqEKO0Wr8sIiZuprcJ5Pz8y45bRGLltqSos0cePlhhLvC", "Hans Hilfreich", "Mentor" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Closed", "CurriculumId", "Email", "HashedPassword", "Name", "Role" },
+                columns: new[] { "Id", "Closed", "CurriculumId", "Email", "EndDate", "HashedPassword", "IsAssignmentOrderCustomized", "Name", "Role", "StartingDate" },
                 values: new object[,]
                 {
-                    { 5, false, null, "jelenacosic1@makandra.de", "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", "Jelena3 Admin", "Admin" },
-                    { 6, false, null, "admin@makandra.de", "$2a$11$NWoCmWYUtc4Kj0eDILuyxOjWj0GReHhxe2bh6Crx1QR4heeWH1EcO", "Admin", "Admin" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "Closed", "Email", "EndDate", "HashedPassword", "IsAssignmentOrderCustomized", "Name", "Role", "StartingDate" },
-                values: new object[,]
-                {
-                    { 9, false, "vanessa.vital@makandra.de", new DateOnly(2027, 3, 31), "$2a$11$OvYPz8FkuxXJe7WyPIHpzOc1bi5beKtsB2WYXBJlVDqsNRCJatfzK", false, "Vanessa Vital", "Trainee", new DateOnly(2026, 7, 17) },
-                    { 10, false, "stefan.schnupfen@makandra.de", new DateOnly(2026, 10, 31), "$2a$11$1YdXfUYVKPO7t0wmYKVirOq4mYR4k/sxxO6YlY7c2CdSO50yRSqGW", false, "Stefan Schnupfen", "Trainee", new DateOnly(2026, 5, 1) },
-                    { 11, false, "ursula.urlaub@makandra.de", new DateOnly(2026, 7, 31), "$2a$11$aemTP4KrL44P1z23XD39u.7nnd3zoXeME0PFZzVkQPTEmmK/fVqRm", false, "Ursula Urlaub", "Trainee", new DateOnly(2026, 1, 1) }
+                    { 9, false, null, "vanessa.vital@makandra.de", new DateOnly(2027, 3, 31), "$2a$11$OvYPz8FkuxXJe7WyPIHpzOc1bi5beKtsB2WYXBJlVDqsNRCJatfzK", false, "Vanessa Vital", "Trainee", new DateOnly(2026, 7, 17) },
+                    { 10, false, null, "stefan.schnupfen@makandra.de", new DateOnly(2026, 10, 31), "$2a$11$1YdXfUYVKPO7t0wmYKVirOq4mYR4k/sxxO6YlY7c2CdSO50yRSqGW", false, "Stefan Schnupfen", "Trainee", new DateOnly(2026, 5, 1) },
+                    { 11, false, null, "ursula.urlaub@makandra.de", new DateOnly(2026, 7, 31), "$2a$11$aemTP4KrL44P1z23XD39u.7nnd3zoXeME0PFZzVkQPTEmmK/fVqRm", false, "Ursula Urlaub", "Trainee", new DateOnly(2026, 1, 1) }
                 });
 
             migrationBuilder.InsertData(
@@ -244,18 +259,20 @@ namespace Trainee_Tracker.Migrations
                 columns: new[] { "AssignedTraineesId", "MentorsId" },
                 values: new object[,]
                 {
-                    { 1, 5 },
-                    { 3, 5 }
+                    { 9, 7 },
+                    { 10, 7 },
+                    { 11, 7 },
+                    { 11, 8 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Closed", "CurriculumId", "Email", "HashedPassword", "Name", "Role" },
+                columns: new[] { "Id", "Closed", "CurriculumId", "Email", "EndDate", "HashedPassword", "IsAssignmentOrderCustomized", "Name", "Role", "StartingDate" },
                 values: new object[,]
                 {
-                    { 4, false, 1, "jelenacosic2@makandra.de", "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", "Jelena2 Mentor", "Mentor" },
-                    { 7, false, 1, "manfred.mental@makandra.de", "$2a$11$kce.fXXVmBy2n0DaoYUcuujmpl.lXCCgZC7WSoFT94B98q5FS.gMa", "Manfred Mental", "Mentor" },
-                    { 8, false, 1, "hans.hilfreich@makandra.de", "$2a$11$RirFsrHzwqEKO0Wr8sIiZuprcJ5Pz8y45bRGLltqSos0cePlhhLvC", "Hans Hilfreich", "Mentor" }
+                    { 1, false, 1, "torstentrainee@makandra.de", new DateOnly(2027, 1, 1), "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", false, "Torsten Trainee", "Trainee", new DateOnly(2026, 6, 30) },
+                    { 2, false, 1, "jelenacosic3@makandra.de", new DateOnly(1, 1, 1), "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", false, "Jelena3 Trainee", "Trainee", new DateOnly(1, 1, 1) },
+                    { 3, false, 1, "tildatrainee@makandra.de", new DateOnly(2027, 1, 1), "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", false, "Tilda Trainee", "Trainee", new DateOnly(2026, 7, 1) }
                 });
 
             migrationBuilder.InsertData(
@@ -293,10 +310,8 @@ namespace Trainee_Tracker.Migrations
                 values: new object[,]
                 {
                     { 1, 4 },
-                    { 9, 7 },
-                    { 10, 7 },
-                    { 11, 7 },
-                    { 11, 8 }
+                    { 1, 5 },
+                    { 3, 5 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -338,6 +353,12 @@ namespace Trainee_Tracker.Migrations
                 name: "IX_Users_CurriculumId",
                 table: "Users",
                 column: "CurriculumId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkingHourRecords_TraineeId_Date",
+                table: "WorkingHourRecords",
+                columns: new[] { "TraineeId", "Date" },
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -351,6 +372,9 @@ namespace Trainee_Tracker.Migrations
 
             migrationBuilder.DropTable(
                 name: "Rejections");
+
+            migrationBuilder.DropTable(
+                name: "WorkingHourRecords");
 
             migrationBuilder.DropTable(
                 name: "LessonAssignments");

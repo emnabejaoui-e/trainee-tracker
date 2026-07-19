@@ -26,7 +26,7 @@ public class Curriculum
     public IList<Lesson> _Lessons { get; set; } = new List<Lesson>();
 
     /// <summary>All Mentors assigned to this curriculum (Many-to-One reverse navigation).</summary>
-    public ICollection<Mentor> Mentors { get; set; } = new List<Mentor>();
+    public ICollection<Trainee> Trainees { get; set; } = new List<Trainee>();
 
     /// <summary>Add a lesson to this curriculum.</summary>
     public void AddLesson(Lesson lesson)

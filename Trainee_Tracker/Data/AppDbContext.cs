@@ -36,10 +36,10 @@ public class AppDbContext : DbContext
             .HasValue<Admin>("Admin");
 
         // Leon Paintner: Many Mentors can teach the same Curriculum (FK on Mentor.CurriculumId)
-        modelBuilder.Entity<Mentor>()
-            .HasOne(m => m.Curriculum)
-            .WithMany(c => c.Mentors)
-            .HasForeignKey(m => m.CurriculumId)
+        modelBuilder.Entity<Trainee>()
+            .HasOne(t => t.Curriculum)
+            .WithMany(c => c.Trainees)
+            .HasForeignKey(t => t.CurriculumId)
             .OnDelete(DeleteBehavior.SetNull);
 
         //Leon: Seed data for curriculums
@@ -66,9 +66,9 @@ public class AppDbContext : DbContext
 
         // Julia Sandner: trainee for LessonAssignment SeedData
         modelBuilder.Entity<Trainee>().HasData(
-            new Trainee {Id = 2, Name = "Jelena3 Trainee", Email = "jelenacosic3@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false },
-            new Trainee {Id = 1, Name="Torsten Trainee", Email="torstentrainee@makandra.de", HashedPassword="$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed=false, StartingDate = new DateOnly(2026, 6, 30), EndDate = new DateOnly(2027, 1,1)},
-            new Trainee {Id = 3, Name="Tilda Trainee", Email="tildatrainee@makandra.de", HashedPassword="$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed=false, StartingDate = new DateOnly(2026, 7, 01), EndDate = new DateOnly(2027, 1,1)},
+            new Trainee {Id = 2, Name = "Jelena3 Trainee", CurriculumId = 1, Email = "jelenacosic3@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false },
+            new Trainee {Id = 1, Name="Torsten Trainee", CurriculumId = 1, Email="torstentrainee@makandra.de", HashedPassword="$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed=false, StartingDate = new DateOnly(2026, 6, 30), EndDate = new DateOnly(2027, 1,1)},
+            new Trainee {Id = 3, Name="Tilda Trainee", CurriculumId = 1, Email="tildatrainee@makandra.de", HashedPassword="$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed=false, StartingDate = new DateOnly(2026, 7, 01), EndDate = new DateOnly(2027, 1,1)},
             new Trainee {Id = 9, Name="Vanessa Vital", Email="vanessa.vital@makandra.de", HashedPassword="$2a$11$OvYPz8FkuxXJe7WyPIHpzOc1bi5beKtsB2WYXBJlVDqsNRCJatfzK", Closed=false, StartingDate = new DateOnly(2026, 7, 17), EndDate = new DateOnly(2027, 3,31)},
             new Trainee {Id = 10, Name="Stefan Schnupfen", Email="stefan.schnupfen@makandra.de", HashedPassword="$2a$11$1YdXfUYVKPO7t0wmYKVirOq4mYR4k/sxxO6YlY7c2CdSO50yRSqGW", Closed=false, StartingDate = new DateOnly(2026, 5, 01), EndDate = new DateOnly(2026, 10,31)},
             new Trainee {Id = 11, Name="Ursula Urlaub", Email="ursula.urlaub@makandra.de", HashedPassword="$2a$11$aemTP4KrL44P1z23XD39u.7nnd3zoXeME0PFZzVkQPTEmmK/fVqRm", Closed=false, StartingDate = new DateOnly(2026, 1, 01), EndDate = new DateOnly(2026, 7,31)}
@@ -76,9 +76,9 @@ public class AppDbContext : DbContext
 
         //Code-Owner: Julia Sandner
         modelBuilder.Entity<Mentor>().HasData(
-            new Mentor  {Id = 4, Name = "Jelena2 Mentor",  Email = "jelenacosic2@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false, CurriculumId = 1 },
-            new Mentor  {Id = 7, Name = "Manfred Mental",  Email = "manfred.mental@makandra.de", HashedPassword = "$2a$11$kce.fXXVmBy2n0DaoYUcuujmpl.lXCCgZC7WSoFT94B98q5FS.gMa", Closed = false, CurriculumId = 1 },
-            new Mentor  {Id = 8, Name = "Hans Hilfreich",  Email = "hans.hilfreich@makandra.de", HashedPassword = "$2a$11$RirFsrHzwqEKO0Wr8sIiZuprcJ5Pz8y45bRGLltqSos0cePlhhLvC", Closed = false, CurriculumId = 1}
+            new Mentor  {Id = 4, Name = "Jelena2 Mentor",  Email = "jelenacosic2@makandra.de", HashedPassword = "$2a$11$gwKInbiJCeTyAVYKfvR7b.dypqiFm.BmbeAzX.hlmGfGnLML0Cg9C", Closed = false },
+            new Mentor  {Id = 7, Name = "Manfred Mental",  Email = "manfred.mental@makandra.de", HashedPassword = "$2a$11$kce.fXXVmBy2n0DaoYUcuujmpl.lXCCgZC7WSoFT94B98q5FS.gMa", Closed = false },
+            new Mentor  {Id = 8, Name = "Hans Hilfreich",  Email = "hans.hilfreich@makandra.de", HashedPassword = "$2a$11$RirFsrHzwqEKO0Wr8sIiZuprcJ5Pz8y45bRGLltqSos0cePlhhLvC", Closed = false }
         );
         //Code-Owner: Julia Sandner
         modelBuilder.Entity<Admin>().HasData(
