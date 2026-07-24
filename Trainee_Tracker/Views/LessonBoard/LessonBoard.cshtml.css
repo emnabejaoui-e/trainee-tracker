@@ -183,6 +183,15 @@
   color: var(--white);
 }
 
+.action-btn-primary-finish{
+  background-color: var(--state-color, #378ADD);
+  color: var(--white);
+
+}.action-btn-primary-open{
+  background-color: var(--state-color, #378ADD);
+  color: var(--white);
+}
+
 .action-btn-primary:hover{
   opacity: 0.9;
 }

@@ -52,7 +52,7 @@ public class TraineeStartFinishAssignmentFeatureTest
 
         //arrange
          var startedColumn = _wait.Until(d => d.FindElement(By.Id("column-body-Started")));
-        var finishButton = startedColumn.FindElement(By.CssSelector(".action-btn-primary"));
+        var finishButton = startedColumn.FindElement(By.CssSelector(".action-btn-primary-finish"));
         cardTitleText = _fixture.GetTextSafely(By.Id("column-body-Started"), By.CssSelector(".card-title"));
         // Act
         _fixture.SafeClick(finishButton);

@@ -103,12 +103,12 @@
                                                 case "Started":
                                                     <form asp-action="OpenAssignment" asp-controller="LessonBoard" asp-route-assignmentId="@card.Id" method="post">
                                                         <input type="hidden" name="assignmentId" value="@card.Id"/>
-                                                        <button type="submit" class="action-btn action-btn-primary">open</button>
+                                                        <button type="submit" class="action-btn action-btn-primary-open">open</button>
                                                     </form>
-                                                    
+
                                                     <form asp-action="FinishAssignment" asp-controller="LessonBoard" asp-route-assignmentId="@card.Id" method="post">
                                                         <input type="hidden" name="assignmentId" value="@card.Id"/>
-                                                        <button type="submit" class="action-btn action-btn-primary">finish</button>
+                                                        <button type="submit" class="action-btn action-btn-primary-finish">finish</button>
                                                     </form>
                                                     break;
 
