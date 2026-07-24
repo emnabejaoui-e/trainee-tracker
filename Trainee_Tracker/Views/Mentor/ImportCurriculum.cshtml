@@ -30,31 +30,76 @@
         
         <span asp-validation-for="FileName" class="field-validation-error"></span>
     </form>
+
+    <!-- Confirmation Dialog -->
+    <dialog id="confirm-dialog" class="dialog-box" hidden>
+        <div class="dialog-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+        </div>
+        <h2 class="dialog-title">Import Warning</h2>
+        <p class="dialog-message">
+            <strong id="dialog-percent"></strong> of the current curriculum
+            (<strong id="dialog-affected"></strong> of <strong id="dialog-total"></strong> lessons)
+            will be marked as <strong>inactive</strong>.
+        </p>
+        <p class="dialog-hint">Inactive lessons will no longer appear in trainee dashboards.</p>
+        <div class="dialog-actions">
+            <button class="dialog-btn dialog-btn-cancel" type="button">Cancel</button>
+            <button class="dialog-btn dialog-btn-confirm" type="button">Import Anyway</button>
+        </div>
+    </dialog>
 </div>
 
 @section Scripts
 {
     <script>
         const form = document.getElementById("upload-form");
-        
+        const dialog = document.getElementById("confirm-dialog");
+        const btnCancel = dialog.querySelector(".dialog-btn-cancel");
+        const btnConfirm = dialog.querySelector(".dialog-btn-confirm");
+
         async function checkFormForWarning(event) {
             event.preventDefault();
-            
+
             const res = await fetch('/Mentor/IsImportWarningNeeded', {
                 method: 'POST',
                 body: new FormData(form),
             });
-            
+
             const result = await res.json();
-            if(result.warningNeeded) {
-                if(confirm(JSON.stringify(result))) {
-                    form.removeEventListener("submit", this);
-                    
-                    form.submit();
-                }
+            if (result.warningNeeded) {
+                document.getElementById("dialog-percent").textContent = Math.round(result.removedLessonShare * 100) + "%";
+                document.getElementById("dialog-affected").textContent = result.removedLessonsCount;
+                document.getElementById("dialog-total").textContent = result.activeLessonsCount;
+
+                dialog.showModal();
+                dialog.hidden = false;
+                btnConfirm.focus();
+            } else {
+                form.submit();
             }
         }
-        
-        form.addEventListener("submit", checkFormForWarning)
+
+        btnCancel.addEventListener("click", () => {
+            dialog.close();
+            dialog.hidden = true;
+        });
+
+        btnConfirm.addEventListener("click", () => {
+            dialog.close();
+            dialog.hidden = true;
+            form.submit();
+        });
+
+        // close on backdrop click
+        dialog.addEventListener("click", (e) => {
+            if (e.target === dialog) dialog.close();
+        });
+
+        form.addEventListener("submit", checkFormForWarning);
     </script>
 }

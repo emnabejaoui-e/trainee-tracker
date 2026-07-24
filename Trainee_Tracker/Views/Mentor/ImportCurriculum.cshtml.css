@@ -126,3 +126,115 @@
     outline: 2px solid var(--pink);
     outline-offset: 2px;
 }
+
+/* <dialog> Confirmation */
+
+dialog.dialog-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 460px;
+    width: 90%;
+    padding: 2rem;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 16px;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+    margin: auto;
+    animation: dialog-slide-in 0.25s ease;
+}
+
+dialog.dialog-box::backdrop {
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(4px);
+}
+
+@keyframes dialog-slide-in {
+    from { transform: translateY(12px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+dialog.dialog-box .dialog-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--gray-100);
+    color: var(--pink);
+    margin-bottom: 1.25rem;
+}
+
+dialog.dialog-box .dialog-title {
+    color: var(--licorice);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 0.75rem;
+    letter-spacing: -0.01em;
+}
+
+dialog.dialog-box .dialog-message {
+    color: var(--gray-600);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    text-align: center;
+    margin: 0 0 0.5rem;
+}
+
+dialog.dialog-box .dialog-message strong {
+    color: var(--licorice);
+}
+
+dialog.dialog-box .dialog-hint {
+    color: var(--gray-400);
+    font-size: 0.8125rem;
+    text-align: center;
+    margin: 0 0 1.5rem;
+}
+
+dialog.dialog-box .dialog-actions {
+    display: flex;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+dialog.dialog-box .dialog-btn {
+    flex: 1;
+    padding: 0.625rem 1.25rem;
+    border-radius: 8px;
+    border: none;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+dialog.dialog-box .dialog-btn-cancel {
+    background: var(--gray-100);
+    color: var(--gray-600);
+    border: 1px solid var(--gray-200);
+}
+
+dialog.dialog-box .dialog-btn-cancel:hover {
+    background: var(--gray-200);
+    color: var(--licorice);
+}
+
+dialog.dialog-box .dialog-btn-confirm {
+    background: var(--pink);
+    color: var(--white);
+}
+
+dialog.dialog-box .dialog-btn-confirm:hover {
+    background: var(--licorice);
+}
+
+dialog.dialog-box .dialog-btn:focus {
+    outline: 2px solid var(--pink);
+    outline-offset: 2px;
+}
+
+dialog.dialog-box .dialog-btn:active {
+    transform: translateY(1px);
+}
