@@ -140,6 +140,45 @@ public class LessonBoardController : Controller
 
     //Code-Owner: Julia Sandner
     /// <summary>
+    /// makrs an assignmned as open
+    /// </summary>
+    /// <param name="assignmentId">numeric id of the assignment to change state into open</param>
+    /// <returns>redirects to LessonBoard, NotFound or the LessonBoard with an error or Unauthorized</returns>
+    public IActionResult OpenAssignment(int assignmentId)
+    {
+        var currentAssignment = _assignmentRepo.GetById(assignmentId);
+        if (currentAssignment == null)
+        {
+            return NotFound();
+        }
+        var traineeIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(traineeIdString == null)
+        {
+            return Unauthorized();
+        }
+        var traineeId = int.Parse(traineeIdString);
+        
+        if( currentAssignment.TraineeId != traineeId)
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var assignment = _assignmentService.UpdateAssignmentStatus(assignmentId, LessonAssignmentStatus.Open);
+            return RedirectToAction("LessonBoard", new {traineeId = assignment!.TraineeId});
+        }
+        catch(InvalidOperationException e)
+        {
+            TempData["Error"] = e.Message;
+            return RedirectToAction("LessonBoard", new { traineeId = currentAssignment.TraineeId });
+            
+        }
+    }
+
+
+    //Code-Owner: Julia Sandner
+    /// <summary>
     /// Redirects to the feedback-creation fo a given assignment
     /// </summary>
     /// <param name="id"> numeric id of the assignment to rate</param>
