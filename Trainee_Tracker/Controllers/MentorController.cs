@@ -189,8 +189,17 @@ public class MentorController : Controller
                 var curriculum = _curriculumRepo.GetByTitle(curriculumName);
                 if (curriculum == null)
                     return NotFound();
+
+                var importedLessons = lessons.Select(dto => dto.Lesson()).ToList();
+
+                var removedLessonsCount = _curriculumService.CountInactiveLessons(curriculum, importedLessons);
+                var removedLessonShare = removedLessonsCount / ((float) curriculum.Lessons.Count);
+                if (removedLessonShare >= 0.1) // More than 10% of the Lessons were removed. Display a warning screen.
+                {
+                    return Json("Warning: This import would remove " + (int) (removedLessonShare*100) + "% of lessons.");
+                }
                 
-                _curriculumService.ImportCurriculum(curriculum, lessons.Select(dto => dto.Lesson()).ToList());
+                _curriculumService.ImportCurriculum(curriculum, importedLessons);
             }
             catch (JsonException e)
             {
