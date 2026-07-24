@@ -164,6 +164,10 @@ public class AdminController : Controller
         if (id == null) return NotFound();
         var user = _userService.GetById(id.Value);
         if (user == null) return NotFound();
+        if (user.Closed) return RedirectToAction("UserManagement");
+
+        ViewBag.IsLastAdmin = _userService.IsLastAdmin((int)id);
+
         return View(user);
     }
 

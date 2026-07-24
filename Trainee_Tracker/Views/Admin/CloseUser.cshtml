@@ -29,6 +29,14 @@
             </dd>
             }
         </dl>
+
+        @if (ViewBag.IsLastAdmin is true) {
+            <div class="mb-2" style="margin-top: 16px;">
+                <div class="alert alert-danger" role="alert">
+                    <strong>Warning:</strong> This is the last active admin account. If you close it, no one will be able to access the admin panel anymore!
+                </div>
+            </div>
+        }
         
         <form asp-action="CloseUser">
             <input type="hidden" asp-for="Id" />

@@ -22,5 +22,6 @@ namespace Trainee_Tracker.Services
         User GetById(int id);
 
         bool IsEmailAvailable(string email);
+        bool IsLastAdmin(int id);
     }
 }

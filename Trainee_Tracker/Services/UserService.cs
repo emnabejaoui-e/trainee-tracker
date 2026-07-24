@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using SQLitePCL;
 using Trainee_Tracker.Models;
 using Trainee_Tracker.Repositories;
 
@@ -185,6 +186,26 @@ namespace Trainee_Tracker.Services
         {
             var user = _userRepository.GetUserByEmail(Email);
             return user == null || user.Closed;
+
+        }
+
+        public bool IsLastAdmin(int id)
+        {
+            var user = _userRepository.GetById(id);
+            
+            if (user is not Admin)
+            {
+                return false;
+            }
+
+            var admin = _userRepository.GetAllUsers().OfType<Admin>().Count(a => !a.Closed);
+
+            if (admin == 1 )
+            {
+                return true;
+            }
+
+            return false;
 
         }
 
