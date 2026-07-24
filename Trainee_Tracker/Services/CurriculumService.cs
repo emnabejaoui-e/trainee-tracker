@@ -56,6 +56,11 @@ public class CurriculumService : ICurriculumService
         _curriculumRepo.Update(curriculum);
     }
 
+    public int CountInactiveLessons(Curriculum curriculum, IList<Lesson> importedLessons)
+    {
+        return curriculum.Lessons.Count(l => !importedLessons.Contains(l)) + importedLessons.Count(l => l.Inactive);
+    }
+
     public IList<Lesson> MergeLessons(IList<Lesson> existingLessons, IList<Lesson> importedLessons)
     {
         if (existingLessons == importedLessons)
