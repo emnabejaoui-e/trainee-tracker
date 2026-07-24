@@ -218,6 +218,25 @@ public class MentorController : Controller
             return RedirectToAction("Index", "Mentor");                
         }
     }
+
+    [HttpGet]
+    public IActionResult IsImportWarningNeeded(string curriculumName, IFormFile file)
+    {
+        (var curriculum, var importedLessons) = readImportUploads(curriculumName, file);
+        if (!ModelState.IsValid)
+            return BadRequest();
+
+        var activeLessonsCount = curriculum!.Lessons.Count(l => !l.Inactive);
+        var removedLessonsCount = _curriculumService.CountInactiveLessons(curriculum!, importedLessons!);
+        var removedLessonShare = removedLessonsCount / ((float) activeLessonsCount);
+        return Json(new
+        {
+            WarningNeeded = removedLessonShare >= 0.1,
+            ActiveLessonsCount = activeLessonsCount,
+            RemovedLessonsCount = removedLessonsCount,
+            removedLessonShare = Math.Round(removedLessonShare, 2)
+        });
+    }
     
     // Code-Owner: Julia Sandner
     // GET: /Mentor/AssignmentOverview
