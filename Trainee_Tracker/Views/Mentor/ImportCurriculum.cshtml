@@ -10,7 +10,7 @@
 <div class="upload-form">
     <h1 class="section-title">Import Curriculum</h1>
 
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" id="upload-form">
         <div class="radio-group">
             @foreach(String curriculumName in @ViewBag.curriculumNames)
             {
@@ -31,3 +31,30 @@
         <span asp-validation-for="FileName" class="field-validation-error"></span>
     </form>
 </div>
+
+@section Scripts
+{
+    <script>
+        const form = document.getElementById("upload-form");
+        
+        async function checkFormForWarning(event) {
+            event.preventDefault();
+            
+            const res = await fetch('/Mentor/IsImportWarningNeeded', {
+                method: 'POST',
+                body: new FormData(form),
+            });
+            
+            const result = await res.json();
+            if(result.warningNeeded) {
+                if(confirm(JSON.stringify(result))) {
+                    form.removeEventListener("submit", this);
+                    
+                    form.submit();
+                }
+            }
+        }
+        
+        form.addEventListener("submit", checkFormForWarning)
+    </script>
+}

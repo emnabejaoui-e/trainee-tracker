@@ -219,7 +219,7 @@ public class MentorController : Controller
         }
     }
 
-    [HttpGet]
+    [HttpPost]
     public IActionResult IsImportWarningNeeded(string curriculumName, IFormFile file)
     {
         (var curriculum, var importedLessons) = readImportUploads(curriculumName, file);
