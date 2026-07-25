@@ -32,7 +32,7 @@ public class MentorReorderAssignmentsFeatureTest
     //Arrange
         _driver.Navigate().GoToUrl($"{BaseUrl}/Mentor/AssignmentOverview?traineeId=1");
 
-       var reorderTriggerButton = _wait.Until(d => d.FindElement(By.CssSelector(".action-btn-primary"))); 
+       var reorderTriggerButton = _wait.Until(d => d.FindElement(By.CssSelector(".action-btn-reorder"))); 
     
         //open reorder-dialog
         _fixture.SafeClick(reorderTriggerButton);
