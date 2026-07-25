@@ -26,6 +26,10 @@ namespace Trainee_Tracker.Services
         // Code-Owner: Andrej Basara
         public void CreateTrainee(string name, string email, string rawPassword, DateOnly startingDate, DateOnly endDate, int curriculumId)
         {
+            if (endDate <= startingDate)
+            {
+                throw new ArgumentOutOfRangeException("endDate", "End date must be after starting date");
+            }
             if (string.IsNullOrEmpty(rawPassword))
             {
                 throw new ArgumentException("Password is required");
@@ -100,6 +104,10 @@ namespace Trainee_Tracker.Services
             if (GetById(id) is not Trainee trainee)
             {
                 throw new KeyNotFoundException("Trainee not found");
+            }
+            if (endDate <= startingDate)
+            {
+                throw new ArgumentOutOfRangeException("endDate", "End date must be after starting date");
             }
 
             var emailChanged = !string.Equals(trainee.Email, email, StringComparison.OrdinalIgnoreCase);

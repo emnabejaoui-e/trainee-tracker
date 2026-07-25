@@ -63,6 +63,12 @@ public class AdminController : Controller
             _userService.CreateTrainee(name, email, password, startingDate, endDate, curriculumId);
             return RedirectToAction("UserManagement");
         }
+        catch (ArgumentOutOfRangeException)
+        {
+            ModelState.AddModelError("EndDate", "End date must be after starting date");
+            ViewBag.Curricula = _curriculumRepo.GetAllCurriculums();
+            return View();
+        }
         catch (ArgumentException)
         {
             ModelState.AddModelError("password", "Password is required");
@@ -205,6 +211,11 @@ public class AdminController : Controller
         {
             _userService.UpdateTrainee(id, name, email, startingDate, endDate, password);
             return RedirectToAction("UserManagement");
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            ModelState.AddModelError("EndDate", "End date must be after starting date");
+            return View(new Trainee { Id = id });
         }
         catch (KeyNotFoundException)
         {
