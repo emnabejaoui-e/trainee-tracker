@@ -51,7 +51,7 @@ public class AssignmentServiceTests
     public void UpdateAssignmentStatus_StartFromInvalidStatus_ThrowsInvalidOperationException()
     {
         //arrange
-        var assignment = new LessonAssignment{Id = 5, Status = LessonAssignmentStatus.Finished};
+        var assignment = new LessonAssignment{Id = 5, Status = LessonAssignmentStatus.Rated};
         _assignmentRepoMock.Setup(s => s.GetById(5)).Returns(assignment);
 
         Assert.Throws<InvalidOperationException>(() => _service.UpdateAssignmentStatus(5, LessonAssignmentStatus.Started));
@@ -87,7 +87,7 @@ public class AssignmentServiceTests
     public void UpdateAssignmentStatus_FinishFromInvalidStatus_ThrowsInvalidOperationException()
     {
         //arrange
-        var assignment = new LessonAssignment{Id = 5, Status = LessonAssignmentStatus.Accepted};
+        var assignment = new LessonAssignment{Id = 5, Status = LessonAssignmentStatus.Open};
         _assignmentRepoMock.Setup(s => s.GetById(5)).Returns(assignment);
 
         Assert.Throws<InvalidOperationException>(() => _service.UpdateAssignmentStatus(5, LessonAssignmentStatus.Finished));
