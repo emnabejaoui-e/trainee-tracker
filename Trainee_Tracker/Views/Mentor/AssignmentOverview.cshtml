@@ -103,18 +103,57 @@
                                                 </div>
                                                 <div class="card-actions">
                                                 @switch(status)
-                                                {
+                                                {   
+                                                    case "Open":
+                                                        <form asp-action="StartAssignment" asp-controller="Mentor" asp-route-assignmentId="@card.Id" method="post" >
+                                                            <button type="submit" class="action-btn action-btn-primary">Start</button>
+                                                        </form>
+                                                        break;
+
+                                                    case "Started":
+                                                        <form asp-action="OpenAssignment" asp-controller="Mentor" asp-route-assignmentId="@card.Id" method="post" >
+                                                            <button type="submit" class="action-btn action-btn-primary">Reopen</button>
+                                                        </form>
+                                                        <form asp-action="FinishAssignment" asp-controller="Mentor" asp-route-assignmentId="@card.Id" method="post" >
+                                                            <button type="submit" class="action-btn action-btn-primary">Finish</button>
+                                                        </form>
+                                                        break;
+
                                                     case "Finished":
-                                                        <div class="review-item-action">
-                                                            <form asp-controller="Mentor" asp-action="Accept" asp-route-assignmentId="@card.Id" method="post" class="inline-form">
+                                                        <form asp-action="StartAssignment" asp-controller="Mentor" asp-route-assignmentId="@card.Id" method="post" >
+                                                            <button type="submit" class="action-btn action-btn-primary">Start</button>
+                                                        </form>
+
+                                                        
+                                                            <form asp-controller="Mentor" asp-action="AcceptAssignment" asp-route-assignmentId="@card.Id" method="post" class="inline-form">
                                                                 <button type="submit" class="action-btn action-btn-accept">Accept</button>
                                                             </form>
                                                             
                                                             <button type="button" class="action-btn action-btn-reject"
                                                                     onclick="document.getElementById('reject-dialog-@card.Id').showModal()">Reject</button>
                                                             
-                                                        </div>
+                                                        
                                                         break;
+                                                    case "Accepted":
+                                                        <form asp-action="FinishAssignment" asp-controller="Mentor" asp-route-assignmentId="@card.Id" method="post">
+                                                            <button type="submit" class="action-btn action-btn-primary">Finish</button>
+                                                        </form>
+                                                        <form asp-action="RateAssignmentWithoutFeedback" asp-controller="Mentor" asp-route-assignmentId="@card.Id" method="post">
+                                                            <button type="submit" class="action-btn action-btn-primary">Rate</button>
+                                                        </form>
+                                                    break;
+
+                                                    case "Rejected": 
+                                                        <form asp-action="StartAssignment" asp-controller="Mentor" asp-route-assignmentId="@card.Id" method="post">
+                                                            <button type="submit" class="action-btn action-btn-primary">Restart</button>
+                                                        </form>
+                                                    break;
+
+                                                    case "Skipped": 
+                                                        <form asp-action="OpenAssignment" asp-controller="Mentor" asp-route-assignmentId="@card.Id" method="post">
+                                                            <button type="submit" class="action-btn action-btn-primary">Reopen</button>
+                                                        </form>
+                                                    break;
 
                                                     default:
                                                         break;
@@ -226,7 +265,7 @@
 
     <h2 class="section-title">Edit Assignment Order</h2>
     <div>
-        <button type="button" class="action-btn action-btn-primary" onclick="document.getElementById('sort-dialog').showModal()">Edit Order</button>
+        <button type="button" class="action-btn action-btn-reorder" onclick="document.getElementById('sort-dialog').showModal()">Edit Order</button>
 
         <dialog id="sort-dialog" class="sort-dialog">
             <h3 class="rejection-dialog-title">Reorder Assignments for @traineeName</h3>
