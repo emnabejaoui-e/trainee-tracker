@@ -13,8 +13,6 @@
     . GroupBy(la => la.Status)
     .ToDictionary(g => g.Key, g => g.Count());
 
-    var allStati = Enum.GetValues(typeof(LessonAssignmentStatus)).Cast<LessonAssignmentStatus>();
-
     var toReview = Model
     .Where(la=>la.Status == LessonAssignmentStatus.Finished)
     .OrderBy(la =>la.Position)
@@ -58,8 +56,6 @@
     <h1 class="page-title">Lesson Assignments Overview of @traineeName</h1>
 
     <h2 class="section-title">Overview</h2>
-
-    @* <div class="board-container"> *@
 
         <div class="board-search">
             <input id="boardSearch" type="text" placeholder="search for a card e.g. Linux or 34" />
@@ -170,7 +166,6 @@
                     </div>
             }
         </div>
-    @* </div> *@
 
     <h2 class="section-title">Rejected Assignment History</h2>
 
