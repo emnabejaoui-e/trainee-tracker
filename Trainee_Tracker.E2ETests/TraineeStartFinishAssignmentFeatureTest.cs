@@ -33,14 +33,12 @@ public class TraineeStartFinishAssignmentFeatureTest
 
         //Arragne: assignment start
         var openColumn = _wait.Until(d => d.FindElement(By.Id("column-body-Open")));
-        var firstCard = openColumn.FindElement(By.CssSelector(".board-card"));
+        var card = openColumn.FindElements(By.CssSelector(".board-card")).First(card => card.FindElement(By.CssSelector(".card-title")).Text == "995 Bonus: Images");
 
-        var startButton = firstCard.FindElement(By.CssSelector(".action-btn-primary"));
-        var cardTitleText = firstCard.FindElement( By.CssSelector(".card-title")).Text;
-
+        var startButton = openColumn.FindElement(By.CssSelector(".action-btn-primary"));
+        var cardTitleText = card.FindElement(By.CssSelector(".card-title")).Text;
         //Act
         _fixture.SafeClick(startButton);
-
 
         //Assert:
         var startedColumnText = _fixture.GetTextSafely(By.Id("column-body-Started"));

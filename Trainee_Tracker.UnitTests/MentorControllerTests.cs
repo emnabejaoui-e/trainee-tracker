@@ -92,7 +92,7 @@ public class MentorControllerTests
         SetupResponsibleMentor(1, trainee);
 
         //Act
-        var result = _controller.Accept(5);
+        var result = _controller.AcceptAssignment(5);
 
         //Assert
         _assignmentServiceMock.Verify(r => r.UpdateAssignmentStatus(5, LessonAssignmentStatus.Accepted), Times.Once);
@@ -111,7 +111,7 @@ public class MentorControllerTests
         _assignmentRepoMock.Setup(r => r.GetById(It.IsAny<int>())).Returns((LessonAssignment?) null);
 
         //Act
-        var result = _controller.Accept(999);
+        var result = _controller.AcceptAssignment(999);
 
         //Assert
         Assert.IsType<NotFoundResult>(result);
@@ -131,7 +131,7 @@ public class MentorControllerTests
         SetupResponsibleMentor(1, trainee);
 
         //Act
-        var result = _controller.Accept(5);
+        var result = _controller.AcceptAssignment(5);
 
         //Assert
         var redirect =Assert.IsType<RedirectToActionResult>(result);
@@ -152,7 +152,7 @@ public class MentorControllerTests
         SetUser(null);
 
         //Act
-        var result = _controller.Accept(5);
+        var result = _controller.AcceptAssignment(5);
 
         //Assert
         Assert.IsType<UnauthorizedResult>(result);
@@ -173,7 +173,7 @@ public class MentorControllerTests
         SetupResponsibleMentor(1, otherTrainee);
 
         //Act
-        var result = _controller.Accept(5);
+        var result = _controller.AcceptAssignment(5);
 
         //Assert
         Assert.IsType<ForbidResult>(result);
@@ -475,6 +475,410 @@ public class MentorControllerTests
         //Assert
         Assert.IsType<ForbidResult>(result);
         _assignmentServiceMock.Verify(s => s.RejectAssignment(It.IsAny<int>(), It.IsAny<string>()), Times.Never);
+    }
+
+    //code-owner: Julia Sandner
+    //unit-test for Mentor reopening an assignment for a trainee (successful)
+    [Fact]
+    public void OpenAssignment_ValidAssignment_UpdateStatusAndRedirectToOverview()
+    {
+        // Arrange
+        var trainee = new Trainee{Id = 41};
+        var assignment = new LessonAssignment{Id = 5, TraineeId = 41, Trainee = trainee};
+        _assignmentRepoMock.Setup(r => r.GetById(5)).Returns(assignment);
+        _assignmentServiceMock.Setup(s => s.UpdateAssignmentStatus(5, LessonAssignmentStatus.Open)).Returns(assignment);
+        SetupResponsibleMentor(1, trainee);
+
+        //Act
+        var result = _controller.OpenAssignment(5);
+
+        //Assert
+        _assignmentServiceMock.Verify(r => r.UpdateAssignmentStatus(5, LessonAssignmentStatus.Open), Times.Once);
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("AssignmentOverview", redirect.ActionName);
+        Assert.Equal(41, redirect.RouteValues["traineeId"]);
+
+    }
+
+    //Code-Owner: Julia Sandner
+    //unit-test for Mentor reopening an unknown assignment for a trainee 
+    [Fact]
+    public void OpenAssignment_UnknowenAssignment_ReturnNotFound()
+    {
+        //Arrange
+        _assignmentRepoMock.Setup(r => r.GetById(It.IsAny<int>())).Returns((LessonAssignment?) null);
+
+        //Act
+        var result = _controller.OpenAssignment(999);
+
+        //Assert
+        Assert.IsType<NotFoundResult>(result);
+        _assignmentServiceMock.Verify(s => s.UpdateAssignmentStatus(It.IsAny<int>(), It.IsAny<LessonAssignmentStatus>()), Times.Never);
+    }
+
+    //Code-Owner: Julia Sandner
+    //unit-test for Mentor reopening an assignmnet that is in an invalid status for this transition
+    [Fact]
+    public void OpenAssignment_InvalidTransition_SetsErrorAndRedirectsToOverview()
+    {
+        //Arrange
+        var trainee = new Trainee{Id = 41};
+        var assignment = new LessonAssignment{Id = 5, TraineeId = 41, Trainee = trainee, Status = LessonAssignmentStatus.Rejected};
+        _assignmentRepoMock.Setup(r => r.GetById(5)).Returns(assignment);
+        _assignmentServiceMock.Setup(s => s.UpdateAssignmentStatus(5, LessonAssignmentStatus.Open)).Throws(new InvalidOperationException("Invalid status transition for assignment 5: Rejected -> Open."));
+        SetupResponsibleMentor(1, trainee);
+
+        //Act
+        var result = _controller.OpenAssignment(5);
+
+        //Assert
+        var redirect =Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("AssignmentOverview", redirect.ActionName);
+        Assert.Equal(41, redirect.RouteValues["traineeId"]);
+        Assert.NotNull(_controller.TempData["Error"]);
+    }
+
+    //Code-Owner: Julia Sandner
+    //unit-test for Mentor reopening an assignmnet without authorization
+    [Fact]
+    public void OpenAssignment_NoUserClaim_ReturnsUnauthorized()
+    {   
+        //Arrange
+        var trainee = new Trainee{Id =41};
+        var assignment = new LessonAssignment{ Id = 5, TraineeId = 41, Trainee = trainee};
+        _assignmentRepoMock.Setup( t => t.GetById(5)).Returns(assignment);
+        SetUser(null);
+
+        //Act
+        var result = _controller.AcceptAssignment(5);
+
+        //Assert
+        Assert.IsType<UnauthorizedResult>(result);
+        _assignmentServiceMock.Verify(s => s.UpdateAssignmentStatus(It.IsAny<int>(), It.IsAny<LessonAssignmentStatus>()), Times.Never);
+
+    }
+
+    //Code-Owner: Julia Sandner
+    //Unit-test for Mentor reopening an assignment but mentor is not assigned to trainee
+    [Fact]
+    public void OpenAssignment_MentorNotAssignedToTrainee_ReturnsForbid()
+    {   
+        //Arrange
+        var trainee = new Trainee{Id =41};
+        var otherTrainee = new Trainee{Id = 60};
+        var assignment = new LessonAssignment{ Id = 5, TraineeId = 41, Trainee = trainee};
+        _assignmentRepoMock.Setup( t => t.GetById(5)).Returns(assignment);
+        SetupResponsibleMentor(1, otherTrainee);
+
+        //Act
+        var result = _controller.OpenAssignment(5);
+
+        //Assert
+        Assert.IsType<ForbidResult>(result);
+        _assignmentServiceMock.Verify(s => s.UpdateAssignmentStatus(It.IsAny<int>(), It.IsAny<LessonAssignmentStatus>()), Times.Never);
+    }
+
+    //code-owner: Julia Sandner
+    //unit-test for Mentor starting an assignment for a trainee (successful)
+    [Fact]
+    public void StartAssignment_ValidAssignment_UpdateStatusAndRedirectToOverview()
+    {
+        // Arrange
+        var trainee = new Trainee{Id = 41};
+        var assignment = new LessonAssignment{Id = 5, TraineeId = 41, Trainee = trainee};
+        _assignmentRepoMock.Setup(r => r.GetById(5)).Returns(assignment);
+        _assignmentServiceMock.Setup(s => s.UpdateAssignmentStatus(5, LessonAssignmentStatus.Started)).Returns(assignment);
+        SetupResponsibleMentor(1, trainee);
+
+        //Act
+        var result = _controller.StartAssignment(5);
+
+        //Assert
+        _assignmentServiceMock.Verify(r => r.UpdateAssignmentStatus(5, LessonAssignmentStatus.Started), Times.Once);
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("AssignmentOverview", redirect.ActionName);
+        Assert.Equal(41, redirect.RouteValues["traineeId"]);
+
+    }
+
+    //Code-Owner: Julia Sandner
+    //unit-test for Mentor starting an unknown assignment for a trainee 
+    [Fact]
+    public void StartAssignment_UnknowenAssignment_ReturnNotFound()
+    {
+        //Arrange
+        _assignmentRepoMock.Setup(r => r.GetById(It.IsAny<int>())).Returns((LessonAssignment?) null);
+
+        //Act
+        var result = _controller.StartAssignment(999);
+
+        //Assert
+        Assert.IsType<NotFoundResult>(result);
+        _assignmentServiceMock.Verify(s => s.UpdateAssignmentStatus(It.IsAny<int>(), It.IsAny<LessonAssignmentStatus>()), Times.Never);
+    }
+
+    //Code-Owner: Julia Sandner
+    //unit-test for Mentor starting an assignmnet that is in an invalid status for this transition
+    [Fact]
+    public void StartAssignment_InvalidTransition_SetsErrorAndRedirectsToOverview()
+    {
+        //Arrange
+        var trainee = new Trainee{Id = 41};
+        var assignment = new LessonAssignment{Id = 5, TraineeId = 41, Trainee = trainee, Status = LessonAssignmentStatus.Rated};
+        _assignmentRepoMock.Setup(r => r.GetById(5)).Returns(assignment);
+        _assignmentServiceMock.Setup(s => s.UpdateAssignmentStatus(5, LessonAssignmentStatus.Started)).Throws(new InvalidOperationException("Invalid status transition for assignment 5: Rated -> Started."));
+        SetupResponsibleMentor(1, trainee);
+
+        //Act
+        var result = _controller.StartAssignment(5);
+
+        //Assert
+        var redirect =Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("AssignmentOverview", redirect.ActionName);
+        Assert.Equal(41, redirect.RouteValues["traineeId"]);
+        Assert.NotNull(_controller.TempData["Error"]);
+    }
+
+    //Code-Owner: Julia Sandner
+    //unit-test for Mentor starting an assignmnet without authorization
+    [Fact]
+    public void StartAssignment_NoUserClaim_ReturnsUnauthorized()
+    {   
+        //Arrange
+        var trainee = new Trainee{Id =41};
+        var assignment = new LessonAssignment{ Id = 5, TraineeId = 41, Trainee = trainee};
+        _assignmentRepoMock.Setup( t => t.GetById(5)).Returns(assignment);
+        SetUser(null);
+
+        //Act
+        var result = _controller.StartAssignment(5);
+
+        //Assert
+        Assert.IsType<UnauthorizedResult>(result);
+        _assignmentServiceMock.Verify(s => s.UpdateAssignmentStatus(It.IsAny<int>(), It.IsAny<LessonAssignmentStatus>()), Times.Never);
+
+    }
+
+    //Code-Owner: Julia Sandner
+    //Unit-test for Mentor starting an assignment but mentor is not assigned to trainee
+    [Fact]
+    public void StartAssignment_MentorNotAssignedToTrainee_ReturnsForbid()
+    {   
+        //Arrange
+        var trainee = new Trainee{Id =41};
+        var otherTrainee = new Trainee{Id = 60};
+        var assignment = new LessonAssignment{ Id = 5, TraineeId = 41, Trainee = trainee};
+        _assignmentRepoMock.Setup( t => t.GetById(5)).Returns(assignment);
+        SetupResponsibleMentor(1, otherTrainee);
+
+        //Act
+        var result = _controller.StartAssignment(5);
+
+        //Assert
+        Assert.IsType<ForbidResult>(result);
+        _assignmentServiceMock.Verify(s => s.UpdateAssignmentStatus(It.IsAny<int>(), It.IsAny<LessonAssignmentStatus>()), Times.Never);
+    }
+
+    //code-owner: Julia Sandner
+    //unit-test for Mentor finishing an assignment for a trainee (successful)
+    [Fact]
+    public void FinishAssignment_ValidAssignment_UpdateStatusAndRedirectToOverview()
+    {
+        // Arrange
+        var trainee = new Trainee{Id = 41};
+        var assignment = new LessonAssignment{Id = 5, TraineeId = 41, Trainee = trainee};
+        _assignmentRepoMock.Setup(r => r.GetById(5)).Returns(assignment);
+        _assignmentServiceMock.Setup(s => s.UpdateAssignmentStatus(5, LessonAssignmentStatus.Finished)).Returns(assignment);
+        SetupResponsibleMentor(1, trainee);
+
+        //Act
+        var result = _controller.FinishAssignment(5);
+
+        //Assert
+        _assignmentServiceMock.Verify(r => r.UpdateAssignmentStatus(5, LessonAssignmentStatus.Finished), Times.Once);
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("AssignmentOverview", redirect.ActionName);
+        Assert.Equal(41, redirect.RouteValues["traineeId"]);
+
+    }
+
+    //Code-Owner: Julia Sandner
+    //unit-test for Mentor finishing an unknown assignment for a trainee 
+    [Fact]
+    public void FinishAssignment_UnknowenAssignment_ReturnNotFound()
+    {
+        //Arrange
+        _assignmentRepoMock.Setup(r => r.GetById(It.IsAny<int>())).Returns((LessonAssignment?) null);
+
+        //Act
+        var result = _controller.FinishAssignment(999);
+
+        //Assert
+        Assert.IsType<NotFoundResult>(result);
+        _assignmentServiceMock.Verify(s => s.UpdateAssignmentStatus(It.IsAny<int>(), It.IsAny<LessonAssignmentStatus>()), Times.Never);
+    }
+
+    //Code-Owner: Julia Sandner
+    //unit-test for Mentor finishing an assignmnet that is in an invalid status for this transition
+    [Fact]
+    public void FinishAssignment_InvalidTransition_SetsErrorAndRedirectsToOverview()
+    {
+        //Arrange
+        var trainee = new Trainee{Id = 41};
+        var assignment = new LessonAssignment{Id = 5, TraineeId = 41, Trainee = trainee, Status = LessonAssignmentStatus.Open};
+        _assignmentRepoMock.Setup(r => r.GetById(5)).Returns(assignment);
+        _assignmentServiceMock.Setup(s => s.UpdateAssignmentStatus(5, LessonAssignmentStatus.Finished)).Throws(new InvalidOperationException("Invalid status transition for assignment 5: Open -> Finished."));
+        SetupResponsibleMentor(1, trainee);
+
+        //Act
+        var result = _controller.FinishAssignment(5);
+
+        //Assert
+        var redirect =Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("AssignmentOverview", redirect.ActionName);
+        Assert.Equal(41, redirect.RouteValues["traineeId"]);
+        Assert.NotNull(_controller.TempData["Error"]);
+    }
+
+    //Code-Owner: Julia Sandner
+    //unit-test for Mentor finishing an assignmnet without authorization
+    [Fact]
+    public void FinishAssignment_NoUserClaim_ReturnsUnauthorized()
+    {   
+        //Arrange
+        var trainee = new Trainee{Id =41};
+        var assignment = new LessonAssignment{ Id = 5, TraineeId = 41, Trainee = trainee};
+        _assignmentRepoMock.Setup( t => t.GetById(5)).Returns(assignment);
+        SetUser(null);
+
+        //Act
+        var result = _controller.FinishAssignment(5);
+
+        //Assert
+        Assert.IsType<UnauthorizedResult>(result);
+        _assignmentServiceMock.Verify(s => s.UpdateAssignmentStatus(It.IsAny<int>(), It.IsAny<LessonAssignmentStatus>()), Times.Never);
+
+    }
+
+    //Code-Owner: Julia Sandner
+    //Unit-test for Mentor finishing an assignment but mentor is not assigned to trainee
+    [Fact]
+    public void FinishAssignment_MentorNotAssignedToTrainee_ReturnsForbid()
+    {   
+        //Arrange
+        var trainee = new Trainee{Id =41};
+        var otherTrainee = new Trainee{Id = 60};
+        var assignment = new LessonAssignment{ Id = 5, TraineeId = 41, Trainee = trainee};
+        _assignmentRepoMock.Setup( t => t.GetById(5)).Returns(assignment);
+        SetupResponsibleMentor(1, otherTrainee);
+
+        //Act
+        var result = _controller.FinishAssignment(5);
+
+        //Assert
+        Assert.IsType<ForbidResult>(result);
+        _assignmentServiceMock.Verify(s => s.UpdateAssignmentStatus(It.IsAny<int>(), It.IsAny<LessonAssignmentStatus>()), Times.Never);
+    }
+
+    //code-owner: Julia Sandner
+    //unit-test for Mentor changing an assignment's state to rated without giving Feedback for a trainee (successful)
+    [Fact]
+    public void RateAssignmentWithoutFeedback_ValidAssignment_UpdateStatusAndRedirectToOverview()
+    {
+        // Arrange
+        var trainee = new Trainee{Id = 41};
+        var assignment = new LessonAssignment{Id = 5, TraineeId = 41, Trainee = trainee};
+        _assignmentRepoMock.Setup(r => r.GetById(5)).Returns(assignment);
+        _assignmentServiceMock.Setup(s => s.UpdateAssignmentStatus(5, LessonAssignmentStatus.Rated)).Returns(assignment);
+        SetupResponsibleMentor(1, trainee);
+
+        //Act
+        var result = _controller.RateAssignmentWithoutFeedback(5);
+
+        //Assert
+        _assignmentServiceMock.Verify(r => r.UpdateAssignmentStatus(5, LessonAssignmentStatus.Rated), Times.Once);
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("AssignmentOverview", redirect.ActionName);
+        Assert.Equal(41, redirect.RouteValues["traineeId"]);
+
+    }
+
+    //Code-Owner: Julia Sandner
+    //unit-test for Mentor changing an unkown assignment's state to rated for a trainee 
+    [Fact]
+    public void RateAssignmentWithoutFeedback_UnknowenAssignment_ReturnNotFound()
+    {
+        //Arrange
+        _assignmentRepoMock.Setup(r => r.GetById(It.IsAny<int>())).Returns((LessonAssignment?) null);
+
+        //Act
+        var result = _controller.RateAssignmentWithoutFeedback(999);
+
+        //Assert
+        Assert.IsType<NotFoundResult>(result);
+        _assignmentServiceMock.Verify(s => s.UpdateAssignmentStatus(It.IsAny<int>(), It.IsAny<LessonAssignmentStatus>()), Times.Never);
+    }
+
+    //Code-Owner: Julia Sandner
+    //unit-test for Mentor rating (without Feedback) an assignmnet that is in an invalid status for this transition
+    [Fact]
+    public void RateAssignmentWithoutFeedback_InvalidTransition_SetsErrorAndRedirectsToOverview()
+    {
+        //Arrange
+        var trainee = new Trainee{Id = 41};
+        var assignment = new LessonAssignment{Id = 5, TraineeId = 41, Trainee = trainee, Status = LessonAssignmentStatus.Open};
+        _assignmentRepoMock.Setup(r => r.GetById(5)).Returns(assignment);
+        _assignmentServiceMock.Setup(s => s.UpdateAssignmentStatus(5, LessonAssignmentStatus.Rated)).Throws(new InvalidOperationException("Invalid status transition for assignment 5: Open -> Rated."));
+        SetupResponsibleMentor(1, trainee);
+
+        //Act
+        var result = _controller.RateAssignmentWithoutFeedback(5);
+
+        //Assert
+        var redirect =Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("AssignmentOverview", redirect.ActionName);
+        Assert.Equal(41, redirect.RouteValues["traineeId"]);
+        Assert.NotNull(_controller.TempData["Error"]);
+    }
+
+    //Code-Owner: Julia Sandner
+    //unit-test for Mentor rating (without Feedback) an assignmnet without authorization
+    [Fact]
+    public void RateAssignmentWithoutFeedback_NoUserClaim_ReturnsUnauthorized()
+    {   
+        //Arrange
+        var trainee = new Trainee{Id =41};
+        var assignment = new LessonAssignment{ Id = 5, TraineeId = 41, Trainee = trainee};
+        _assignmentRepoMock.Setup( t => t.GetById(5)).Returns(assignment);
+        SetUser(null);
+
+        //Act
+        var result = _controller.RateAssignmentWithoutFeedback(5);
+
+        //Assert
+        Assert.IsType<UnauthorizedResult>(result);
+        _assignmentServiceMock.Verify(s => s.UpdateAssignmentStatus(It.IsAny<int>(), It.IsAny<LessonAssignmentStatus>()), Times.Never);
+
+    }
+
+    //Code-Owner: Julia Sandner
+    //Unit-test for Mentor rating (without Feedback) an assignment but mentor is not assigned to trainee
+    [Fact]
+    public void RateAssignmentWithoutFeedback_MentorNotAssignedToTrainee_ReturnsForbid()
+    {   
+        //Arrange
+        var trainee = new Trainee{Id =41};
+        var otherTrainee = new Trainee{Id = 60};
+        var assignment = new LessonAssignment{ Id = 5, TraineeId = 41, Trainee = trainee};
+        _assignmentRepoMock.Setup( t => t.GetById(5)).Returns(assignment);
+        SetupResponsibleMentor(1, otherTrainee);
+
+        //Act
+        var result = _controller.RateAssignmentWithoutFeedback(5);
+
+        //Assert
+        Assert.IsType<ForbidResult>(result);
+        _assignmentServiceMock.Verify(s => s.UpdateAssignmentStatus(It.IsAny<int>(), It.IsAny<LessonAssignmentStatus>()), Times.Never);
     }
 
 }

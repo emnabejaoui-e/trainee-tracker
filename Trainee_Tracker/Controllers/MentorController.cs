@@ -257,14 +257,20 @@ public class MentorController : Controller
     /// <param name="assignmentId"> the numeric id of the assignment to accept</param>
     /// <returns>a redirect to the ASsignmentOverview, 404 if not found or the overview with an error if the transition is invalid</returns>
     [HttpPost]
-    public IActionResult Accept(int assignmentId)
+    public IActionResult AcceptAssignment(int assignmentId)
     {
         var currentAssignment = _assignmentRepo.GetById(assignmentId);
         if (currentAssignment == null)
         {
             return NotFound();
         }
+
         var trainee = currentAssignment.Trainee;
+        if(trainee == null)
+        {
+            return NotFound();
+        }
+
         var mentorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if(mentorIdString == null)
         {
@@ -307,6 +313,11 @@ public class MentorController : Controller
         }
 
         var trainee = currentAssignment.Trainee;
+        if(trainee == null)
+        {
+            return NotFound();
+        }
+
         var mentorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if(mentorIdString == null)
         {
@@ -383,6 +394,12 @@ public class MentorController : Controller
         }
 
         var trainee = currentAssignment.Trainee;
+
+        if(trainee == null)
+        {
+            return NotFound();
+        }
+
         var mentorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if(mentorIdString == null)
         {
@@ -410,5 +427,193 @@ public class MentorController : Controller
         }
 
         return RedirectToAction("AssignmentOverview", "Mentor", new {traineeId = currentAssignment.TraineeId}); 
+    }
+
+     //Code-Owner: Julia Sandner
+    /// <summary>
+    /// Marks a lesson assignment as open
+    /// </summary>
+    /// <param name="assignmentId"> the numeric id of the assignment to change state to open</param>
+    /// <returns>a redirect to the ASsignmentOverview, 404 if not found or the overview with an error if the transition is invalid</returns>
+    [HttpPost]
+    public IActionResult OpenAssignment(int assignmentId)
+    {
+        var currentAssignment = _assignmentRepo.GetById(assignmentId);
+        if (currentAssignment == null)
+        {
+            return NotFound();
+        }
+        
+        var trainee = currentAssignment.Trainee;
+        if(trainee == null)
+        {
+            return NotFound();
+        }
+
+        var mentorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(mentorIdString == null)
+        {
+            return Unauthorized();
+        }
+        var mentorId = int.Parse(mentorIdString);
+        var mentor = _mentorRepo.GetMentorById(mentorId);
+
+        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id) && !(mentor is Admin))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var assignment = _assignmentService.UpdateAssignmentStatus(assignmentId, LessonAssignmentStatus.Open);
+            return RedirectToAction("AssignmentOverview", new {traineeId = assignment!.TraineeId});
+        }
+        catch(InvalidOperationException e)
+        {
+            TempData["Error"] = e.Message;
+            return RedirectToAction("AssignmentOverview", new { traineeId = currentAssignment.TraineeId });
+            
+        }
+    }
+
+     //Code-Owner: Julia Sandner
+    /// <summary>
+    /// Marks a lesson assignment as started
+    /// </summary>
+    /// <param name="assignmentId"> the numeric id of the assignment to start</param>
+    /// <returns>a redirect to the ASsignmentOverview, 404 if not found or the overview with an error if the transition is invalid</returns>
+    [HttpPost]
+    public IActionResult StartAssignment(int assignmentId)
+    {
+        var currentAssignment = _assignmentRepo.GetById(assignmentId);
+        if (currentAssignment == null)
+        {
+            return NotFound();
+        }
+        
+        var trainee = currentAssignment.Trainee;
+        if(trainee == null)
+        {
+            return NotFound();
+        }
+
+        var mentorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(mentorIdString == null)
+        {
+            return Unauthorized();
+        }
+        var mentorId = int.Parse(mentorIdString);
+        var mentor = _mentorRepo.GetMentorById(mentorId);
+
+        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id) && !(mentor is Admin))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var assignment = _assignmentService.UpdateAssignmentStatus(assignmentId, LessonAssignmentStatus.Started);
+            return RedirectToAction("AssignmentOverview", new {traineeId = assignment!.TraineeId});
+        }
+        catch(InvalidOperationException e)
+        {
+            TempData["Error"] = e.Message;
+            return RedirectToAction("AssignmentOverview", new { traineeId = currentAssignment.TraineeId });
+            
+        }
+    }
+
+     //Code-Owner: Julia Sandner
+    /// <summary>
+    /// Marks a lesson assignment as finished
+    /// </summary>
+    /// <param name="assignmentId"> the numeric id of the assignment to finish</param>
+    /// <returns>a redirect to the ASsignmentOverview, 404 if not found or the overview with an error if the transition is invalid</returns>
+    [HttpPost]
+    public IActionResult FinishAssignment(int assignmentId)
+    {
+        var currentAssignment = _assignmentRepo.GetById(assignmentId);
+        if (currentAssignment == null)
+        {
+            return NotFound();
+        }
+        
+        var trainee = currentAssignment.Trainee;
+        if(trainee == null)
+        {
+            return NotFound();
+        }
+
+        var mentorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(mentorIdString == null)
+        {
+            return Unauthorized();
+        }
+        var mentorId = int.Parse(mentorIdString);
+        var mentor = _mentorRepo.GetMentorById(mentorId);
+
+        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id) && !(mentor is Admin))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var assignment = _assignmentService.UpdateAssignmentStatus(assignmentId, LessonAssignmentStatus.Finished);
+            return RedirectToAction("AssignmentOverview", new {traineeId = assignment!.TraineeId});
+        }
+        catch(InvalidOperationException e)
+        {
+            TempData["Error"] = e.Message;
+            return RedirectToAction("AssignmentOverview", new { traineeId = currentAssignment.TraineeId });
+            
+        }
+    }
+
+     //Code-Owner: Julia Sandner
+    /// <summary>
+    /// Marks a lesson assignment as rated (changes only the state and does not create a feedback since feedbacks should only be submitted by trainees)
+    /// </summary>
+    /// <param name="assignmentId"> the numeric id of the assignment to rate</param>
+    /// <returns>a redirect to the ASsignmentOverview, 404 if not found or the overview with an error if the transition is invalid</returns>
+    [HttpPost]
+    public IActionResult RateAssignmentWithoutFeedback(int assignmentId)
+    {
+        var currentAssignment = _assignmentRepo.GetById(assignmentId);
+        if (currentAssignment == null)
+        {
+            return NotFound();
+        }
+        
+        var trainee = currentAssignment.Trainee;
+        if(trainee == null)
+        {
+            return NotFound();
+        }
+
+        var mentorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(mentorIdString == null)
+        {
+            return Unauthorized();
+        }
+        var mentorId = int.Parse(mentorIdString);
+        var mentor = _mentorRepo.GetMentorById(mentorId);
+
+        if(mentor == null || !mentor.AssignedTrainees.Any(t => t.Id == trainee.Id) && !(mentor is Admin))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var assignment = _assignmentService.UpdateAssignmentStatus(assignmentId, LessonAssignmentStatus.Rated);
+            return RedirectToAction("AssignmentOverview", new {traineeId = assignment!.TraineeId});
+        }
+        catch(InvalidOperationException e)
+        {
+            TempData["Error"] = e.Message;
+            return RedirectToAction("AssignmentOverview", new { traineeId = currentAssignment.TraineeId });
+            
+        }
     }
 }
