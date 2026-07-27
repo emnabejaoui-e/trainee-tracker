@@ -241,4 +241,105 @@ public class LessonBoardControllerTests
         Assert.NotNull(_controller.TempData["Error"]);
 
     }
+
+    /// <summary>
+    /// test for a trainee opening an assignment (successful)
+    /// </summary>
+    [Fact]
+    public void Open_ValidAssignment_UpdateStatusAndRedirectToLessonBoard()
+    {
+        //arrange
+        var assignment = new LessonAssignment {Id = 5, TraineeId = 41};
+        _assignmentRepoMock.Setup(r => r.GetById(5)).Returns(assignment);
+        _assignmentServiceMock.Setup( s => s.UpdateAssignmentStatus(5, LessonAssignmentStatus.Open)).Returns(assignment);
+        SetUser(41);
+
+        //Act
+        var result = _controller.OpenAssignment(5);
+
+        //Assert
+        _assignmentServiceMock.Verify(s => s.UpdateAssignmentStatus(5, LessonAssignmentStatus.Open), Times.Once);
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("LessonBoard", redirect.ActionName);
+        Assert.Equal(41, redirect.RouteValues["traineeId"]);
+
+    }
+
+    /// <summary>
+    /// test for a trainee opening an unknown assignment
+    /// </summary>
+    [Fact]
+    public void Open_UnknownAssignment_ReturnNotFound()
+    {
+        //Arrange
+        _assignmentRepoMock.Setup(r => r.GetById(It.IsAny<int>())).Returns((LessonAssignment?) null);
+        
+        //Act
+        var result = _controller.OpenAssignment(999);
+
+        //Assert
+         Assert.IsType<NotFoundResult>(result);
+         _assignmentServiceMock.Verify(s => s.UpdateAssignmentStatus(It.IsAny<int>(), It.IsAny<LessonAssignmentStatus>()), Times.Never);
+    }
+
+    /// <summary>
+    /// test for trainee opening an assignment with no authorization
+    /// </summary>
+    [Fact]
+    public void Open_NoUserClaim_ReturnUnauthorized()
+    {
+        //Arrange
+        var assignment = new LessonAssignment {Id = 5, TraineeId = 41};
+        _assignmentRepoMock.Setup(r =>r.GetById(5)).Returns(assignment);
+        SetUser(null);
+
+        //Act
+        var result = _controller.OpenAssignment(5);
+
+        //Assert
+        Assert.IsType<UnauthorizedResult>(result);
+        _assignmentServiceMock.Verify(s => s.UpdateAssignmentStatus(It.IsAny<int>(), It.IsAny<LessonAssignmentStatus>()), Times.Never);
+    }
+
+    /// <summary>
+    /// test for a trainee opening an assignment that is assigned to another trainee
+    /// </summary>
+    [Fact]
+    public void Open_AssignmentNotOwnedByTrainee_ReturnForbid()
+    {
+        //Arrange
+        var assignment = new LessonAssignment {Id = 5, TraineeId = 41};
+        _assignmentRepoMock.Setup(r =>r.GetById(5)).Returns(assignment);
+        SetUser(80);
+
+        //Act
+        var result = _controller.OpenAssignment(5);
+
+        //Assert
+        Assert.IsType<ForbidResult>(result);
+        _assignmentServiceMock.Verify(s => s.UpdateAssignmentStatus(It.IsAny<int>(), It.IsAny<LessonAssignmentStatus>()), Times.Never);
+    }
+
+    /// <summary>
+    /// test for opening an assignment in an invalid state
+    /// </summary>
+    [Fact]
+    public void Open_InvalidTransition_SetErrorAndRedirectToLessonBoard()
+    {
+        //arrange
+        var assignment = new LessonAssignment {Id = 5, TraineeId = 41, Status =LessonAssignmentStatus.Accepted};
+        _assignmentRepoMock.Setup(r => r.GetById(5)).Returns(assignment);
+        _assignmentServiceMock.Setup( s => s.UpdateAssignmentStatus(5, LessonAssignmentStatus.Open)).Throws(new InvalidOperationException("Invalid status transition for assignment 5: Accepted -> Open"));
+        SetUser(41);
+
+        //Act
+        var result = _controller.OpenAssignment(5);
+
+        //Assert
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("LessonBoard", redirect.ActionName);
+        Assert.Equal(41, redirect.RouteValues["traineeId"]);
+        Assert.NotNull(_controller.TempData["Error"]);
+
+    }
 }

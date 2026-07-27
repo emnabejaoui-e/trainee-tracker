@@ -25,7 +25,7 @@ public class AssignmentService : IAssignmentService
         [LessonAssignmentStatus.Finished] = new[] {LessonAssignmentStatus.Accepted, LessonAssignmentStatus.Rejected, LessonAssignmentStatus.Started},
         [LessonAssignmentStatus.Rejected] = new[] {LessonAssignmentStatus.Started},
         [LessonAssignmentStatus.Accepted] = new[] {LessonAssignmentStatus.Rated, LessonAssignmentStatus.Finished},
-        [LessonAssignmentStatus.Skipped] = new[] {LessonAssignmentStatus.Open} 
+        [LessonAssignmentStatus.Skipped] = new[] {LessonAssignmentStatus.Open}
     };
 
     public AssignmentService(ILessonRepository lessonRepo, ILessonAssignmentRepository lessonAssignmentRepo, IRejectionRepository rejectionRepo, ILessonFeedbackService feedbackService)

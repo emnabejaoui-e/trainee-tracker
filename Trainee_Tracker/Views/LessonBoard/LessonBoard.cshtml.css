@@ -160,6 +160,7 @@
   margin-top: 8px;
   display: flex;
   justify-content: flex-end;
+  gap: 8px;
 }
 
 .card-actions form{
@@ -178,6 +179,15 @@
 }
 
 .action-btn-primary{
+  background-color: var(--state-color, #378ADD);
+  color: var(--white);
+}
+
+.action-btn-primary-finish{
+  background-color: var(--state-color, #378ADD);
+  color: var(--white);
+
+}.action-btn-primary-open{
   background-color: var(--state-color, #378ADD);
   color: var(--white);
 }

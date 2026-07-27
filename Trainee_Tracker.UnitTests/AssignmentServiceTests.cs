@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Moq;
 using Trainee_Tracker.Data.LessonAssignments;
 using Trainee_Tracker.Data.Lessons;
@@ -87,7 +88,7 @@ public class AssignmentServiceTests
     public void UpdateAssignmentStatus_FinishFromInvalidStatus_ThrowsInvalidOperationException()
     {
         //arrange
-        var assignment = new LessonAssignment{Id = 5, Status = LessonAssignmentStatus.Open};
+        var assignment = new LessonAssignment{Id = 5, Status = LessonAssignmentStatus.Rated};
         _assignmentRepoMock.Setup(s => s.GetById(5)).Returns(assignment);
 
         Assert.Throws<InvalidOperationException>(() => _service.UpdateAssignmentStatus(5, LessonAssignmentStatus.Finished));
@@ -229,6 +230,120 @@ public class AssignmentServiceTests
 
         Assert.Null(result);
         _rejectionRepoMock.Verify( r => r.Reject(It.IsAny<int>(), It.IsAny<string>()), Times.Never);
+    }
+
+    //code-owner: Julia Sandner
+    /// <summary>
+    /// test for reopening a started assignment (successful)
+    /// </summary>
+    [Fact]
+    public void UpdateAssignmentStatus_OpenFromStarted_SetOpenAndReturnAssignment()
+    {
+        //arrange
+        var assignment = new LessonAssignment {Id = 5, Status = LessonAssignmentStatus.Started};
+        _assignmentRepoMock.Setup(d => d.GetById(5)).Returns(assignment);
+
+        //act
+        var result = _service.UpdateAssignmentStatus(5, LessonAssignmentStatus.Open);
+
+        //Assert
+        _assignmentRepoMock.Verify( r => r.UpdateStatus(5, LessonAssignmentStatus.Open), Times.Once);
+        Assert.Equal(assignment, result);
+    }
+
+    //code-owner: Julia Sandner
+    /// <summary>
+    /// test for restarting a finished assignment (successful)
+    /// </summary>
+    [Fact]
+    public void UpdateAssignmentStatus_StartFromFinished_SetOpenAndReturnAssignment()
+    {
+        //arrange
+        var assignment = new LessonAssignment {Id = 5, Status = LessonAssignmentStatus.Finished};
+        _assignmentRepoMock.Setup(d => d.GetById(5)).Returns(assignment);
+
+        //act
+        var result = _service.UpdateAssignmentStatus(5, LessonAssignmentStatus.Started);
+
+        //Assert
+        _assignmentRepoMock.Verify( r => r.UpdateStatus(5, LessonAssignmentStatus.Started), Times.Once);
+        Assert.Equal(assignment, result);
+    }
+
+    //code-owner: Julia Sandner
+    /// <summary>
+    /// test for restarting a rejected assignment (successful)
+    /// </summary>
+    [Fact]
+    public void UpdateAssignmentStatus_StartFromRejected_SetOpenAndReturnAssignment()
+    {
+        //arrange
+        var assignment = new LessonAssignment {Id = 5, Status = LessonAssignmentStatus.Rejected};
+        _assignmentRepoMock.Setup(d => d.GetById(5)).Returns(assignment);
+
+        //act
+        var result = _service.UpdateAssignmentStatus(5, LessonAssignmentStatus.Started);
+
+        //Assert
+        _assignmentRepoMock.Verify( r => r.UpdateStatus(5, LessonAssignmentStatus.Started), Times.Once);
+        Assert.Equal(assignment, result);
+    }
+
+    //code-owner: Julia Sandner
+    /// <summary>
+    /// test for rating an accepted assignment (successful)
+    /// </summary>
+    [Fact]
+    public void UpdateAssignmentStatus_RateFromAccepted_SetOpenAndReturnAssignment()
+    {
+        //arrange
+        var assignment = new LessonAssignment {Id = 5, Status = LessonAssignmentStatus.Accepted};
+        _assignmentRepoMock.Setup(d => d.GetById(5)).Returns(assignment);
+
+        //act
+        var result = _service.UpdateAssignmentStatus(5, LessonAssignmentStatus.Rated);
+
+        //Assert
+        _assignmentRepoMock.Verify( r => r.UpdateStatus(5, LessonAssignmentStatus.Rated), Times.Once);
+        Assert.Equal(assignment, result);
+    }
+
+    //code-owner: Julia Sandner
+    /// <summary>
+    /// test for refinishing an accepted assignment (successful)
+    /// </summary>
+    [Fact]
+    public void UpdateAssignmentStatus_FinishFromAccepted_SetOpenAndReturnAssignment()
+    {
+        //arrange
+        var assignment = new LessonAssignment {Id = 5, Status = LessonAssignmentStatus.Accepted};
+        _assignmentRepoMock.Setup(d => d.GetById(5)).Returns(assignment);
+
+        //act
+        var result = _service.UpdateAssignmentStatus(5, LessonAssignmentStatus.Finished);
+
+        //Assert
+        _assignmentRepoMock.Verify( r => r.UpdateStatus(5, LessonAssignmentStatus.Finished), Times.Once);
+        Assert.Equal(assignment, result);
+    }
+
+    //code-owner: Julia Sandner
+    /// <summary>
+    /// test for reopening a skipped assignment (successful)
+    /// </summary>
+    [Fact]
+    public void UpdateAssignmentStatus_OpenFromSkipped_SetOpenAndReturnAssignment()
+    {
+        //arrange
+        var assignment = new LessonAssignment {Id = 5, Status = LessonAssignmentStatus.Skipped};
+        _assignmentRepoMock.Setup(d => d.GetById(5)).Returns(assignment);
+
+        //act
+        var result = _service.UpdateAssignmentStatus(5, LessonAssignmentStatus.Open);
+
+        //Assert
+        _assignmentRepoMock.Verify( r => r.UpdateStatus(5, LessonAssignmentStatus.Open), Times.Once);
+        Assert.Equal(assignment, result);
     }
 
 }
