@@ -86,9 +86,7 @@ public class CurriculumService : ICurriculumService
 
     public void UpdateLessonAssignments(Trainee trainee, Curriculum curriculum)
     {
-        var assignments = _lessonAssignmentRepo.FindByTrainee(trainee);
-
-        foreach (var lessonAssignment in assignments)
+        foreach (var lessonAssignment in _lessonAssignmentRepo.FindByTrainee(trainee))
         {
             // Delete open assignments for inactive lessons (so they won't shop up anywhere)
             if (lessonAssignment.Lesson.Inactive && lessonAssignment.Status == LessonAssignmentStatus.Open)
@@ -103,6 +101,8 @@ public class CurriculumService : ICurriculumService
             }
             // Otherwise the order update is ignored to respect the customized order chosen by the Mentor.
         }
+
+        var assignments = _lessonAssignmentRepo.FindByTrainee(trainee);
 
         // Create missing assignments
         var unassignedLessons = curriculum.Lessons
