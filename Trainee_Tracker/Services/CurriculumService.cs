@@ -96,8 +96,8 @@ public class CurriculumService : ICurriculumService
                 _lessonAssignmentRepo.Delete(lessonAssignment);
             }
 
-            // If the order of the assignments has been customized, the updated order is copied from the one in the curriculum
-            if (trainee.IsAssignmentOrderCustomized)
+            // If the order of the assignments has not been customized, the updated order is copied from the one in the curriculum
+            if (!trainee.IsAssignmentOrderCustomized)
             {
                 lessonAssignment.Position = lessonAssignment.Lesson.Position;                
             }
