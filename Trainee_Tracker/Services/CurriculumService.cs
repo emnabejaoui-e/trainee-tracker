@@ -122,7 +122,7 @@ public class CurriculumService : ICurriculumService
             if (idx == 0)
             {
                 // Special case: First element is always inserted at position 1
-                assignments.Insert(0, assignment);                    
+                assignment.Position = 0;
             }
             else
             {
@@ -130,7 +130,7 @@ public class CurriculumService : ICurriculumService
                 var precedingLesson = curriculum.Lessons[idx - 1];
                 var precedingAssignmentIdx = assignments.FindIndex(la => la.LessonId == precedingLesson.Id);
                 
-                assignments.Insert(precedingAssignmentIdx + 1, assignment);
+                assignment.Position = precedingAssignmentIdx + 1;
             }
             
             _lessonAssignmentRepo.Save(assignment);
