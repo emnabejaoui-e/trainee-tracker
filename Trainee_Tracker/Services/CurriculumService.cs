@@ -46,7 +46,7 @@ public class CurriculumService : ICurriculumService
             }
         }
 
-        curriculum._Lessons = lessons;
+        curriculum = _curriculumRepo.GetAllCurriculums().First(c => c.Id == curriculum.Id);
         
         foreach (var trainee in GetTraineesOfCurriculum(curriculum))
         {
