@@ -293,10 +293,6 @@ public class FeedbackController : Controller
             return RedirectToAction(nameof(RecentFeedback), new { from ,until, show });
         }
 
-        _assignmentService.UpdateAssignmentStatus(
-            feedback.AssignmentId,
-            LessonAssignmentStatus.Accepted
-        );
 
         _lessonFeedbackService.DeleteFeedback(id);
 

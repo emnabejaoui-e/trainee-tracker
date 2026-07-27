@@ -21,11 +21,11 @@ public class AssignmentService : IAssignmentService
     private static readonly Dictionary<LessonAssignmentStatus, LessonAssignmentStatus[]> AllowedTransitions = new()
     {
         [LessonAssignmentStatus.Open] = new[] {LessonAssignmentStatus.Started, LessonAssignmentStatus.Skipped},
-        [LessonAssignmentStatus.Started] = new[] {LessonAssignmentStatus.Finished},
-        [LessonAssignmentStatus.Finished] = new[] {LessonAssignmentStatus.Accepted, LessonAssignmentStatus.Rejected},
+        [LessonAssignmentStatus.Started] = new[] {LessonAssignmentStatus.Finished, LessonAssignmentStatus.Open},
+        [LessonAssignmentStatus.Finished] = new[] {LessonAssignmentStatus.Accepted, LessonAssignmentStatus.Rejected, LessonAssignmentStatus.Started},
         [LessonAssignmentStatus.Rejected] = new[] {LessonAssignmentStatus.Started},
-        [LessonAssignmentStatus.Accepted] = new[] {LessonAssignmentStatus.Rated},
-        [LessonAssignmentStatus.Rated] = new[] {LessonAssignmentStatus.Accepted}
+        [LessonAssignmentStatus.Accepted] = new[] {LessonAssignmentStatus.Rated, LessonAssignmentStatus.Finished},
+        [LessonAssignmentStatus.Skipped] = new[] {LessonAssignmentStatus.Open}
     };
 
     public AssignmentService(ILessonRepository lessonRepo, ILessonAssignmentRepository lessonAssignmentRepo, IRejectionRepository rejectionRepo, ILessonFeedbackService feedbackService)
