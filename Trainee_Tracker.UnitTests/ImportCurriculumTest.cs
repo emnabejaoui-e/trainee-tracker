@@ -127,7 +127,10 @@ public class ImportCurriculumTest
         
         services.Service.ImportCurriculum(services.Curriculum, importedLessons);
         
-        Assert.All(services.LessonRepository.GetAllLessons().Where(l => l.CurriculumId == services.Curriculum.Id), l => Assert.Contains(l, services.Curriculum.Lessons));
+        Assert.All(importedLessons, l =>
+        {
+            Assert.Contains(l, services.LessonRepository.GetAllLessons().Where(l => l.CurriculumId == services.Curriculum.Id));
+        });
     }
     
     [Theory]
