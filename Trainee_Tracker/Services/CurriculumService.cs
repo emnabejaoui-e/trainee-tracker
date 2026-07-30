@@ -46,7 +46,7 @@ public class CurriculumService : ICurriculumService
             }
         }
 
-        curriculum._Lessons = lessons;
+        curriculum = _curriculumRepo.GetAllCurriculums().First(c => c.Id == curriculum.Id);
         
         foreach (var trainee in GetTraineesOfCurriculum(curriculum))
         {
@@ -91,9 +91,7 @@ public class CurriculumService : ICurriculumService
 
     public void UpdateLessonAssignments(Trainee trainee, Curriculum curriculum)
     {
-        var assignments = _lessonAssignmentRepo.FindByTrainee(trainee);
-
-        foreach (var lessonAssignment in assignments)
+        foreach (var lessonAssignment in _lessonAssignmentRepo.FindByTrainee(trainee))
         {
             // Delete open assignments for inactive lessons (so they won't shop up anywhere)
             if (lessonAssignment.Lesson.Inactive && lessonAssignment.Status == LessonAssignmentStatus.Open)
@@ -101,13 +99,15 @@ public class CurriculumService : ICurriculumService
                 _lessonAssignmentRepo.Delete(lessonAssignment);
             }
 
-            // If the order of the assignments has been customized, the updated order is copied from the one in the curriculum
-            if (trainee.IsAssignmentOrderCustomized)
+            // If the order of the assignments has not been customized, the updated order is copied from the one in the curriculum
+            if (!trainee.IsAssignmentOrderCustomized)
             {
                 lessonAssignment.Position = lessonAssignment.Lesson.Position;                
             }
             // Otherwise the order update is ignored to respect the customized order chosen by the Mentor.
         }
+
+        var assignments = _lessonAssignmentRepo.FindByTrainee(trainee);
 
         // Create missing assignments
         var unassignedLessons = curriculum.Lessons
@@ -127,7 +127,7 @@ public class CurriculumService : ICurriculumService
             if (idx == 0)
             {
                 // Special case: First element is always inserted at position 1
-                assignments.Insert(0, assignment);                    
+                assignment.Position = 0;
             }
             else
             {
@@ -135,7 +135,7 @@ public class CurriculumService : ICurriculumService
                 var precedingLesson = curriculum.Lessons[idx - 1];
                 var precedingAssignmentIdx = assignments.FindIndex(la => la.LessonId == precedingLesson.Id);
                 
-                assignments.Insert(precedingAssignmentIdx + 1, assignment);
+                assignment.Position = precedingAssignmentIdx + 1;
             }
             
             _lessonAssignmentRepo.Save(assignment);

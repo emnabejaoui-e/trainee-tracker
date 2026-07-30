@@ -76,4 +76,37 @@ public class UpdateAssignmentTest
                 Assert.DoesNotContain(newAssignments, la => la.LessonId == l.Id && la.Status == LessonAssignmentStatus.Open);
         });
     }
+
+    [Theory]
+    [ClassData(typeof(UpdateAssignmentTestDataGenerator))]
+    void UpdateAssignment_AllAssignmentsThatWereNotRemovedHaveRetainedTheirProperties(IList<Lesson> lessons, IList<LessonAssignment> assignments)
+    {
+        var oldAssignments = assignments
+            .Select(la => new LessonAssignment()
+            {
+                Id = la.Id,
+                LessonId = la.LessonId,
+                Position = la.Position,
+                TraineeId = la.TraineeId,
+                ExpectedProcessingDate = la.ExpectedProcessingDate,
+                FeedbackReminderShowen = la.FeedbackReminderShowen,
+                Status = la.Status
+            });
+        
+        var services = new CurriculumServiceInitializerServices(lessons, assignments);
+        
+        services.Service.UpdateLessonAssignments(services.Trainee, services.Curriculum);
+        
+        Assert.All(oldAssignments, old =>
+        {
+            var updated = services.LessonAssignmentRepository.GetById(old.Id);
+            if (updated != null)
+            {
+                // Assertion: All properties match (except Position and ExpectedProcessingDate)
+                Assert.True(old.Id == updated.Id, "old.Id == updated.Id");
+                Assert.True(old.FeedbackReminderShowen == updated.FeedbackReminderShowen, "old.FeedbackReminderShowen == updated.FeedbackReminderShowen");
+                Assert.True(old.Status == updated.Status, "old.Status == updated.Status");
+            }
+        });
+    }
 }

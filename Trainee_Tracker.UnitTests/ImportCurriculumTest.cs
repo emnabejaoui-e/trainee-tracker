@@ -127,7 +127,10 @@ public class ImportCurriculumTest
         
         services.Service.ImportCurriculum(services.Curriculum, importedLessons);
         
-        Assert.All(importedLessons, l => Assert.Contains(l, services.Curriculum.Lessons));
+        Assert.All(importedLessons, l =>
+        {
+            Assert.Contains(l, services.LessonRepository.GetAllLessons().Where(l => l.CurriculumId == services.Curriculum.Id));
+        });
     }
     
     [Theory]
@@ -138,7 +141,7 @@ public class ImportCurriculumTest
         
         services.Service.ImportCurriculum(services.Curriculum, importedLessons);
         
-        Assert.All(services.Curriculum.Lessons, l =>
+        Assert.All(services.LessonRepository.GetAllLessons().Where(l => l.CurriculumId == services.Curriculum.Id).OrderBy(l => l.Position), l =>
         {
             if (importedLessons.Contains(l))
             {
@@ -157,7 +160,7 @@ public class ImportCurriculumTest
         
         services.Service.ImportCurriculum(services.Curriculum, importedLessons);
 
-        Assert.All(services.Curriculum.Lessons, l =>
+        Assert.All(services.LessonRepository.GetAllLessons().Where(l => l.CurriculumId == services.Curriculum.Id), l =>
         {
             if (existingLessons.Contains(l) && !importedLessons.Contains(l))
             {
