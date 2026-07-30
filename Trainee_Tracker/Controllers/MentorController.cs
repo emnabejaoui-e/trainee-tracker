@@ -151,12 +151,8 @@ public class MentorController : Controller
         return View(null);
     }
 
-    // Code-Owner: Leon Paintner
-    // POST: /Mentor/ImportCurriculum
-    [HttpPost]
-    public IActionResult ImportCurriculum(string curriculumName, IFormFile file)
+    private (Curriculum? curriculum, IList<Lesson>? importedLessons) readImportUploads(string curriculumName, IFormFile file)
     {
-        ViewData["NavbarOverride"] = "Mentor";
         if (file == null)
             ModelState.AddModelError("FileName", "No file was selected.");
         else
@@ -167,49 +163,79 @@ public class MentorController : Controller
         }
 
         if (curriculumName.IsWhiteSpace())
-        {
             ModelState.AddModelError("FileName", "No curriculum was selected.");
-        }
 
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
+            return (null, null);
+        Stream readStream = file.OpenReadStream();
+        StreamReader reader = new StreamReader(readStream);
+        string fileContent = reader.ReadToEnd();
+
+        reader.Close();
+        readStream.Close();
+
+        IList<Lesson>? importedLessons = null;
+        try
         {
-            Stream readStream = file.OpenReadStream();
-            StreamReader reader = new StreamReader(readStream);
-            string fileContent = reader.ReadToEnd();
+            var lessons = JsonSerializer.Deserialize<List<Lesson.LessonDTO>>(fileContent);
+            if (lessons == null)
+                throw new JsonException("null is not a valid curriculum list.");
             
-            reader.Close();
-            readStream.Close();
-
-            try
-            {
-                var lessons = JsonSerializer.Deserialize<List<Lesson.LessonDTO>>(fileContent);
-                if (lessons == null)
-                    throw new JsonException("null is not a valid curriculum list.");
-
-                var curriculum = _curriculumRepo.GetByTitle(curriculumName);
-                if (curriculum == null)
-                    return NotFound();
-                
-                _curriculumService.ImportCurriculum(curriculum, lessons.Select(dto => dto.Lesson()).ToList());
-            }
-            catch (JsonException e)
-            {
-                ModelState.AddModelError("FileName",
-                    "The JSON file you uploaded is not a curriculum file: " + e.Message);
-            }
-
-            if (!ModelState.IsValid)
-            {
-                ViewBag.curriculumNames = _curriculumRepo.GetAllCurriculums().Select(c => c.Title);
-                return View(file);
-            }
-            else
-            {
-                return RedirectToAction("Index", "Mentor");                
-            }
+            importedLessons = lessons.Select(dto => dto.Lesson()).ToList();
         }
-        ViewBag.curriculumNames = _curriculumRepo.GetAllCurriculums().Select(c => c.Title);
-        return View(file);
+        catch (JsonException e)
+        {
+            ModelState.AddModelError("FileName",
+                "The JSON file you uploaded is not a curriculum file: " + e.Message);
+        }
+
+        var curriculum = _curriculumRepo.GetByTitle(curriculumName);
+        if (curriculum == null)
+            ModelState.AddModelError("FileName", "No curriculum was selected.");
+        
+        if (!ModelState.IsValid)
+            return (curriculum, null);
+
+        return (curriculum, importedLessons);
+    }
+
+    // Code-Owner: Leon Paintner
+    // POST: /Mentor/ImportCurriculum
+    [HttpPost]
+    public IActionResult ImportCurriculum(string curriculumName, IFormFile file)
+    {
+        ViewData["NavbarOverride"] = "Mentor";
+        (var curriculum, var importedLessons) = readImportUploads(curriculumName, file);
+
+        if (!ModelState.IsValid)
+        {
+            ViewBag.curriculumNames = _curriculumRepo.GetAllCurriculums().Select(c => c.Title);
+            return View(file);
+        }
+        else
+        {
+            _curriculumService.ImportCurriculum(curriculum, importedLessons);
+            return RedirectToAction("Index", "Mentor");                
+        }
+    }
+
+    [HttpPost]
+    public IActionResult IsImportWarningNeeded(string curriculumName, IFormFile file)
+    {
+        (var curriculum, var importedLessons) = readImportUploads(curriculumName, file);
+        if (!ModelState.IsValid)
+            return BadRequest();
+
+        var activeLessonsCount = curriculum!.Lessons.Count(l => !l.Inactive);
+        var removedLessonsCount = _curriculumService.CountInactiveLessons(curriculum!, importedLessons!);
+        var removedLessonShare = removedLessonsCount / ((float) activeLessonsCount);
+        return Json(new
+        {
+            WarningNeeded = removedLessonShare >= 0.1,
+            ActiveLessonsCount = activeLessonsCount,
+            RemovedLessonsCount = removedLessonsCount,
+            removedLessonShare = Math.Round(removedLessonShare, 2)
+        });
     }
     
     // Code-Owner: Julia Sandner
