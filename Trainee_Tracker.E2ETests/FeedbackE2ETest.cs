@@ -1,4 +1,5 @@
 // Code Owner: Emna Bejaoui
+using System.Collections.ObjectModel;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using Xunit;
@@ -8,15 +9,17 @@ namespace Trainee_Tracker.E2ETests;
 /// <summary>
 /// End-to-end tests for the trainee feedback workflow.
 /// </summary>
+[Collection("Trainee Tests")]
 public class FeedbackE2ETest : IDisposable
 {
     private readonly IWebDriver _driver;
     private const string BaseUrl = "http://localhost:5089";
+    private readonly TraineeTestFixture _fixture; //line-owner: Julia Sandner
 
     /// <summary>
 /// Initializes a Chrome WebDriver for the feedback E2E test.
 /// </summary>
-    public FeedbackE2ETest()
+    public FeedbackE2ETest(TraineeTestFixture fixture)
     {
         var options = new ChromeOptions();
         options.AddArgument("--headless");
@@ -25,6 +28,7 @@ public class FeedbackE2ETest : IDisposable
         options.AddArgument("--disable-dev-shm-usage");
 
         _driver = new ChromeDriver(options);
+        _fixture = fixture;
     }
 
     /// <summary>
@@ -59,6 +63,7 @@ public class FeedbackE2ETest : IDisposable
         _driver.Navigate().GoToUrl($"{BaseUrl}/LessonBoard/LessonBoard");
 
         await Task.Delay(2500);
+        _fixture.DismissFeedbackReminderIfPresent(); //Line-Owner: Julia Sandner
 
         // 3. Select a lesson that is currently in the Accepted column.
         var acceptedColumn = _driver.FindElement(
@@ -74,7 +79,12 @@ public class FeedbackE2ETest : IDisposable
 
         var rateButton = acceptedCard.FindElement(By.LinkText("rate"));
 
-        rateButton.Click();
+        //Code-Owner: Julia Sandner (only the next 3 lines)
+        ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].scrollIntoView(true);", rateButton);
+        await Task.Delay(500);
+        ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].click();", rateButton);
+
+       
         await Task.Delay(3000);
 
         // 4. Fill in and submit the feedback form.
