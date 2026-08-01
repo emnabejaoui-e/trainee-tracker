@@ -41,7 +41,12 @@ public class TraineeStartFinishAssignmentFeatureTest
         _fixture.SafeClick(startButton);
 
         //Assert:
-        var startedColumnText = _fixture.GetTextSafely(By.Id("column-body-Started"));
+        string startedColumnText = "";
+        _wait.Until( d => 
+        {
+            startedColumnText = d.FindElement(By.Id("column-body-Started")).Text;
+            return startedColumnText.Contains(cardTitleText);
+        });
 
         Assert.Contains(cardTitleText, startedColumnText);
 
